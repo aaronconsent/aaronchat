@@ -5,7 +5,42 @@
   gtag('js', new Date());
 
   gtag('config', 'G-JZCP8D44LS');
-</script><meta content="all" name="robots"/><meta content="en" http-equiv="content-language"/><meta content="19" name="next-head-count"/><link as="style" href="../_next/static/css/3a3eb9bc00ba47b4.css" rel="preload"/><link data-n-g="" href="../_next/static/css/3a3eb9bc00ba47b4.css" rel="stylesheet"/><link as="style" href="../_next/static/css/6ad5f70cb56137d7.css" rel="preload"/><link data-n-p="" href="../_next/static/css/6ad5f70cb56137d7.css" rel="stylesheet"/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="../_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script defer="" src="../_next/static/chunks/7626.78cdf76df75e7db3.js"></script><script defer="" src="../_next/static/chunks/webpack-211ad179f18f1707.js"></script><script defer="" src="../_next/static/chunks/framework-d805b48c0466ba30.js"></script><script defer="" src="../_next/static/chunks/main-0d62aa53050125b8.js"></script><script defer="" src="../_next/static/chunks/pages/_app-e4dda47183cac0dc.js"></script><script defer="" src="../_next/static/chunks/3891-a027cc9a7eda0a66.js"></script><script defer="" src="../_next/static/chunks/1942-762da286ebc0e218.js"></script><script defer="" src="../_next/static/chunks/pages/[[...slug]]-625d848c42cf764e.js"></script><script defer="" src="../_next/static/DR0MvD-nxVRfhoEOf1jFo/_buildManifest.js"></script><script defer="" src="../_next/static/DR0MvD-nxVRfhoEOf1jFo/_ssgManifest.js"></script></head><body class="overflow-x-hidden"><div data-reactroot="" id="__next"><style>
+</script><meta content="all" name="robots"/><meta content="en" http-equiv="content-language"/><meta content="19" name="next-head-count"/><link as="style" href="../_next/static/css/3a3eb9bc00ba47b4.css" rel="preload"/><link data-n-g="" href="../_next/static/css/3a3eb9bc00ba47b4.css" rel="stylesheet"/><link as="style" href="../_next/static/css/6ad5f70cb56137d7.css" rel="preload"/><link data-n-p="" href="../_next/static/css/6ad5f70cb56137d7.css" rel="stylesheet"/><noscript data-n-css=""></noscript><script defer="" nomodule="" src="../_next/static/chunks/polyfills-c67a75d1b6f99dc8.js"></script><script defer="" src="../_next/static/chunks/7626.78cdf76df75e7db3.js"></script><script defer="" src="../_next/static/chunks/webpack-211ad179f18f1707.js"></script><script defer="" src="../_next/static/chunks/framework-d805b48c0466ba30.js"></script><script defer="" src="../_next/static/chunks/main-0d62aa53050125b8.js"></script><script defer="" src="../_next/static/chunks/pages/_app-e4dda47183cac0dc.js"></script><script defer="" src="../_next/static/chunks/3891-a027cc9a7eda0a66.js"></script><script defer="" src="../_next/static/chunks/1942-762da286ebc0e218.js"></script><script defer="" src="../_next/static/chunks/pages/[[...slug]]-625d848c42cf764e.js"></script><script defer="" src="../_next/static/DR0MvD-nxVRfhoEOf1jFo/_buildManifest.js"></script><script defer="" src="../_next/static/DR0MvD-nxVRfhoEOf1jFo/_ssgManifest.js"></script><script data-mirror-imgfix="1">
+(function(){
+  function root(){
+    var s=document.querySelector('script[src*="_next/static/"]')||document.querySelector('link[href*="_next/static/"]');
+    if(s){var u=s.src||s.href;var i=u.indexOf("_next/static/");if(i>=0)return u.slice(0,i);}
+    return location.href.replace(/[^\/]*$/,"");
+  }
+  var ROOT=root();
+  function toLocal(u){
+    if(!u||u.indexOf("_next/image")<0)return null;
+    var m=u.match(/[?&]url=([^&"'\s]+)/);if(!m)return null;
+    var real;try{real=decodeURIComponent(m[1]);}catch(e){real=m[1];}
+    var mm=real.match(/^https?:\/\/([^\/]+)(\/.*)$/);if(!mm)return null;
+    return ROOT+"_external/"+mm[1]+mm[2];
+  }
+  function fix(img){
+    var s=img.getAttribute("src");
+    if(s&&s.indexOf("_next/image")>-1){var n=toLocal(s);if(n&&img.getAttribute("src")!==n)img.setAttribute("src",n);}
+    var ss=img.getAttribute("srcset");
+    if(ss&&ss.indexOf("_next/image")>-1){
+      var nn=ss.split(",").map(function(p){var b=p.trim().split(/\s+/);var n=toLocal(b[0]);if(n)b[0]=n;return b.join(" ");}).join(", ");
+      if(nn!==ss)img.setAttribute("srcset",nn);
+    }
+  }
+  function scan(r){var es=(r||document).querySelectorAll?(r||document).querySelectorAll("img"):[];for(var i=0;i<es.length;i++)fix(es[i]);}
+  document.addEventListener("error",function(e){var t=e.target;if(t&&t.tagName==="IMG")fix(t);},true);
+  try{
+    var mo=new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var m=ms[i];
+      if(m.type==="attributes"&&m.target.tagName==="IMG")fix(m.target);
+      if(m.addedNodes)for(var j=0;j<m.addedNodes.length;j++){var n=m.addedNodes[j];if(n.tagName==="IMG")fix(n);else if(n.querySelectorAll)scan(n);}
+    }});
+    function start(){scan(document);mo.observe(document.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:["src","srcset"]});}
+    if(document.readyState!=="loading")start();else document.addEventListener("DOMContentLoaded",start);
+  }catch(e){}
+})();
+</script></head><body class="overflow-x-hidden"><div data-reactroot="" id="__next"><style>
     #nprogress {
       pointer-events: none;
     }
