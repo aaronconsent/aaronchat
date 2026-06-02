@@ -214,7 +214,154 @@ setTimeout(run,1500);
 <style id="pm-a11y-css">
 .pm-site-skip{position:absolute !important;left:-9999px;top:8px;background:#241a14 !important;color:#fff !important;padding:10px 16px;border-radius:8px;text-decoration:none;font-family:"Bree Serif",serif;z-index:9999999;}
 .pm-site-skip:focus,.pm-site-skip:focus-visible{left:8px !important;outline:3px solid #eaa92b !important;outline-offset:2px;}
-</style></head><body class="overflow-x-hidden"><div data-reactroot="" id="__next"><style>
+</style><style id="pm-header-style">
+/* Hide Durable's React nav (replaced by pm-header) */
+#website-header { display: none !important; }
+/* New diner header */
+#pm-header{position:sticky;top:0;z-index:2000;background:#fffaf0;border-bottom:5px double #5b3427;font-family:"Bree Serif",serif;}
+#pm-header *{box-sizing:border-box;}
+#pm-header .skip-link{position:absolute;left:-9999px;top:8px;background:#241a14;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;z-index:99;}
+#pm-header .skip-link:focus,#pm-header .skip-link:focus-visible{left:8px;outline:3px solid #eaa92b;outline-offset:2px;}
+.pm-header-inner{max-width:1280px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:24px;flex-wrap:nowrap;}
+.pm-logo{display:flex;align-items:baseline;gap:8px;text-decoration:none;color:#5b3427;line-height:1;}
+.pm-logo:hover{color:#a82b22;}
+.pm-logo-icon{font-size:24px;}
+.pm-logo-text{font-family:"Alfa Slab One",serif;font-size:24px;color:#a82b22;}
+.pm-logo-sub{font-family:"Bree Serif",serif;font-size:14px;color:#5b3427;letter-spacing:.04em;text-transform:uppercase;}
+.pm-nav{display:flex;align-items:center;gap:24px;margin-left:auto;flex-wrap:nowrap;}
+.pm-nav-list{display:flex;gap:4px;list-style:none;padding:0;margin:0;align-items:center;}
+.pm-nav-list > li{position:relative;}
+.pm-nav-list > li > a,.pm-submenu-trigger{display:inline-flex;align-items:center;gap:4px;color:#5b3427;text-decoration:none;padding:10px 12px;font-size:15px;font-family:"Bree Serif",serif;background:transparent;border:0;cursor:pointer;border-radius:8px;line-height:1;}
+.pm-nav-list > li > a:hover,.pm-submenu-trigger:hover{background:rgba(91,52,39,.08);color:#a82b22;}
+.pm-nav-list > li > a:focus-visible,.pm-submenu-trigger:focus-visible{outline:3px solid #a82b22;outline-offset:2px;}
+/* Submenu */
+.pm-submenu{position:absolute;top:100%;left:0;background:#fffaf0;border:3px solid #5b3427;border-radius:14px;box-shadow:6px 6px 0 #5b3427;padding:10px;min-width:280px;list-style:none;margin:10px 0 0;display:none;z-index:999;}
+.pm-submenu-wide .pm-submenu{min-width:560px;display:none;grid-template-columns:1fr 1fr;gap:0 14px;}
+.pm-has-submenu.pm-open > .pm-submenu{display:block;}
+.pm-submenu-wide.pm-open > .pm-submenu{display:grid;}
+.pm-submenu li{margin:0;}
+.pm-submenu li a{display:block;padding:8px 12px;color:#5b3427;text-decoration:none;border-radius:8px;font-size:14px;}
+.pm-submenu li a:hover{background:rgba(234,169,43,.25);color:#a82b22;}
+.pm-submenu li a:focus-visible{outline:3px solid #0c7a4f;outline-offset:1px;}
+.pm-submenu-divider{height:0;border-top:2px dashed #cdb393;margin:6px 8px;}
+/* CTAs */
+.pm-header-cta{display:flex;gap:10px;align-items:center;}
+.pm-btn{display:inline-flex;align-items:center;justify-content:center;font-family:"Bree Serif",serif;padding:11px 18px;border-radius:999px;border:3px solid #241a14;text-decoration:none;font-size:14px;line-height:1;min-height:44px;}
+.pm-btn-primary{background:#0c7a4f;color:#fff;box-shadow:4px 4px 0 #241a14;}
+.pm-btn-primary:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #241a14;}
+.pm-btn-ghost{background:transparent;color:#5b3427;border-color:#5b3427;}
+.pm-btn-ghost:hover{background:rgba(91,52,39,.08);}
+.pm-btn:focus-visible{outline:3px solid #eaa92b;outline-offset:3px;}
+/* Hamburger */
+.pm-hamburger{display:none;background:transparent;border:3px solid #5b3427;color:#5b3427;padding:6px 14px;border-radius:8px;font-size:24px;cursor:pointer;line-height:1;margin-left:auto;}
+.pm-hamburger:focus-visible{outline:3px solid #a82b22;outline-offset:2px;}
+/* Responsive */
+@media (max-width:1200px){
+ .pm-header-cta .pm-btn-ghost{display:none;}
+ .pm-nav-list > li > a,.pm-submenu-trigger{padding:10px 8px;font-size:14px;}
+}
+@media (max-width:1000px){
+ .pm-hamburger{display:inline-flex;}
+ .pm-nav{display:none;position:absolute;top:100%;left:0;right:0;background:#fffaf0;border-bottom:4px double #5b3427;padding:14px 24px;flex-direction:column;align-items:stretch;gap:0;max-height:calc(100vh - 80px);overflow-y:auto;}
+ .pm-nav.pm-open{display:flex;}
+ .pm-nav-list{flex-direction:column;align-items:stretch;width:100%;gap:0;}
+ .pm-nav-list > li{width:100%;}
+ .pm-nav-list > li > a,.pm-submenu-trigger{width:100%;padding:14px 12px;font-size:16px;border-radius:8px;justify-content:space-between;}
+ .pm-submenu{position:static;display:none;box-shadow:none;border:none;background:rgba(91,52,39,.05);margin:4px 0;border-radius:8px;min-width:0;}
+ .pm-submenu-wide .pm-submenu{grid-template-columns:1fr;}
+ .pm-has-submenu.pm-open > .pm-submenu{display:block;}
+ .pm-header-cta{flex-direction:column;width:100%;margin-top:14px;gap:8px;}
+ .pm-header-cta .pm-btn{width:100%;}
+ .pm-header-cta .pm-btn-ghost{display:inline-flex;}
+}
+</style><style id="pm-illust-style">
+.pm-illustration-placeholder{display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(45deg,#fff7e0 0 14px,#f6e3c4 14px 28px);border:3px dashed #5b3427;border-radius:18px;color:#5b3427;font-family:"Bree Serif",serif;font-size:13px;letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:24px;min-height:120px;box-sizing:border-box;}
+.pm-illustration-placeholder::before{content:"🖼  Illustration placeholder";display:block;line-height:1.4;}
+</style>
+<script id="pm-illust-js">(function(){
+function replace(){
+ var imgs=document.querySelectorAll("img[alt='background'], img[data-nimg]:not([data-pm-replaced])");
+ imgs.forEach(function(img){
+  if(img.dataset.pmReplaced)return;
+  if(img.closest("#pm-header"))return;
+  if(img.closest("nav"))return;
+  if(img.alt&&/logo|hey aaron|marketing/i.test(img.alt))return;
+  var w=img.offsetWidth||img.naturalWidth||0,h=img.offsetHeight||img.naturalHeight||0;
+  if(w<140 && h<100)return; // small icons stay
+  var div=document.createElement("div");
+  div.className="pm-illustration-placeholder";
+  if(w)div.style.width=w+"px";
+  if(h)div.style.height=h+"px";
+  if(img.style&&img.style.cssText){div.style.position=img.style.position||"";div.style.top=img.style.top||"";div.style.left=img.style.left||"";div.style.right=img.style.right||"";div.style.bottom=img.style.bottom||"";}
+  if(img.parentNode){img.parentNode.replaceChild(div,img);}
+  img.dataset.pmReplaced="1";
+ });
+}
+if(document.readyState!=="loading")replace();else document.addEventListener("DOMContentLoaded",replace);
+setTimeout(replace,800);setTimeout(replace,2000);
+})();</script></head><body class="overflow-x-hidden"><header id="pm-header" role="banner">
+ <a class="skip-link" href="#pm-main-region">Skip to main content</a>
+ <div class="pm-header-inner">
+  <a class="pm-logo" href="/" aria-label="Hey Aaron! Marketing — home">
+   <span class="pm-logo-icon" aria-hidden="true">🍴</span>
+   <span class="pm-logo-text">Hey Aaron!</span>
+   <span class="pm-logo-sub">Marketing</span>
+  </a>
+  <button class="pm-hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="pm-nav" type="button">
+   <span aria-hidden="true">≡</span>
+  </button>
+  <nav id="pm-nav" class="pm-nav" aria-label="Main navigation">
+   <ul class="pm-nav-list">
+    <li><a href="/">Home</a></li>
+    <li class="pm-has-submenu">
+     <button class="pm-submenu-trigger" aria-expanded="false" aria-haspopup="true" type="button">The Menu <span aria-hidden="true">▾</span></button>
+     <ul class="pm-submenu" role="menu">
+      <li role="none"><a role="menuitem" href="/pricing/"><strong>See the Full Menu →</strong></a></li>
+      <li role="none" class="pm-submenu-divider"></li>
+      <li role="none"><a role="menuitem" href="/get-started/?plate=house-special">The House Special (Free Year)</a></li>
+      <li role="none"><a role="menuitem" href="/plans/get-found-plate/">Get-Found Plate</a></li><li role="none"><a role="menuitem" href="/plans/phone-ringer-plate/">Phone-Ringer Plate</a></li><li role="none"><a role="menuitem" href="/plans/regulars-plate/">Regulars Plate</a></li>
+     </ul>
+    </li>
+    <li class="pm-has-submenu pm-submenu-wide">
+     <button class="pm-submenu-trigger" aria-expanded="false" aria-haspopup="true" type="button">Services <span aria-hidden="true">▾</span></button>
+     <ul class="pm-submenu" role="menu">
+      <li role="none"><a role="menuitem" href="/services/built-for-you-website/">Built For You Website™</a></li><li role="none"><a role="menuitem" href="/services/list-me-local/">List Me Local™</a></li><li role="none"><a role="menuitem" href="/services/local-eyeballs/">Local Eyeballs™</a></li><li role="none"><a role="menuitem" href="/services/rank-me-local/">Rank Me Local™</a></li><li role="none"><a role="menuitem" href="/services/booked-by-facebook/">Booked By Facebook™</a></li><li role="none"><a role="menuitem" href="/services/adwords-on-google/">Adwords on Google™</a></li><li role="none"><a role="menuitem" href="/services/lead-hustler/">Lead Hustler™</a></li><li role="none"><a role="menuitem" href="/services/verified-local/">Verified Local™</a></li><li role="none"><a role="menuitem" href="/services/right-here-referrals/">Right Here Referrals™</a></li><li role="none"><a role="menuitem" href="/services/stay-in-touch/">Stay In Touch</a></li><li role="none"><a role="menuitem" href="/services/seasonal-promos/">Seasonal Promos</a></li><li role="none"><a role="menuitem" href="/services/call-tracking/">Call Tracking</a></li>
+     </ul>
+    </li>
+    <li class="pm-has-submenu pm-submenu-wide">
+     <button class="pm-submenu-trigger" aria-expanded="false" aria-haspopup="true" type="button">Who We Help <span aria-hidden="true">▾</span></button>
+     <ul class="pm-submenu" role="menu">
+      <li role="none"><a role="menuitem" href="/who-we-help/plumbers/">Plumbers</a></li><li role="none"><a role="menuitem" href="/who-we-help/electricians/">Electricians</a></li><li role="none"><a role="menuitem" href="/who-we-help/hvac-ac-service-pros/">HVAC Pros</a></li><li role="none"><a role="menuitem" href="/who-we-help/roofers/">Roofers</a></li><li role="none"><a role="menuitem" href="/who-we-help/handyman/">Handymen</a></li><li role="none"><a role="menuitem" href="/who-we-help/lawn-care/">Lawn Care</a></li><li role="none"><a role="menuitem" href="/who-we-help/house-cleaners/">House Cleaners</a></li><li role="none"><a role="menuitem" href="/who-we-help/general-contractors/">General Contractors</a></li><li role="none"><a role="menuitem" href="/who-we-help/garage-door-repair/">Garage Door Repair</a></li><li role="none"><a role="menuitem" href="/who-we-help/appliance-repair/">Appliance Repair</a></li><li role="none"><a role="menuitem" href="/who-we-help/pest-control/">Pest Control</a></li><li role="none"><a role="menuitem" href="/who-we-help/lawyers/">Lawyers</a></li><li role="none"><a role="menuitem" href="/who-we-help/locksmiths/">Locksmiths</a></li><li role="none"><a role="menuitem" href="/who-we-help/machine-shops/">Machine Shops</a></li><li role="none"><a role="menuitem" href="/who-we-help/mobile-car-services/">Mobile Car Services</a></li><li role="none"><a role="menuitem" href="/who-we-help/painters/">Painters</a></li><li role="none"><a role="menuitem" href="/who-we-help/power-washers/">Power Washing</a></li><li role="none"><a role="menuitem" href="/who-we-help/deck-fence-builders/">Deck & Fence Builders</a></li><li role="none"><a role="menuitem" href="/who-we-help/tree-removal-service/">Tree Removal</a></li><li role="none"><a role="menuitem" href="/who-we-help/doctors/">Doctors</a></li><li role="none"><a role="menuitem" href="/who-we-help/bail-bonds/">Bail Bondsmen</a></li>
+     </ul>
+    </li>
+    <li><a href="/about/">About</a></li>
+    <li><a href="/order/">Build My Site</a></li>
+   </ul>
+   <div class="pm-header-cta">
+    <a href="/get-started/?plate=house-special" class="pm-btn pm-btn-primary">Get Started</a>
+    <a href="tel:7133848985" class="pm-btn pm-btn-ghost" aria-label="Call 713-384-8985">713-384-8985</a>
+   </div>
+  </nav>
+ </div>
+</header><script id="pm-header-js">(function(){
+function ready(fn){if(document.readyState!=="loading")fn();else document.addEventListener("DOMContentLoaded",fn);}
+ready(function(){
+ var ham=document.querySelector(".pm-hamburger"),nav=document.getElementById("pm-nav");
+ if(ham&&nav){ham.addEventListener("click",function(){var o=nav.classList.toggle("pm-open");ham.setAttribute("aria-expanded",String(o));});}
+ document.querySelectorAll(".pm-submenu-trigger").forEach(function(btn){
+  btn.addEventListener("click",function(e){
+   e.preventDefault();e.stopPropagation();
+   var parent=btn.closest(".pm-has-submenu"),was=parent.classList.contains("pm-open");
+   document.querySelectorAll(".pm-has-submenu").forEach(function(p){p.classList.remove("pm-open");p.querySelector(".pm-submenu-trigger").setAttribute("aria-expanded","false");});
+   if(!was){parent.classList.add("pm-open");btn.setAttribute("aria-expanded","true");}
+  });
+ });
+ document.addEventListener("click",function(e){
+  if(!e.target.closest(".pm-has-submenu")){document.querySelectorAll(".pm-has-submenu").forEach(function(p){p.classList.remove("pm-open");var t=p.querySelector(".pm-submenu-trigger");if(t)t.setAttribute("aria-expanded","false");});}
+ });
+ document.addEventListener("keydown",function(e){if(e.key==="Escape"){document.querySelectorAll(".pm-has-submenu").forEach(function(p){p.classList.remove("pm-open");var t=p.querySelector(".pm-submenu-trigger");if(t)t.setAttribute("aria-expanded","false");});if(nav&&nav.classList.contains("pm-open")&&ham){nav.classList.remove("pm-open");ham.setAttribute("aria-expanded","false");}}});
+});
+})();</script><div data-reactroot="" id="__next"><style>
     #nprogress {
       pointer-events: none;
     }
