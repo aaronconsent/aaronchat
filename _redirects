@@ -13,3 +13,9 @@
 /services/verified-local /services/google-local-services-ads/ 301
 /services/call-tracking/* /pricing/ 301
 /services/call-tracking /pricing/ 301
+/web-design-intake-form/* /order/:splat 301
+/web-design-intake-form /order/ 301
+/thank-you-lunch/* / 301
+/thank-you-lunch / 301
+/tester/* / 301
+/tester / 301
