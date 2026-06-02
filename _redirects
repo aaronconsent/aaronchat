@@ -11,3 +11,5 @@
 /services/list-me-local /services/review-rocket/ 301
 /services/verified-local/* /services/google-local-services-ads/:splat 301
 /services/verified-local /services/google-local-services-ads/ 301
+/services/call-tracking/* /pricing/ 301
+/services/call-tracking /pricing/ 301
