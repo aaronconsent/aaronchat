@@ -9,3 +9,5 @@
 /services/seasonal-promos /pricing/ 301
 /services/list-me-local/* /services/review-rocket/:splat 301
 /services/list-me-local /services/review-rocket/ 301
+/services/verified-local/* /services/google-local-services-ads/:splat 301
+/services/verified-local /services/google-local-services-ads/ 301
