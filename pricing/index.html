@@ -263,7 +263,44 @@ function replace(){
 }
 if(document.readyState!=="loading")replace();else document.addEventListener("DOMContentLoaded",replace);
 setTimeout(replace,800);setTimeout(replace,2000);
-})();</script></head><body class="overflow-x-hidden"><header id="pm-header" role="banner">
+})();</script><style id="pm-green-killer">
+/* Force Durable's flat-green CTA buttons into diner pill style */
+#__next a[style*="background-color:#3F8F5B"],#__next a[style*="background-color: #3F8F5B"],
+#__next a[style*="background-color:#3f8f5b"],#__next a[style*="background-color: #3f8f5b"],
+#__next button[style*="background-color:#3F8F5B"],#__next button[style*="background-color: #3F8F5B"]{
+ background:#0c7a4f !important;color:#fff !important;
+ border:3px solid #241a14 !important;box-shadow:4px 4px 0 #241a14 !important;
+ border-radius:999px !important;font-family:"Bree Serif",serif !important;
+ padding:12px 22px !important;text-decoration:none !important;
+}
+/* Durable green-tinted SECTION backgrounds (large surfaces) -> paper cream */
+#__next section[style*="background-color:#3F8F5B"],#__next div[style*="background-color:#3F8F5B"],
+#__next section[style*="background-color:#3f8f5b"],#__next div[style*="background-color:#3f8f5b"],
+#__next section[style*="background-color:#1A4B3C"],#__next div[style*="background-color:#1A4B3C"],
+#__next section[style*="background-color:#B8E1C9"],#__next div[style*="background-color:#B8E1C9"],
+#__next section[style*="background-color:#E1F2E9"],#__next div[style*="background-color:#E1F2E9"],
+#__next section[style*="background-color:#e6f2e9"],#__next div[style*="background-color:#e6f2e9"]{
+ background:#fffaf0 !important;color:#5b3427 !important;
+}
+#__next section[style*="background-color:#3F8F5B"] *,#__next div[style*="background-color:#3F8F5B"] *,
+#__next section[style*="background-color:#1A4B3C"] *,#__next div[style*="background-color:#1A4B3C"] *{
+ color:#5b3427 !important;
+}
+/* Tailwind green / emerald / teal background utility classes -> paper cream */
+#__next [class*="bg-green-"],#__next [class*="bg-emerald-"],#__next [class*="bg-teal-"]{
+ background-color:#fffaf0 !important;
+}
+/* Durable green text classes -> brown */
+#__next [class*="text-green-"],#__next [class*="text-emerald-"],#__next [class*="text-teal-"]{
+ color:#5b3427 !important;
+}
+/* Replace any remaining flat green CTA backgrounds that come through Tailwind */
+#__next a[class*="bg-green"],#__next button[class*="bg-green"]{
+ background:#0c7a4f !important;color:#fff !important;
+ border:3px solid #241a14 !important;box-shadow:4px 4px 0 #241a14 !important;
+ border-radius:999px !important;font-family:"Bree Serif",serif !important;
+}
+</style></head><body class="overflow-x-hidden"><header id="pm-header" role="banner">
  <a class="skip-link" href="#pm-main-region">Skip to main content</a>
  <div class="pm-header-inner">
   <a class="pm-logo" href="/" aria-label="Hey Aaron! Marketing — home">
@@ -536,7 +573,7 @@ html, body { height: auto !important; min-height: 100vh; overflow-y: auto !impor
 #pm-root .faq-grid summary{font-family:'Bree Serif',serif;color:#5b3427;font-size:1.1rem;cursor:pointer;}
 #pm-root .faq-grid p{color:#3a2a20;margin:10px 0 0;}
 /* CTA */
-#pm-root .pm-cta{text-align:center;background:#0c7a4f;color:#fff;padding:80px 0;border-top:6px double #241a14;}
+#pm-root .pm-cta{text-align:center;background:#5b3427;color:#fff;padding:80px 0;border-top:6px double #eaa92b;border-bottom:6px double #eaa92b;}
 #pm-root .pm-cta h2{font-family:'Alfa Slab One',serif;font-weight:400;font-size:clamp(2rem,5vw,4rem);margin:0 0 16px;}
 #pm-root .pm-cta p{font-size:1.2rem;max-width:680px;margin:0 auto 28px;}
 @media(max-width:900px){
