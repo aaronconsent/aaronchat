@@ -83,16 +83,53 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Bree+Serif&family=Bitter:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style id="pm-site-theme">
-/* Color tokens — pm-muted darkened to hit WCAG AAA (7:1) on cream */
 :root{--pm-ink:#241a14;--pm-brown:#5b3427;--pm-brown-2:#6e4030;--pm-cream:#fdf3dd;--pm-paper:#fffaf0;--pm-red:#a82b22;--pm-green:#0c7a4f;--pm-gold:#eaa92b;--pm-muted:#4a3a2a;--pm-line:#cdb393;}
 body{background:radial-gradient(circle at top left,rgba(234,169,43,.18),transparent 38%),repeating-linear-gradient(0deg,transparent 0 38px,rgba(91,52,39,.03) 38px 39px),#fdf3dd !important;font-family:Bitter,Georgia,serif !important;color:#241a14 !important;}
-body h1,body h2{font-family:"Alfa Slab One",serif !important;font-weight:400 !important;color:#5b3427 !important;letter-spacing:0 !important;}
-body h3,body h4,body h5{font-family:"Bree Serif",serif !important;color:#5b3427 !important;font-weight:400 !important;}
-body p{color:#3a2a20 !important;}
+/* Heading typography — applied via Tailwind classes (font-family override only),
+   color only on plain headings WITHOUT inline color or a scoped diner container */
+body h1,body h2{font-family:"Alfa Slab One",serif !important;font-weight:400 !important;letter-spacing:0 !important;}
+body h3,body h4,body h5{font-family:"Bree Serif",serif !important;font-weight:400 !important;}
+/* Default heading color — only Durable content, not our scoped diner containers */
+#__next h1,#__next h2,#__next h3,#__next h4,#__next h5{color:#5b3427 !important;}
+#__next p{color:#3a2a20 !important;}
+/* Lock in light text on dark diner backgrounds (these win over the global) */
+.dark-menu h1,.dark-menu h2{color:#eaa92b !important;}
+.dark-menu h3,.dark-menu h4{color:#fff !important;}
+.dark-menu p,.dark-menu .desc,.dark-menu .lbl,.dark-menu .setup-note,.dark-menu li{color:#f6e3c4 !important;}
+.dark-menu .leader .amt{color:#fff !important;}
+.dark-menu .leader.main .amt{color:#eaa92b !important;}
+.base h1,.base h2{color:#fff !important;}
+.base h3{color:#fff !important;}
+.base p,.base li{color:#f6e3c4 !important;}
+.base .big-price{color:#eaa92b !important;}
+.base .big-price span{color:#f6e3c4 !important;}
+.price-badge,.price-badge p,.price-badge small{color:#fff !important;}
+.pm-cta,.pm-cta h1,.pm-cta h2,.pm-cta p{color:#fff !important;}
+.featured h1,.featured h2,.featured h3{color:#fff !important;}
+.featured p,.featured li{color:#f6e3c4 !important;}
+.price-side,.price-side small,.price-side .now{color:#fff !important;}
+/* pm-vl badge card (green) */
+#pm-vl .badge,#pm-vl .badge strong{color:#fff !important;}
+#pm-vl .badge p{color:#d8efde !important;}
+/* pm-vl price-bar (brown) */
+#pm-vl .price-bar,#pm-vl .price-bar .meta{color:#f6e3c4 !important;}
+#pm-vl .price-bar .num{color:#eaa92b !important;}
+/* plans combo .math (brown) */
+#pm-vl .math,#pm-vl .math .now{color:#fff !important;}
+#pm-vl .math .now{color:#eaa92b !important;}
+#pm-vl .math .was{color:#f6e3c4 !important;}
+/* pm-home featured (brown) */
+#pm-home .featured h3{color:#fff !important;}
+#pm-home .featured p,#pm-home .featured li{color:#f6e3c4 !important;}
+#pm-home .price-side small,#pm-home .price-side .now{color:#fff !important;}
+/* pm-trade card (brown) */
+#pm-trade .card h3{color:#eaa92b !important;}
+#pm-trade .card,#pm-trade .card p,#pm-trade .card li,#pm-trade .card .price strong{color:#fff !important;}
+/* Buttons that have own text color from inline style stay (no h1/h2/p overrides apply) */
+/* Durable nav header — re-skin */
 #website-header{background-color:#fffaf0 !important;color:#241a14 !important;border-bottom:4px double #5b3427 !important;}
 #website-header a,#website-header span:not([style*="background"]),#website-header button{color:#5b3427 !important;}
 #website-header a:hover{color:#a82b22 !important;}
-/* Sitewide :focus-visible on nav + content links/buttons */
 #website-header a:focus-visible,#website-header button:focus-visible{outline:3px solid #a82b22 !important;outline-offset:3px !important;border-radius:6px !important;}
 #__next a:focus-visible,#__next button:focus-visible{outline:3px solid #0c7a4f !important;outline-offset:3px !important;border-radius:6px !important;}
 body a:focus-visible,body button:focus-visible{outline:3px solid #0c7a4f;outline-offset:3px;border-radius:6px;}
@@ -105,7 +142,6 @@ body a:focus-visible,body button:focus-visible{outline:3px solid #0c7a4f;outline
 #__next a[class*="rounded-full"],#__next button[class*="rounded-full"]{font-family:"Bree Serif",serif !important;border:3px solid #241a14 !important;box-shadow:4px 4px 0 #241a14 !important;}
 #__next p a,#__next li a{color:#0c7a4f !important;border-bottom:1px dotted currentColor;}
 #__next p a:hover,#__next li a:hover{color:#a82b22 !important;}
-/* Honor user reduced-motion preference site-wide */
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important;}}
 </style><style id="pm-hero-mute">
 /* Mute Durable's hero "background" illustrations (they're <img alt="background">
