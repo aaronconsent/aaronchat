@@ -71,6 +71,26 @@ body p{color:#3a2a20 !important;}
 /* Links inside hydrated content — brown with red hover */
 #__next p a,#__next li a{color:#0c7a4f !important;border-bottom:1px dotted currentColor;}
 #__next p a:hover,#__next li a:hover{color:#a82b22 !important;}
+</style><style id="pm-hero-mute">
+/* Mute Durable's hero "background" illustrations (they're <img alt="background">
+   absolutely-positioned in the hero) so the diner cream pattern reads through.
+   Also adds a subtle cream wash to hydrated content sections so all the
+   Tailwind-painted whites/grays tilt toward the diner palette. */
+#__next img[alt="background"],
+#__next img[alt=""][style*="object-fit:cover"] {
+  opacity: 0.22 !important;
+  filter: saturate(0.4) brightness(1.18) !important;
+}
+#__next section { position: relative; }
+#__next section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(253, 243, 221, 0.35);
+  pointer-events: none;
+  z-index: 0;
+}
+#__next section > * { position: relative; z-index: 1; }
 </style></head><body class="overflow-x-hidden"><div data-reactroot="" id="__next"><style>
     #nprogress {
       pointer-events: none;
