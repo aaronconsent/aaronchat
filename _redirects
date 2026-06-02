@@ -5,3 +5,5 @@
 /services/booked-by-facebook /services/facebook-ads/ 301
 /services/right-here-referrals/* /services/review-rocket/:splat 301
 /services/right-here-referrals /services/review-rocket/ 301
+/services/seasonal-promos/* /pricing/ 301
+/services/seasonal-promos /pricing/ 301
