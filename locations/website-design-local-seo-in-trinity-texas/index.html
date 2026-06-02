@@ -81,33 +81,30 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Bree+Serif&family=Bitter:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style id="pm-site-theme">
-:root{--pm-ink:#241a14;--pm-brown:#5b3427;--pm-brown-2:#6e4030;--pm-cream:#fdf3dd;--pm-paper:#fffaf0;--pm-red:#a82b22;--pm-green:#0c7a4f;--pm-gold:#eaa92b;--pm-muted:#6a5848;--pm-line:#cdb393;}
-/* Body — diner background + serif body font */
+/* Color tokens — pm-muted darkened to hit WCAG AAA (7:1) on cream */
+:root{--pm-ink:#241a14;--pm-brown:#5b3427;--pm-brown-2:#6e4030;--pm-cream:#fdf3dd;--pm-paper:#fffaf0;--pm-red:#a82b22;--pm-green:#0c7a4f;--pm-gold:#eaa92b;--pm-muted:#4a3a2a;--pm-line:#cdb393;}
 body{background:radial-gradient(circle at top left,rgba(234,169,43,.18),transparent 38%),repeating-linear-gradient(0deg,transparent 0 38px,rgba(91,52,39,.03) 38px 39px),#fdf3dd !important;font-family:Bitter,Georgia,serif !important;color:#241a14 !important;}
-/* Heading typography */
 body h1,body h2{font-family:"Alfa Slab One",serif !important;font-weight:400 !important;color:#5b3427 !important;letter-spacing:0 !important;}
 body h3,body h4,body h5{font-family:"Bree Serif",serif !important;color:#5b3427 !important;font-weight:400 !important;}
-/* Body paragraphs default color */
 body p{color:#3a2a20 !important;}
-/* Durable nav header — re-skin */
 #website-header{background-color:#fffaf0 !important;color:#241a14 !important;border-bottom:4px double #5b3427 !important;}
 #website-header a,#website-header span:not([style*="background"]),#website-header button{color:#5b3427 !important;}
 #website-header a:hover{color:#a82b22 !important;}
-/* Durable "Get Started" / phone CTA pills — diner button style */
-#website-header a[style*="background-color:#3F8F5B"],#website-header a[style*="background-color:#3f8f5b"],#website-header a[style*="background-color:#3F8F5B"]{
- background:#0c7a4f !important;color:#fff !important;border:3px solid #241a14 !important;box-shadow:4px 4px 0 #241a14 !important;border-radius:999px !important;font-family:"Bree Serif",serif !important;}
+/* Sitewide :focus-visible on nav + content links/buttons */
+#website-header a:focus-visible,#website-header button:focus-visible{outline:3px solid #a82b22 !important;outline-offset:3px !important;border-radius:6px !important;}
+#__next a:focus-visible,#__next button:focus-visible{outline:3px solid #0c7a4f !important;outline-offset:3px !important;border-radius:6px !important;}
+body a:focus-visible,body button:focus-visible{outline:3px solid #0c7a4f;outline-offset:3px;border-radius:6px;}
+#website-header a[style*="background-color:#3F8F5B"],#website-header a[style*="background-color:#3f8f5b"]{background:#0c7a4f !important;color:#fff !important;border:3px solid #241a14 !important;box-shadow:4px 4px 0 #241a14 !important;border-radius:999px !important;font-family:"Bree Serif",serif !important;}
 #website-header a[style*="border"]{border:3px solid #5b3427 !important;border-radius:999px !important;color:#5b3427 !important;font-family:"Bree Serif",serif !important;}
-/* Page content sections inside React — transparent so cream shows through */
 #__next > div > div{background:transparent !important;}
 #__next section.relative{background:transparent !important;}
-/* Generic Tailwind backgrounds inside #__next — tone toward paper */
 #__next .bg-white{background-color:transparent !important;}
 #__next .bg-gray-50,#__next .bg-gray-100{background-color:rgba(91,52,39,.05) !important;}
-/* Card-style buttons in Durable content (rounded-md/full anchors) — diner pill */
 #__next a[class*="rounded-full"],#__next button[class*="rounded-full"]{font-family:"Bree Serif",serif !important;border:3px solid #241a14 !important;box-shadow:4px 4px 0 #241a14 !important;}
-/* Links inside hydrated content — brown with red hover */
 #__next p a,#__next li a{color:#0c7a4f !important;border-bottom:1px dotted currentColor;}
 #__next p a:hover,#__next li a:hover{color:#a82b22 !important;}
+/* Honor user reduced-motion preference site-wide */
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:0.001ms !important;animation-iteration-count:1 !important;transition-duration:0.001ms !important;}}
 </style><style id="pm-hero-mute">
 /* Mute Durable's hero "background" illustrations (they're <img alt="background">
    absolutely-positioned in the hero) so the diner cream pattern reads through.
@@ -128,6 +125,62 @@ body p{color:#3a2a20 !important;}
   z-index: 0;
 }
 #__next section > * { position: relative; z-index: 1; }
+</style>
+<script id="pm-a11y-runtime">(function(){
+function run(){
+ // Determine or assign main landmark id
+ var main=document.querySelector("main");
+ if(!main){
+  var mb=document.getElementById("main-body");
+  if(mb){mb.setAttribute("role","main");mb.setAttribute("tabindex","-1");if(!mb.id)mb.id="pm-main-region";main=mb;}
+ }
+ var mainId=main?(main.id||(main.id="pm-main-region")):null;
+ // Add sitewide skip link only if NO skip link exists yet
+ if(mainId && !document.querySelector(".pm-site-skip, .skip-link")){
+  var sk=document.createElement("a");
+  sk.className="pm-site-skip";sk.href="#"+mainId;sk.textContent="Skip to main content";
+  document.body.insertBefore(sk,document.body.firstChild);
+ }
+ // aria-hide decorative SVGs inside elements that have text/aria-label
+ document.querySelectorAll("svg:not([aria-hidden]):not([aria-label]):not([aria-labelledby])").forEach(function(svg){
+  if(svg.querySelector("title"))return;
+  var p=svg.parentElement;
+  while(p&&p!==document.body&&p.tagName!=="A"&&p.tagName!=="BUTTON")p=p.parentElement;
+  if(!p||p===document.body){svg.setAttribute("aria-hidden","true");return;}
+  var txt=(p.textContent||"").trim();
+  var aria=p.getAttribute("aria-label")||p.getAttribute("aria-labelledby");
+  if(txt||aria){svg.setAttribute("aria-hidden","true");}
+  else {
+   var cls=String((p.className&&p.className.baseVal!==undefined?p.className.baseVal:p.className)||"").toLowerCase();
+   var label="Menu";
+   if(/menu|hamburger|nav|toggle/.test(cls))label="Open menu";
+   else if(/close/.test(cls))label="Close";
+   else if(/search/.test(cls))label="Search";
+   else if(/facebook/.test(cls))label="Facebook";
+   else if(/twitter|x-/.test(cls))label="Twitter";
+   else if(/instagram/.test(cls))label="Instagram";
+   p.setAttribute("aria-label",label);svg.setAttribute("aria-hidden","true");
+  }
+ });
+ // Icon-only links / buttons: add aria-label based on href patterns
+ document.querySelectorAll("a:not([aria-label])").forEach(function(a){
+  if((a.textContent||"").trim()||a.getAttribute("aria-labelledby"))return;
+  var href=a.getAttribute("href")||"";
+  if(href==="/")a.setAttribute("aria-label","Home");
+  else if(a.querySelector("img[alt]"))a.setAttribute("aria-label",a.querySelector("img[alt]").alt||"Link");
+  else if(a.querySelector("svg"))a.setAttribute("aria-label","Link");
+ });
+ // Hide visually-hidden Durable sections from AT (dedupes hidden duplicate h1s on takeovers)
+ document.querySelectorAll("#__next section.relative").forEach(function(sec){
+  if(getComputedStyle(sec).display==="none")sec.setAttribute("aria-hidden","true");
+ });
+}
+if(document.readyState!=="loading")run();else document.addEventListener("DOMContentLoaded",run);
+setTimeout(run,1500);
+})();</script>
+<style id="pm-a11y-css">
+.pm-site-skip{position:absolute !important;left:-9999px;top:8px;background:#241a14 !important;color:#fff !important;padding:10px 16px;border-radius:8px;text-decoration:none;font-family:"Bree Serif",serif;z-index:9999999;}
+.pm-site-skip:focus,.pm-site-skip:focus-visible{left:8px !important;outline:3px solid #eaa92b !important;outline-offset:2px;}
 </style></head><body class="overflow-x-hidden"><div data-reactroot="" id="__next"><style>
     #nprogress {
       pointer-events: none;
