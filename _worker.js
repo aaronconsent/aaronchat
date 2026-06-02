@@ -1,16 +1,19 @@
-// Cloudflare Pages Function — handles contact/lead form submissions and
-// emails them via Resend. Route: POST /api/contact
+// _worker.js — Cloudflare Pages "advanced mode" entry point.
+// Handles POST /api/contact (form submissions via Resend) and falls through
+// to the static assets for everything else.
 //
-// Required Cloudflare env vars (Pages > Settings > Environment variables):
-//   RESEND_API_KEY  (secret)  — your Resend API key
-// Optional (sensible defaults below):
-//   CONTACT_TO      — where leads are delivered (default hello@aaron.chat)
-//   CONTACT_FROM    — verified Resend sender (default forms@aaron.chat)
+// Required env var (Pages > Settings > Environment variables, Production):
+//   RESEND_API_KEY  (secret) — your Resend API key
+// Optional (defaults below):
+//   CONTACT_TO    — where leads are delivered (default hello@aaron.chat)
+//   CONTACT_FROM  — verified Resend sender (default forms@aaron.chat)
 //
-// NOTE: the CONTACT_FROM domain must be verified in Resend before delivery
-// works. For a quick test before verifying aaron.chat, set
-// CONTACT_FROM="Hey Aaron! <onboarding@resend.dev>" (only sends to the
-// Resend account owner's address).
+// Note: the CONTACT_FROM domain must be verified in Resend before delivery
+// works. For a fast pre-verification test, set
+//   CONTACT_FROM="Hey Aaron! <onboarding@resend.dev>"
+// (Resend's shared sender only delivers to the account-owner's address.)
+
+const FALLBACK_ERR = "Sorry, something went wrong. Please call 713-384-8985.";
 
 function json(obj, status = 200) {
   return new Response(JSON.stringify(obj), {
@@ -23,7 +26,10 @@ function clean(v, max) {
   return (v == null ? "" : String(v)).trim().slice(0, max);
 }
 
-export async function onRequestPost({ request, env }) {
+async function handleContact(request, env) {
+  if (request.method !== "POST") {
+    return json({ ok: false, error: "Method not allowed" }, 405);
+  }
   try {
     const ct = request.headers.get("content-type") || "";
     let d = {};
@@ -34,7 +40,7 @@ export async function onRequestPost({ request, env }) {
       for (const [k, v] of form.entries()) d[k] = v;
     }
 
-    // Honeypot — silently accept (so bots think they succeeded)
+    // Honeypot — silently accept so bots think they succeeded
     if (clean(d._gotcha, 100)) return json({ ok: true });
 
     const name = clean(d.name, 200);
@@ -51,6 +57,9 @@ export async function onRequestPost({ request, env }) {
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
       return json({ ok: false, error: "Please enter a valid email address." }, 400);
     }
+    if (!env.RESEND_API_KEY) {
+      return json({ ok: false, error: "Email is not configured yet." }, 500);
+    }
 
     const lines = [
       `New submission from the ${source} form on aaron.chat`,
@@ -64,10 +73,6 @@ export async function onRequestPost({ request, env }) {
       "Message:",
       message || "(none)",
     ].filter((l) => l !== null);
-
-    if (!env.RESEND_API_KEY) {
-      return json({ ok: false, error: "Email is not configured yet." }, 500);
-    }
 
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -87,17 +92,23 @@ export async function onRequestPost({ request, env }) {
     if (!res.ok) {
       const detail = await res.text().catch(() => "");
       console.log("Resend error", res.status, detail);
-      return json({ ok: false, error: "We couldn't send your message. Please call 713-384-8985." }, 502);
+      return json({ ok: false, error: FALLBACK_ERR }, 502);
     }
 
     return json({ ok: true });
   } catch (err) {
-    console.log("contact function error", err && err.message);
-    return json({ ok: false, error: "Something went wrong. Please call 713-384-8985." }, 500);
+    console.log("contact handler error", err && err.message);
+    return json({ ok: false, error: FALLBACK_ERR }, 500);
   }
 }
 
-// Reject non-POST methods cleanly
-export async function onRequestGet() {
-  return json({ ok: false, error: "Method not allowed" }, 405);
-}
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    if (url.pathname === "/api/contact") {
+      return handleContact(request, env);
+    }
+    // Everything else: serve the static asset (HTML, CSS, JS, images).
+    return env.ASSETS.fetch(request);
+  },
+};
