@@ -1,1 +1,3 @@
 /plans /pricing/ 302
+/services/local-eyeballs/* /services/local-group-sharing/:splat 301
+/services/local-eyeballs /services/local-group-sharing/ 301
