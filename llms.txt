@@ -1,19 +1,36 @@
 # Hey Aaron! Marketing
 
-> Web design and local SEO for local service pros across East Texas. We build done-for-you websites, optimize Google Business Profiles, and run local SEO and paid ads so service businesses get found online and bring in steady leads — without the marketing headaches.
+> Web design, local SEO, ads, reviews, and follow-up for local service pros across East Texas — served à la carte. Free first year, then $250/mo. No contracts.
 
 Hey Aaron! Marketing serves non-technical service professionals — plumbers, electricians, HVAC pros, roofers, handymen, landscapers, cleaners, contractors and more — across Livingston, Cleveland, Coldspring, Goodrich, Onalaska, Trinity, Willis, Splendora, Shepherd, Riverside, New Waverly, Panorama Village and the wider East Texas region.
 
 Contact: +1-713-384-8985
 
-## Services
-- [Built-for-You Website](https://aaron.chat/services/built-for-you-website/): Done-for-you website design for service businesses.
-- [Rank Me Local](https://aaron.chat/services/rank-me-local/): Local SEO to rank in your service area.
-- [List Me Local](https://aaron.chat/services/list-me-local/): Google Business Profile and local listings optimization.
+## Plans (The Menu)
+- [Plans & The Service-Pro Marketing Menu](https://aaron.chat/pricing/): House Special (first year free), $250/mo House Plate, Combo Plates, à la carte services, and Sides.
+
+## Services (À La Carte)
+- [Built For You Website™](https://aaron.chat/services/built-for-you-website/): Fast, mobile-first website built to convert calls and quote requests. $29/mo.
+- [List Me Local™](https://aaron.chat/services/list-me-local/): Google Business Profile setup and ongoing optimization. $29/mo.
+- [Local Eyeballs™](https://aaron.chat/services/local-eyeballs/): Ongoing social posts and local-reach campaigns. $149/mo.
+- [Rank Me Local™](https://aaron.chat/services/rank-me-local/): Local SEO so your service business ranks for the jobs people search in your area. $199/mo.
+- [Booked By Facebook™](https://aaron.chat/services/booked-by-facebook/): Facebook and Instagram ad management built around local lead-gen offers. $199/mo.
+- [Adwords on Google™](https://aaron.chat/services/adwords-on-google/): Google Ads management targeting high-intent local searches. $199/mo.
+- [Lead Hustler™](https://aaron.chat/services/lead-hustler/): Active management of Angi, Thumbtack, Yelp and Nextdoor accounts. $149/mo.
+- [Verified Local™](https://aaron.chat/services/verified-local/): Google Local Services Ads — the "green-check" Guaranteed badge — set up and managed. $149/mo.
+- [Right Here Referrals™](https://aaron.chat/services/right-here-referrals/): Review generation and word-of-mouth referral system. $99/mo.
+- [Stay In Touch](https://aaron.chat/services/stay-in-touch/): Email and SMS follow-ups that bring past customers back. $99/mo.
+- [Seasonal Promos](https://aaron.chat/services/seasonal-promos/): Ready-to-run campaigns for holidays, storms, and slow weeks. $199 each.
+- [Call Tracking](https://aaron.chat/services/call-tracking/): Tracking number so you know which marketing made the phone ring. $19/mo.
+
+## Combo Plates
+- The Get-Found Plate — Rank Me Local™ + List Me Local™ + Local Eyeballs™. $299/mo (save ~20%).
+- The Phone-Ringer Plate — Booked By Facebook™ + Adwords on Google™ + Lead Hustler™. $399/mo (save ~27%). Most Popular.
+- The Regulars Plate — Right Here Referrals™ + Stay In Touch. $149/mo (save ~25%).
 
 ## Key Pages
 - [About](https://aaron.chat/about/): About Hey Aaron! Marketing.
-- [Plans & Pricing](https://aaron.chat/pricing/): Service plans and pricing.
+- [Plans & Pricing](https://aaron.chat/pricing/): The Service-Pro Marketing Menu (House Special, House Plate, à la carte, Combo Plates, Sides).
 - [Get Started](https://aaron.chat/get-started/): Start working with Hey Aaron! Marketing.
 - [Who We Help](https://aaron.chat/who-we-help/plumbers/): Industries and trades we serve.
 
