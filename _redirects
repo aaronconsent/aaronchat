@@ -7,3 +7,5 @@
 /services/right-here-referrals /services/review-rocket/ 301
 /services/seasonal-promos/* /pricing/ 301
 /services/seasonal-promos /pricing/ 301
+/services/list-me-local/* /services/review-rocket/:splat 301
+/services/list-me-local /services/review-rocket/ 301
