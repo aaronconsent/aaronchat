@@ -189,4 +189,24 @@ s0.parentNode.insertBefore(s1,s0);
  wrap.hidden=false;
  var x=document.getElementById("pm-sticky-x");
  if(x)x.addEventListener("click",function(){try{localStorage.setItem(K,String(Date.now()));}catch(e){}wrap.hidden=true;});
+})();</script><script id="pm-hide-plans">(function(){
+var NAMES=["Local Buzz","Urban Signal","Regional Reach","Statewide Broadcast"];
+function hide(){
+ var hidden=new Set();
+ NAMES.forEach(function(n){
+  var nodes=document.querySelectorAll("p,h1,h2,h3,h4,span,div");
+  for(var i=0;i<nodes.length;i++){
+   var el=nodes[i];
+   if((el.textContent||"").trim()===n||(el.textContent||"").indexOf(n)>-1 && (el.textContent||"").length<200){
+    var sec=el.closest("section");
+    if(sec&&!hidden.has(sec)){sec.style.display="none";hidden.add(sec);}
+   }
+  }
+ });
+ return hidden.size;
+}
+function tick(n){var c=hide();if(c>0||n>15)return;setTimeout(function(){tick(n+1);},250);}
+if(document.readyState!=="loading")tick(0);else document.addEventListener("DOMContentLoaded",function(){tick(0);});
+// also catch any late re-renders by React
+try{new MutationObserver(function(){hide();}).observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();</script></body></html>
