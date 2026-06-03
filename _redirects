@@ -25,3 +25,5 @@
 /who-we-help/doctors-dentists /who-we-help/doctors/ 301
 /who-we-help/handymen/* /who-we-help/handyman/:splat 301
 /who-we-help/handymen /who-we-help/handyman/ 301
+/thanks /thank-you/ 301
+/thanks/ /thank-you/ 301
