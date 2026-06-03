@@ -52,4 +52,6 @@
   <url><loc>https://aaron.chat/services/facebook-ads/</loc><lastmod>2026-06-02</lastmod></url>
   <url><loc>https://aaron.chat/services/review-rocket/</loc><lastmod>2026-06-02</lastmod></url>
   <url><loc>https://aaron.chat/services/google-local-services-ads/</loc><lastmod>2026-06-02</lastmod></url>
+
+<url><loc>https://aaron.chat/plans/house-special/</loc><lastmod>2026-06-02</lastmod><priority>0.9</priority></url>
 </urlset>
