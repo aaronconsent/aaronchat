@@ -19,3 +19,9 @@
 /thank-you-lunch / 301
 /tester/* / 301
 /tester / 301
+/who-we-help/attorneys-lawyers/* /who-we-help/lawyers/:splat 301
+/who-we-help/attorneys-lawyers /who-we-help/lawyers/ 301
+/who-we-help/doctors-dentists/* /who-we-help/doctors/:splat 301
+/who-we-help/doctors-dentists /who-we-help/doctors/ 301
+/who-we-help/handymen/* /who-we-help/handyman/:splat 301
+/who-we-help/handymen /who-we-help/handyman/ 301
