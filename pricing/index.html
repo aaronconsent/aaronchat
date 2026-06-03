@@ -843,6 +843,96 @@ a.skip-link:focus,a.skip-link:focus-visible{position:absolute !important;left:8p
  </section>
 
 </section>
+<style id="pm-page-journey-style">
+/* HERO HELPER NOTE */
+#pm-page .hero-note{font-family:"Bree Serif",serif;color:#5b3427;background:#fff7e0;border:2px dashed #5b3427;border-radius:14px;padding:14px 22px;display:inline-block;margin:20px auto 0;font-size:0.95rem;line-height:1.55;max-width:680px;text-align:center;}
+
+/* PROBLEM CARD (Month 0) */
+#pm-page .problem-card{background:#fffaf0;border:3px solid #5b3427;border-radius:22px;padding:40px;box-shadow:10px 10px 0 #cdb393;max-width:1080px;margin:0 auto;position:relative;}
+#pm-page .problem-card h2{margin:14px 0 28px;line-height:1.2;color:#5b3427;}
+#pm-page .problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px;}
+@media(max-width:780px){#pm-page .problem-grid{grid-template-columns:1fr;gap:24px;}}
+
+/* Stats list */
+#pm-page .prob-stats{display:flex;flex-direction:column;gap:0;background:#fff7e0;border:2px solid #5b3427;border-radius:14px;padding:8px 20px;}
+#pm-page .stat-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px dotted #a82b22;gap:14px;}
+#pm-page .stat-row:last-child{border-bottom:none;}
+#pm-page .stat-label{color:#6a5848;font-family:"Bitter",Georgia,serif;font-size:0.94rem;flex:1;}
+#pm-page .stat-val{color:#5b3427;font-family:"Bree Serif",serif;font-weight:700;font-size:1.04rem;text-align:right;}
+
+/* Mike's quote (problem card right side) */
+#pm-page .prob-quote{background:#5b3427;color:#fff;border:3px solid #5b3427;padding:30px;border-radius:18px;align-self:start;box-shadow:6px 6px 0 #241a14;position:relative;}
+#pm-page .prob-quote::before{content:"\201C";font-family:"Alfa Slab One",serif;color:#eaa92b;font-size:5rem;line-height:0.7;position:absolute;top:14px;left:18px;opacity:0.5;}
+#pm-page .prob-quote p{font-family:"Bree Serif",serif;font-style:italic;color:#f6e3c4;line-height:1.65;font-size:1.04rem;margin:0 0 16px;position:relative;z-index:1;}
+#pm-page .prob-quote .quote-attr{font-style:normal;color:#eaa92b;font-family:"Alfa Slab One",serif;font-weight:400;font-size:0.92rem;margin:0;}
+
+/* SECTION TITLE (the "12-Month Journey" intro) */
+#pm-page .section-title h2{font-size:2.4rem;line-height:1.1;}
+#pm-page .section-title p{font-size:1.1rem;color:#5b3427;}
+
+/* PHASE CARD — the main unit */
+#pm-page .phase-card{background:#fffaf0;border:3px solid #5b3427;border-radius:22px;padding:36px;box-shadow:10px 10px 0 #cdb393;max-width:1140px;margin:0 auto;position:relative;transition:transform .12s;}
+#pm-page .phase-card:hover{transform:translate(-2px,-2px);box-shadow:12px 12px 0 #cdb393;}
+#pm-page .phase-card h3{font-family:"Alfa Slab One",serif;font-weight:400;color:#5b3427;font-size:1.7rem;margin:14px 0 18px;line-height:1.2;}
+#pm-page .phase-card h3 a{color:#a82b22;border-bottom:3px dotted #a82b22;text-decoration:none;}
+#pm-page .phase-card h3 a:hover{color:#0c7a4f;border-bottom-color:#0c7a4f;}
+#pm-page .phase-intro{color:#3a2a20;line-height:1.7;margin:0 0 28px;font-size:1.05rem;background:#fff7e0;border-left:4px solid #eaa92b;border-radius:0 12px 12px 0;padding:16px 22px;}
+#pm-page .phase-intro strong{color:#a82b22;}
+
+/* Two-column grid inside phase card */
+#pm-page .phase-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;}
+@media(max-width:840px){#pm-page .phase-grid{grid-template-columns:1fr;gap:24px;}}
+
+/* Subhead h4 in phase cards */
+#pm-page .phase-shipped h4,#pm-page .phase-result h4{font-family:"Alfa Slab One",serif;font-weight:400;color:#a82b22;font-size:1.05rem;letter-spacing:0.08em;text-transform:uppercase;margin:0 0 16px;padding-bottom:8px;border-bottom:2px solid #eaa92b;}
+
+/* List of "what we ship" */
+#pm-page .phase-shipped ul{margin:0;padding-left:0;list-style:none;color:#3a2a20;}
+#pm-page .phase-shipped li{padding:9px 0;line-height:1.55;font-size:0.96rem;border-bottom:1px dotted #f0e0c4;}
+#pm-page .phase-shipped li:last-child{border-bottom:none;}
+#pm-page .phase-shipped li strong{color:#5b3427;}
+
+/* Mike's month narrative + numbers */
+#pm-page .phase-result p{color:#3a2a20;line-height:1.7;font-size:1rem;margin:0 0 22px;}
+#pm-page .phase-numbers{display:flex;gap:12px;flex-wrap:wrap;}
+#pm-page .num{flex:1;min-width:120px;background:#fff7e0;border:2px solid #5b3427;border-radius:14px;padding:18px 12px;text-align:center;box-shadow:4px 4px 0 #cdb393;}
+#pm-page .num-val{display:block;font-family:"Alfa Slab One",serif;color:#a82b22;font-size:1.55rem;line-height:1;margin-bottom:6px;}
+#pm-page .num-val.final-val{color:#0c7a4f;font-size:1.7rem;}
+#pm-page .num-label{display:block;font-family:"Bitter",Georgia,serif;color:#5b3427;font-size:0.78rem;line-height:1.3;font-weight:600;}
+
+/* TIME PILL — the month label */
+#pm-page .time-pill{display:inline-block;background:#a82b22;color:#fffaf0;font-family:"Alfa Slab One",serif;font-size:0.88rem;padding:7px 20px;border-radius:999px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px;border:2px solid #5b3427;box-shadow:3px 3px 0 #5b3427;}
+#pm-page .time-pill.final-pill{background:#0c7a4f;font-size:0.95rem;padding:8px 24px;}
+
+/* FINAL phase card — extra emphasis */
+#pm-page .phase-card.final{border:4px solid #eaa92b;box-shadow:12px 12px 0 #5b3427;background:linear-gradient(180deg,#fffaf0 0%,#fff7e0 100%);}
+#pm-page .phase-card.final h3{font-size:1.85rem;}
+
+/* POSITIONING SHOWPIECE (brown card) */
+#pm-page .positioning{background:#5b3427;color:#fff;border-radius:24px;padding:54px 40px;box-shadow:12px 12px 0 #241a14;text-align:center;max-width:860px;margin:0 auto;border:5px solid #eaa92b;}
+#pm-page .positioning h2{color:#eaa92b;margin:0 0 32px;font-size:2rem;line-height:1.15;}
+#pm-page .positioning-grid{display:flex;flex-direction:column;gap:20px;}
+#pm-page .positioning-line{font-family:"Bree Serif",serif;color:#f6e3c4;font-size:1.12rem;margin:0;line-height:1.65;}
+#pm-page .positioning-line strong{font-family:"Alfa Slab One",serif;color:#eaa92b;font-weight:400;font-size:1.18rem;}
+#pm-page .positioning-line-final{font-family:"Alfa Slab One",serif !important;color:#fff !important;font-size:1.6rem !important;margin-top:16px !important;padding-top:24px;border-top:2px dashed #eaa92b;line-height:1.3;}
+#pm-page .positioning-line-final strong{color:#eaa92b;font-size:1.6rem;}
+
+/* DISCLAIMER (the fine print card) */
+#pm-page .disclaimer-card{background:#fffaf0;border:3px dashed #5b3427;border-radius:22px;padding:38px;max-width:840px;margin:0 auto;box-shadow:8px 8px 0 #cdb393;}
+#pm-page .disclaimer-card h2{margin:0 0 20px;font-size:1.55rem;line-height:1.2;color:#5b3427;}
+#pm-page .disclaimer-card p{color:#3a2a20;line-height:1.7;margin:0 0 18px;font-size:1rem;}
+#pm-page .disclaimer-card p:last-child{margin:0;}
+#pm-page .disclaimer-card strong{color:#a82b22;}
+
+/* CTA FINE-PRINT (link to archived menu) */
+#pm-page .cta-fineprint{font-family:"Bree Serif",serif;color:#f6e3c4;font-size:0.94rem;margin-top:24px;}
+#pm-page .cta-fineprint a:hover{color:#fff !important;border-color:#fff !important;}
+
+/* SECTION SPACING */
+#pm-page > section{padding:50px 20px;}
+#pm-page > section.paper-section{padding:60px 20px;}
+#pm-page .wrap{max-width:1280px;margin:0 auto;}
+</style>
 <section id="mirror-service-areas" aria-label="Service areas" style="background:#fffaf0;padding:40px 20px;border-top:6px double #5b3427;border-bottom:6px double #5b3427;font-family:Bitter,Georgia,serif;"><div style="max-width:1100px;margin:0 auto;text-align:center"><h2 style="font-family:'Alfa Slab One',serif;font-weight:400;color:#5b3427;font-size:24px;margin:0 0 14px;letter-spacing:0">Areas We Serve in East Texas</h2><div style="display:flex;flex-wrap:wrap;gap:10px 22px;justify-content:center;font-size:15px"><a href="/locations/website-design-local-seo-in-cleveland-texas/" style="color:#5b3427;text-decoration:none;border-bottom:2px dotted #5b3427;font-family:Bitter,Georgia,serif;font-weight:600;white-space:nowrap">Cleveland, TX</a> <a href="/locations/website-design-local-seo-in-coldspring-texas/" style="color:#5b3427;text-decoration:none;border-bottom:2px dotted #5b3427;font-family:Bitter,Georgia,serif;font-weight:600;white-space:nowrap">Coldspring, TX</a> <a href="/locations/website-design-local-seo-in-east-texas/" style="color:#5b3427;text-decoration:none;border-bottom:2px dotted #5b3427;font-family:Bitter,Georgia,serif;font-weight:600;white-space:nowrap">East Texas, TX</a> <a href="/locations/website-design-local-seo-in-goodrich-texas/" style="color:#5b3427;text-decoration:none;border-bottom:2px dotted #5b3427;font-family:Bitter,Georgia,serif;font-weight:600;white-space:nowrap">Goodrich, TX</a> <a href="/locations/website-design-local-seo-in-livingston-texas/" style="color:#5b3427;text-decoration:none;border-bottom:2px dotted #5b3427;font-family:Bitter,Georgia,serif;font-weight:600;white-space:nowrap">Livingston, TX</a> <a href="/locations/website-design-local-seo-in-new-waverly-texas/" style="color:#5b3427;text-decoration:none;border-bottom:2px dotted #5b3427;font-family:Bitter,Georgia,serif;font-weight:600;white-space:nowrap">New Waverly, TX</a> <a href="/locations/website-design-local-seo-in-onalaska-texas/" style="color:#5b3427;text-decoration:none;border-bottom:2px dotted #5b3427;font-family:Bitter,Georgia,serif;font-weight:600;white-space:nowrap">Onalaska, TX</a> <a href="/locations/website-design-local-seo-in-panorama-village-texas/" style="color:#5b3427;text-decoration:none;border-bottom:2px dotted #5b3427;font-family:Bitter,Georgia,serif;font-weight:600;white-space:nowrap">Panorama Village, TX</a> <a href="/locations/website-design-local-seo-in-riverside-texas/" style="color:#5b3427;text-decoration:none;border-bottom:2px dotted #5b3427;font-family:Bitter,Georgia,serif;font-weight:600;white-space:nowrap">Riverside, TX</a> <a href="/locations/website-design-local-seo-in-shepherd-texas/" style="color:#5b3427;text-decoration:none;border-bottom:2px dotted #5b3427;font-family:Bitter,Georgia,serif;font-weight:600;white-space:nowrap">Shepherd, TX</a> <a href="/locations/website-design-local-seo-in-splendora-texas/" style="color:#5b3427;text-decoration:none;border-bottom:2px dotted #5b3427;font-family:Bitter,Georgia,serif;font-weight:600;white-space:nowrap">Splendora, TX</a> <a href="/locations/website-design-local-seo-in-trinity-texas/" style="color:#5b3427;text-decoration:none;border-bottom:2px dotted #5b3427;font-family:Bitter,Georgia,serif;font-weight:600;white-space:nowrap">Trinity, TX</a> <a href="/locations/website-design-local-seo-in-willis-texas/" style="color:#5b3427;text-decoration:none;border-bottom:2px dotted #5b3427;font-family:Bitter,Georgia,serif;font-weight:600;white-space:nowrap">Willis, TX</a></div></div></section>
 <style id="pm-sticky-style">
 #pm-sticky-wrap{position:fixed;left:20px;bottom:20px;z-index:2147483000;display:flex;align-items:center;gap:6px;}
