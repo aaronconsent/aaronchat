@@ -223,12 +223,12 @@ setTimeout(run,1500);
 #pm-header .skip-link{position:absolute;left:-9999px;top:8px;background:#241a14;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;z-index:99;}
 #pm-header .skip-link:focus,#pm-header .skip-link:focus-visible{left:8px;outline:3px solid #eaa92b;outline-offset:2px;}
 .pm-header-inner{max-width:1280px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:24px;flex-wrap:nowrap;}
-.pm-logo{display:flex;align-items:baseline;gap:8px;text-decoration:none;color:#5b3427;line-height:1;}
-.pm-logo:hover{color:#a82b22;}
-.pm-logo-icon{font-size:24px;}
-.pm-logo-text{font-family:"Alfa Slab One",serif;font-size:24px;color:#a82b22;}
-.pm-logo-sub{font-family:"Bree Serif",serif;font-size:14px;color:#5b3427;letter-spacing:.04em;text-transform:uppercase;}
-.pm-nav{display:flex;align-items:center;gap:24px;margin-left:auto;flex-wrap:nowrap;}
+
+
+
+
+
+.pm-logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:#5b3427;line-height:1;}.pm-logo:hover{transform:translate(-1px,-1px);}.pm-logo:hover .pm-logo-text{color:#0c7a4f;}.pm-logo-img{width:56px;height:56px;object-fit:contain;flex-shrink:0;display:block;filter:drop-shadow(2px 2px 0 rgba(91,52,39,.18));transition:transform .15s;}.pm-logo:hover .pm-logo-img{transform:rotate(-4deg) scale(1.04);}.pm-logo-textblock{display:flex;flex-direction:column;gap:3px;}.pm-logo-text{font-family:"Alfa Slab One",serif;font-size:26px;color:#a82b22;line-height:1;letter-spacing:.5px;transition:color .15s;}.pm-logo-sub{font-family:"Bree Serif",serif;font-size:11px;color:#5b3427;letter-spacing:.22em;text-transform:uppercase;line-height:1;}@media(max-width:640px){.pm-logo-img{width:44px;height:44px;}.pm-logo-text{font-size:22px;}.pm-logo-sub{font-size:10px;}}.pm-nav{display:flex;align-items:center;gap:24px;margin-left:auto;flex-wrap:nowrap;}
 .pm-nav-list{display:flex;gap:4px;list-style:none;padding:0;margin:0;align-items:center;}
 .pm-nav-list > li{position:relative;}
 .pm-nav-list > li > a,.pm-submenu-trigger{display:inline-flex;align-items:center;gap:4px;color:#5b3427;text-decoration:none;padding:10px 12px;font-size:15px;font-family:"Bree Serif",serif;background:transparent;border:0;cursor:pointer;border-radius:8px;line-height:1;}
@@ -427,9 +427,11 @@ html,body{height:auto !important;min-height:100vh;overflow-y:auto !important;ove
  <a class="skip-link" href="#pm-main-region">Skip to main content</a>
  <div class="pm-header-inner">
   <a class="pm-logo" href="/" aria-label="Hey Aaron! Marketing — home">
-   <span class="pm-logo-icon" aria-hidden="true">🍴</span>
-   <span class="pm-logo-text">Hey Aaron!</span>
-   <span class="pm-logo-sub">Marketing</span>
+   <img class="pm-logo-img" src="/_assets/aaron-avatar.png" alt="" width="56" height="56" loading="eager" decoding="async">
+   <span class="pm-logo-textblock">
+    <span class="pm-logo-text">Hey Aaron!</span>
+    <span class="pm-logo-sub">Marketing</span>
+   </span>
   </a>
   <button class="pm-hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="pm-nav" type="button">
    <span aria-hidden="true">≡</span>
