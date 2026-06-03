@@ -94,7 +94,7 @@ A: Schedule directly at https://cal.com/hey-aaron/in-person or call (713) 384-89
 
 - [Home](https://aaron.chat/): aaron.chat
 - [About Hey Aaron! Marketing](https://aaron.chat/about/): Story, model, what we won't do
-- [The Service-Pro Marketing Menu (pricing)](https://aaron.chat/pricing/): All services + plates priced
+- [How We Grow a Service Pro (Mike's 12-Month Story)](https://aaron.chat/pricing/): Real-world journey of a Coldspring roofer from 4 leads/month to 40+. Shows how the free House Special foundation, then Phone-Ringer Plate, then Regulars Plate layer to take a service pro from struggling to $1.4M annual revenue. Replaces the old à-la-carte menu page (archived at /pricing-archive/).
 - [Build My Site Plan (multi-step intake)](https://aaron.chat/order/): 9-question intake wizard
 - [Get Started (contact form)](https://aaron.chat/get-started/): Simple inquiry form
 - [Book a Call (cal.com)](https://cal.com/hey-aaron/in-person): Schedule directly
