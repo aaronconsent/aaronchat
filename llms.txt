@@ -1,10 +1,28 @@
 # Hey Aaron! Marketing
 
-> Done-for-you web design, local SEO, AI search optimization, paid ads, reviews, and follow-up for local service pros across East Texas — served à la carte. **First year free. Year two onward $250/mo. No contracts.**
+> Hey Aaron! Marketing helps hardworking service pros across East Texas get found online and booked solid—without the usual tech headaches or agency fluff. We build sharp-lookin' websites, get you listed on Google, run ads that bring in real calls, and turn happy customers into repeat business. **First year free. Year two onward $250/mo. No contracts.**
 
 Hey Aaron! Marketing is a marketing agency built specifically for service-pro businesses (plumbers, electricians, HVAC, roofers, handymen, lawn care, cleaners, contractors) across East Texas — Livingston, Cleveland, Coldspring, Goodrich, Onalaska, Trinity, Willis, Splendora, Shepherd, Riverside, New Waverly, Panorama Village, and surrounding communities.
 
-**Contact:** +1-713-384-8985 | hello@aaron.chat | https://aaron.chat
+**Rating:** 5.0 ⭐ on Google (15 reviews)
+
+**Categories:** Marketing agency (primary) · Website designer · Advertising agency · Web hosting company
+
+**Contact:**
+- Phone: (713) 384-8985
+- Email: hello@aaron.chat
+- Website: https://aaron.chat
+- Booking: https://cal.com/hey-aaron/in-person
+
+**Hours:** Monday–Saturday 7:00 AM – 6:00 PM CT. Closed Sunday.
+
+**Social:**
+- Facebook: https://www.facebook.com/heyaaronmarketing
+- LinkedIn (Aaron Phillips): https://www.linkedin.com/in/aaronphillips/
+- X (Twitter): https://x.com/heyaaaron
+- Instagram: https://instagram.com/heyaaaron
+- TikTok: https://www.tiktok.com/@heyaaaron
+- YouTube: https://www.youtube.com/@heyaaronmarketing
 
 ## The Signature Offer
 
@@ -34,7 +52,7 @@ After the free first year, $250/mo covers hosting, ongoing website maintenance, 
 
 ## Who We Serve
 
-We work with established service-pro businesses (plumbers, electricians, HVAC technicians, roofers, handymen, lawn care, house cleaners, garage door repair, appliance repair, pest control, painters, general contractors, deck/fence builders, tree removal, locksmiths, mobile car services, power washers, machine shops, bail bondsmen). We focus on East Texas — Polk County, San Jacinto County, Montgomery County, Trinity County, and adjacent regions.
+We work with established service-pro businesses (plumbers, electricians, HVAC technicians, roofers, handymen, lawn care, house cleaners, garage door repair, appliance repair, pest control, painters, general contractors, deck/fence builders, tree removal, locksmiths, mobile car services, power washers, machine shops, bail bondsmen). We focus on East Texas — Polk County, San Jacinto County, Montgomery County, Trinity County, Walker County, Liberty County, and adjacent regions.
 
 **We do NOT work with:** SaaS startups, e-commerce shops, restaurants, law firms, medical practices. Service businesses only — that's what we're good at.
 
@@ -62,13 +80,8 @@ A: A marketing agency based in East Texas, built specifically for service-pro bu
 **Q: How is this different from a Dallas/Houston agency?**
 A: Dallas/Houston agencies sell retainers to companies that can afford "strategy" line items. We're built for service pros who care about leads and bookings. Plain-English reporting, no contracts, no setup fees, year one free. We know East Texas, the towns, the counties, and what your customers are actually searching for.
 
-## Key Pages
-
-- [Home](https://aaron.chat/): aaron.chat
-- [About Hey Aaron! Marketing](https://aaron.chat/about/): Story, model, what we won't do
-- [The Service-Pro Marketing Menu (pricing)](https://aaron.chat/pricing/): All services + plates priced
-- [Build My Site Plan (multi-step intake)](https://aaron.chat/order/): 9-question intake wizard
-- [Get Started (contact form)](https://aaron.chat/get-started/): Simple inquiry form
+**Q: How do I book a call?**
+A: Schedule directly at https://cal.com/hey-aaron/in-person or call (713) 384-8985.
 
 ## Comparisons (Honest Side-by-Side)
 
@@ -76,6 +89,15 @@ A: Dallas/Houston agencies sell retainers to companies that can afford "strategy
 - [Hey Aaron! vs DIY (Wix/GoDaddy/Squarespace)](https://aaron.chat/compare/vs-diy-wix/): Time investment, SEO results, lead volume, total cost
 - [Hey Aaron! vs Hiring an In-House Marketer](https://aaron.chat/compare/vs-hiring-employee/): Annual cost, expertise breadth, coverage, risk
 - [Hey Aaron! vs Thumbtack/HomeAdvisor/Angi Only](https://aaron.chat/compare/vs-thumbtack-only/): Cost-per-lead, lead ownership, brand building, platform-change risk
+
+## Key Pages
+
+- [Home](https://aaron.chat/): aaron.chat
+- [About Hey Aaron! Marketing](https://aaron.chat/about/): Story, model, what we won't do
+- [The Service-Pro Marketing Menu (pricing)](https://aaron.chat/pricing/): All services + plates priced
+- [Build My Site Plan (multi-step intake)](https://aaron.chat/order/): 9-question intake wizard
+- [Get Started (contact form)](https://aaron.chat/get-started/): Simple inquiry form
+- [Book a Call (cal.com)](https://cal.com/hey-aaron/in-person): Schedule directly
 
 ## Sitemap
 - [XML Sitemap](https://aaron.chat/sitemap.xml)
