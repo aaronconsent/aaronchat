@@ -1,0 +1,78 @@
+name: aaron.chat automation
+
+on:
+  schedule:
+    - cron: '5 * * * *'          # hourly at :05 UTC — runners self-gate to their windows
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force post now, bypass window/cap/spacing gates'
+        type: boolean
+        default: false
+      dry_run:
+        description: 'Dry-run: log what would post, publish nothing'
+        type: boolean
+        default: false
+
+concurrency:
+  group: aaronchat-automation
+  cancel-in-progress: false
+
+permissions:
+  contents: write                # so the run can commit state + log back to the repo
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      TZ: America/Chicago        # keep runners' local-time gates aligned with the tenant tz
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+
+      - name: Install deps
+        run: pip install --quiet requests pyyaml beautifulsoup4
+
+      - name: Recreate secret env files from GitHub Secrets
+        env:
+          ENV_BUFFER: ${{ secrets.ENV_BUFFER }}
+          ENV_LINKEDIN: ${{ secrets.ENV_LINKEDIN }}
+          ENV_X: ${{ secrets.ENV_X }}
+        run: |
+          mkdir -p secrets && chmod 700 secrets
+          write() {
+            if [ -n "$2" ]; then
+              printf '%s\n' "$2" > "secrets/$1.env"
+              chmod 600 "secrets/$1.env"
+              echo "wrote secrets/$1.env ($(wc -c < secrets/$1.env) bytes)"
+            else
+              echo "SKIP secrets/$1.env — ENV var empty (add ENV_${1^^} to repo Secrets)"
+            fi
+          }
+          write buffer   "$ENV_BUFFER"
+          write linkedin "$ENV_LINKEDIN"
+          write x        "$ENV_X"
+
+      - name: Run all channel runners
+        run: |
+          FLAGS=""
+          [ "${{ github.event.inputs.force }}" = "true" ] && FLAGS="$FLAGS --force"
+          [ "${{ github.event.inputs.dry_run }}" = "true" ] && FLAGS="$FLAGS --dry-run"
+          python3 scripts/run_all.py $FLAGS
+
+      - name: Commit state + log
+        if: always()
+        run: |
+          git config user.name "aaron-chat-bot"
+          git config user.email "hello+bot@aaron.chat"
+          # Add any state files + the run log (both are .gitignored except when explicitly added)
+          git add -f content/*_state.json content/run_all.log 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "no state changes to commit"
+          else
+            git commit -m "chore(runtime): update posting state $(date -u +%FT%TZ)"
+            git push
+          fi

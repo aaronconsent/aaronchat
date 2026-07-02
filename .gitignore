@@ -6,3 +6,11 @@
 !.dev.vars.example
 .env*
 !.env.example
+
+# posting-engine runtime (tenant #2 per engine-build-spec.md)
+secrets/*.env
+!secrets/.env.example
+content/*_state.json
+content/run_all.log
+__pycache__/
+*.pyc

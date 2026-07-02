@@ -1,0 +1,55 @@
+# aaron.chat ICP — Ideal Client Profile
+# Used later by the BuiltinGenerator (not by this MVP PageAdapter).
+# Captured now so it's ready when we add BuiltinGenerator.
+
+version: "1.0"
+
+primary_niche: East Texas service-pro small businesses
+
+personas:
+  - name: Owner-operator tradesman
+    trades: [plumber, electrician, HVAC technician, roofer, handyman, landscaper]
+    business_stage: 2-20 years in business, 1-10 employees, revenue $150k-$2M/year
+    tech_comfort: low-to-medium (uses phone for everything)
+    location: within 30 miles of Livingston, TX
+  - name: General contractor / remodel shop
+    trades: [general contractor, deck/fence builder, roofer, painter]
+    business_stage: 5+ years, established local reputation, 3-15 employees
+    tech_comfort: medium
+  - name: Home-service brand owner
+    trades: [pest control, appliance repair, garage door, tree removal, cleaner]
+    business_stage: growing, multi-tech, ready to invest in marketing
+
+pains:
+  - Thumbtack / HomeAdvisor / Angi feel like renting customers at $50-$150 per lead
+  - Google Business Profile hasn't been touched in 2-4 years, sitting at 3-10 reviews
+  - Website is generic Wix / template with no local SEO
+  - No follow-up with past customers — repeat business dies at month 4
+  - Marketing agencies want $1,000-$3,000/mo retainers with 12-month contracts
+  - Not enough time to post on social themselves, and don't know what to post
+
+buying_triggers:
+  - Storm season — phone won't stop ringing then goes silent
+  - Competitor got a facelifted GBP and started outranking them
+  - Lost a bid because their website looked out-of-date
+  - Got burned by a Dallas / Houston agency and want someone local
+  - Watched their nephew's Wix site fail to generate leads for 6 months
+
+objections:
+  - "How is the first year really free?" — answered by our 12-month payoff math
+  - "I've been burned before." — answered by month-to-month after year 1
+  - "I'm not tech-savvy." — answered by full done-for-you delivery
+  - "How much am I really going to pay year 2?" — answered by transparent $250 base + à la carte
+  - "What if I want to leave?" — answered by no-lock-in policy
+
+competitors_they_consider:
+  - Dallas / Houston marketing agencies ($1,500-$5,000/mo retainers, 12-month contracts)
+  - Wix / GoDaddy DIY ($25-50/mo, no results)
+  - In-house marketing hire ($40-60k/year salary)
+  - Thumbtack / HomeAdvisor / Angi as their entire pipeline
+
+channel_priority:
+  - LinkedIn                       # #1 — service-pro owners live here
+  - X                              # #2 — small business + Texas conversation
+  - Facebook                       # deferred to Phase 2
+  - Instagram                      # deferred to Phase 2

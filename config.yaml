@@ -1,0 +1,61 @@
+# aaron.chat posting-engine tenant config
+# See: booked-job/docs/engine-build-spec.md Part C
+
+tenant:
+  name: aaron.chat
+  domain: aaron.chat
+  timezone: America/Chicago
+
+voice_ref: voice.yaml
+icp_ref: icp.yaml
+
+channels:
+  linkedin:
+    enabled: true
+    backend: aggregator            # aggregator | own_app
+    aggregator: buffer
+    buffer_channel_env: BUFFER_LINKEDIN_CHANNEL
+    daily_cap: 1
+    windows: [[8, 10], [12, 13]]   # local (America/Chicago) hour ranges
+    weekdays_only: true
+    min_spacing_hours: 4           # never post more often than this within-channel
+
+  x:
+    enabled: true
+    backend: aggregator            # switch to own_app when paid X API v2 is up
+    aggregator: buffer
+    buffer_channel_env: BUFFER_X_CHANNEL
+    daily_cap: 3
+    windows: [[7, 9], [12, 14], [17, 19]]
+    weekdays_only: false
+    min_spacing_hours: 3
+
+  facebook:
+    enabled: false                 # deferred — see spec Part C
+
+  instagram:
+    enabled: false                 # deferred — see spec Part C
+
+content_source:
+  # Paths are relative to the tenant root (this directory).
+  type: page_adapter
+  page_glob: "**/index.html"
+  exclude:
+    - "404.html"
+    - "pricing-archive/**"
+    - "thank-you/**"
+    - "_next/**"
+    - "_external/**"
+    - "cdn-cgi/**"
+    - "scripts/**"
+    - ".github/**"
+    - "secrets/**"
+    - "content/**"
+    - "_worker.js"
+  variants_per_page: 2             # PageAdapter generates N distinct variants per page per platform
+
+runtime:
+  log_file: content/run_all.log
+  state_dir: content
+  queue_file: content/queue.json
+  dry_run_default: false           # override with --dry-run

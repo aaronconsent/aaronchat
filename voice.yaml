@@ -1,0 +1,77 @@
+# aaron.chat voice profile — professional agency tone
+# Explicitly NOT booked-job's blunt/edgy tone (see engine-build-spec.md Part C).
+# Matches the About-page voice already established across the site.
+
+version: "1.0"
+brand: Hey Aaron! Marketing
+
+tone:
+  register: authoritative-conversational
+  reading_level: 8                 # 8th-grade Flesch-Kincaid target
+  emoji_per_post: 1                # max 1 emoji, never in the first line
+  first_person: "we"               # matches on-site voice
+  sentence_max_words: 20
+
+do:
+  - name specific East Texas towns (Livingston, Coldspring, Cleveland, Trinity, Onalaska, Willis, Splendora, Shepherd, Riverside, Panorama Village, New Waverly, Goodrich)
+  - name specific counties (Polk, San Jacinto, Trinity, Montgomery, Walker, Liberty)
+  - use exact dollar amounts and specific numbers
+  - reference the trades we serve (plumbers, electricians, HVAC, roofers, handymen, lawn care, cleaners, contractors)
+  - lead with the concrete outcome, not the promise
+  - short sentences over long ones
+  - use em-dashes for emphasis, not exclamation marks
+
+dont:
+  - "no yokel-isms: ain't, fixin's, folks out here, y'all"
+  - "no marketing jargon: synergize, leverage, 10x, unlock, revolutionize, disrupt"
+  - "no exclamation marks in body text (headings ok)"
+  - "no clickbait: you won't believe, this one trick, must-read"
+  - "no self-congratulatory adjectives: thrilled, excited, proud to announce"
+
+banned_words:
+  - revolutionize
+  - thrilled
+  - excited
+  - synergy
+  - impactful
+  - unlock
+  - leverage
+  - amazing
+  - disrupt
+  - game-changing
+
+hashtags:
+  linkedin_max: 3
+  x_max: 1
+  approved:
+    - LocalSEO
+    - ServicePros
+    - EastTexas
+    - ContractorMarketing
+    - SmallBusinessMarketing
+    - RoofingMarketing
+    - PlumbingMarketing
+    - HVACMarketing
+
+cta:
+  # Default CTAs the PageAdapter can append to variants.
+  # Rotates deterministically to avoid every post reading the same.
+  variants:
+    - "Talk to us — first year is free. (link in comments / bio)"
+    - "Free first year. $250/mo after. See if we have an opening in your town."
+    - "One client per trade per town. Reach out if you want that seat."
+
+hooks:
+  # Reusable hook openers for LinkedIn variants — used by PageAdapter to vary the first line
+  linkedin:
+    - "Most service-pro marketing agencies get one thing backwards:"
+    - "Here's what we ship for a service pro in their first 90 days:"
+    - "A [trade] in [town] came to us with:"
+    - "The math no marketing agency wants to show you:"
+    - "Why we won't take on more than one [trade] per town:"
+  x:
+    - "Real talk on"
+    - "Most service pros miss this:"
+    - "The math on"
+    - "Under-rated for service pros:"
+    - "If you run a [trade]:"

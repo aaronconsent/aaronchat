@@ -3,3 +3,16 @@
 .assetsignore
 _worker.js
 wrangler.jsonc
+
+# posting-engine runtime — never expose to public web
+.github
+scripts
+secrets
+content
+config.yaml
+voice.yaml
+icp.yaml
+aaron-chat-site.zip
+*.py
+*.pyc
+__pycache__
