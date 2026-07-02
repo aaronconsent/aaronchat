@@ -10,19 +10,23 @@ voice_ref: voice.yaml
 icp_ref: icp.yaml
 
 channels:
+  # ────────────────────────────────────────────────────────
+  # LIVE — MVP text-only posting
+  # ────────────────────────────────────────────────────────
+
   linkedin:
     enabled: true
-    backend: aggregator            # aggregator | own_app
+    backend: aggregator            # own_app requires LinkedIn Marketing Partner — stay on Buffer
     aggregator: buffer
     buffer_channel_env: BUFFER_LINKEDIN_CHANNEL
     daily_cap: 1
-    windows: [[8, 10], [12, 13]]   # local (America/Chicago) hour ranges
+    windows: [[8, 10], [12, 13]]
     weekdays_only: true
-    min_spacing_hours: 4           # never post more often than this within-channel
+    min_spacing_hours: 4
 
   x:
     enabled: true
-    backend: aggregator            # switch to own_app when paid X API v2 is up
+    backend: aggregator            # switch to own_app when paid X API v2 is worth $200/mo
     aggregator: buffer
     buffer_channel_env: BUFFER_X_CHANNEL
     daily_cap: 3
@@ -30,11 +34,118 @@ channels:
     weekdays_only: false
     min_spacing_hours: 3
 
+  # ────────────────────────────────────────────────────────
+  # QUEUED — build these when the account/creds land
+  # (Booked-job carries all of these; aaron.chat is missing
+  # the account setup, not the code architecture.)
+  # ────────────────────────────────────────────────────────
+
+  bluesky:
+    enabled: false                 # trivial — app_password, ~10min setup, add first
+    backend: own_app               # publisher stub: scripts/bsky_publish.py (not yet built)
+    daily_cap: 3
+    windows: [[7, 9], [12, 14], [17, 19]]
+    weekdays_only: false
+    min_spacing_hours: 3
+
+  telegraph:
+    enabled: false                 # anonymous — no auth needed, free forever
+    backend: own_app               # publisher stub: scripts/telegraph_publish.py
+    daily_cap: 2                   # weekly cadence in booked-job; aaron.chat can be similar
+    windows: [[9, 17]]             # any weekday work hours
+    weekdays_only: true
+    min_spacing_hours: 24
+
   facebook:
-    enabled: false                 # deferred — see spec Part C
+    enabled: false                 # requires: dedicated Meta app (Hey Aaron! Marketing) + business verify + App Review
+    backend: own_app               # publisher stub: scripts/fb_publish.py
+    daily_cap: 2
+    windows: [[8, 10], [12, 14], [17, 19]]
+    weekdays_only: false
+    min_spacing_hours: 4
 
   instagram:
-    enabled: false                 # deferred — see spec Part C
+    enabled: false                 # same Meta app as facebook
+    backend: own_app               # publisher stub: scripts/ig_publish.py
+    daily_cap: 1
+    windows: [[9, 11], [15, 17]]
+    weekdays_only: false
+    min_spacing_hours: 6
+
+  threads:
+    enabled: false                 # same Meta app as facebook + instagram (free extension)
+    backend: own_app               # publisher stub: scripts/threads_publish.py
+    daily_cap: 3
+    windows: [[7, 9], [12, 14], [17, 19]]
+    weekdays_only: false
+    min_spacing_hours: 3
+
+  blogger:
+    enabled: false                 # requires: dedicated Google Cloud project + OAuth consent
+    backend: own_app               # publisher stub: scripts/blogger_publish.py
+    daily_cap: 1
+    windows: [[9, 17]]
+    weekdays_only: true
+    min_spacing_hours: 48          # weekly-ish canonical syndication
+
+  tumblr:
+    enabled: false                 # OAuth with rotating refresh — booked-job solved the persistence gotcha
+    backend: own_app               # publisher stub: scripts/tumblr_publish.py
+    daily_cap: 1
+    windows: [[9, 17]]
+    weekdays_only: true
+    min_spacing_hours: 48
+
+  gbp:
+    enabled: false                 # HIGH PRIORITY — dogfood Review Rocket. Requires GBP API access request (quota 0→300)
+    backend: own_app               # publisher stub: scripts/gbp_publish.py
+    daily_cap: 1
+    windows: [[9, 11]]             # GBP posts perform best in AM
+    weekdays_only: false
+    min_spacing_hours: 24
+
+  email:
+    enabled: false                 # Resend already wired for /api/contact — need list-building strategy first
+    backend: own_app               # publisher stub: scripts/email_publish.py (uses existing Resend creds)
+    daily_cap: 1
+    windows: [[9, 11]]             # Tuesday-Thursday AM broadcasts perform best
+    weekdays_only: true
+    min_spacing_hours: 168         # weekly cadence
+
+  youtube:
+    enabled: false                 # only add when founder video content exists
+    backend: own_app               # publisher stub: scripts/yt_publish.py
+    daily_cap: 1
+    windows: [[10, 12]]
+    weekdays_only: false
+    min_spacing_hours: 168
+
+  tiktok:
+    enabled: false                 # aggregator (Buffer TikTok) — service-pro TikTok is a real 2026 wave
+    backend: aggregator
+    aggregator: buffer
+    buffer_channel_env: BUFFER_TIKTOK_CHANNEL
+    daily_cap: 1
+    windows: [[7, 9], [12, 14], [18, 20]]
+    weekdays_only: false
+    min_spacing_hours: 12
+
+  mastodon:
+    enabled: false                 # per-instance OAuth, small audience but $0 cost
+    backend: own_app               # publisher stub: scripts/mastodon_publish.py
+    daily_cap: 2
+    windows: [[9, 11], [14, 16]]
+    weekdays_only: false
+    min_spacing_hours: 4
+
+  # ────────────────────────────────────────────────────────
+  # NOT ROSTERED — deliberate skips for aaron.chat's ICP
+  # (booked-job runs these; aaron.chat does not.)
+  # ────────────────────────────────────────────────────────
+  # pinterest:   audience mismatch (DIY/female-skewed, not service-pro owners)
+  # telegram:    unclear audience for East Texas service-pro agency
+  # yelp:        no posting API; more relevant for our clients than for us
+  # github_pages: aaron.chat is already statically hosted; no canonical mirror needed
 
 content_source:
   # Paths are relative to the tenant root (this directory).
