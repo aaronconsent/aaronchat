@@ -1066,18 +1066,24 @@ async function handleSetupUi(request, env) {
   const url = new URL(request.url);
   const cookieVal = getCookie(request, COOKIE_NAME);
   const authed = await verifySession(cookieVal, env);
-  // Login page is always accessible
-  if (url.pathname === "/setup/login" || url.pathname === "/setup/login/") {
-    const asset = await env.ASSETS.fetch(new Request(new URL("/setup/login/index.html", url.origin), request));
+  // Login page is always accessible (both /setup/login and /setup/login/ paths).
+  // Files are renamed away from index.html to prevent Cloudflare Pages from
+  // auto-serving them at directory paths before the Worker's auth gate runs.
+  if (
+    url.pathname === "/setup/login" ||
+    url.pathname === "/setup/login/" ||
+    url.pathname === "/setup/login.html"
+  ) {
+    const asset = await env.ASSETS.fetch(new Request(new URL("/setup/login.html", url.origin), request));
     return noCacheResponse(asset);
   }
   if (!authed) {
-    // Redirect to login preserving the target
     const target = encodeURIComponent(url.pathname + url.search);
     const resp = Response.redirect(`${url.origin}/setup/login/?next=${target}`, 302);
     return noCacheResponse(resp);
   }
-  const asset = await env.ASSETS.fetch(request);
+  // Authed: serve the wizard. All /setup and /setup/* paths get the same SPA.
+  const asset = await env.ASSETS.fetch(new Request(new URL("/setup/wizard.html", url.origin), request));
   return noCacheResponse(asset);
 }
 
