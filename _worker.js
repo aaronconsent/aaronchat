@@ -1053,20 +1053,32 @@ async function handleFetchSecrets(request, env) {
 
 // ---- Setup UI gating ----
 // /setup and /setup/* — if no session cookie, serve the login page.
+// All setup responses are forced no-store to prevent Cloudflare edge from caching
+// auth-gated content across users.
+function noCacheResponse(resp) {
+  const headers = new Headers(resp.headers);
+  headers.set("Cache-Control", "private, no-store, no-cache, must-revalidate");
+  headers.set("Pragma", "no-cache");
+  return new Response(resp.body, { status: resp.status, statusText: resp.statusText, headers });
+}
+
 async function handleSetupUi(request, env) {
   const url = new URL(request.url);
   const cookieVal = getCookie(request, COOKIE_NAME);
   const authed = await verifySession(cookieVal, env);
   // Login page is always accessible
   if (url.pathname === "/setup/login" || url.pathname === "/setup/login/") {
-    return env.ASSETS.fetch(new Request(new URL("/setup/login/index.html", url.origin), request));
+    const asset = await env.ASSETS.fetch(new Request(new URL("/setup/login/index.html", url.origin), request));
+    return noCacheResponse(asset);
   }
   if (!authed) {
     // Redirect to login preserving the target
     const target = encodeURIComponent(url.pathname + url.search);
-    return Response.redirect(`${url.origin}/setup/login/?next=${target}`, 302);
+    const resp = Response.redirect(`${url.origin}/setup/login/?next=${target}`, 302);
+    return noCacheResponse(resp);
   }
-  return env.ASSETS.fetch(request);
+  const asset = await env.ASSETS.fetch(request);
+  return noCacheResponse(asset);
 }
 
 export default {

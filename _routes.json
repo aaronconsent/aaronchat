@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "description": "Force Worker to run for wizard, API, and OAuth paths — otherwise Cloudflare Pages serves the static /setup/index.html directly and bypasses the auth gate.",
+  "include": [
+    "/setup/*",
+    "/api/*",
+    "/oauth/*"
+  ],
+  "exclude": []
+}
