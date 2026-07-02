@@ -80,6 +80,10 @@
   .unlock .chan{display:inline-block;background:var(--paper);border:1px solid var(--tan);border-radius:999px;padding:2px 10px;margin:2px 4px 2px 0;font-size:.78rem;color:var(--brown);}
 
   .oauth-summary{margin-top:14px;background:#e6f5ee;border:2px dashed var(--green);color:var(--green);border-radius:12px;padding:12px 16px;font-family:"Bree Serif",serif;font-size:.94rem;}
+  .probe-result{margin-top:12px;padding:12px 16px;border-radius:10px;font-family:"Bree Serif",serif;font-size:.92rem;line-height:1.45;}
+  .probe-result.ok{background:#e6f5ee;color:var(--green);border:1px solid var(--green);}
+  .probe-result.err{background:#fdecea;color:var(--red);border:1px solid var(--red);}
+  .probe-result small{opacity:.75;display:block;margin-top:4px;font-size:.78rem;}
   .oauth-config{margin-top:22px;padding:18px 20px;background:var(--paper);border:2px dashed var(--tan);border-radius:12px;}
   .oauth-config h3{margin:0 0 6px;color:var(--brown);}
   .oauth-help{color:var(--brown);font-family:"Bree Serif",serif;font-size:.9rem;margin:0 0 14px;}
@@ -404,9 +408,14 @@ function renderCard(p) {
       <div class="row">
         <button class="btn primary" data-action="save" data-id="${p.id}">Save credentials</button>
         <button class="btn ghost" data-action="template" data-id="${p.id}">Fill template</button>
+        <button class="btn ghost" data-action="probe" data-id="${p.id}">Test connection</button>
         ${status !== "not_started" ? `<button class="btn danger" data-action="clear" data-id="${p.id}">Clear saved</button>` : ""}
         <span class="toast" data-id="${p.id}"></span>
       </div>
+      ${STATE[p.id]?.last_probe_detail ? `<div class="probe-result ${STATE[p.id]?.last_probe_ok ? 'ok' : 'err'}">
+        <b>${STATE[p.id]?.last_probe_ok ? '✓ Verified' : '⚠ Probe failed'}</b> — ${escapeAttr(STATE[p.id].last_probe_detail)}
+        <br><small>last checked ${new Date(STATE[p.id].last_probe_at).toLocaleString()}</small>
+      </div>` : ''}
       <div class="notes">
         <label for="notes-${p.id}">Notes (private, for you only)</label>
         <input id="notes-${p.id}" data-id="${p.id}" data-field="notes" type="text" value="${escapeAttr(notes)}" placeholder="e.g. 'Waiting on Meta App Review submitted 2026-07-10'">
@@ -557,6 +566,37 @@ async function handleAction(btn) {
       showToast(toast, e.message, true);
     } finally {
       btn.disabled = false; btn.textContent = "Save credentials";
+    }
+    return;
+  }
+  if (action === "probe") {
+    btn.disabled = true; btn.textContent = "Testing…";
+    try {
+      const r = await fetch("/api/setup/probe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ provider: id }),
+      });
+      const d = await r.json();
+      if (d.ok) {
+        showToast(toast, "✓ Verified");
+        STATE[id] = d.state;
+        // Re-render just this card
+        const newCard = renderCard(PROVIDERS.find(x => x.id === id));
+        newCard.classList.add("open");
+        card.replaceWith(newCard);
+        updateSummary();
+      } else if (d.soft) {
+        showToast(toast, d.detail || "Soft-pass — no probe available for this provider");
+      } else {
+        showToast(toast, d.detail || d.error || "Probe failed", true);
+        // Still store state
+        if (d.state) STATE[id] = d.state;
+      }
+    } catch (e) {
+      showToast(toast, e.message, true);
+    } finally {
+      btn.disabled = false; btn.textContent = "Test connection";
     }
     return;
   }

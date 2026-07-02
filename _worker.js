@@ -826,6 +826,207 @@ function htmlPage(title, bodyHtml) {
   );
 }
 
+// ============================================================================
+// Capability probes — read-only API calls that verify a stored secret works.
+// Each returns { ok: bool, status: "verified"|"failed", detail: string }.
+// Runs against the parsed env-file body pulled from secret:<provider>.
+// ============================================================================
+
+function parseEnvBody(body) {
+  const out = {};
+  if (!body) return out;
+  for (const line of body.split("\n")) {
+    const s = line.trim();
+    if (!s || s.startsWith("#") || !s.includes("=")) continue;
+    const idx = s.indexOf("=");
+    out[s.slice(0, idx).trim()] = s.slice(idx + 1).trim();
+  }
+  return out;
+}
+
+const PROBES = {
+  async buffer(env, e) {
+    if (!e.BUFFER_TOKEN) return { ok: false, detail: "BUFFER_TOKEN missing" };
+    const body = JSON.stringify({
+      query: `query($i: ChannelsInput!){ channels(input:$i){ id service displayName } }`,
+      variables: { i: { organizationId: e.BUFFER_ORG } },
+    });
+    const r = await fetch("https://api.buffer.com", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${e.BUFFER_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body,
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok || d.errors) return { ok: false, detail: `Buffer ${r.status}: ${JSON.stringify(d).slice(0, 200)}` };
+    const chs = d.data?.channels || [];
+    const services = chs.map((c) => c.service).filter(Boolean);
+    return { ok: true, detail: `${chs.length} channels: ${services.join(", ") || "(none)"}` };
+  },
+
+  async bluesky(env, e) {
+    if (!e.BLUESKY_HANDLE || !e.BLUESKY_APP_PASSWORD) {
+      return { ok: false, detail: "BLUESKY_HANDLE + BLUESKY_APP_PASSWORD required" };
+    }
+    const r = await fetch("https://bsky.social/xrpc/com.atproto.server.createSession", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ identifier: e.BLUESKY_HANDLE, password: e.BLUESKY_APP_PASSWORD }),
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok || !d.accessJwt) return { ok: false, detail: `Bluesky ${r.status}: ${d.error || d.message || "auth failed"}` };
+    return { ok: true, detail: `Signed in as ${d.handle} (did: ${d.did?.slice(0, 24)}…)` };
+  },
+
+  async telegraph(env, e) {
+    if (!e.TELEGRAPH_ACCESS_TOKEN) {
+      return {
+        ok: true,
+        detail: "No token stored yet — publisher will bootstrap one on first post. That's fine.",
+        soft: true,
+      };
+    }
+    const r = await fetch(`https://api.telegra.ph/getAccountInfo?access_token=${e.TELEGRAPH_ACCESS_TOKEN}`);
+    const d = await r.json().catch(() => ({}));
+    if (!d.ok) return { ok: false, detail: `Telegraph: ${d.error || "invalid token"}` };
+    return { ok: true, detail: `Author: ${d.result?.short_name || "?"} · Views: ${d.result?.page_count || 0} pages` };
+  },
+
+  async meta(env, e) {
+    const token = e.META_PAGE_TOKEN || e.META_LONG_LIVED_USER_TOKEN;
+    if (!token) return { ok: false, detail: "META_PAGE_TOKEN or META_LONG_LIVED_USER_TOKEN required" };
+    const r = await fetch(`https://graph.facebook.com/v18.0/debug_token?input_token=${token}&access_token=${token}`);
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok || !d.data) return { ok: false, detail: `Meta ${r.status}: ${d.error?.message || "debug_token failed"}` };
+    const scopes = d.data.scopes?.slice(0, 5).join(", ") || "(no scopes)";
+    const app = d.data.app_id ? `app ${d.data.app_id}` : "";
+    const expires = d.data.expires_at
+      ? d.data.expires_at === 0
+        ? "never"
+        : new Date(d.data.expires_at * 1000).toISOString().slice(0, 10)
+      : "?";
+    return { ok: true, detail: `${app} · expires ${expires} · scopes: ${scopes}` };
+  },
+
+  async google(env, e) {
+    if (!e.GOOGLE_REFRESH_TOKEN || !e.GOOGLE_CLIENT_ID || !e.GOOGLE_CLIENT_SECRET) {
+      return { ok: false, detail: "GOOGLE_CLIENT_ID + CLIENT_SECRET + REFRESH_TOKEN all required" };
+    }
+    // Exchange refresh_token for a live access_token
+    const params = new URLSearchParams({
+      client_id: e.GOOGLE_CLIENT_ID,
+      client_secret: e.GOOGLE_CLIENT_SECRET,
+      refresh_token: e.GOOGLE_REFRESH_TOKEN,
+      grant_type: "refresh_token",
+    });
+    const rr = await fetch("https://oauth2.googleapis.com/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params.toString(),
+    });
+    const rd = await rr.json().catch(() => ({}));
+    if (!rr.ok || !rd.access_token) return { ok: false, detail: `Google refresh failed: ${rd.error_description || rd.error || rr.status}` };
+    // Test one API: YouTube channel list
+    const yt = await fetch("https://www.googleapis.com/youtube/v3/channels?part=id&mine=true", {
+      headers: { Authorization: `Bearer ${rd.access_token}` },
+    });
+    const ytd = await yt.json().catch(() => ({}));
+    if (!yt.ok) return { ok: false, detail: `YouTube probe ${yt.status}: ${ytd.error?.message || "?"}` };
+    return {
+      ok: true,
+      detail: `Refresh token live · scope=${(rd.scope || "").split(" ").length} scopes · YT channels: ${ytd.items?.length || 0}`,
+    };
+  },
+
+  async tumblr(env, e) {
+    if (!e.TUMBLR_ACCESS_TOKEN) return { ok: false, detail: "TUMBLR_ACCESS_TOKEN required" };
+    const r = await fetch("https://api.tumblr.com/v2/user/info", {
+      headers: { Authorization: `Bearer ${e.TUMBLR_ACCESS_TOKEN}` },
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok || !d.response?.user) return { ok: false, detail: `Tumblr ${r.status}: ${d.meta?.msg || "?"}` };
+    const blogs = d.response.user.blogs?.map((b) => b.name).join(", ") || "(none)";
+    return { ok: true, detail: `User: ${d.response.user.name} · blogs: ${blogs}` };
+  },
+
+  async mastodon(env, e) {
+    if (!e.MASTODON_INSTANCE || !e.MASTODON_ACCESS_TOKEN) {
+      return { ok: false, detail: "MASTODON_INSTANCE + MASTODON_ACCESS_TOKEN required" };
+    }
+    const r = await fetch(`${e.MASTODON_INSTANCE}/api/v1/accounts/verify_credentials`, {
+      headers: { Authorization: `Bearer ${e.MASTODON_ACCESS_TOKEN}` },
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok || !d.username) return { ok: false, detail: `Mastodon ${r.status}: ${d.error || "?"}` };
+    return { ok: true, detail: `@${d.username}@${new URL(e.MASTODON_INSTANCE).host} · ${d.followers_count || 0} followers` };
+  },
+
+  async telegram(env, e) {
+    if (!e.TELEGRAM_BOT_TOKEN) return { ok: false, detail: "TELEGRAM_BOT_TOKEN required" };
+    const r = await fetch(`https://api.telegram.org/bot${e.TELEGRAM_BOT_TOKEN}/getMe`);
+    const d = await r.json().catch(() => ({}));
+    if (!d.ok) return { ok: false, detail: `Telegram: ${d.description || "auth failed"}` };
+    return { ok: true, detail: `Bot: @${d.result.username} (${d.result.first_name})` };
+  },
+
+  async github_pages(env, e) {
+    if (!e.GH_PAGES_PAT || !e.GH_PAGES_REPO) {
+      return { ok: false, detail: "GH_PAGES_PAT + GH_PAGES_REPO required" };
+    }
+    const r = await fetch(`https://api.github.com/repos/${e.GH_PAGES_REPO}`, {
+      headers: {
+        Authorization: `Bearer ${e.GH_PAGES_PAT}`,
+        Accept: "application/vnd.github+json",
+        "User-Agent": "aaron-chat-connect-wizard",
+      },
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) return { ok: false, detail: `GitHub ${r.status}: ${d.message || "?"}` };
+    return { ok: true, detail: `Repo: ${d.full_name} · default branch: ${d.default_branch} · size: ${d.size} KB` };
+  },
+
+  async resend(env, e) {
+    if (!e.RESEND_API_KEY) return { ok: false, detail: "RESEND_API_KEY required" };
+    const r = await fetch("https://api.resend.com/audiences", {
+      headers: { Authorization: `Bearer ${e.RESEND_API_KEY}` },
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) return { ok: false, detail: `Resend ${r.status}: ${d.message || "?"}` };
+    return { ok: true, detail: `${d.data?.length || 0} audiences configured` };
+  },
+};
+
+async function handleProbe(request, env) {
+  const authErr = await requireSession(request, env);
+  if (authErr) return authErr;
+  if (!env.SETUP_KV) return json({ ok: false, error: "SETUP_KV not bound" }, 500);
+  if (request.method !== "POST") return json({ ok: false, error: "method not allowed" }, 405);
+  const { provider } = await request.json().catch(() => ({}));
+  if (!provider || !PROBES[provider]) return json({ ok: false, error: `no probe for ${provider}` }, 400);
+  const body = await env.SETUP_KV.get(`secret:${provider}`);
+  if (!body) return json({ ok: false, error: "no stored secret to probe" }, 400);
+  const parsed = parseEnvBody(body);
+  let result;
+  try {
+    result = await PROBES[provider](env, parsed);
+  } catch (ex) {
+    result = { ok: false, detail: `probe threw: ${(ex.message || String(ex)).slice(0, 200)}` };
+  }
+  // Update KV: on success flip status to verified
+  const existing = (await env.SETUP_KV.get(`channel:${provider}`, "json")) || {};
+  const state = {
+    ...existing,
+    status: result.ok ? "verified" : (existing.status === "not_started" ? "in_progress" : existing.status),
+    last_probe_at: new Date().toISOString(),
+    last_probe_ok: !!result.ok,
+    last_probe_detail: result.detail || "",
+  };
+  await env.SETUP_KV.put(`channel:${provider}`, JSON.stringify(state));
+  return json({ ok: !!result.ok, status: state.status, detail: result.detail, soft: !!result.soft, state });
+}
+
 // ---- /api/secrets — GitHub Actions consumer endpoint ----
 // Auth: bearer token that matches env.SECRETS_FETCH_TOKEN. Returns all stored
 // channel secret bodies keyed by channel name. Workflow writes each into
@@ -883,6 +1084,7 @@ export default {
     if (url.pathname === "/api/setup/secret") return handleSetupSaveSecret(request, env);
     if (url.pathname === "/api/setup/secret/clear") return handleSetupClearSecret(request, env);
     if (url.pathname === "/api/setup/note") return handleSetupSaveNote(request, env);
+    if (url.pathname === "/api/setup/probe") return handleProbe(request, env);
     if (url.pathname === "/api/secrets") return handleFetchSecrets(request, env);
 
     // OAuth wizard routes
