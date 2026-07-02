@@ -20,6 +20,6 @@
   //   SETUP_PASSWORD        — password for /setup/ access
   //   SECRETS_FETCH_TOKEN   — bearer token GitHub Actions uses to pull secrets
   "kv_namespaces": [
-    { "binding": "SETUP_KV", "id": "REPLACE_WITH_KV_NAMESPACE_ID" }
+    { "binding": "SETUP_KV", "id": "78ab4281e6be4f1e94b758015bc6ad6d" }
   ]
 }
