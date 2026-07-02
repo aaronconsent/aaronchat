@@ -79,6 +79,15 @@
   .unlock{margin-top:14px;font-family:"Bree Serif",serif;font-size:.84rem;color:var(--brown);}
   .unlock .chan{display:inline-block;background:var(--paper);border:1px solid var(--tan);border-radius:999px;padding:2px 10px;margin:2px 4px 2px 0;font-size:.78rem;color:var(--brown);}
 
+  .oauth-summary{margin-top:14px;background:#e6f5ee;border:2px dashed var(--green);color:var(--green);border-radius:12px;padding:12px 16px;font-family:"Bree Serif",serif;font-size:.94rem;}
+  .oauth-config{margin-top:22px;padding:18px 20px;background:var(--paper);border:2px dashed var(--tan);border-radius:12px;}
+  .oauth-config h3{margin:0 0 6px;color:var(--brown);}
+  .oauth-help{color:var(--brown);font-family:"Bree Serif",serif;font-size:.9rem;margin:0 0 14px;}
+  .oauth-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:14px;}
+  .oauth-field label{display:block;font-family:"Bree Serif",serif;color:var(--brown);font-size:.82rem;margin-bottom:4px;}
+  .oauth-field input{width:100%;font-family:"SF Mono",Consolas,monospace;font-size:.86rem;padding:8px 12px;border:2px solid var(--tan);border-radius:8px;background:#fffcf5;color:var(--ink);}
+  .oauth-field input:focus{outline:none;border-color:var(--brown);}
+
   .section-title{font-family:"Alfa Slab One",serif;font-weight:400;color:var(--brown);font-size:.95rem;letter-spacing:.1em;text-transform:uppercase;margin:34px 0 14px 4px;border-bottom:2px dashed var(--tan);padding-bottom:6px;}
 
   #loading{padding:60px 24px;text-align:center;color:var(--brown);}
@@ -108,6 +117,18 @@
 </main>
 
 <script>
+// ============================================================================
+// OAuth-capable providers — matches the OAUTH_PROVIDERS registry in _worker.js
+// Each entry declares which fields the user must save under oauth_app:<id>
+// before the "Connect via OAuth" button becomes active.
+// ============================================================================
+const OAUTH_APPS = {
+  meta:     { fields: [{k:"client_id", label:"App ID"}, {k:"client_secret", label:"App Secret", secret:true}] },
+  google:   { fields: [{k:"client_id", label:"Client ID"}, {k:"client_secret", label:"Client Secret", secret:true}] },
+  tumblr:   { fields: [{k:"client_id", label:"Consumer Key"}, {k:"client_secret", label:"Consumer Secret", secret:true}, {k:"blog", label:"Blog domain (e.g. heyaaron.tumblr.com)"}] },
+  mastodon: { fields: [{k:"instance", label:"Instance URL (e.g. https://mastodon.social)"}] },
+};
+
 // ============================================================================
 // Provider registry — each entry is one secret-file the workflow will use.
 // Each provider unlocks 1..N channels in config.yaml when its secret is present.
@@ -355,6 +376,9 @@ function renderCard(p) {
   const notes = (STATE[p.id]?.notes) ?? "";
   const stepsHtml = p.steps.map(s => `<li>${s}</li>`).join("");
   const unlockHtml = p.unlocks.map(c => `<span class="chan">${c}</span>`).join("");
+  const summary = STATE[p.id]?.oauth_summary || "";
+  const summaryHtml = summary ? `<div class="oauth-summary">✓ ${summary}</div>` : "";
+  const oauthHtml = renderOauthBlock(p);
   el.innerHTML = `
     <div class="card-head">
       <div class="icon">${p.icon}</div>
@@ -370,6 +394,8 @@ function renderCard(p) {
       <h3>Steps</h3>
       <ol>${stepsHtml}</ol>
       <div class="unlock">Unlocks: ${unlockHtml}</div>
+      ${summaryHtml}
+      ${oauthHtml}
       <div class="paste">
         <label>Paste secret (env-file body)</label>
         <textarea data-id="${p.id}" placeholder="${escapeAttr(p.template)}"></textarea>
@@ -391,14 +417,100 @@ function renderCard(p) {
   el.querySelectorAll("button[data-action]").forEach(btn => {
     btn.addEventListener("click", (e) => { e.stopPropagation(); handleAction(btn); });
   });
+  el.querySelectorAll("button[data-oauth]").forEach(btn => {
+    btn.addEventListener("click", (e) => { e.stopPropagation(); handleOauthAction(btn); });
+  });
   el.querySelector(`input[data-field="notes"]`).addEventListener("blur", (e) => {
     saveNote(p.id, e.target.value);
   });
+  // Load existing OAuth app config to pre-fill (secrets are masked server-side)
+  const oauthBlock = el.querySelector(".oauth-config");
+  if (oauthBlock) prefillOauthApp(oauthBlock, p.id);
   return el;
+}
+
+async function prefillOauthApp(container, providerId) {
+  try {
+    const r = await fetch(`/api/setup/oauth-app?provider=${providerId}`);
+    const d = await r.json();
+    if (r.ok && d.ok && d.app) {
+      for (const [k, v] of Object.entries(d.app)) {
+        const input = container.querySelector(`input[data-oauth-field="${k}"]`);
+        if (input) input.value = v;
+      }
+    }
+  } catch (_) { /* silent */ }
+}
+
+async function handleOauthAction(btn) {
+  const action = btn.dataset.oauth;
+  const id = btn.dataset.id;
+  const container = document.querySelector(`.oauth-config[data-provider="${id}"]`);
+  const toast = container.querySelector(`[data-oauth-toast="${id}"]`);
+  if (action === "save") {
+    const app = {};
+    for (const inp of container.querySelectorAll("input[data-oauth-field]")) {
+      const val = inp.value.trim();
+      // Skip masked-only fields (all dots) — leave them alone so we don't overwrite
+      if (/^•+$/.test(val)) continue;
+      if (val) app[inp.dataset.oauthField] = val;
+    }
+    if (!Object.keys(app).length) { showToast(toast, "Fill in at least one field.", true); return; }
+    btn.disabled = true; btn.textContent = "Saving…";
+    try {
+      const r = await fetch("/api/setup/oauth-app", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ provider: id, app }),
+      });
+      const d = await r.json();
+      if (r.ok && d.ok) {
+        showToast(toast, "Saved ✓");
+        prefillOauthApp(container, id); // re-mask
+      } else {
+        showToast(toast, d.error || "Save failed", true);
+      }
+    } catch (e) {
+      showToast(toast, e.message, true);
+    } finally {
+      btn.disabled = false; btn.textContent = "Save app credentials";
+    }
+    return;
+  }
+  if (action === "connect") {
+    // Redirect to /oauth/<provider>/start — Worker validates app config is saved
+    location.href = `/oauth/${id}/start`;
+  }
 }
 
 function label(status) {
   return { not_started: "Not started", in_progress: "In progress", connected: "Connected", verified: "Verified" }[status] || status;
+}
+
+function renderOauthBlock(p) {
+  const spec = OAUTH_APPS[p.id];
+  if (!spec) return "";
+  const fieldsHtml = spec.fields
+    .map(
+      (f) => `
+        <div class="oauth-field">
+          <label>${f.label}</label>
+          <input data-oauth-field="${f.k}" type="${f.secret ? "password" : "text"}" placeholder="${f.secret ? "•••••••••" : ""}">
+        </div>`
+    )
+    .join("");
+  return `
+    <div class="oauth-config" data-provider="${p.id}">
+      <h3>Or: connect via OAuth (skip the copy-paste of tokens)</h3>
+      <p class="oauth-help">Save your app credentials once, then click Connect. The wizard captures the tokens for you and stores them in KV.</p>
+      <div class="oauth-fields">${fieldsHtml}</div>
+      <div class="row">
+        <button class="btn primary" data-oauth="save" data-id="${p.id}">Save app credentials</button>
+        <button class="btn ghost" data-oauth="connect" data-id="${p.id}">Connect via OAuth →</button>
+        <span class="toast" data-oauth-toast="${p.id}"></span>
+      </div>
+    </div>
+  `;
 }
 
 function escapeAttr(s) {
