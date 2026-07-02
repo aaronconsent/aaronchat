@@ -138,14 +138,36 @@ channels:
     weekdays_only: false
     min_spacing_hours: 4
 
+  pinterest:
+    enabled: false                 # link-building + visual syndication play. MVP via Buffer.
+    backend: aggregator            # own_app pending Pinterest Business API trial approval (booked-job is also stuck on this — Buffer covers MVP)
+    aggregator: buffer
+    buffer_channel_env: BUFFER_PINTEREST_CHANNEL
+    daily_cap: 3                   # Pinterest rewards steady daily pinning; 3-5/day is the sweet spot for growing an account
+    windows: [[8, 10], [14, 16], [19, 21]]   # Pinterest usage peaks morning + afternoon + evening
+    weekdays_only: false           # Pinterest is scrolled hardest on weekends
+    min_spacing_hours: 3
+    # Media required: Pinterest posts need images. PageAdapter will need a companion make_pin.py
+    # (PIL-based visual card generator, similar to booked-job's make_statcard) — deferred until MVP is proven.
+
+  github_pages:
+    enabled: false                 # syndication mirror on a second domain — link-building + AI-engine visibility play
+    backend: own_app               # publisher stub: scripts/github_pages_publish.py (git push based)
+    daily_cap: 1                   # weekly rebuild + push, following booked-job's Tue cadence
+    windows: [[9, 11]]
+    weekdays_only: true
+    min_spacing_hours: 168
+    # Target repo/domain: needs setup — a separate github.io site or custom subdomain (e.g.
+    # marketing.aaronphillips.io / heyaaron.pages.dev) that republishes REWRITTEN summaries
+    # of aaron.chat content with canonical links pointing back to aaron.chat.
+    # Not a hosting duplicate — a second-domain summary mirror for backlink + AEO diversity.
+
   # ────────────────────────────────────────────────────────
   # NOT ROSTERED — deliberate skips for aaron.chat's ICP
   # (booked-job runs these; aaron.chat does not.)
   # ────────────────────────────────────────────────────────
-  # pinterest:   audience mismatch (DIY/female-skewed, not service-pro owners)
   # telegram:    unclear audience for East Texas service-pro agency
   # yelp:        no posting API; more relevant for our clients than for us
-  # github_pages: aaron.chat is already statically hosted; no canonical mirror needed
 
 content_source:
   # Paths are relative to the tenant root (this directory).
