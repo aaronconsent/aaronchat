@@ -6,6 +6,19 @@
 /_external/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Connect Wizard — never cache auth-gated pages or API responses across users
+/setup/*
+  Cache-Control: private, no-store, no-cache, must-revalidate
+  Pragma: no-cache
+
+/api/*
+  Cache-Control: private, no-store, no-cache, must-revalidate
+  Pragma: no-cache
+
+/oauth/*
+  Cache-Control: private, no-store, no-cache, must-revalidate
+  Pragma: no-cache
+
 # Security headers for all pages
 /*
   X-Content-Type-Options: nosniff
