@@ -36,25 +36,35 @@ jobs:
       - name: Install deps
         run: pip install --quiet requests pyyaml beautifulsoup4
 
-      - name: Recreate secret env files from GitHub Secrets
+      - name: Fetch secrets from Connect Wizard (Cloudflare Worker)
         env:
-          ENV_BUFFER: ${{ secrets.ENV_BUFFER }}
-          ENV_LINKEDIN: ${{ secrets.ENV_LINKEDIN }}
-          ENV_X: ${{ secrets.ENV_X }}
+          SECRETS_FETCH_TOKEN: ${{ secrets.SECRETS_FETCH_TOKEN }}
+          SECRETS_FETCH_URL: ${{ vars.SECRETS_FETCH_URL || 'https://aaron.chat/api/secrets' }}
         run: |
+          set -euo pipefail
           mkdir -p secrets && chmod 700 secrets
-          write() {
-            if [ -n "$2" ]; then
-              printf '%s\n' "$2" > "secrets/$1.env"
-              chmod 600 "secrets/$1.env"
-              echo "wrote secrets/$1.env ($(wc -c < secrets/$1.env) bytes)"
-            else
-              echo "SKIP secrets/$1.env — ENV var empty (add ENV_${1^^} to repo Secrets)"
-            fi
-          }
-          write buffer   "$ENV_BUFFER"
-          write linkedin "$ENV_LINKEDIN"
-          write x        "$ENV_X"
+          if [ -z "${SECRETS_FETCH_TOKEN:-}" ]; then
+            echo "SECRETS_FETCH_TOKEN missing — add it to repo Actions Secrets."
+            echo "(Wizard endpoint auth-checks this bearer token before returning credentials.)"
+            exit 1
+          fi
+          echo "Fetching secrets from $SECRETS_FETCH_URL"
+          resp="$(curl -fsSL -H "Authorization: Bearer $SECRETS_FETCH_TOKEN" "$SECRETS_FETCH_URL")"
+          # resp: {"ok":true,"secrets":{"buffer":"BUFFER_TOKEN=...\n...", "bluesky":"...", ...}}
+          echo "$resp" | python3 - <<'PY'
+          import json, os, sys, stat
+          d = json.load(sys.stdin)
+          if not d.get("ok"):
+              sys.exit(f"secrets endpoint error: {d.get('error')}")
+          n = 0
+          for channel, body in (d.get("secrets") or {}).items():
+              p = f"secrets/{channel}.env"
+              with open(p, "w") as f: f.write(body if body.endswith("\n") else body + "\n")
+              os.chmod(p, 0o600)
+              n += 1
+              print(f"wrote {p} ({os.path.getsize(p)} bytes)")
+          print(f"total: {n} channel secrets recreated")
+          PY
 
       - name: Run all channel runners
         run: |

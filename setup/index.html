@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Connect Wizard — Hey Aaron! Marketing</title>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Bree+Serif&family=Bitter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --brown:#5b3427; --red:#a82b22; --gold:#eaa92b; --cream:#fffaf0; --paper:#fff7e0; --tan:#cdb393; --ink:#3a2a20; --green:#0c7a4f; }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--cream);color:var(--ink);font-family:"Bitter",Georgia,serif;}
+  header{background:var(--paper);border-bottom:5px double var(--brown);padding:18px 24px;display:flex;align-items:center;gap:18px;position:sticky;top:0;z-index:50;}
+  header .brand{font-family:"Alfa Slab One",serif;font-weight:400;color:var(--red);font-size:1.15rem;letter-spacing:.02em;line-height:1;}
+  header .brand small{font-family:"Bree Serif",serif;color:var(--brown);letter-spacing:.2em;font-size:.65rem;display:block;text-transform:uppercase;font-weight:400;margin-top:3px;}
+  header .spacer{flex:1;}
+  header .info{color:var(--brown);font-family:"Bree Serif",serif;font-size:.88rem;}
+  header button{background:transparent;border:2px solid var(--brown);color:var(--brown);padding:8px 14px;border-radius:8px;font-family:"Bree Serif",serif;cursor:pointer;font-size:.9rem;}
+  header button:hover{background:var(--brown);color:var(--cream);}
+  main{max-width:1080px;margin:0 auto;padding:32px 24px 80px;}
+  h1{font-family:"Alfa Slab One",serif;font-weight:400;color:var(--brown);font-size:2rem;margin:0 0 8px;}
+  .lede{color:var(--brown);font-size:1.02rem;margin:0 0 30px;max-width:640px;line-height:1.55;}
+
+  .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px;}
+  @media(max-width:720px){.summary{grid-template-columns:repeat(2,1fr);}}
+  .stat{background:var(--paper);border:2px solid var(--brown);border-radius:14px;padding:14px 16px;box-shadow:4px 4px 0 var(--tan);text-align:center;}
+  .stat .n{font-family:"Alfa Slab One",serif;font-weight:400;color:var(--red);font-size:1.9rem;line-height:1;display:block;}
+  .stat.green .n{color:var(--green);}
+  .stat .lbl{font-family:"Bitter",Georgia,serif;color:var(--brown);font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:6px;display:block;}
+
+  .cards{display:grid;grid-template-columns:1fr;gap:16px;}
+  .card{background:#fffaf0;border:3px solid var(--brown);border-radius:18px;padding:22px 24px;box-shadow:6px 6px 0 var(--tan);transition:transform .12s;}
+  .card.open{box-shadow:8px 8px 0 var(--tan);}
+  .card-head{display:flex;align-items:center;gap:16px;cursor:pointer;user-select:none;}
+  .card-head .icon{width:44px;height:44px;background:var(--paper);border:2px solid var(--brown);border-radius:10px;display:grid;place-items:center;font-size:1.4rem;flex-shrink:0;}
+  .card-head h2{margin:0;font-family:"Alfa Slab One",serif;font-weight:400;color:var(--brown);font-size:1.18rem;line-height:1.2;}
+  .card-head .sub{color:var(--brown);font-family:"Bree Serif",serif;font-size:.88rem;margin-top:3px;}
+  .card-head .status{margin-left:auto;font-family:"Alfa Slab One",serif;font-weight:400;font-size:.72rem;padding:6px 12px;border-radius:999px;letter-spacing:.08em;text-transform:uppercase;border:2px solid var(--brown);}
+  .status-not_started{background:#f0e5d5;color:var(--brown);}
+  .status-in_progress{background:#fff2c8;color:#a68008;border-color:#a68008;}
+  .status-connected{background:#e6f5ee;color:var(--green);border-color:var(--green);}
+  .status-verified{background:#d4f0e0;color:var(--green);border-color:var(--green);}
+  .card-head .chev{margin-left:14px;color:var(--red);font-size:1.4rem;transition:transform .2s;}
+  .card.open .card-head .chev{transform:rotate(90deg);}
+
+  .body{display:none;padding-top:22px;margin-top:20px;border-top:2px dashed var(--tan);}
+  .card.open .body{display:block;}
+  .body h3{font-family:"Alfa Slab One",serif;font-weight:400;color:var(--red);font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;margin:0 0 10px;}
+  .body .cover{color:var(--brown);font-family:"Bree Serif",serif;font-size:.94rem;margin:0 0 14px;background:var(--paper);border-left:3px solid var(--gold);padding:10px 14px;border-radius:0 8px 8px 0;}
+  .body ol{padding-left:22px;color:var(--ink);margin:0 0 20px;}
+  .body ol li{padding:4px 0;line-height:1.55;font-size:.95rem;}
+  .body ol code{background:var(--paper);padding:2px 6px;border-radius:4px;color:var(--red);font-family:"SF Mono",Consolas,monospace;font-size:.9em;border:1px solid var(--tan);}
+  .body a{color:var(--red);border-bottom:1px dotted var(--red);text-decoration:none;}
+
+  .paste{margin-top:18px;}
+  .paste label{display:block;font-family:"Alfa Slab One",serif;font-weight:400;color:var(--red);letter-spacing:.06em;text-transform:uppercase;font-size:.78rem;margin:0 0 6px;}
+  .paste textarea{width:100%;font-family:"SF Mono",Consolas,monospace;font-size:.86rem;padding:12px 14px;border:2px solid var(--brown);border-radius:10px;background:#fffcf5;color:var(--ink);min-height:130px;resize:vertical;line-height:1.45;}
+  .paste textarea:focus{outline:none;border-color:var(--red);}
+  .paste .hint{color:var(--brown);font-family:"Bree Serif",serif;font-size:.82rem;margin-top:4px;}
+
+  .row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;align-items:center;}
+  .btn{font-family:"Alfa Slab One",serif;font-weight:400;padding:10px 18px;border-radius:10px;border:2px solid var(--brown);font-size:.9rem;cursor:pointer;letter-spacing:.02em;}
+  .btn.primary{background:var(--red);color:#fffaf0;box-shadow:3px 3px 0 var(--brown);}
+  .btn.primary:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--brown);}
+  .btn.ghost{background:transparent;color:var(--brown);}
+  .btn.ghost:hover{background:var(--paper);}
+  .btn.danger{background:transparent;color:var(--red);border-color:var(--red);}
+  .btn.danger:hover{background:#fdecea;}
+  .btn:disabled{opacity:.5;cursor:wait;}
+  .toast{margin-left:auto;color:var(--green);font-family:"Bree Serif",serif;font-size:.92rem;opacity:0;transition:opacity .2s;}
+  .toast.show{opacity:1;}
+  .toast.err{color:var(--red);}
+
+  .notes{margin-top:20px;}
+  .notes label{font-family:"Bree Serif",serif;color:var(--brown);font-size:.85rem;display:block;margin-bottom:4px;}
+  .notes input{width:100%;font:inherit;padding:8px 12px;border:2px solid var(--tan);border-radius:8px;background:#fffcf5;color:var(--ink);}
+  .notes input:focus{outline:none;border-color:var(--brown);}
+
+  .unlock{margin-top:14px;font-family:"Bree Serif",serif;font-size:.84rem;color:var(--brown);}
+  .unlock .chan{display:inline-block;background:var(--paper);border:1px solid var(--tan);border-radius:999px;padding:2px 10px;margin:2px 4px 2px 0;font-size:.78rem;color:var(--brown);}
+
+  .section-title{font-family:"Alfa Slab One",serif;font-weight:400;color:var(--brown);font-size:.95rem;letter-spacing:.1em;text-transform:uppercase;margin:34px 0 14px 4px;border-bottom:2px dashed var(--tan);padding-bottom:6px;}
+
+  #loading{padding:60px 24px;text-align:center;color:var(--brown);}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Hey Aaron! Marketing<small>Connect Wizard</small></div>
+  <div class="spacer"></div>
+  <span class="info" id="info"></span>
+  <button id="logout">Sign out</button>
+</header>
+
+<main>
+  <h1>Connect Wizard</h1>
+  <p class="lede">Set up each channel, then paste the credentials back here. Everything you paste is stored in Cloudflare KV and fetched by GitHub Actions at post time — never in code, never in your inbox.</p>
+
+  <div class="summary">
+    <div class="stat"><span class="n" id="s-tot">0</span><span class="lbl">providers</span></div>
+    <div class="stat"><span class="n" id="s-notyet">0</span><span class="lbl">not started</span></div>
+    <div class="stat"><span class="n" id="s-prog">0</span><span class="lbl">in progress</span></div>
+    <div class="stat green"><span class="n" id="s-conn">0</span><span class="lbl">connected</span></div>
+  </div>
+
+  <div id="loading">Loading state…</div>
+  <div id="app"></div>
+</main>
+
+<script>
+// ============================================================================
+// Provider registry — each entry is one secret-file the workflow will use.
+// Each provider unlocks 1..N channels in config.yaml when its secret is present.
+// ============================================================================
+const PROVIDERS = [
+  {
+    id: "buffer",
+    icon: "📮",
+    name: "Buffer",
+    sub: "MVP aggregator — covers LinkedIn + X + TikTok + Pinterest",
+    unlocks: ["linkedin", "x", "tiktok", "pinterest"],
+    cover: "Buffer is the fastest path to LinkedIn + X + TikTok + Pinterest for a solo tenant. One account, no App Review, ~5 min setup.",
+    steps: [
+      'Sign up at <a href="https://buffer.com" target="_blank" rel="noopener">buffer.com</a> (Free tier is enough for MVP).',
+      'Connect your LinkedIn account, X account, TikTok (optional), and Pinterest (optional) as channels.',
+      'Go to <a href="https://publish.buffer.com/account/apps" target="_blank" rel="noopener">Account → API access</a> and generate a personal access token.',
+      'Grab your Organization ID from <code>publish.buffer.com/organizations/&lt;ORG_ID&gt;</code> (in the URL).',
+      'Grab each connected channel ID from <code>publish.buffer.com/channels/&lt;CHANNEL_ID&gt;</code>.',
+    ],
+    template: "BUFFER_TOKEN=paste-buffer-personal-access-token\nBUFFER_ORG=paste-org-id\nBUFFER_LINKEDIN_CHANNEL=paste-linkedin-channel-id\nBUFFER_X_CHANNEL=paste-x-channel-id\nBUFFER_TIKTOK_CHANNEL=optional-tiktok-channel-id\nBUFFER_PINTEREST_CHANNEL=optional-pinterest-channel-id",
+  },
+  {
+    id: "bluesky",
+    icon: "🦋",
+    name: "Bluesky",
+    sub: "own app-password · no review · ~5 min",
+    unlocks: ["bluesky"],
+    cover: "Bluesky is the trivial win — just an app-password. No review process, no OAuth. Perfect first non-Buffer channel.",
+    steps: [
+      'Sign up / sign in at <a href="https://bsky.app" target="_blank" rel="noopener">bsky.app</a>. Consider a handle like <code>@heyaaronmarketing.bsky.social</code>.',
+      'Go to <a href="https://bsky.app/settings/app-passwords" target="_blank" rel="noopener">Settings → App Passwords</a>.',
+      'Create a new app-password named <code>aaron.chat posting engine</code> and copy the value.',
+      'Paste your handle and the app-password into the block below.',
+    ],
+    template: "BLUESKY_HANDLE=heyaaronmarketing.bsky.social\nBLUESKY_APP_PASSWORD=paste-app-password-here",
+  },
+  {
+    id: "telegraph",
+    icon: "📰",
+    name: "Telegraph",
+    sub: "anonymous · no signup · $0",
+    unlocks: ["telegraph"],
+    cover: "Telegraph (telegra.ph) is Telegram's anonymous publishing tool. No signup — just an author name + short_name. Free backlinks forever.",
+    steps: [
+      'Choose an author display name — <code>Hey Aaron! Marketing</code> is fine.',
+      'Choose a short URL slug — <code>heyaaron</code> or similar.',
+      'On first post, the publisher gets a random access token from Telegraph and stores it back in your secret. That means you can start empty here — the runtime bootstraps the auth.',
+    ],
+    template: "TELEGRAPH_AUTHOR_NAME=Hey Aaron! Marketing\nTELEGRAPH_AUTHOR_URL=https://aaron.chat/\nTELEGRAPH_SHORT_NAME=heyaaron\nTELEGRAPH_ACCESS_TOKEN=(leave blank; runtime will generate)",
+  },
+  {
+    id: "meta",
+    icon: "🅜",
+    name: "Meta (Facebook + Instagram + Threads)",
+    sub: "one dedicated app · unlocks 3 channels · ~1-2 weeks App Review",
+    unlocks: ["facebook", "instagram", "threads"],
+    cover: "One dedicated Meta app (Hey Aaron! Marketing) unlocks FB + IG + Threads. This is the biggest single review process — most of the time-cost is waiting on Meta.",
+    steps: [
+      'Go to <a href="https://developers.facebook.com/" target="_blank" rel="noopener">developers.facebook.com</a> → My Apps → Create App (type: Business).',
+      'Name the app <code>Hey Aaron! Marketing</code>.',
+      'Complete Business Verification (docs at <a href="https://business.facebook.com/settings/security" target="_blank" rel="noopener">business.facebook.com/settings/security</a>). ~1 day.',
+      'Add products: Facebook Login for Business, Instagram, Threads.',
+      'Submit for App Review requesting: <code>pages_manage_posts</code>, <code>pages_read_engagement</code>, <code>pages_show_list</code>, <code>instagram_content_publish</code>. ~2-5 business days.',
+      'After approval: generate a System User token with the approved scopes.',
+      'Add aaron.chat\'s FB page + IG account as assets on the same app.',
+      'Paste the token + page ID + IG user ID below.',
+    ],
+    template: "META_APP_ID=paste-app-id\nMETA_APP_SECRET=paste-app-secret\nMETA_PAGE_ID=paste-fb-page-id\nMETA_PAGE_TOKEN=paste-page-access-token\nMETA_IG_USER_ID=paste-ig-user-id\nMETA_THREADS_USER_ID=paste-threads-user-id",
+  },
+  {
+    id: "google",
+    icon: "🅶",
+    name: "Google (Blogger + YouTube + GBP)",
+    sub: "one dedicated Cloud project · unlocks 3 channels · verify + GBP access request",
+    unlocks: ["blogger", "youtube", "gbp"],
+    cover: "One dedicated Google Cloud project (hey-aaron-marketing) unlocks Blogger + YouTube + GBP. GBP specifically needs a separate access request that takes 1-4 weeks.",
+    steps: [
+      'Go to <a href="https://console.cloud.google.com/" target="_blank" rel="noopener">console.cloud.google.com</a> → New Project → <code>hey-aaron-marketing</code>.',
+      'Enable APIs: YouTube Data API v3, Blogger API v3, Google Business Profile API.',
+      'Configure OAuth consent screen: External, business info for <code>Hey Aaron! Marketing</code>.',
+      'Complete Google Business Verification (~1 week).',
+      'File the GBP API access request (booked-job/docs/gbp-api-access-request.md is your template). Quota starts at 0 → 300 after approval (~1-4 weeks).',
+      'Create OAuth Client ID (Desktop or Web application). Save client_id + client_secret.',
+      'Run the consent flow once locally to get a refresh token.',
+      'Paste all four values below.',
+    ],
+    template: "GOOGLE_CLIENT_ID=paste-client-id\nGOOGLE_CLIENT_SECRET=paste-client-secret\nGOOGLE_REFRESH_TOKEN=paste-refresh-token\nGOOGLE_BLOGGER_BLOG_ID=paste-blog-id\nGOOGLE_YOUTUBE_CHANNEL_ID=paste-yt-channel-id\nGOOGLE_GBP_ACCOUNT_ID=paste-gbp-account-id\nGOOGLE_GBP_LOCATION_ID=paste-gbp-location-id",
+  },
+  {
+    id: "tumblr",
+    icon: "🅣",
+    name: "Tumblr",
+    sub: "OAuth with rotating refresh · ~1 hr",
+    unlocks: ["tumblr"],
+    cover: "Tumblr has a legit posting API. Watch out for the ROTATING refresh token — each refresh returns a new refresh token that MUST be persisted or the next run fails. booked-job solved this.",
+    steps: [
+      'Register a Tumblr blog for aaron.chat (or use an existing one).',
+      'Go to <a href="https://www.tumblr.com/oauth/apps" target="_blank" rel="noopener">tumblr.com/oauth/apps</a> → Register application.',
+      'App name: <code>Hey Aaron! Marketing</code>. Application website: <code>https://aaron.chat</code>. Callback URL: <code>https://aaron.chat/setup/</code> (any valid URL; we use out-of-band flow).',
+      'Copy the consumer key + consumer secret.',
+      'Run the OAuth flow once (Phase B will automate this in the wizard). Paste the tokens below.',
+    ],
+    template: "TUMBLR_CONSUMER_KEY=paste-consumer-key\nTUMBLR_CONSUMER_SECRET=paste-consumer-secret\nTUMBLR_OAUTH_TOKEN=paste-oauth-token\nTUMBLR_OAUTH_TOKEN_SECRET=paste-oauth-token-secret\nTUMBLR_BLOG=heyaaron.tumblr.com",
+  },
+  {
+    id: "mastodon",
+    icon: "🐘",
+    name: "Mastodon",
+    sub: "per-instance OAuth · pick an instance · ~10 min",
+    unlocks: ["mastodon"],
+    cover: "Mastodon is federated. You pick an instance (mastodon.social is fine) and register an app there. Small audience but $0 forever.",
+    steps: [
+      'Pick an instance. Recommended: <code>mastodon.social</code>. Create the account <code>@heyaaronmarketing</code>.',
+      'Go to Preferences → Development → New Application.',
+      'App name: <code>Hey Aaron! Marketing</code>. Scopes: <code>write:statuses read:accounts</code>.',
+      'Copy the access token from the app detail page.',
+      'Optionally add rel=me verification to aaron.chat/about/ so the profile shows a green checkmark.',
+    ],
+    template: "MASTODON_INSTANCE=https://mastodon.social\nMASTODON_ACCESS_TOKEN=paste-access-token\nMASTODON_HANDLE=@heyaaronmarketing@mastodon.social",
+  },
+  {
+    id: "telegram",
+    icon: "📣",
+    name: "Telegram (channel broadcast)",
+    sub: "bot_token · no review · not rostered for aaron.chat currently",
+    unlocks: ["telegram"],
+    cover: "Telegram broadcast channels. aaron.chat's ICP probably isn't on Telegram, but the setup is trivial if you want it later.",
+    steps: [
+      'On Telegram, message <code>@BotFather</code>. Command: <code>/newbot</code>.',
+      'Name it, get the bot_token.',
+      'Create a Telegram channel. Add the bot as an administrator with posting rights.',
+      'Get the channel ID (send a message, then query <code>getUpdates</code>).',
+    ],
+    template: "TELEGRAM_BOT_TOKEN=paste-bot-token\nTELEGRAM_CHANNEL=@heyaaronmarketing",
+  },
+  {
+    id: "github_pages",
+    icon: "🐙",
+    name: "GitHub Pages (syndication mirror)",
+    sub: "syndication mirror for link-building + AEO",
+    unlocks: ["github_pages"],
+    cover: "A second domain that publishes rewritten summaries of aaron.chat content with canonical links back. Boosts SEO + AI-engine visibility. Match booked-job's contractors.webhd.com pattern.",
+    steps: [
+      'Decide on a target domain: <code>marketing.aaronphillips.io</code> or a fresh <code>heyaaron.pages.dev</code> — anything NOT aaron.chat itself.',
+      'Create a new GitHub repo like <code>aaronconsent/heyaaron-mirror</code> with GitHub Pages enabled (or a Cloudflare Pages project).',
+      'Generate a fine-grained Personal Access Token at <a href="https://github.com/settings/tokens" target="_blank" rel="noopener">GitHub → Settings → Developer settings → Tokens</a> with <code>Contents: read/write</code> scope, limited to that mirror repo only.',
+      'Paste the target repo + PAT below.',
+    ],
+    template: "GH_PAGES_REPO=aaronconsent/heyaaron-mirror\nGH_PAGES_BRANCH=main\nGH_PAGES_PAT=github_pat_...\nGH_PAGES_TARGET_URL=https://marketing.aaronphillips.io",
+  },
+  {
+    id: "resend",
+    icon: "✉️",
+    name: "Resend (email newsletter)",
+    sub: "already wired for /api/contact · needs list ID + broadcast setup",
+    unlocks: ["email"],
+    cover: "Resend already handles /api/contact emails. Broadcasts need a Resend list + audience ID. Building the actual subscriber-capture flow on aaron.chat is a separate task.",
+    steps: [
+      'Sign in at <a href="https://resend.com" target="_blank" rel="noopener">resend.com</a>.',
+      'Create an audience (Resend → Audiences → New audience) named <code>aaron.chat subscribers</code>.',
+      'Copy the audience ID.',
+      'Paste the same RESEND_API_KEY you already have in Cloudflare Pages env vars + the audience ID below.',
+    ],
+    template: "RESEND_API_KEY=re_...\nRESEND_AUDIENCE_ID=paste-audience-id\nRESEND_FROM=Hey Aaron! Marketing <hello@aaron.chat>",
+  },
+];
+
+// ============================================================================
+// UI logic
+// ============================================================================
+const app = document.getElementById("app");
+const loading = document.getElementById("loading");
+const info = document.getElementById("info");
+const sTot = document.getElementById("s-tot"), sNotyet = document.getElementById("s-notyet"),
+      sProg = document.getElementById("s-prog"), sConn = document.getElementById("s-conn");
+let STATE = {};
+
+document.getElementById("logout").addEventListener("click", async () => {
+  await fetch("/api/setup/logout", { method: "POST" });
+  location.href = "/setup/login/";
+});
+
+async function refresh() {
+  loading.style.display = "block";
+  app.innerHTML = "";
+  try {
+    const r = await fetch("/api/setup/state");
+    if (r.status === 401) { location.href = "/setup/login/"; return; }
+    const d = await r.json();
+    STATE = d.channels || {};
+    render();
+  } catch (e) {
+    app.innerHTML = `<p style="color:var(--red)">Failed to load state: ${e.message}</p>`;
+  } finally {
+    loading.style.display = "none";
+  }
+}
+
+function statusFor(providerId) {
+  const s = STATE[providerId];
+  if (!s) return "not_started";
+  return s.status || "not_started";
+}
+
+function updateSummary() {
+  const counts = { not_started: 0, in_progress: 0, connected: 0, verified: 0 };
+  for (const p of PROVIDERS) counts[statusFor(p.id)] = (counts[statusFor(p.id)] || 0) + 1;
+  sTot.textContent = PROVIDERS.length;
+  sNotyet.textContent = counts.not_started;
+  sProg.textContent = counts.in_progress;
+  sConn.textContent = counts.connected + counts.verified;
+  const connectedProviders = PROVIDERS.filter(p => ["connected", "verified"].includes(statusFor(p.id))).length;
+  info.textContent = `${connectedProviders} of ${PROVIDERS.length} providers connected`;
+}
+
+function render() {
+  app.innerHTML = "";
+  const groups = [
+    { title: "Live in MVP", ids: ["buffer"] },
+    { title: "Quick wins (< 1 hr each, no review)", ids: ["bluesky", "telegraph", "mastodon", "telegram"] },
+    { title: "Big unlocks (App Review windows)", ids: ["meta", "google"] },
+    { title: "Backlink + SEO plays", ids: ["tumblr", "github_pages", "resend"] },
+  ];
+  for (const g of groups) {
+    const section = document.createElement("div");
+    section.className = "section-title";
+    section.textContent = g.title;
+    app.appendChild(section);
+    const wrap = document.createElement("div");
+    wrap.className = "cards";
+    for (const id of g.ids) {
+      const p = PROVIDERS.find(x => x.id === id);
+      if (p) wrap.appendChild(renderCard(p));
+    }
+    app.appendChild(wrap);
+  }
+  updateSummary();
+}
+
+function renderCard(p) {
+  const status = statusFor(p.id);
+  const el = document.createElement("div");
+  el.className = "card";
+  el.dataset.id = p.id;
+  const notes = (STATE[p.id]?.notes) ?? "";
+  const stepsHtml = p.steps.map(s => `<li>${s}</li>`).join("");
+  const unlockHtml = p.unlocks.map(c => `<span class="chan">${c}</span>`).join("");
+  el.innerHTML = `
+    <div class="card-head">
+      <div class="icon">${p.icon}</div>
+      <div>
+        <h2>${p.name}</h2>
+        <div class="sub">${p.sub}</div>
+      </div>
+      <span class="status status-${status}">${label(status)}</span>
+      <span class="chev">▸</span>
+    </div>
+    <div class="body">
+      <p class="cover">${p.cover}</p>
+      <h3>Steps</h3>
+      <ol>${stepsHtml}</ol>
+      <div class="unlock">Unlocks: ${unlockHtml}</div>
+      <div class="paste">
+        <label>Paste secret (env-file body)</label>
+        <textarea data-id="${p.id}" placeholder="${escapeAttr(p.template)}"></textarea>
+        <div class="hint">Format: <code>KEY=value</code> one per line. Same body will land in <code>secrets/${p.id}.env</code> on GitHub Actions runs.</div>
+      </div>
+      <div class="row">
+        <button class="btn primary" data-action="save" data-id="${p.id}">Save credentials</button>
+        <button class="btn ghost" data-action="template" data-id="${p.id}">Fill template</button>
+        ${status !== "not_started" ? `<button class="btn danger" data-action="clear" data-id="${p.id}">Clear saved</button>` : ""}
+        <span class="toast" data-id="${p.id}"></span>
+      </div>
+      <div class="notes">
+        <label for="notes-${p.id}">Notes (private, for you only)</label>
+        <input id="notes-${p.id}" data-id="${p.id}" data-field="notes" type="text" value="${escapeAttr(notes)}" placeholder="e.g. 'Waiting on Meta App Review submitted 2026-07-10'">
+      </div>
+    </div>
+  `;
+  el.querySelector(".card-head").addEventListener("click", () => el.classList.toggle("open"));
+  el.querySelectorAll("button[data-action]").forEach(btn => {
+    btn.addEventListener("click", (e) => { e.stopPropagation(); handleAction(btn); });
+  });
+  el.querySelector(`input[data-field="notes"]`).addEventListener("blur", (e) => {
+    saveNote(p.id, e.target.value);
+  });
+  return el;
+}
+
+function label(status) {
+  return { not_started: "Not started", in_progress: "In progress", connected: "Connected", verified: "Verified" }[status] || status;
+}
+
+function escapeAttr(s) {
+  return String(s || "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+}
+
+async function handleAction(btn) {
+  const action = btn.dataset.action;
+  const id = btn.dataset.id;
+  const card = document.querySelector(`.card[data-id="${id}"]`);
+  const ta = card.querySelector("textarea");
+  const toast = card.querySelector(".toast");
+  if (action === "template") {
+    const p = PROVIDERS.find(x => x.id === id);
+    if (ta.value.trim() === "") ta.value = p.template;
+    ta.focus();
+    return;
+  }
+  if (action === "save") {
+    const body = ta.value.trim();
+    if (!body) { showToast(toast, "Nothing to save.", true); return; }
+    btn.disabled = true; btn.textContent = "Saving…";
+    try {
+      const r = await fetch("/api/setup/secret", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ channel: id, secret_body: body }),
+      });
+      const d = await r.json();
+      if (r.ok && d.ok) {
+        showToast(toast, "Saved ✓");
+        STATE[id] = d.state;
+        updateSummary();
+        // Re-render just the status badge
+        const badge = card.querySelector(".status");
+        badge.className = `status status-${d.state.status}`;
+        badge.textContent = label(d.state.status);
+        ta.value = "";
+        ta.setAttribute("placeholder", "(saved — paste new value to overwrite)");
+      } else {
+        showToast(toast, d.error || "Save failed", true);
+      }
+    } catch (e) {
+      showToast(toast, e.message, true);
+    } finally {
+      btn.disabled = false; btn.textContent = "Save credentials";
+    }
+    return;
+  }
+  if (action === "clear") {
+    if (!confirm(`Clear saved credentials for ${id}? This deletes the secret from Cloudflare KV.`)) return;
+    btn.disabled = true; btn.textContent = "Clearing…";
+    try {
+      const r = await fetch("/api/setup/secret/clear", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ channel: id }),
+      });
+      const d = await r.json();
+      if (r.ok && d.ok) {
+        showToast(toast, "Cleared");
+        delete STATE[id];
+        refresh();
+      } else {
+        showToast(toast, d.error || "Clear failed", true);
+      }
+    } catch (e) {
+      showToast(toast, e.message, true);
+    } finally {
+      btn.disabled = false;
+    }
+  }
+}
+
+async function saveNote(channel, notes) {
+  try {
+    await fetch("/api/setup/note", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ channel, notes }),
+    });
+    STATE[channel] = { ...(STATE[channel] || {}), notes };
+  } catch (_) { /* silent */ }
+}
+
+function showToast(el, text, isErr) {
+  el.textContent = text;
+  el.className = "toast show" + (isErr ? " err" : "");
+  clearTimeout(el._t);
+  el._t = setTimeout(() => { el.className = "toast"; }, 2500);
+}
+
+refresh();
+</script>
+</body>
+</html>

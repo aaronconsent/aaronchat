@@ -260,15 +260,224 @@ async function handleOrder(request, env) {
   }
 }
 
+// ============================================================================
+// Tier-2 Connect Wizard — /setup + /api/setup/*
+// Stores wizard state + credentials in Cloudflare KV (SETUP_KV binding).
+// Authenticated by SETUP_PASSWORD (Worker env var) → HttpOnly signed cookie.
+// GitHub Actions workflow fetches credentials via /api/secrets (bearer token).
+// ============================================================================
+
+const COOKIE_NAME = "pm_setup_session";
+const COOKIE_TTL = 60 * 60 * 24 * 7; // 7 days
+
+async function sha256Hex(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function signSession(env) {
+  const nonce = crypto.randomUUID();
+  const expiresAt = Date.now() + COOKIE_TTL * 1000;
+  const payload = `${nonce}|${expiresAt}`;
+  const sig = await sha256Hex(payload + "|" + (env.SETUP_PASSWORD || ""));
+  return `${payload}|${sig}`;
+}
+
+async function verifySession(cookieVal, env) {
+  if (!cookieVal) return false;
+  const parts = cookieVal.split("|");
+  if (parts.length !== 3) return false;
+  const [nonce, expiresAt, sig] = parts;
+  if (Number(expiresAt) < Date.now()) return false;
+  const expected = await sha256Hex(nonce + "|" + expiresAt + "|" + (env.SETUP_PASSWORD || ""));
+  return expected === sig;
+}
+
+function getCookie(request, name) {
+  const cookie = request.headers.get("cookie") || "";
+  for (const p of cookie.split(";")) {
+    const [k, ...v] = p.trim().split("=");
+    if (k === name) return decodeURIComponent(v.join("="));
+  }
+  return null;
+}
+
+function setCookie(name, value) {
+  return `${name}=${encodeURIComponent(value)}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${COOKIE_TTL}`;
+}
+
+function clearCookie(name) {
+  return `${name}=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0`;
+}
+
+async function requireSession(request, env) {
+  const cookieVal = getCookie(request, COOKIE_NAME);
+  const ok = await verifySession(cookieVal, env);
+  if (!ok) return json({ ok: false, error: "unauthorized" }, 401);
+  return null;
+}
+
+// ---- /api/setup routes ----
+
+async function handleSetupLogin(request, env) {
+  if (request.method !== "POST") return json({ ok: false, error: "method not allowed" }, 405);
+  const { password } = await request.json().catch(() => ({}));
+  if (!env.SETUP_PASSWORD) return json({ ok: false, error: "SETUP_PASSWORD not configured" }, 500);
+  if (!password || password !== env.SETUP_PASSWORD) {
+    return json({ ok: false, error: "bad password" }, 401);
+  }
+  const sess = await signSession(env);
+  return new Response(JSON.stringify({ ok: true }), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store",
+      "Set-Cookie": setCookie(COOKIE_NAME, sess),
+    },
+  });
+}
+
+async function handleSetupLogout() {
+  return new Response(JSON.stringify({ ok: true }), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+      "Set-Cookie": clearCookie(COOKIE_NAME),
+    },
+  });
+}
+
+async function handleSetupState(request, env) {
+  const authErr = await requireSession(request, env);
+  if (authErr) return authErr;
+  if (!env.SETUP_KV) return json({ ok: false, error: "SETUP_KV not bound" }, 500);
+  const { keys } = await env.SETUP_KV.list({ prefix: "channel:" });
+  const channels = {};
+  for (const k of keys) {
+    const val = await env.SETUP_KV.get(k.name, "json");
+    channels[k.name.replace("channel:", "")] = val || {};
+  }
+  return json({ ok: true, channels });
+}
+
+async function handleSetupSaveSecret(request, env) {
+  const authErr = await requireSession(request, env);
+  if (authErr) return authErr;
+  if (!env.SETUP_KV) return json({ ok: false, error: "SETUP_KV not bound" }, 500);
+  if (request.method !== "POST") return json({ ok: false, error: "method not allowed" }, 405);
+  const { channel, secret_body, notes } = await request.json().catch(() => ({}));
+  if (!channel || !secret_body) {
+    return json({ ok: false, error: "channel + secret_body required" }, 400);
+  }
+  if (secret_body.length > 8192) {
+    return json({ ok: false, error: "secret_body too large" }, 400);
+  }
+  // Store the raw multi-line env-file body under secret:<channel>
+  await env.SETUP_KV.put(`secret:${channel}`, secret_body);
+  // Update per-channel state under channel:<channel>
+  const existing = (await env.SETUP_KV.get(`channel:${channel}`, "json")) || {};
+  const state = {
+    ...existing,
+    status: "connected",
+    connected_at: existing.connected_at || new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    notes: notes ?? existing.notes ?? "",
+  };
+  await env.SETUP_KV.put(`channel:${channel}`, JSON.stringify(state));
+  return json({ ok: true, channel, state });
+}
+
+async function handleSetupClearSecret(request, env) {
+  const authErr = await requireSession(request, env);
+  if (authErr) return authErr;
+  if (!env.SETUP_KV) return json({ ok: false, error: "SETUP_KV not bound" }, 500);
+  if (request.method !== "POST") return json({ ok: false, error: "method not allowed" }, 405);
+  const { channel } = await request.json().catch(() => ({}));
+  if (!channel) return json({ ok: false, error: "channel required" }, 400);
+  await env.SETUP_KV.delete(`secret:${channel}`);
+  const existing = (await env.SETUP_KV.get(`channel:${channel}`, "json")) || {};
+  const state = { ...existing, status: "not_started", connected_at: null, updated_at: new Date().toISOString() };
+  await env.SETUP_KV.put(`channel:${channel}`, JSON.stringify(state));
+  return json({ ok: true, channel });
+}
+
+async function handleSetupSaveNote(request, env) {
+  const authErr = await requireSession(request, env);
+  if (authErr) return authErr;
+  if (!env.SETUP_KV) return json({ ok: false, error: "SETUP_KV not bound" }, 500);
+  if (request.method !== "POST") return json({ ok: false, error: "method not allowed" }, 405);
+  const { channel, notes } = await request.json().catch(() => ({}));
+  if (!channel) return json({ ok: false, error: "channel required" }, 400);
+  const existing = (await env.SETUP_KV.get(`channel:${channel}`, "json")) || {};
+  const state = { ...existing, notes: notes ?? "", updated_at: new Date().toISOString() };
+  await env.SETUP_KV.put(`channel:${channel}`, JSON.stringify(state));
+  return json({ ok: true, channel, state });
+}
+
+// ---- /api/secrets — GitHub Actions consumer endpoint ----
+// Auth: bearer token that matches env.SECRETS_FETCH_TOKEN. Returns all stored
+// channel secret bodies keyed by channel name. Workflow writes each into
+// secrets/<channel>.env at run time.
+
+async function handleFetchSecrets(request, env) {
+  const auth = request.headers.get("authorization") || "";
+  const token = auth.replace(/^Bearer\s+/i, "");
+  if (!env.SECRETS_FETCH_TOKEN) {
+    return json({ ok: false, error: "SECRETS_FETCH_TOKEN not configured" }, 500);
+  }
+  if (!token || token !== env.SECRETS_FETCH_TOKEN) {
+    return json({ ok: false, error: "unauthorized" }, 401);
+  }
+  if (!env.SETUP_KV) return json({ ok: false, error: "SETUP_KV not bound" }, 500);
+  const { keys } = await env.SETUP_KV.list({ prefix: "secret:" });
+  const secrets = {};
+  for (const k of keys) {
+    const val = await env.SETUP_KV.get(k.name);
+    if (val) secrets[k.name.replace("secret:", "")] = val;
+  }
+  return json({ ok: true, secrets });
+}
+
+// ---- Setup UI gating ----
+// /setup and /setup/* — if no session cookie, serve the login page.
+async function handleSetupUi(request, env) {
+  const url = new URL(request.url);
+  const cookieVal = getCookie(request, COOKIE_NAME);
+  const authed = await verifySession(cookieVal, env);
+  // Login page is always accessible
+  if (url.pathname === "/setup/login" || url.pathname === "/setup/login/") {
+    return env.ASSETS.fetch(new Request(new URL("/setup/login/index.html", url.origin), request));
+  }
+  if (!authed) {
+    // Redirect to login preserving the target
+    const target = encodeURIComponent(url.pathname + url.search);
+    return Response.redirect(`${url.origin}/setup/login/?next=${target}`, 302);
+  }
+  return env.ASSETS.fetch(request);
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.pathname === "/api/contact") {
-      return handleContact(request, env);
+
+    // Existing routes
+    if (url.pathname === "/api/contact") return handleContact(request, env);
+    if (url.pathname === "/api/order") return handleOrder(request, env);
+
+    // Wizard routes
+    if (url.pathname === "/api/setup/login") return handleSetupLogin(request, env);
+    if (url.pathname === "/api/setup/logout") return handleSetupLogout();
+    if (url.pathname === "/api/setup/state") return handleSetupState(request, env);
+    if (url.pathname === "/api/setup/secret") return handleSetupSaveSecret(request, env);
+    if (url.pathname === "/api/setup/secret/clear") return handleSetupClearSecret(request, env);
+    if (url.pathname === "/api/setup/note") return handleSetupSaveNote(request, env);
+    if (url.pathname === "/api/secrets") return handleFetchSecrets(request, env);
+
+    // Setup UI (auth-gated)
+    if (url.pathname === "/setup" || url.pathname.startsWith("/setup/")) {
+      return handleSetupUi(request, env);
     }
-    if (url.pathname === "/api/order") {
-      return handleOrder(request, env);
-    }
+
     // Everything else: serve the static asset (HTML, CSS, JS, images).
     return env.ASSETS.fetch(request);
   },

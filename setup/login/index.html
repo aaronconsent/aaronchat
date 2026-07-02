@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Sign in — Setup · Hey Aaron! Marketing</title>
+<style>
+  :root { --brown:#5b3427; --red:#a82b22; --gold:#eaa92b; --cream:#fffaf0; --paper:#fff7e0; --tan:#cdb393; --ink:#3a2a20; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:"Bitter",Georgia,serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+  .card{background:#fffaf0;border:3px solid var(--brown);border-radius:22px;padding:40px 44px;box-shadow:10px 10px 0 var(--tan);max-width:440px;width:100%;}
+  h1{font-family:"Alfa Slab One",serif;font-weight:400;color:var(--brown);font-size:1.7rem;margin:0 0 8px;line-height:1.15;}
+  p{color:var(--brown);margin:0 0 22px;font-size:.98rem;line-height:1.5;}
+  label{display:block;font-family:"Alfa Slab One",serif;font-weight:400;color:var(--red);letter-spacing:.08em;text-transform:uppercase;font-size:.82rem;margin:0 0 8px;}
+  input[type=password]{width:100%;font:inherit;padding:14px 16px;border:3px solid var(--brown);border-radius:12px;background:var(--paper);color:var(--brown);font-size:1.05rem;}
+  input:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px rgba(168,43,34,.15);}
+  button{margin-top:20px;width:100%;font-family:"Alfa Slab One",serif;font-weight:400;background:var(--red);color:#fffaf0;border:3px solid var(--brown);padding:14px 20px;border-radius:12px;font-size:1.05rem;cursor:pointer;box-shadow:4px 4px 0 var(--brown);letter-spacing:.02em;}
+  button:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--brown);}
+  button:disabled{opacity:.5;cursor:wait;}
+  .status{margin-top:18px;padding:12px 16px;border-radius:10px;font-size:.95rem;display:none;}
+  .status.err{background:#fdecea;color:#a82b22;border:1px solid #a82b22;display:block;}
+  .status.ok{background:#e6f5ee;color:#0c7a4f;border:1px solid #0c7a4f;display:block;}
+  .brand{font-family:"Alfa Slab One",serif;font-weight:400;color:var(--red);margin:0 0 20px;font-size:1.1rem;letter-spacing:.03em;}
+  .brand small{font-family:"Bree Serif",serif;color:var(--brown);letter-spacing:.2em;font-size:.7rem;display:block;text-transform:uppercase;font-weight:400;}
+  a.back{display:inline-block;margin-top:14px;color:var(--brown);font-family:"Bree Serif",serif;font-size:.88rem;border-bottom:1px dotted var(--brown);text-decoration:none;}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Bree+Serif&family=Bitter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="card">
+  <div class="brand">Hey Aaron! Marketing<small>Connect Wizard</small></div>
+  <h1>Sign in</h1>
+  <p>This is the private setup console. Ask Aaron for the password if you're not Aaron.</p>
+  <form id="f">
+    <label for="pw">Password</label>
+    <input id="pw" type="password" autofocus autocomplete="current-password" required>
+    <button id="submit" type="submit">Sign in</button>
+    <div id="status" class="status"></div>
+  </form>
+  <a class="back" href="/">← Back to aaron.chat</a>
+</div>
+<script>
+const params = new URLSearchParams(location.search);
+const next = params.get("next") || "/setup/";
+const f = document.getElementById("f");
+const s = document.getElementById("status");
+const btn = document.getElementById("submit");
+f.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  btn.disabled = true; btn.textContent = "Signing in…"; s.className = "status"; s.textContent = "";
+  try {
+    const r = await fetch("/api/setup/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: document.getElementById("pw").value }),
+    });
+    const d = await r.json().catch(() => ({}));
+    if (r.ok && d.ok) { location.href = next; return; }
+    s.className = "status err"; s.textContent = d.error || `Sign-in failed (${r.status})`;
+  } catch (err) {
+    s.className = "status err"; s.textContent = "Network error. Try again.";
+  } finally {
+    btn.disabled = false; btn.textContent = "Sign in";
+  }
+});
+</script>
+</body>
+</html>
