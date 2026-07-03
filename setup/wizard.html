@@ -415,14 +415,16 @@ function renderCard(p) {
       <div class="unlock">Unlocks: ${unlockHtml}</div>
       ${summaryHtml}
       ${oauthHtml}
-      <div class="paste">
+      <div class="paste" data-paste="${p.id}" ${isActivated(status) ? 'style="display:none"' : ''}>
         <label>Paste secret (env-file body)</label>
         <textarea data-id="${p.id}" placeholder="${escapeAttr(p.template)}"></textarea>
         <div class="hint">Format: <code>KEY=value</code> one per line. Same body will land in <code>secrets/${p.id}.env</code> on GitHub Actions runs.</div>
       </div>
       <div class="row">
-        <button class="btn primary" data-action="save" data-id="${p.id}">Save credentials</button>
-        <button class="btn ghost" data-action="template" data-id="${p.id}">Fill template</button>
+        ${isActivated(status)
+          ? `<button class="btn primary" data-action="edit" data-id="${p.id}">Edit credentials</button>`
+          : `<button class="btn primary" data-action="save" data-id="${p.id}">Save credentials</button>`}
+        <button class="btn ghost" data-action="template" data-id="${p.id}" ${isActivated(status) ? 'style="display:none"' : ''}>Fill template</button>
         <button class="btn ghost" data-action="probe" data-id="${p.id}">Test connection</button>
         ${status !== "not_started" ? `<button class="btn danger" data-action="clear" data-id="${p.id}">Clear saved</button>` : ""}
         <span class="toast" data-id="${p.id}"></span>
@@ -603,6 +605,16 @@ async function handleAction(btn) {
   if (action === "template") {
     const p = PROVIDERS.find(x => x.id === id);
     if (ta.value.trim() === "") ta.value = p.template;
+    ta.focus();
+    return;
+  }
+  if (action === "edit") {
+    const pasteBlock = card.querySelector(`[data-paste="${id}"]`);
+    if (pasteBlock) pasteBlock.style.display = "";
+    const tmplBtn = card.querySelector(`button[data-action="template"][data-id="${id}"]`);
+    if (tmplBtn) tmplBtn.style.display = "";
+    btn.dataset.action = "save";
+    btn.textContent = "Save credentials";
     ta.focus();
     return;
   }
