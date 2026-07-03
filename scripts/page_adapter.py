@@ -175,6 +175,7 @@ def make_item(page, platform, variant_idx, text, voice_version):
         "id": _id,
         "page_url": page["url"],
         "platform": platform,
+        "mode": "audience",
         "variant": variant_idx,
         "text": text,
         "link": page["url"],

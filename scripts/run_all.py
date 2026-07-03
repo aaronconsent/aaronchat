@@ -21,6 +21,7 @@ RUNNERS = {
     "linkedin": "linkedin_runner.py",
     "x": "x_runner.py",
     "bluesky": "bluesky_runner.py",
+    "mastodon": "mastodon_runner.py",
     # facebook / instagram deferred per config.
 }
 

@@ -100,7 +100,15 @@
   .content-grid{margin-top:14px;padding:16px 18px;background:var(--paper);border:2px dashed var(--tan);border-radius:12px;}
   .content-grid h3{margin:0 0 4px;}
   .content-grid .grid-sub{color:var(--brown);font-family:"Bree Serif",serif;font-size:.85rem;margin:0 0 12px;}
-  .content-grid ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px 16px;}
+  .content-grid ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:2px;}
+  .mode-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px;}
+  @media(max-width:640px){.mode-cols{grid-template-columns:1fr;}}
+  .mode-col{background:#fffcf5;border:2px solid var(--brown);border-radius:10px;padding:10px 12px;}
+  .mode-col.mode-credibility{border-color:#3a7f4f;}
+  .mode-col.mode-audience{border-color:var(--gold);}
+  .mode-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;padding-bottom:6px;border-bottom:1px dotted var(--tan);}
+  .mode-name{font-family:"Alfa Slab One",serif;font-weight:400;color:var(--brown);font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;}
+  .mode-count{font-family:"Bree Serif",serif;color:var(--brown);font-size:.82rem;opacity:.8;}
   .content-grid li{display:flex;align-items:baseline;gap:10px;padding:6px 0;font-family:"Bree Serif",serif;font-size:.92rem;color:var(--ink);border-bottom:1px dotted var(--tan);}
   .content-grid .dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;border:2px solid #000;box-shadow:1px 1px 0 rgba(0,0,0,.15);transform:translateY(1px);}
   .content-grid .dot.ok{background:#28a745;border-color:#1c7c33;}
@@ -476,23 +484,33 @@ async function loadContentDashboard(container, provider) {
     const manifest = await fetchManifest();
     const stamp = manifest.generated_at ? new Date(manifest.generated_at).toLocaleString() : "";
     const channels = provider.unlocks || [];
+    const modes = manifest.modes || ["credibility", "audience"];
+    const renderList = (rows) => rows.map(t => `
+      <li>
+        <span class="dot ${t.ok ? 'ok' : 'miss'}" aria-label="${t.ok ? 'available' : 'missing'}"></span>
+        <span class="type-label">${escapeAttr(t.label)}</span>
+        <span class="type-detail">${escapeAttr(t.detail || '')}</span>
+      </li>`).join("");
     const blocks = channels.map(ch => {
-      const rows = (manifest.channels || {})[ch];
-      if (!rows) {
-        return `<div class="content-grid"><h3>${escapeAttr(ch)}</h3><p class="grid-sub" style="color:var(--red)">No content types registered for this channel. Add it to <code>CHANNEL_TYPES</code> in <code>scripts/content_status.py</code>.</p></div>`;
+      const chData = (manifest.channels || {})[ch];
+      if (!chData) {
+        return `<div class="content-grid"><h3>${escapeAttr(ch)}</h3><p class="grid-sub" style="color:var(--red)">No content types registered. Add it to <code>CHANNEL_TYPES</code> in <code>scripts/content_status.py</code>.</p></div>`;
       }
-      const have = rows.filter(t => t.ok).length;
-      const list = rows.map(t => `
-        <li>
-          <span class="dot ${t.ok ? 'ok' : 'miss'}" aria-label="${t.ok ? 'available' : 'missing'}"></span>
-          <span class="type-label">${escapeAttr(t.label)}</span>
-          <span class="type-detail">${escapeAttr(t.detail || '')}</span>
-        </li>`).join("");
+      const modeCols = modes.map(m => {
+        const rows = chData[m] || [];
+        if (!rows.length) return "";
+        const have = rows.filter(t => t.ok).length;
+        return `
+          <div class="mode-col mode-${m}">
+            <div class="mode-head"><span class="mode-name">${m}</span><span class="mode-count">${have}/${rows.length}</span></div>
+            <ul>${renderList(rows)}</ul>
+          </div>`;
+      }).join("");
       return `
         <div class="content-grid">
-          <h3>${escapeAttr(ch)} · ${have}/${rows.length} ready</h3>
-          <p class="grid-sub">Green = source content in the repo. Red = nothing to publish yet.</p>
-          <ul>${list}</ul>
+          <h3>${escapeAttr(ch)}</h3>
+          <p class="grid-sub">Credibility = entity/AEO signals from your kit. Audience = normal social pulled from site pages + blog.</p>
+          <div class="mode-cols">${modeCols}</div>
         </div>`;
     }).join("");
     container.innerHTML = `

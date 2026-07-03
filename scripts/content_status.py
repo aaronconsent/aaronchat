@@ -37,11 +37,14 @@ def _queue():
         return json.load(f)
 
 
-def _queue_items(platform):
+def _queue_items(platform, mode=None):
     q = _queue()
     if not q:
         return None  # sentinel: no queue at all
-    return [i for i in q.get("items", []) if i.get("platform") == platform]
+    items = [i for i in q.get("items", []) if i.get("platform") == platform]
+    if mode is not None:
+        items = [i for i in items if (i.get("mode") or "audience") == mode]
+    return items
 
 
 # ------------------------------------------------------------------
@@ -49,8 +52,8 @@ def _queue_items(platform):
 # ------------------------------------------------------------------
 
 def _make_queue_check(field, singular, plural=None):
-    def check(platform):
-        items = _queue_items(platform)
+    def check(platform, mode=None):
+        items = _queue_items(platform, mode=mode)
         if items is None:
             return False, "content/queue.json missing"
         matches = [i for i in items if i.get(field)]
@@ -60,8 +63,8 @@ def _make_queue_check(field, singular, plural=None):
     return check
 
 
-def check_text_posts(platform):
-    items = _queue_items(platform)
+def check_text_posts(platform, mode=None):
+    items = _queue_items(platform, mode=mode)
     if items is None:
         return False, "content/queue.json missing"
     with_text = [i for i in items if (i.get("text") or "").strip()]
@@ -213,10 +216,14 @@ CHANNEL_TYPES = {
         ("articles",   "Long-form articles",   check_articles),
     ],
     "mastodon": [
-        ("text_posts", "Text toots",           check_text_posts),
-        ("images",     "Images",               check_images),
+        ("text_posts", "Text toots (auto-linked)", check_text_posts),
+        ("images",     "Images (1–4, w/ alt-text)", check_images),
         ("video",      "Video",                check_video),
-        ("link_cards", "Link cards",           check_link_cards),
+        ("audio",      "Audio",                _make_queue_check("audio", "item with audio", "items with audio")),
+        ("link_cards", "Link cards (auto OG)", check_link_cards),
+        ("polls",      "Polls",                _make_queue_check("poll", "poll")),
+        ("threads",    "Threads (self-reply)", check_threads),
+        ("cw",         "Content warnings",     _make_queue_check("spoiler", "item with CW", "items with CW")),
     ],
     "telegram": [
         ("text_posts", "Broadcast text",       check_text_posts),
@@ -254,11 +261,21 @@ CHANNEL_TYPES = {
 }
 
 
-def _run_checks(channel):
+MODES = ("credibility", "audience")
+
+
+def _run_checks(channel, mode):
+    """Run all content-type checks for a channel filtered by mode. Non-queue
+    checks (profile files, etc.) run identically in both modes — they're
+    prerequisites regardless of mode."""
     rows = []
     for key, label, fn in CHANNEL_TYPES.get(channel, []):
         try:
-            ok, detail = fn(channel)
+            # Only queue-based checks accept the mode kwarg; others ignore it
+            try:
+                ok, detail = fn(channel, mode=mode)
+            except TypeError:
+                ok, detail = fn(channel)
         except Exception as ex:
             ok, detail = False, f"check errored: {ex}"[:200]
         rows.append({"key": key, "label": label, "ok": bool(ok), "detail": detail})
@@ -268,10 +285,11 @@ def _run_checks(channel):
 def main():
     channels = {}
     for chan in CHANNEL_TYPES:
-        channels[chan] = _run_checks(chan)
+        channels[chan] = {m: _run_checks(chan, m) for m in MODES}
 
     out = {
         "generated_at": dt.datetime.utcnow().isoformat(timespec="seconds") + "Z",
+        "modes": list(MODES),
         "channels": channels,
     }
     dest = os.path.join(SITE, "setup", "content-status.json")
@@ -279,9 +297,9 @@ def main():
     with open(dest, "w") as f:
         json.dump(out, f, indent=2)
 
-    total_types = sum(len(v) for v in channels.values())
-    ready = sum(1 for v in channels.values() for r in v if r["ok"])
-    print(f"[content-status] {ready}/{total_types} types ready across {len(channels)} channels → {dest}")
+    total_types = sum(len(v) for cvals in channels.values() for v in cvals.values())
+    ready = sum(1 for cvals in channels.values() for v in cvals.values() for r in v if r["ok"])
+    print(f"[content-status] {ready}/{total_types} type-checks ready across {len(channels)} channels × {len(MODES)} modes → {dest}")
     return 0
 
 

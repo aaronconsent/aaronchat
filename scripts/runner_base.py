@@ -63,12 +63,44 @@ def log(cfg, msg):
         f.write(line + "\n")
 
 
-def pick_next(queue, state, platform):
-    """First item whose platform matches AND id is not in posted_ids."""
+EMPTY_MODE_STATE = {"posted_ids": [], "by_date": {}, "last_iso": None}
+
+
+def _mode_state(state, mode):
+    """Return (and create) the per-mode sub-state dict."""
+    modes = state.setdefault("modes", {})
+    if mode not in modes:
+        modes[mode] = dict(EMPTY_MODE_STATE)
+    return modes[mode]
+
+
+def _migrate_state_shape(state):
+    """One-shot upgrade: legacy flat state → nested {modes: {audience: ...}}.
+    Safe to call repeatedly."""
+    if "modes" in state:
+        return state
+    legacy_ids = state.get("posted_ids")
+    if legacy_ids is None:
+        return {"modes": {}}
+    return {"modes": {"audience": {
+        "posted_ids": legacy_ids,
+        "by_date": state.get("by_date", {}),
+        "last_iso": state.get("last_iso"),
+    }}}
+
+
+def pick_next(queue, state, platform, mode):
+    """First item whose (platform, mode) matches AND id is not in posted_ids for this mode."""
     posted = set(state.get("posted_ids", []))
     for it in queue.get("items", []):
-        if it.get("platform") == platform and it.get("id") not in posted:
-            return it
+        if it.get("platform") != platform:
+            continue
+        item_mode = it.get("mode") or "audience"
+        if item_mode != mode:
+            continue
+        if it.get("id") in posted:
+            continue
+        return it
     return None
 
 
@@ -82,8 +114,32 @@ def mark_posted(state, item, tz):
     return state
 
 
+def _resolve_modes(ch):
+    """Return an ordered list of (mode_name, mode_cfg) from a channel config.
+    Falls back to a synthesized 'audience' mode from top-level fields for any
+    channel not yet migrated to the modes: block."""
+    modes_cfg = ch.get("modes")
+    if not modes_cfg:
+        return [("audience", {
+            "enabled": True,
+            "daily_cap": ch.get("daily_cap", 1),
+            "windows": ch.get("windows", []),
+            "weekdays_only": ch.get("weekdays_only", False),
+            "min_spacing_hours": ch.get("min_spacing_hours", 0),
+        })]
+    # Deterministic order: credibility first (slower burn, higher priority signal),
+    # then audience.
+    order = [m for m in ("credibility", "audience") if m in modes_cfg]
+    order += [m for m in modes_cfg if m not in order]
+    return [(m, modes_cfg[m]) for m in order]
+
+
 def run(channel_key, publisher_module, args=None):
-    """Drip loop for one channel. `publisher_module` must expose `post(item, channel_cfg) → PublishResult`."""
+    """Drip loop for one channel. Iterates enabled modes independently.
+
+    Each mode has its own cadence gates and posted-id set. One publish
+    attempt per mode per tick — modes never share a slot.
+    """
     args = args or argparse.Namespace(dry_run=False, force=False)
 
     import yaml
@@ -100,35 +156,47 @@ def run(channel_key, publisher_module, args=None):
 
     tz = cfg["tenant"]["timezone"]
     state_path = os.path.join(ROOT, cfg["runtime"]["state_dir"], f"{channel_key}_state.json")
-    state = load_json(state_path, {"posted_ids": [], "by_date": {}, "last_iso": None})
-
-    # Gate check (skip if --force)
-    if not args.force:
-        ok, reasons = cadence.all_gates(ch, state, tz=tz)
-        if not ok:
-            log(cfg, f"{channel_key}: gated. {' | '.join(reasons)}")
-            return 0
+    state = _migrate_state_shape(load_json(state_path, {"modes": {}}))
 
     queue_path = os.path.join(ROOT, cfg["runtime"]["queue_file"])
     queue = load_json(queue_path, {"items": []})
-    item = pick_next(queue, state, channel_key)
-    if not item:
-        log(cfg, f"{channel_key}: no unposted items in queue")
-        return 0
 
-    if args.dry_run:
-        log(cfg, f"{channel_key}: DRY-RUN would post id={item['id']} len={len(item['text'])} chars")
-        return 0
+    overall_rc = 0
+    any_action = False
+    for mode_name, mode_cfg in _resolve_modes(ch):
+        if not mode_cfg.get("enabled", True):
+            continue
+        mode_state = _mode_state(state, mode_name)
 
-    result = publisher_module.post(item, ch)
-    if result.ok:
-        state = mark_posted(state, item, tz)
-        save_json(state_path, state)
-        log(cfg, f"{channel_key}: POSTED id={item['id']} via {result.backend} ({result.detail})")
+        # Gate check per mode
+        if not args.force:
+            ok, reasons = cadence.all_gates(mode_cfg, mode_state, tz=tz)
+            if not ok:
+                log(cfg, f"{channel_key}[{mode_name}]: gated. {' | '.join(reasons)}")
+                continue
+
+        item = pick_next(queue, mode_state, channel_key, mode_name)
+        if not item:
+            log(cfg, f"{channel_key}[{mode_name}]: no unposted items")
+            continue
+
+        any_action = True
+        if args.dry_run:
+            log(cfg, f"{channel_key}[{mode_name}]: DRY-RUN would post id={item['id']} len={len(item.get('text',''))} chars")
+            continue
+
+        result = publisher_module.post(item, ch)
+        if result.ok:
+            _mode_state(state, mode_name)  # ensure exists
+            state["modes"][mode_name] = mark_posted(mode_state, item, tz)
+            save_json(state_path, state)
+            log(cfg, f"{channel_key}[{mode_name}]: POSTED id={item['id']} via {result.backend} ({result.detail})")
+        else:
+            log(cfg, f"{channel_key}[{mode_name}]: FAILED id={item['id']} backend={result.backend} detail={result.detail}")
+            overall_rc = 2
+    if not any_action:
         return 0
-    else:
-        log(cfg, f"{channel_key}: FAILED id={item['id']} backend={result.backend} detail={result.detail}")
-        return 2
+    return overall_rc
 
 
 def add_args(ap):

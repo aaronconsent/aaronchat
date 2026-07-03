@@ -19,20 +19,38 @@ channels:
     backend: aggregator            # own_app requires LinkedIn Marketing Partner — stay on Buffer
     aggregator: buffer
     buffer_channel_env: BUFFER_LINKEDIN_CHANNEL
-    daily_cap: 1
-    windows: [[8, 10], [12, 13]]
-    weekdays_only: true
-    min_spacing_hours: 4
+    modes:
+      credibility:
+        enabled: true
+        daily_cap: 1
+        windows: [[8, 18]]
+        weekdays_only: true
+        min_spacing_hours: 48        # slow burn — kit posts should feel intentional
+      audience:
+        enabled: true
+        daily_cap: 1
+        windows: [[8, 10], [12, 13]]
+        weekdays_only: true
+        min_spacing_hours: 4
 
   x:
     enabled: true
     backend: aggregator            # switch to own_app when paid X API v2 is worth $200/mo
     aggregator: buffer
     buffer_channel_env: BUFFER_X_CHANNEL
-    daily_cap: 3
-    windows: [[7, 9], [12, 14], [17, 19]]
-    weekdays_only: false
-    min_spacing_hours: 3
+    modes:
+      credibility:
+        enabled: true
+        daily_cap: 1
+        windows: [[9, 17]]
+        weekdays_only: true
+        min_spacing_hours: 36
+      audience:
+        enabled: true
+        daily_cap: 3
+        windows: [[7, 9], [12, 14], [17, 19]]
+        weekdays_only: false
+        min_spacing_hours: 3
 
   # ────────────────────────────────────────────────────────
   # QUEUED — build these when the account/creds land
@@ -43,10 +61,36 @@ channels:
   bluesky:
     enabled: true
     backend: own_app               # scripts/bluesky_publish.py via atproto SDK
-    daily_cap: 3
-    windows: [[7, 9], [12, 14], [17, 19]]
-    weekdays_only: false
-    min_spacing_hours: 3
+    modes:
+      credibility:
+        enabled: true
+        daily_cap: 1
+        windows: [[9, 17]]
+        weekdays_only: true
+        min_spacing_hours: 36
+      audience:
+        enabled: true
+        daily_cap: 3
+        windows: [[7, 9], [12, 14], [17, 19]]
+        weekdays_only: false
+        min_spacing_hours: 3
+
+  mastodon:
+    enabled: true                  # OAuth verified via wizard
+    backend: own_app
+    modes:
+      credibility:
+        enabled: true
+        daily_cap: 1
+        windows: [[9, 17]]
+        weekdays_only: true
+        min_spacing_hours: 36
+      audience:
+        enabled: true
+        daily_cap: 3
+        windows: [[7, 9], [12, 14], [17, 19]]
+        weekdays_only: false
+        min_spacing_hours: 3
 
   telegraph:
     enabled: false                 # anonymous — no auth needed, free forever
@@ -130,13 +174,7 @@ channels:
     weekdays_only: false
     min_spacing_hours: 12
 
-  mastodon:
-    enabled: false                 # per-instance OAuth, small audience but $0 cost
-    backend: own_app               # publisher stub: scripts/mastodon_publish.py
-    daily_cap: 2
-    windows: [[9, 11], [14, 16]]
-    weekdays_only: false
-    min_spacing_hours: 4
+  # mastodon: — moved up next to bluesky (activated, two-mode).
 
   pinterest:
     enabled: false                 # link-building + visual syndication play. MVP via Buffer.

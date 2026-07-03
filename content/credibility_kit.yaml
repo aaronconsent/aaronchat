@@ -1,0 +1,93 @@
+# Credibility Kit — canonical entity facts for aaron.chat
+#
+# Feeds `scripts/build_credibility_queue.py`, which generates a small,
+# deterministic set of "credibility mode" posts across every enabled channel.
+# These posts reinforce the entity/AEO graph — every post carries a canonical
+# URL, and the collection stays small enough to feel intentional (not spam).
+#
+# Edit by hand. Regenerate the queue with:
+#   python3 scripts/build_credibility_queue.py
+
+entity:
+  name: "Hey Aaron! Marketing"
+  founder: "Aaron Phillips"
+  tagline: "Marketing for East Texas service pros."
+  elevator_pitch: |
+    Hey Aaron! Marketing builds websites, runs local SEO, and manages Google
+    Business Profiles for contractors and service businesses across East Texas.
+  home_url: "https://aaron.chat/"
+  city: "Livingston, TX"
+  region: "East Texas"
+
+# sameAs graph — every profile you own. Post one "same person, different room"
+# post per handle so search + AI engines wire the identities together.
+same_as:
+  - label: "Facebook"
+    url: "https://www.facebook.com/heyaaronmarketing"
+  - label: "X"
+    url: "https://x.com/heyaaaron"
+  - label: "LinkedIn"
+    url: "https://www.linkedin.com/in/aaronphillips/"
+  - label: "Instagram"
+    url: "https://instagram.com/heyaaaron"
+  - label: "TikTok"
+    url: "https://www.tiktok.com/@heyaaaron"
+  - label: "YouTube"
+    url: "https://www.youtube.com/@heyaaronmarketing"
+  - label: "Mastodon"
+    url: "https://mastodon.social/@heyaaron"
+  - label: "Bluesky"
+    url: "https://bsky.app/profile/heyaaron.bsky.social"
+
+# Service one-liners — one credibility post per service with its canonical URL.
+services:
+  - name: "House Special (Free Year + $250/mo Year 2+)"
+    url: "https://aaron.chat/plans/house-special/"
+    one_liner: "Free website + local SEO for year one, $250/mo after — built for East Texas contractors."
+  - name: "Built For You Website"
+    url: "https://aaron.chat/services/built-for-you-website/"
+    one_liner: "We build the site, host it, and keep it fast so you can focus on running jobs."
+  - name: "Rank Me Local"
+    url: "https://aaron.chat/services/rank-me-local/"
+    one_liner: "Local SEO that gets service pros found in Google Maps in their county."
+  - name: "Google Business Profile"
+    url: "https://aaron.chat/services/found-on-google/"
+    one_liner: "GBP optimization + weekly posts + review responses — the fastest local ranking lever."
+  - name: "Adwords on Google"
+    url: "https://aaron.chat/services/adwords-on-google/"
+    one_liner: "Google Ads managed at $199/mo for East Texas service pros — no long contracts."
+  - name: "Facebook Ads"
+    url: "https://aaron.chat/services/facebook-ads/"
+    one_liner: "Facebook Ads for local trades — 15% of a $2K-$50K monthly budget."
+  - name: "Review Rocket"
+    url: "https://aaron.chat/services/review-rocket/"
+    one_liner: "Automated review requests + response drafts — get to 100 five-star reviews in a year."
+  - name: "Lead Hustler"
+    url: "https://aaron.chat/services/lead-hustler/"
+    one_liner: "Local Group Sharing + rapid-response lead handoff — turn Facebook groups into jobs."
+
+# FAQ Q&A — one credibility post per pair. Answer is authoritative, links home.
+faq:
+  - q: "Do you only work with East Texas service pros?"
+    a: "Yes — we focus on contractors and service businesses across East Texas so we understand the towns, trades, and buying patterns."
+    url: "https://aaron.chat/about/"
+  - q: "What is the House Special?"
+    a: "A free website and local SEO for year one, then $250/mo starting year two. Built for East Texas contractors who want to test us before committing."
+    url: "https://aaron.chat/plans/house-special/"
+  - q: "How long before I rank in Google Maps?"
+    a: "Most service pros see meaningful rank movement in 60-90 days when the GBP profile, on-page content, and citations are all handled together."
+    url: "https://aaron.chat/services/rank-me-local/"
+  - q: "Do you require long contracts?"
+    a: "No long contracts. Month-to-month on every service so you can leave the moment we stop earning our keep."
+    url: "https://aaron.chat/pricing/"
+
+# Optional per-platform overrides. Leave blank to use defaults.
+# hashtags on X only, none on LinkedIn, etc.
+platform_hashtags:
+  x: ["EastTexas", "LocalSEO"]
+  bluesky: []
+  mastodon: []
+  linkedin: []
+  facebook: []
+  instagram: ["EastTexas", "LocalSEO", "ContractorMarketing"]
+  threads: []
