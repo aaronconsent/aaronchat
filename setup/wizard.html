@@ -397,7 +397,7 @@ function renderCard(p) {
   const unlockHtml = p.unlocks.map(c => `<span class="chan">${c}</span>`).join("");
   const summary = STATE[p.id]?.oauth_summary || "";
   const summaryHtml = summary ? `<div class="oauth-summary">✓ ${summary}</div>` : "";
-  const oauthHtml = renderOauthBlock(p);
+  const oauthHtml = isActivated(status) ? "" : renderOauthBlock(p);
   el.innerHTML = `
     <div class="card-head">
       <div class="icon">${p.icon}</div>
