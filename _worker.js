@@ -955,12 +955,24 @@ const PROBES = {
     if (!e.MASTODON_INSTANCE || !e.MASTODON_ACCESS_TOKEN) {
       return { ok: false, detail: "MASTODON_INSTANCE + MASTODON_ACCESS_TOKEN required" };
     }
-    const r = await fetch(`${e.MASTODON_INSTANCE}/api/v1/accounts/verify_credentials`, {
-      headers: { Authorization: `Bearer ${e.MASTODON_ACCESS_TOKEN}` },
+    // Normalize instance: strip trailing slash, add https:// if bare host
+    let instance = e.MASTODON_INSTANCE.trim().replace(/\/+$/, "");
+    if (!/^https?:\/\//i.test(instance)) instance = "https://" + instance;
+    const r = await fetch(`${instance}/api/v1/accounts/verify_credentials`, {
+      headers: { Authorization: `Bearer ${e.MASTODON_ACCESS_TOKEN}`, "Accept": "application/json" },
     });
-    const d = await r.json().catch(() => ({}));
-    if (!r.ok || !d.username) return { ok: false, detail: `Mastodon ${r.status}: ${d.error || "?"}` };
-    return { ok: true, detail: `@${d.username}@${new URL(e.MASTODON_INSTANCE).host} · ${d.followers_count || 0} followers` };
+    const text = await r.text();
+    let d = {};
+    try { d = JSON.parse(text); } catch (_) {}
+    if (!r.ok) {
+      const msg = d.error || text.slice(0, 140).replace(/\s+/g, " ") || "no body";
+      return { ok: false, detail: `Mastodon ${r.status}: ${msg}` };
+    }
+    if (!d.username) {
+      const preview = text.slice(0, 140).replace(/\s+/g, " ");
+      return { ok: false, detail: `Mastodon 200 but no username in response — check that MASTODON_INSTANCE points at your server root (e.g. https://mastodon.social). Body: ${preview || "(empty)"}` };
+    }
+    return { ok: true, detail: `@${d.username}@${new URL(instance).host} · ${d.followers_count || 0} followers` };
   },
 
   async telegram(env, e) {
