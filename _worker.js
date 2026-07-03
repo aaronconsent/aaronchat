@@ -630,6 +630,14 @@ async function saveOauthApp(env, provider, appConfig) {
   await env.SETUP_KV.put(`oauth_app:${provider}`, JSON.stringify(appConfig));
 }
 
+// Merge an incoming app patch with what's already in KV, so a partial save
+// (e.g. user only re-typed the client_id while the client_secret stayed
+// masked) doesn't wipe unchanged fields.
+async function mergeOauthApp(env, provider, incoming) {
+  const existing = (await loadOauthApp(env, provider)) || {};
+  return { ...existing, ...(incoming || {}) };
+}
+
 // ---- POST /api/setup/oauth-app — save/read OAuth app credentials ----
 
 async function handleOauthAppSave(request, env) {
@@ -640,13 +648,19 @@ async function handleOauthAppSave(request, env) {
   const { provider, app } = await request.json().catch(() => ({}));
   if (!provider || !OAUTH_PROVIDERS[provider]) return json({ ok: false, error: "unknown provider" }, 400);
   if (!app || typeof app !== "object") return json({ ok: false, error: "app object required" }, 400);
-  // Validate required fields
+  // Merge with existing so partial saves (e.g. user re-typed only client_id
+  // while client_secret stayed masked) don't wipe unchanged fields.
+  const merged = await mergeOauthApp(env, provider, app);
+  // Validate required fields against the MERGED result, not just the incoming
+  // payload — otherwise editing one field would trip validation for other
+  // required fields that are already saved.
   const required = OAUTH_PROVIDERS[provider].app_fields;
-  for (const f of required) {
-    if (!app[f]) return json({ ok: false, error: `missing app.${f}` }, 400);
+  const missing = required.filter((f) => !merged[f]);
+  if (missing.length) {
+    return json({ ok: false, error: `missing app.${missing.join(", app.")}` }, 400);
   }
-  await saveOauthApp(env, provider, app);
-  return json({ ok: true, provider });
+  await saveOauthApp(env, provider, merged);
+  return json({ ok: true, provider, saved_fields: Object.keys(merged) });
 }
 
 async function handleOauthAppGet(request, env) {
