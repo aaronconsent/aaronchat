@@ -94,6 +94,21 @@
 
   .section-title{font-family:"Alfa Slab One",serif;font-weight:400;color:var(--brown);font-size:.95rem;letter-spacing:.1em;text-transform:uppercase;margin:34px 0 14px 4px;border-bottom:2px dashed var(--tan);padding-bottom:6px;}
 
+  .dash-header{margin:0 0 14px;}
+  .dash-title{font-family:"Alfa Slab One",serif;font-weight:400;color:var(--red);font-size:1rem;letter-spacing:.06em;text-transform:uppercase;margin:0 0 4px;}
+  .dash-slot{margin:6px 0 8px;}
+  .content-grid{margin-top:14px;padding:16px 18px;background:var(--paper);border:2px dashed var(--tan);border-radius:12px;}
+  .content-grid h3{margin:0 0 4px;}
+  .content-grid .grid-sub{color:var(--brown);font-family:"Bree Serif",serif;font-size:.85rem;margin:0 0 12px;}
+  .content-grid ul{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px 16px;}
+  .content-grid li{display:flex;align-items:baseline;gap:10px;padding:6px 0;font-family:"Bree Serif",serif;font-size:.92rem;color:var(--ink);border-bottom:1px dotted var(--tan);}
+  .content-grid .dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;border:2px solid #000;box-shadow:1px 1px 0 rgba(0,0,0,.15);transform:translateY(1px);}
+  .content-grid .dot.ok{background:#28a745;border-color:#1c7c33;}
+  .content-grid .dot.miss{background:var(--red);border-color:#8b1a1a;}
+  .content-grid .type-label{font-weight:600;color:var(--brown);}
+  .content-grid .type-detail{color:var(--brown);opacity:.75;font-size:.82rem;margin-left:auto;text-align:right;}
+  .content-grid .grid-stamp{margin-top:10px;font-size:.76rem;color:var(--brown);opacity:.7;font-family:"Bree Serif",serif;}
+
   #loading{padding:60px 24px;text-align:center;color:var(--brown);}
 </style>
 </head>
@@ -394,9 +409,9 @@ function renderCard(p) {
       <span class="chev">▸</span>
     </div>
     <div class="body">
-      <p class="cover">${p.cover}</p>
-      <h3>Steps</h3>
-      <ol>${stepsHtml}</ol>
+      ${isActivated(status)
+        ? `<div class="dash-slot" data-dash-slot="${p.id}"><p class="grid-sub">Loading content readiness…</p></div>`
+        : `<p class="cover">${p.cover}</p><h3>Steps</h3><ol>${stepsHtml}</ol>`}
       <div class="unlock">Unlocks: ${unlockHtml}</div>
       ${summaryHtml}
       ${oauthHtml}
@@ -435,7 +450,60 @@ function renderCard(p) {
   // Load existing OAuth app config to pre-fill (secrets are masked server-side)
   const oauthBlock = el.querySelector(".oauth-config");
   if (oauthBlock) prefillOauthApp(oauthBlock, p.id);
+  // Load content-readiness dashboard when activated
+  const dashSlot = el.querySelector(`[data-dash-slot="${p.id}"]`);
+  if (dashSlot) loadContentDashboard(dashSlot, p);
   return el;
+}
+
+function isActivated(status) {
+  return status === "connected" || status === "verified";
+}
+
+let _MANIFEST_CACHE = null;
+async function fetchManifest() {
+  if (_MANIFEST_CACHE) return _MANIFEST_CACHE;
+  const r = await fetch("/setup/content-status.json", { cache: "no-store" });
+  if (!r.ok) throw new Error(`manifest HTTP ${r.status}`);
+  _MANIFEST_CACHE = await r.json();
+  return _MANIFEST_CACHE;
+}
+
+async function loadContentDashboard(container, provider) {
+  try {
+    const manifest = await fetchManifest();
+    const stamp = manifest.generated_at ? new Date(manifest.generated_at).toLocaleString() : "";
+    const channels = provider.unlocks || [];
+    const blocks = channels.map(ch => {
+      const rows = (manifest.channels || {})[ch];
+      if (!rows) {
+        return `<div class="content-grid"><h3>${escapeAttr(ch)}</h3><p class="grid-sub" style="color:var(--red)">No content types registered for this channel. Add it to <code>CHANNEL_TYPES</code> in <code>scripts/content_status.py</code>.</p></div>`;
+      }
+      const have = rows.filter(t => t.ok).length;
+      const list = rows.map(t => `
+        <li>
+          <span class="dot ${t.ok ? 'ok' : 'miss'}" aria-label="${t.ok ? 'available' : 'missing'}"></span>
+          <span class="type-label">${escapeAttr(t.label)}</span>
+          <span class="type-detail">${escapeAttr(t.detail || '')}</span>
+        </li>`).join("");
+      return `
+        <div class="content-grid">
+          <h3>${escapeAttr(ch)} · ${have}/${rows.length} ready</h3>
+          <p class="grid-sub">Green = source content in the repo. Red = nothing to publish yet.</p>
+          <ul>${list}</ul>
+        </div>`;
+    }).join("");
+    container.innerHTML = `
+      <div class="dash-header">
+        <h3 class="dash-title">Content readiness</h3>
+        <p class="grid-sub">Channel activated. This dashboard replaces the setup instructions — see what's ready to publish.</p>
+      </div>
+      ${blocks}
+      ${stamp ? `<div class="grid-stamp">Snapshot: ${stamp} · regenerate with <code>python3 scripts/content_status.py</code></div>` : ""}
+    `;
+  } catch (e) {
+    container.innerHTML = `<div class="content-grid"><h3>Content readiness</h3><p class="grid-sub" style="color:var(--red)">Manifest not found (${e.message}). Run <code>python3 scripts/content_status.py</code> and redeploy.</p></div>`;
+  }
 }
 
 async function prefillOauthApp(container, providerId) {

@@ -34,7 +34,7 @@ jobs:
         with: { python-version: '3.12' }
 
       - name: Install deps
-        run: pip install --quiet requests pyyaml beautifulsoup4
+        run: pip install --quiet requests pyyaml beautifulsoup4 atproto Pillow
 
       - name: Fetch secrets from Connect Wizard (Cloudflare Worker)
         env:

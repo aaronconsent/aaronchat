@@ -41,8 +41,8 @@ channels:
   # ────────────────────────────────────────────────────────
 
   bluesky:
-    enabled: false                 # trivial — app_password, ~10min setup, add first
-    backend: own_app               # publisher stub: scripts/bsky_publish.py (not yet built)
+    enabled: true
+    backend: own_app               # scripts/bluesky_publish.py via atproto SDK
     daily_cap: 3
     windows: [[7, 9], [12, 14], [17, 19]]
     weekdays_only: false

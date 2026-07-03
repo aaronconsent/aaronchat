@@ -1,0 +1,337 @@
+{
+  "generated_at": "2026-07-03T22:04:56Z",
+  "channels": {
+    "bluesky": [
+      {
+        "key": "text_posts",
+        "label": "Text posts",
+        "ok": false,
+        "detail": "0 text posts queued"
+      },
+      {
+        "key": "images",
+        "label": "Images (1\u20134 per post)",
+        "ok": false,
+        "detail": "0 items with images queued"
+      },
+      {
+        "key": "video",
+        "label": "Video",
+        "ok": false,
+        "detail": "0 items with video queued"
+      },
+      {
+        "key": "link_cards",
+        "label": "Link cards (auto OG)",
+        "ok": false,
+        "detail": "0 items with link cards queued"
+      },
+      {
+        "key": "threads",
+        "label": "Threads (self-reply)",
+        "ok": false,
+        "detail": "0 threads queued"
+      },
+      {
+        "key": "quote_posts",
+        "label": "Quote posts",
+        "ok": false,
+        "detail": "0 quote posts queued"
+      },
+      {
+        "key": "profile",
+        "label": "Profile (name + bio)",
+        "ok": false,
+        "detail": "content/bluesky_profile.yaml missing"
+      },
+      {
+        "key": "avatar",
+        "label": "Avatar image",
+        "ok": false,
+        "detail": "profile config missing"
+      },
+      {
+        "key": "banner",
+        "label": "Banner image",
+        "ok": false,
+        "detail": "profile config missing"
+      },
+      {
+        "key": "pinned_post",
+        "label": "Pinned post",
+        "ok": false,
+        "detail": "profile config missing"
+      },
+      {
+        "key": "starter_packs",
+        "label": "Starter packs",
+        "ok": true,
+        "detail": "1/1 pack(s) have handles"
+      },
+      {
+        "key": "competitors",
+        "label": "Competitor tracking",
+        "ok": false,
+        "detail": "0 handle(s) tracked"
+      }
+    ],
+    "linkedin": [
+      {
+        "key": "text_posts",
+        "label": "Text posts",
+        "ok": true,
+        "detail": "114 text posts queued"
+      },
+      {
+        "key": "images",
+        "label": "Images (1\u20139 per post)",
+        "ok": false,
+        "detail": "0 items with images queued"
+      },
+      {
+        "key": "link_cards",
+        "label": "Link previews",
+        "ok": true,
+        "detail": "114 items with link cards queued"
+      }
+    ],
+    "x": [
+      {
+        "key": "text_posts",
+        "label": "Text posts",
+        "ok": true,
+        "detail": "114 text posts queued"
+      },
+      {
+        "key": "images",
+        "label": "Images (1\u20134)",
+        "ok": false,
+        "detail": "0 items with images queued"
+      },
+      {
+        "key": "video",
+        "label": "Video",
+        "ok": false,
+        "detail": "0 items with video queued"
+      },
+      {
+        "key": "threads",
+        "label": "Threads",
+        "ok": false,
+        "detail": "0 threads queued"
+      },
+      {
+        "key": "link_cards",
+        "label": "Link cards",
+        "ok": true,
+        "detail": "114 items with link cards queued"
+      }
+    ],
+    "facebook": [
+      {
+        "key": "text_posts",
+        "label": "Text posts",
+        "ok": false,
+        "detail": "0 text posts queued"
+      },
+      {
+        "key": "images",
+        "label": "Images",
+        "ok": false,
+        "detail": "0 items with images queued"
+      },
+      {
+        "key": "video",
+        "label": "Video",
+        "ok": false,
+        "detail": "0 items with video queued"
+      },
+      {
+        "key": "link_cards",
+        "label": "Link cards",
+        "ok": false,
+        "detail": "0 items with link cards queued"
+      }
+    ],
+    "instagram": [
+      {
+        "key": "images",
+        "label": "Feed images (1\u201310 carousel)",
+        "ok": false,
+        "detail": "0 items with images queued"
+      },
+      {
+        "key": "video",
+        "label": "Reels / video",
+        "ok": false,
+        "detail": "0 items with video queued"
+      }
+    ],
+    "threads": [
+      {
+        "key": "text_posts",
+        "label": "Text posts",
+        "ok": false,
+        "detail": "0 text posts queued"
+      },
+      {
+        "key": "images",
+        "label": "Images",
+        "ok": false,
+        "detail": "0 items with images queued"
+      }
+    ],
+    "telegraph": [
+      {
+        "key": "articles",
+        "label": "Long-form articles",
+        "ok": false,
+        "detail": "no markdown articles in content/articles/ or content/blog/"
+      }
+    ],
+    "mastodon": [
+      {
+        "key": "text_posts",
+        "label": "Text toots",
+        "ok": false,
+        "detail": "0 text posts queued"
+      },
+      {
+        "key": "images",
+        "label": "Images",
+        "ok": false,
+        "detail": "0 items with images queued"
+      },
+      {
+        "key": "video",
+        "label": "Video",
+        "ok": false,
+        "detail": "0 items with video queued"
+      },
+      {
+        "key": "link_cards",
+        "label": "Link cards",
+        "ok": false,
+        "detail": "0 items with link cards queued"
+      }
+    ],
+    "telegram": [
+      {
+        "key": "text_posts",
+        "label": "Broadcast text",
+        "ok": false,
+        "detail": "0 text posts queued"
+      },
+      {
+        "key": "images",
+        "label": "Images",
+        "ok": false,
+        "detail": "0 items with images queued"
+      },
+      {
+        "key": "video",
+        "label": "Video",
+        "ok": false,
+        "detail": "0 items with video queued"
+      }
+    ],
+    "tumblr": [
+      {
+        "key": "text_posts",
+        "label": "Text posts",
+        "ok": false,
+        "detail": "0 text posts queued"
+      },
+      {
+        "key": "images",
+        "label": "Photo posts",
+        "ok": false,
+        "detail": "0 items with images queued"
+      },
+      {
+        "key": "video",
+        "label": "Video posts",
+        "ok": false,
+        "detail": "0 items with video queued"
+      },
+      {
+        "key": "link_cards",
+        "label": "Link posts",
+        "ok": false,
+        "detail": "0 items with link cards queued"
+      }
+    ],
+    "pinterest": [
+      {
+        "key": "images",
+        "label": "Pin images",
+        "ok": false,
+        "detail": "0 items with images queued"
+      },
+      {
+        "key": "link_cards",
+        "label": "Rich pins (URL)",
+        "ok": false,
+        "detail": "0 items with link cards queued"
+      }
+    ],
+    "tiktok": [
+      {
+        "key": "video",
+        "label": "Vertical video",
+        "ok": false,
+        "detail": "0 items with video queued"
+      }
+    ],
+    "blogger": [
+      {
+        "key": "articles",
+        "label": "Blog posts (markdown)",
+        "ok": false,
+        "detail": "no markdown articles in content/articles/ or content/blog/"
+      }
+    ],
+    "youtube": [
+      {
+        "key": "video",
+        "label": "Videos to upload",
+        "ok": false,
+        "detail": "0 items with video queued"
+      }
+    ],
+    "gbp": [
+      {
+        "key": "text_posts",
+        "label": "GBP posts (text)",
+        "ok": false,
+        "detail": "0 text posts queued"
+      },
+      {
+        "key": "images",
+        "label": "GBP photos",
+        "ok": false,
+        "detail": "0 photo(s) staged"
+      },
+      {
+        "key": "link_cards",
+        "label": "GBP posts (CTA link)",
+        "ok": false,
+        "detail": "0 items with link cards queued"
+      },
+      {
+        "key": "offers",
+        "label": "Offers / promotions",
+        "ok": false,
+        "detail": "content/gbp/offers.yaml missing"
+      }
+    ],
+    "medium": [
+      {
+        "key": "articles",
+        "label": "Long-form articles",
+        "ok": false,
+        "detail": "no markdown articles in content/articles/ or content/blog/"
+      }
+    ]
+  }
+}

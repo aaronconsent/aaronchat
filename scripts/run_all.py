@@ -20,6 +20,7 @@ ROOT = os.path.abspath(os.path.join(HERE, ".."))
 RUNNERS = {
     "linkedin": "linkedin_runner.py",
     "x": "x_runner.py",
+    "bluesky": "bluesky_runner.py",
     # facebook / instagram deferred per config.
 }
 

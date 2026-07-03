@@ -1,0 +1,13 @@
+slug: east-texas-service-pros
+name: East Texas Service Pros
+description: |
+  Contractors, local marketers, and service businesses worth
+  following in East Texas. Curated by aaron.chat.
+
+# Handles to include. Resolve to DIDs at create/sync time.
+handles:
+  - heyaaron.bsky.social
+  # Add more as the East Texas Bluesky community grows.
+
+# Optional custom feeds to auto-follow when someone joins via this pack.
+feeds: []
