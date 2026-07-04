@@ -429,6 +429,7 @@ const OAUTH_PROVIDERS = {
     // OAuth 2.0 endpoints
     authorize_url: "https://www.facebook.com/v18.0/dialog/oauth",
     token_url: "https://graph.facebook.com/v18.0/oauth/access_token",
+    scope_separator: ",",              // Meta's docs use comma-delimited scope
     scopes: [
       "pages_manage_posts",
       "pages_read_engagement",
@@ -699,7 +700,10 @@ async function handleOauthStart(request, env, provider) {
   const url = new URL(request.url);
   const redirectUri = `${url.origin}/oauth/${provider}/callback`;
   const state = await signState(provider, env);
-  const scopes = spec.scopes.join(",");
+  // OAuth 2.0 (RFC 6749) says scopes are space-delimited. A few providers
+  // (Meta, GitHub) tolerate or expect commas — opt in via spec.scope_separator.
+  const scopeSep = spec.scope_separator || " ";
+  const scopes = spec.scopes.join(scopeSep);
   // Special-case dynamic app registration (Mastodon per-instance)
   let authorizeBase = spec.authorize_url;
   let clientId = app.client_id;
