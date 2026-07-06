@@ -1,0 +1,23 @@
+trade: electricians
+name: "Electricians"
+service_area_note: "Boat-house wiring, panel upgrades, and generator installs dominate this trade around the lake."
+
+number_one_bar:
+  reviews_median: null
+  avg_rating_min: null
+  website_required: null
+  response_within_hours: null
+  same_day_service: null
+  summary: |
+    (Awaiting research — Electricians is scheduled two builds from now.)
+
+companies: []
+
+insights:
+  - kind: "note"
+    headline: "Electricians research on the queue"
+    body: |
+      This roster will lag HVAC by one week. Focus areas: master vs.
+      journeyman badge on the site, generator brand partnerships (Kohler,
+      Generac), and after-hours emergency phone.
+    social_ready: false

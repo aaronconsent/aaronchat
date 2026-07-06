@@ -1,0 +1,49 @@
+name: build stats.lakelivingston
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'stats-lakelivingston/data/**'
+      - 'stats-lakelivingston/scripts/build.py'
+      - 'stats-lakelivingston/templates/**'
+      - 'stats-lakelivingston/assets/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stats-lakelivingston
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: stats-lakelivingston
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+
+      - name: Install deps
+        run: pip install --quiet pyyaml
+
+      - name: Build docs/
+        run: python3 scripts/build.py
+
+      - name: Commit regenerated docs/
+        run: |
+          cd ..
+          git config user.name "aaron-chat-bot"
+          git config user.email "hello+bot@aaron.chat"
+          git add -f stats-lakelivingston/docs
+          if git diff --cached --quiet; then
+            echo "no changes to commit"
+          else
+            git commit -m "chore(stats-lakelivingston): rebuild docs $(date -u +%FT%TZ)"
+            git push
+          fi

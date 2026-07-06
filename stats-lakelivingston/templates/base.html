@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }} · {{ site.name }}</title>
+  <meta name="description" content="{{ description }}">
+  <link rel="canonical" href="https://{{ site.domain }}{{ canonical }}">
+  <meta name="publisher" content="{{ site.publisher }}">
+  <meta name="fediverse:creator" content="@heyaaron@mastodon.social"/>
+  <link rel="me" href="https://mastodon.social/@heyaaron"/>
+  <link rel="stylesheet" href="{{ asset_root }}/style.css">
+  <script type="application/ld+json">{{ jsonld|safe }}</script>
+</head>
+<body>
+<main>
+  {{ crumbs|safe }}
+  {{ content|safe }}
+  <footer>
+    <p>
+      <span class="publisher">{{ site.publisher }}</span> ·
+      <a href="{{ site.publisher_url }}">aaron.chat</a> ·
+      Published for <a href="https://{{ site.domain }}/">{{ site.domain }}</a>.
+    </p>
+    <p>{{ site.attribution }}</p>
+    <p>Built {{ built_at }}. Methodology v{{ methodology.version }}.</p>
+  </footer>
+</main>
+</body>
+</html>

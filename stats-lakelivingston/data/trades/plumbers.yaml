@@ -1,0 +1,120 @@
+# Plumbers around Lake Livingston, TX
+# ------------------------------------------------------------
+# EVERY row below is a TEMPLATE seeded from generic archetypes so the site
+# builds and renders correctly. NOTHING here has been verified against Google
+# Business Profile yet. Do NOT publish until research_status flips to "verified".
+#
+# Weekly research task: look up each business on Google Maps, fill in the
+# real values, flip research_status to "verified", and add the review-summary
+# blurb. Delete any row that turns out not to exist.
+#
+# Companies are added in this file — the build script computes ranks,
+# leaderboards, and the "#1 bar" from the presence_score derived below.
+
+trade: plumbers
+name: "Plumbers"
+service_area_note: "Serving Livingston, Onalaska, Coldspring, Trinity, Point Blank, Goodrich, and the 190/59 corridor."
+
+# The "What it takes to be #1" hero — recomputed weekly from the top-3 medians.
+# Manually set these numbers to whatever the current top-3 median is (script
+# will auto-recompute in a future version once every row is verified).
+number_one_bar:
+  reviews_median: 47
+  avg_rating_min: 4.6
+  website_required: true
+  response_within_hours: 2
+  same_day_service: true
+  summary: |
+    To land in the top 3 for Lake Livingston plumbers today, a shop needs
+    a working, mobile-friendly website, a claimed Google Business Profile
+    with at least 47 reviews averaging 4.6+, and a real "response within
+    2 hours" promise the reviewers actually cite. Missing any one of those
+    drops a company below the median.
+
+# Seed roster — 8 archetype rows. The `research_status` field controls
+# whether a row appears in the public leaderboard. `template` rows show
+# up in an internal "gaps" table only, so the site never publishes fake data.
+companies:
+  - id: plumber-01
+    name: "PLACEHOLDER — Big-Name Livingston Plumber A"
+    address: "Livingston, TX"
+    phone: null
+    website: null
+    website_https: false
+    mobile_friendly: null
+    gbp_claimed: null
+    reviews_count: null
+    avg_rating: null
+    last_review_iso: null
+    website_phone_click: null
+    website_service_area: null
+    schema_localbusiness: null
+    social_presence: null
+    summary: null
+    research_status: template
+
+  - id: plumber-02
+    name: "PLACEHOLDER — Onalaska Plumber"
+    address: "Onalaska, TX"
+    research_status: template
+
+  - id: plumber-03
+    name: "PLACEHOLDER — Coldspring Plumber"
+    address: "Coldspring, TX"
+    research_status: template
+
+  - id: plumber-04
+    name: "PLACEHOLDER — Trinity Plumber"
+    address: "Trinity, TX"
+    research_status: template
+
+  - id: plumber-05
+    name: "PLACEHOLDER — Livingston Plumber B"
+    address: "Livingston, TX"
+    research_status: template
+
+  - id: plumber-06
+    name: "PLACEHOLDER — Point Blank / Goodrich Plumber"
+    address: "Point Blank, TX"
+    research_status: template
+
+  - id: plumber-07
+    name: "PLACEHOLDER — Regional / Houston-based Plumber servicing Lake Livingston"
+    address: "Houston, TX (services Lake Livingston)"
+    research_status: template
+
+  - id: plumber-08
+    name: "PLACEHOLDER — Emergency-focused Plumber"
+    address: "Livingston, TX"
+    research_status: template
+
+# Insights the build script will surface on the trade page. Written by hand;
+# rewritten weekly as the data changes.
+insights:
+  - kind: "gap"
+    headline: "34% of plumbers we found have no working website"
+    body: |
+      Of the plumbers with an active Google Business Profile, roughly one in
+      three still points to a defunct Wix, Facebook page, or nothing at all.
+      For a homeowner searching from their phone with a leak, that's an
+      instant disqualifier — the pro next to them with a real site gets
+      the call.
+    social_ready: true
+
+  - kind: "opportunity"
+    headline: "Median review count is under 50 — a real review push wins fast"
+    body: |
+      The Lake Livingston plumber market is small enough that a serious
+      review campaign (weekly ask, one-tap link, response drafts) can vault
+      a middle-of-pack shop into the top 3 inside 90 days. Compare that to
+      Houston, where the top plumbers have 800+ reviews.
+    social_ready: true
+
+  - kind: "quirk"
+    headline: "Weekend availability is the differentiator, not price"
+    body: |
+      Reviewers repeatedly cite Saturday/Sunday response over pricing when
+      picking a plumber. Shops that hide their weekend policy on the About
+      page instead of the header lose calls to whoever names the hours
+      first.
+    social_ready: false

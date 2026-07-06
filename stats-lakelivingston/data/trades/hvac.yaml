@@ -1,0 +1,24 @@
+trade: hvac
+name: "HVAC + AC Service"
+service_area_note: "Lake Livingston runs 95°F+ from June through September. HVAC is the trade with the fastest lead-to-close cycle around here."
+
+number_one_bar:
+  reviews_median: null
+  avg_rating_min: null
+  website_required: null
+  response_within_hours: null
+  same_day_service: null
+  summary: |
+    (Awaiting research — HVAC is scheduled for next week's build.)
+
+companies: []
+
+insights:
+  - kind: "note"
+    headline: "HVAC research scheduled — this page is a placeholder"
+    body: |
+      Next weekly build will seed the HVAC roster (goal: 10-15 shops from
+      Livingston, Onalaska, Coldspring, and Willis). Priority signals are
+      the same as plumbers plus "financing partner named on the site" —
+      a real HVAC decision-maker cares about that.
+    social_ready: false

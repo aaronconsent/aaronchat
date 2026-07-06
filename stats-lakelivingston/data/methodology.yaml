@@ -1,0 +1,36 @@
+# How every score, medal, and "#1 bar" on this site is computed.
+# Kept in one place so the trade pages and the methodology page never drift.
+
+version: "0.1.0"
+
+# The Presence Score (0-100) — how "findable and trustworthy" a company looks.
+presence_score:
+  weights:
+    website:                20    # has a working website
+    website_https:           5    # https + valid cert
+    mobile_friendly:         5    # passes viewport / no horizontal scroll
+    gbp_claimed:            15    # Google Business Profile claimed
+    gbp_reviews_count:      15    # points scaled 0-15 by review count vs top-3 median
+    gbp_avg_rating:         10    # points scaled 0-10 by star rating (>=4.5 = full)
+    review_recency:         10    # points if reviews within 60 days
+    website_phone_click:     5    # tap-to-call in the header
+    website_service_area:    5    # names their towns/counties
+    schema_localbusiness:    5    # LocalBusiness / Plumber schema markup
+    social_presence:         5    # at least one active social profile
+  bands:
+    - {min: 85, label: "Category Leader",  color: "#2e6b45"}
+    - {min: 65, label: "Strong",           color: "#5b8e4a"}
+    - {min: 40, label: "Findable",         color: "#eaa92b"}
+    - {min:  0, label: "Missing in Action", color: "#b83227"}
+
+# Leaderboard rules — how #1 / #2 / #3 are picked per trade.
+leaderboard:
+  primary_sort: presence_score
+  tiebreak_sort: reviews_count
+  medal_count: 3
+
+# What we DO NOT track (and why)
+excluded:
+  - "Company revenue (private, unverifiable)"
+  - "Head count (rarely accurate on public sources)"
+  - "Yelp count when GBP count is available (Yelp under-samples in East TX)"
