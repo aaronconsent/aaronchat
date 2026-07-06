@@ -1,0 +1,46 @@
+trade: pest_control
+name: "Pest Control"
+service_area_note: "Fire ants, termites, and East Texas mosquitoes drive most of the volume. Riverside (23 companies) is the local pest-control hub — six of the top 10 in the market are Riverside-based."
+
+number_one_bar:
+  reviews_median: auto
+  avg_rating_min: auto
+  website_required: auto
+  response_within_hours: 24
+  same_day_service: true
+  summary: |
+    Pest control is a mid-sized trade (23 local shops) where the top three
+    already carry heavy review flywheels (median 855). Website presence
+    (70%) is decent but the review gap is closable — 13% of shops have
+    fewer than 10 reviews and 26% have unclaimed profiles, both realistic
+    to hit inside a quarter.
+
+companies: []
+
+insights:
+  - kind: "gap"
+    headline: "26% of Lake Livingston pest-control shops still haven't claimed their GBP"
+    body: |
+      One in four pest-control companies hasn't claimed their Google
+      Business Profile — the highest unclaimed rate among established
+      service trades in the hub. That's a 15-minute fix that unlocks
+      review-response, hours-of-operation, and category tagging.
+    social_ready: true
+
+  - kind: "opportunity"
+    headline: "Riverside is the local pest-control capital — 6 of the top 10 shops sit there"
+    body: |
+      Riverside (population under 500) somehow hosts a disproportionate
+      cluster of pest-control businesses — likely serving Lake Livingston
+      resort communities from a central point. For a shop wanting to
+      compete, mimicking that operating pattern (single hub, wide
+      service radius) beats trying to plant a flag in every town.
+    social_ready: true
+
+  - kind: "quirk"
+    headline: "The market rewards specialization — top shops name a pest, not 'general pest control'"
+    body: |
+      The three review-count leaders (Moxie, Compass, Go-Pher The Kill)
+      all lead with a specific pest category on their homepage. Shops
+      that pitch as "we handle everything" languish in the middle.
+    social_ready: false

@@ -1,0 +1,47 @@
+trade: pressure_washing
+name: "Pressure Washing"
+service_area_note: "Roof-safe soft-wash, driveway cleaning, deck restoration, and boat-dock work. Boat docks are the recurring lakefront upsell — every winter the dock needs a spring wash before renters arrive."
+
+number_one_bar:
+  reviews_median: auto
+  avg_rating_min: auto
+  website_required: false
+  response_within_hours: 48
+  same_day_service: null
+  summary: |
+    Pressure washing is a mid-sized trade (56 local shops) heavily
+    concentrated in Huntsville (33). Presence signals are decent but review
+    scarcity is real: 32% of shops have under 10 reviews. Boat-dock
+    specialization is an untapped angle nobody in the top-10 is claiming.
+
+companies: []
+
+insights:
+  - kind: "gap"
+    headline: "32% of Lake Livingston pressure-washing shops have under 10 reviews"
+    body: |
+      Pressure washing is an add-on trade — most operators are landscapers
+      or handymen who "also do pressure washing". That informality shows in
+      review counts: nearly a third of local shops have no meaningful
+      review signal. A pure-play specialist with a real reviews program
+      dominates the category effortlessly.
+    social_ready: true
+
+  - kind: "opportunity"
+    headline: "Boat-dock washing is the untapped lakefront niche"
+    body: |
+      No pressure-washing shop in the local top-10 mentions "boat dock" on
+      their homepage. Every Lake Livingston lakefront property has a dock
+      that needs a spring wash. First shop to build a "spring dock package"
+      page owns the search phrase from day one.
+    social_ready: true
+
+  - kind: "note"
+    headline: "Category noise: car washes and gas stations in top-3"
+    body: |
+      Outscraper's pressure_washing category returned car-wash retail
+      (WhiteWater Express, Take 5 Oil Change) as top results — Google's
+      category graph is polluted for this trade. Manual roster cleanup
+      queued. Gap % numbers computed on all businesses so remain
+      directional.
+    social_ready: false

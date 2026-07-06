@@ -1,0 +1,48 @@
+trade: general_contractor
+name: "General Contractors + Remodeling"
+service_area_note: "Room additions, whole-home remodels, and post-storm rebuilds. The single largest addressable trade (237 local shops) — most are solo operators or small crews."
+
+number_one_bar:
+  reviews_median: auto
+  avg_rating_min: auto
+  website_required: false
+  response_within_hours: 72
+  same_day_service: null
+  summary: |
+    General contractors is BY FAR the biggest trade in the hub — 237 local
+    shops. It's also the most fragmented: 59% of shops have under 10 reviews,
+    30% have no website, 24% have unclaimed profiles. The size + fragmentation
+    combination makes this the highest-opportunity trade for anyone building
+    a real review flywheel.
+
+companies: []
+
+insights:
+  - kind: "opportunity"
+    headline: "General contracting is the biggest addressable market — and the most under-reviewed"
+    body: |
+      237 local shops, and 141 of them (59%) have fewer than 10 Google
+      reviews. That's more shops with no review signal than the ENTIRE
+      HVAC trade (91). In a market this fragmented, a contractor running
+      a real review-request-after-every-job system moves into the local
+      top-30 within a season.
+    social_ready: true
+
+  - kind: "gap"
+    headline: "30% of local GCs have no working website"
+    body: |
+      73 of 237 area general contractors rely entirely on Facebook, GBP,
+      or a defunct Wix. For a homeowner researching a $50K addition,
+      that's a hard disqualifier — no photos, no schema markup, no
+      "who we are" page. Contractors who invest in even a one-page site
+      with a portfolio out-position everyone in the search results.
+    social_ready: true
+
+  - kind: "quirk"
+    headline: "Livingston (71) and Coldspring (16) punch above their weight vs population"
+    body: |
+      Huntsville leads with 104 GCs (which tracks with population), but
+      Livingston's 71 GCs is disproportionately high — reflects the
+      Lake Livingston second-home / lake-house market where remodels
+      are the primary spend category, not new builds.
+    social_ready: false

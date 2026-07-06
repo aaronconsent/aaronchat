@@ -1,0 +1,48 @@
+trade: electrician
+name: "Electricians"
+service_area_note: "Boat-house wiring, panel upgrades, and generator installs are the volume jobs around the lake. Post-storm generator installs spike every hurricane season."
+
+number_one_bar:
+  reviews_median: auto
+  avg_rating_min: auto
+  website_required: auto
+  response_within_hours: 24
+  same_day_service: true
+  summary: |
+    Lake Livingston-area electricians look bad on every measurable dimension:
+    42% have NO website, 30% have under 10 reviews, and 24% have unclaimed
+    Google profiles — the weakest professional presence of any trade in this
+    hub. The number-two trade (concrete) doesn't even come close on the
+    "no website" gap.
+
+companies: []
+
+insights:
+  - kind: "gap"
+    headline: "42% of Lake Livingston electricians have no website"
+    body: |
+      Nearly one in two electricians in this service area (28 of 66) doesn't
+      have a working website. That's the worst rate of any trade tracked in
+      this hub — plumbers (30%), roofers (19%), and HVAC (14%) all fare
+      dramatically better. For a homeowner with a scary electrical problem
+      searching from a phone, a Facebook page or dead Wix site is a hard no.
+    social_ready: true
+
+  - kind: "opportunity"
+    headline: "Both website AND review gaps are wide — the double-play pitch works here"
+    body: |
+      42% no-website + 30% under-10-reviews + 24% unclaimed. A shop hitting
+      just the median of the top-3 in each dimension jumps into the top-15
+      in under 90 days. The market has no established leader with runaway
+      review volume — the door is genuinely open.
+    social_ready: true
+
+  - kind: "note"
+    headline: "Category noise: some 'electrician' listings are unrelated"
+    body: |
+      Outscraper's Google Maps matching pulled a handful of non-electrician
+      businesses (a gas station in Leggett showed up as top result). The
+      trade-page top-3 is being manually curated in the next weekly build to
+      exclude these. The gap % numbers above still hold — they're computed on
+      the full local pool.
+    social_ready: false

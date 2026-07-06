@@ -1,0 +1,46 @@
+trade: septic
+name: "Septic System Service"
+service_area_note: "Rural Polk / San Jacinto residents overwhelmingly run on septic — municipal sewer is the exception, not the rule. Aerobic system alarms, pumping, and full replacements are the recurring jobs."
+
+number_one_bar:
+  reviews_median: auto
+  avg_rating_min: auto
+  website_required: false
+  response_within_hours: 24
+  same_day_service: null
+  summary: |
+    Septic is the specialist trade with the worst website gap: HALF of the
+    28 local septic shops have no website at all. Combined with 28% unclaimed
+    and 32% under 10 reviews, this is the highest-friction trade in the hub
+    for a homeowner searching from a phone at 11pm.
+
+companies: []
+
+insights:
+  - kind: "gap"
+    headline: "50% of Lake Livingston septic services have no working website"
+    body: |
+      Fourteen of 28 local septic shops (exactly half) have no site at all.
+      This is the worst website-gap of any trade tracked. Septic emergencies
+      happen at inconvenient hours — the homeowner searching from bed at 11pm
+      with a backing-up drain wants a phone number, hours, and "we do
+      after-hours" on a real page. Half the market fails that test.
+    social_ready: true
+
+  - kind: "opportunity"
+    headline: "Aerobic-alarm specialization is a category nobody owns"
+    body: |
+      Rural East Texas homes with aerobic systems get alarm calls monthly
+      in wet season. No shop in the top-10 names "aerobic alarm response"
+      on their homepage. First shop to own that phrase captures every
+      homeowner who Googles the exact problem.
+    social_ready: true
+
+  - kind: "quirk"
+    headline: "Top-3 review-median is only 288 — the leaderboard is genuinely open"
+    body: |
+      Lake Livingston Septic (355) leads, Wilkinson Septic (288) is #2,
+      Bell's Water Well (72) is a distant #3. A shop crossing 400 reviews
+      lands solidly in the top 2. In a service area of ~40,000 households,
+      that's roughly 1% of the market.
+    social_ready: false

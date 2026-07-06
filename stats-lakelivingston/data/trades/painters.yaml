@@ -1,0 +1,45 @@
+trade: painter
+name: "Painters"
+service_area_note: "The smallest tracked trade — only 11 local painters. Exterior repaints, cabinet refinishing, and HOA-color compliance are the recurring jobs. Post-storm interior repair drives seasonal spikes."
+
+number_one_bar:
+  reviews_median: auto
+  avg_rating_min: auto
+  website_required: false
+  response_within_hours: 48
+  same_day_service: null
+  summary: |
+    Painting is the smallest addressable market in the hub — 11 shops with
+    only one top-scorer breaking 100 reviews. 63% of shops have under 10
+    reviews, effectively the highest scarcity rate. The market is genuinely
+    open for whoever decides to run it professionally.
+
+companies: []
+
+insights:
+  - kind: "opportunity"
+    headline: "63% of local painters have fewer than 10 Google reviews"
+    body: |
+      In a trade with only 11 shops in the whole Lake Livingston service
+      area, review counts effectively determine the winner. LL Contractors
+      leads with 102 reviews. #2 and #3 tie at 16. A shop that crosses 200
+      reviews owns the market outright — no shop currently is close.
+    social_ready: true
+
+  - kind: "gap"
+    headline: "36% no-website + 63% low-review = a startable market"
+    body: |
+      Even the biggest painter in the market has only 102 reviews and a
+      basic website. This is a trade where an experienced solo operator
+      can build the number-one presence in six months by doing what nobody
+      else is doing: asking for reviews and running a real one-page site.
+    social_ready: true
+
+  - kind: "quirk"
+    headline: "The market skews away from Huntsville — Livingston has 4 of 11 shops"
+    body: |
+      Unusual: Huntsville doesn't dominate this trade. Livingston (4) and
+      Point Blank (3) lead. Explanation: painting is a homeowner-relationship
+      trade, and the lake communities' higher rate of second-home ownership
+      drives repeat business locals want to service themselves.
+    social_ready: false

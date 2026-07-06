@@ -1,0 +1,49 @@
+trade: pool_service
+name: "Pool Service + Cleaning"
+service_area_note: "Weekly chemistry, equipment repair, resurfacing, and heater installs. Lake Livingston's private pool density (lake-house rentals) drives a bigger recurring market than the population suggests."
+
+number_one_bar:
+  reviews_median: auto
+  avg_rating_min: auto
+  website_required: true
+  response_within_hours: 24
+  same_day_service: null
+  summary: |
+    Pool service is a mid-sized trade — 74 local shops — with the LOWEST
+    average rating (★ 4.4) of any trade tracked here. That's a warning
+    signal: customers are visibly less satisfied. 24% missing a website,
+    22% unclaimed, 27% under 10 reviews. Whoever solves the reliability
+    problem owns this market.
+
+companies: []
+
+insights:
+  - kind: "gap"
+    headline: "Pool service has the lowest average rating (★ 4.4) of any trade tracked"
+    body: |
+      Every other trade in this hub sits between ★ 4.45 and ★ 4.91.
+      Pool service is a full half-star below the leader (garage door
+      at ★ 4.91). Reviewers cite "missed weeks", "no-call no-show",
+      and "chemistry off" as recurring complaints. A shop that runs on
+      software (route optimization, auto-notify, chemistry logs) wins on
+      reliability alone.
+    social_ready: true
+
+  - kind: "opportunity"
+    headline: "Rental-market timing is the untapped local angle"
+    body: |
+      Lake Livingston lake houses turn over on Fridays. A pool service
+      that pre-sells "Friday morning ready-for-rental" as a category
+      unlocks the entire short-term rental market. No shop in the top-10
+      names this on their homepage.
+    social_ready: true
+
+  - kind: "note"
+    headline: "Category noise: RV parks and public parks showing in top-3"
+    body: |
+      Outscraper category matching pulled "On The Lake RV and Cabin
+      Resort" and "Eastham Thomason Park" as top pool-service results
+      (they have pools on-site, so Google's pool_service tag hit them).
+      Manual cleanup queued for next build. Gap percentages above stay
+      valid.
+    social_ready: false

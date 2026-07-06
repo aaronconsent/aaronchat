@@ -1,0 +1,47 @@
+trade: lawn_care
+name: "Lawn Care + Landscaping"
+service_area_note: "The largest addressable trade tracked in this hub — 167 local shops, mostly solo operators. Huntsville (79) and Livingston (50) hold the bulk of the market."
+
+number_one_bar:
+  reviews_median: auto
+  avg_rating_min: auto
+  website_required: false
+  response_within_hours: 48
+  same_day_service: null
+  summary: |
+    Lawn care is fragmented — 167 shops competing for weekly-recurring
+    revenue with almost no differentiation. 36% have no website, 43% have
+    fewer than 10 reviews, and 16% haven't claimed their profile. A local
+    operator with a real website, a Google-friendly service-area page, and
+    50+ reviews jumps into the top 10 in under a season.
+
+companies: []
+
+insights:
+  - kind: "opportunity"
+    headline: "43% of Lake Livingston lawn-care shops have under 10 reviews"
+    body: |
+      Nearly half the market — 73 of 167 shops — has effectively no review
+      signal on Google. In a trade where the buying decision is often "who
+      does my neighbor use", the flywheel just isn't spinning. Any operator
+      running the "text after every mow" review-request pattern crosses 50
+      reviews inside a season.
+    social_ready: true
+
+  - kind: "gap"
+    headline: "36% of local lawn shops have no working website"
+    body: |
+      Facebook business pages ≠ websites. Homeowners searching for weekly
+      service from their phone bounce off Facebook logins. A one-page site
+      with towns served, a form, and a phone number is enough — 60 of
+      Lake Livingston's 167 shops don't even have that.
+    social_ready: true
+
+  - kind: "note"
+    headline: "Category noise: Outscraper pulled some non-lawn businesses"
+    body: |
+      The current top-3 by review count includes a public landmark (Sam
+      Houston Statue) as a false-positive result from Google's lawn-care
+      category tagging. The manual roster clean-up is queued for next
+      build. The gap percentages above are still directional.
+    social_ready: false

@@ -1,0 +1,46 @@
+trade: garage_door
+name: "Garage Door Repair"
+service_area_note: "The specialist trade with the smallest addressable market — 11 dedicated shops across the three counties, but every single one is professionalized."
+
+number_one_bar:
+  reviews_median: auto
+  avg_rating_min: auto
+  website_required: true
+  response_within_hours: 24
+  same_day_service: true
+  summary: |
+    Every Lake Livingston-area garage door shop has a claimed profile, only
+    one has fewer than 10 reviews, and every single one has a website. The
+    average rating (★ 4.91) is the highest of any trade tracked here. This
+    is a small but professionalized market — hard to break into, harder to
+    dominate.
+
+companies: []
+
+insights:
+  - kind: "quirk"
+    headline: "Every garage-door shop in the market has a website and a claimed GBP"
+    body: |
+      100% claimed rate, 0% no-website — the only trade in this hub with
+      perfect professional-presence scores. If you're not planning to hit the
+      market with 300+ reviews and a top-tier site, don't pitch this trade
+      as a startup opportunity.
+    social_ready: true
+
+  - kind: "opportunity"
+    headline: "Only 11 shops — a well-run 4th competitor could realistically hit top-3 in a year"
+    body: |
+      The market's small enough that reviews compound fast. Precision Door
+      Service (1,456 reviews), Overhead Door 7 Rivers (1,278), and Century
+      (482) hold the top three, but the gap from #3 down to #10 is huge.
+      Anyone building the discipline of one review per install closes that
+      gap in months, not years.
+    social_ready: true
+
+  - kind: "note"
+    headline: "Average rating is ★ 4.91 — the highest in the hub"
+    body: |
+      Garage-door shops appear to be selective about which jobs they take,
+      OR customers are unusually forgiving. Either way, a 4.5★ shop stands
+      out as underperformer here — the bar for "acceptable" is closer to ★4.9.
+    social_ready: false

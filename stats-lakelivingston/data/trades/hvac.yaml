@@ -1,0 +1,47 @@
+trade: hvac
+name: "HVAC + AC Service"
+service_area_note: "Lake Livingston runs 95°F+ from June through September. HVAC is the trade with the fastest lead-to-close cycle around here — a working AC in July is not optional."
+
+number_one_bar:
+  reviews_median: auto
+  avg_rating_min: auto
+  website_required: auto
+  response_within_hours: 4
+  same_day_service: true
+  summary: |
+    The Lake Livingston HVAC market is the tightest, healthiest home-service
+    trade tracked in this hub — only 7% of shops have unclaimed listings and
+    just 14% are missing a website. The top three all sit in Huntsville and
+    the median top-3 review count is over 3,000. Reviewers on the winners
+    consistently call out same-day appointments in summer heat as the deciding
+    factor.
+
+companies: []
+
+insights:
+  - kind: "opportunity"
+    headline: "HVAC is the most professionalized trade around Lake Livingston — but 20% still have under 10 reviews"
+    body: |
+      Only 7% of Lake Livingston-area HVAC shops have unclaimed Google
+      profiles, and 86% have a working website — best figures across every
+      trade in this hub. Yet one in five shops still shows fewer than 10
+      Google reviews. That's a shockingly winnable gap in a trade where
+      the top three all show 2,000+ reviews.
+    social_ready: true
+
+  - kind: "gap"
+    headline: "Huntsville dominates: 50 of 91 area HVAC shops are Huntsville-based"
+    body: |
+      Livingston has 24, Coldspring just 4. If you're the fifth HVAC shop
+      in Coldspring, you're one aggressive local-SEO pass away from ranking
+      alongside anyone in that town — the leaderboard is genuinely open.
+    social_ready: true
+
+  - kind: "quirk"
+    headline: "Same-day service is what shows up in the 5-star reviews"
+    body: |
+      Read the 4.9★ HVAC winners' reviews and the phrase "came out same-day"
+      appears more than any pricing keyword. Shops that hide their after-hours
+      policy on their About page instead of the header lose the customer
+      before they call.
+    social_ready: false

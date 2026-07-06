@@ -1,0 +1,45 @@
+trade: concrete
+name: "Concrete Contractors"
+service_area_note: "Driveways, boat ramps, slabs, and stamped patios. Boat-ramp work is the recurring lakefront niche — every Lake Livingston resale event triggers ramp inspections."
+
+number_one_bar:
+  reviews_median: auto
+  avg_rating_min: auto
+  website_required: false
+  response_within_hours: 72
+  same_day_service: null
+  summary: |
+    Concrete has the worst review-scarcity signal in the entire hub — 54% of
+    Lake Livingston area concrete contractors have fewer than 10 Google
+    reviews. It's an old-school word-of-mouth trade that has almost entirely
+    ignored the review flywheel. That inversion is the opportunity.
+
+companies: []
+
+insights:
+  - kind: "gap"
+    headline: "54% of Lake Livingston concrete shops have under 10 Google reviews"
+    body: |
+      This is the worst review-scarcity in the hub — worse than tree service
+      (44%) or general contractors (59% but on a bigger pool). Concrete is
+      a legacy trade that has clung to word-of-mouth. Any contractor asking
+      for a review at project sign-off can hit the top-10 in months.
+    social_ready: true
+
+  - kind: "opportunity"
+    headline: "Livingston (36 shops) is the concrete capital — Huntsville has 28"
+    body: |
+      Livingston edges out Huntsville as the trade's home base, which is
+      unusual (Huntsville leads most trades). That geographic concentration
+      makes local-SEO easy: a Livingston-based concrete contractor with a
+      real service-area page owns "concrete near me" for the entire lake.
+    social_ready: true
+
+  - kind: "note"
+    headline: "Boat-ramp specialization is untapped niche marketing"
+    body: |
+      No concrete shop in the top-30 mentions "boat ramp" on their homepage
+      copy, yet ramp inspections and repairs are a real recurring lakefront
+      job. A shop that names it and shows a portfolio grabs a category to
+      itself.
+    social_ready: false

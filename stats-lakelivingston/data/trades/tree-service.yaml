@@ -1,0 +1,49 @@
+trade: tree_service
+name: "Tree Service"
+service_area_note: "Lakefront lots + hurricane season = steady tree work. Storm-cleanup contracts drive the biggest revenue spikes; routine trim + removal is the recurring baseline."
+
+number_one_bar:
+  reviews_median: auto
+  avg_rating_min: auto
+  website_required: false
+  response_within_hours: 24
+  same_day_service: null
+  summary: |
+    Tree service around Lake Livingston is a fragmented mid-sized market —
+    69 local shops with the worst review-flywheel gap in the hub. 37% have
+    no website, 44% have fewer than 10 reviews, and 21% have unclaimed
+    profiles. Storm-response marketing beats price-marketing every time
+    in this trade.
+
+companies: []
+
+insights:
+  - kind: "gap"
+    headline: "44% of Lake Livingston tree-service shops have under 10 reviews"
+    body: |
+      This is the worst review-scarcity in the hub after concrete and general
+      contractor. A trade that trades on trust ("please don't drop this
+      50-foot pine on my house") is running with almost no social proof.
+      The market's ready for a shop that treats reviews as a system, not
+      an afterthought.
+    social_ready: true
+
+  - kind: "opportunity"
+    headline: "Storm-response availability is what wins in this trade — but nobody markets it"
+    body: |
+      Look at the top-rated tree services in Houston and every one leads with
+      "24-hour storm response". None of the Lake Livingston top-10 does. A
+      shop that adds an emergency line and puts "storm response" above the
+      fold on their website can capture every hurricane-season lead without
+      even out-pricing the market.
+    social_ready: true
+
+  - kind: "note"
+    headline: "Category noise: Outscraper pulled non-tree entries into the top"
+    body: |
+      Walker County Rest Area and Harbor Freight are surfacing as top
+      "tree service" results — Google's category graph pulled retail from
+      the search radius. Manual roster cleanup is queued; the gap %
+      numbers above are computed on the full local pool and remain
+      directional.
+    social_ready: false

@@ -1,0 +1,48 @@
+trade: roofing
+name: "Roofing Contractors"
+service_area_note: "Storm-damage claims are the volume driver — hail-belt work funnels through Huntsville and Livingston. Metal-roof retrofits on lakefront homes are the growing niche."
+
+number_one_bar:
+  reviews_median: auto
+  avg_rating_min: auto
+  website_required: auto
+  response_within_hours: 24
+  same_day_service: null
+  summary: |
+    Lake Livingston roofing shops have the second-lowest unclaimed-listing
+    rate in the hub (10%) — this trade knows their GBP matters. But nearly
+    four out of ten shops still have fewer than 10 reviews, an unusually
+    low bar for a market where the top-3 median sits close to 300. Anyone
+    with a real review flywheel jumps into the top 10 fast.
+
+companies: []
+
+insights:
+  - kind: "opportunity"
+    headline: "39% of Lake Livingston roofers have fewer than 10 Google reviews"
+    body: |
+      Roofing is a storm-driven trade — homeowners searching mid-claim pick
+      by trust signals in the first three seconds. With 42 of 106 area
+      roofers sitting under 10 reviews, a shop that runs a real weekly
+      review-request campaign moves from invisible to top-30 in under six
+      weeks.
+    social_ready: true
+
+  - kind: "gap"
+    headline: "Roofers claim their GBP — but 19% still lack a working website"
+    body: |
+      Only 10% of roofers have unclaimed profiles (very low), yet 19% still
+      have no website. That combination is telling: they know Google
+      matters, but they treat the profile itself as the entire online
+      presence. Missing website = no page for schema markup, no controlled
+      story on storm-claim workflow, no place to publish a portfolio.
+    social_ready: true
+
+  - kind: "quirk"
+    headline: "Advanced Roofing & Construction, LLC dominates with 829 reviews"
+    body: |
+      The gap between #1 (829) and #2 (294) is nearly 3x. That's an outlier
+      not a moat — it means the market has room for a second shop to
+      credibly claim top-3 with 300+ reviews and a solid site. There is no
+      "second establishing player" yet.
+    social_ready: false
