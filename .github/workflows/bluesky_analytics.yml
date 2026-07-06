@@ -37,16 +37,37 @@ jobs:
 
       - name: Fetch secrets from Connect Wizard (Cloudflare Worker)
         env:
-          SECRETS_URL: ${{ secrets.SECRETS_URL }}
           SECRETS_FETCH_TOKEN: ${{ secrets.SECRETS_FETCH_TOKEN }}
+          SECRETS_FETCH_URL: ${{ vars.SECRETS_FETCH_URL || 'https://aaron.chat/api/secrets' }}
         run: |
+          set -euo pipefail
           mkdir -p secrets && chmod 700 secrets
-          python3 <<'PY'
-          import os, urllib.request, json
-          url = os.environ["SECRETS_URL"]
-          tok = os.environ["SECRETS_FETCH_TOKEN"]
-          req = urllib.request.Request(url, headers={"Authorization": f"Bearer {tok}"})
-          d = json.loads(urllib.request.urlopen(req, timeout=30).read())
+          if [ -z "${SECRETS_FETCH_TOKEN:-}" ]; then
+            echo "::error::SECRETS_FETCH_TOKEN missing — add it to repo Actions Secrets."
+            exit 1
+          fi
+          echo "Fetching secrets from $SECRETS_FETCH_URL"
+          # Write body + capture HTTP code separately so we can fail with a real message.
+          http=$(curl -sS -o /tmp/secrets-resp -w "%{http_code}" \
+                       -H "Authorization: Bearer $SECRETS_FETCH_TOKEN" \
+                       "$SECRETS_FETCH_URL")
+          if [ "$http" != "200" ]; then
+            echo "::error::secrets endpoint returned HTTP $http"
+            echo "--- body ---"; head -c 500 /tmp/secrets-resp; echo
+            exit 1
+          fi
+          python3 - <<'PY'
+          import json, os, sys
+          with open("/tmp/secrets-resp") as f:
+              raw = f.read()
+          if not raw.strip():
+              sys.exit("::error::secrets endpoint returned an empty body")
+          try:
+              d = json.loads(raw)
+          except json.JSONDecodeError as e:
+              sys.exit(f"::error::secrets response was not JSON: {e}. body[:200]={raw[:200]!r}")
+          if not d.get("ok"):
+              sys.exit(f"::error::secrets endpoint error: {d.get('error')}")
           n = 0
           for channel, body in (d.get("secrets") or {}).items():
               p = f"secrets/{channel}.env"

@@ -44,18 +44,32 @@ jobs:
           set -euo pipefail
           mkdir -p secrets && chmod 700 secrets
           if [ -z "${SECRETS_FETCH_TOKEN:-}" ]; then
-            echo "SECRETS_FETCH_TOKEN missing — add it to repo Actions Secrets."
+            echo "::error::SECRETS_FETCH_TOKEN missing — add it to repo Actions Secrets."
             echo "(Wizard endpoint auth-checks this bearer token before returning credentials.)"
             exit 1
           fi
           echo "Fetching secrets from $SECRETS_FETCH_URL"
-          resp="$(curl -fsSL -H "Authorization: Bearer $SECRETS_FETCH_TOKEN" "$SECRETS_FETCH_URL")"
-          # resp: {"ok":true,"secrets":{"buffer":"BUFFER_TOKEN=...\n...", "bluesky":"...", ...}}
-          echo "$resp" | python3 - <<'PY'
+          # Capture body + HTTP code separately so a 401/500 doesn't feed empty JSON to Python.
+          http=$(curl -sS -o /tmp/secrets-resp -w "%{http_code}" \
+                       -H "Authorization: Bearer $SECRETS_FETCH_TOKEN" \
+                       "$SECRETS_FETCH_URL")
+          if [ "$http" != "200" ]; then
+            echo "::error::secrets endpoint returned HTTP $http (check SECRETS_FETCH_TOKEN matches the Worker's env var)"
+            echo "--- body ---"; head -c 500 /tmp/secrets-resp; echo
+            exit 1
+          fi
+          python3 - <<'PY'
           import json, os, sys, stat
-          d = json.load(sys.stdin)
+          with open("/tmp/secrets-resp") as f:
+              raw = f.read()
+          if not raw.strip():
+              sys.exit("::error::secrets endpoint returned an empty body")
+          try:
+              d = json.loads(raw)
+          except json.JSONDecodeError as e:
+              sys.exit(f"::error::secrets response was not JSON: {e}. body[:200]={raw[:200]!r}")
           if not d.get("ok"):
-              sys.exit(f"secrets endpoint error: {d.get('error')}")
+              sys.exit(f"::error::secrets endpoint error: {d.get('error')}")
           n = 0
           for channel, body in (d.get("secrets") or {}).items():
               p = f"secrets/{channel}.env"
