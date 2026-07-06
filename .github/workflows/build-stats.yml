@@ -1,20 +1,29 @@
-name: build stats.lakelivingston
+name: deploy stats.lakelivingston
+
+# Auto-deploys stats.lakelivingston.aaron.chat to GitHub Pages.
+# Triggers on any data / template / build script change, plus manual dispatch.
+# Uses the modern Pages Actions flow (no gh-pages branch, no /docs restriction).
 
 on:
   push:
     branches: [main]
     paths:
       - 'stats-lakelivingston/data/**'
-      - 'stats-lakelivingston/scripts/build.py'
+      - 'stats-lakelivingston/scripts/**'
       - 'stats-lakelivingston/templates/**'
       - 'stats-lakelivingston/assets/**'
+      - '.github/workflows/build-stats.yml'
   workflow_dispatch:
 
+# GH Pages deploy tokens
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
+# Only one deploy at a time; queue new pushes
 concurrency:
-  group: stats-lakelivingston
+  group: stats-lakelivingston-pages
   cancel-in-progress: false
 
 jobs:
@@ -35,15 +44,21 @@ jobs:
       - name: Build docs/
         run: python3 scripts/build.py
 
-      - name: Commit regenerated docs/
-        run: |
-          cd ..
-          git config user.name "aaron-chat-bot"
-          git config user.email "hello+bot@aaron.chat"
-          git add -f stats-lakelivingston/docs
-          if git diff --cached --quiet; then
-            echo "no changes to commit"
-          else
-            git commit -m "chore(stats-lakelivingston): rebuild docs $(date -u +%FT%TZ)"
-            git push
-          fi
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: stats-lakelivingston/docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
