@@ -1,0 +1,8 @@
+2026-07-06T08:57:24  linkedin[credibility]: POSTED id=7760a6263556 via buffer (queued to channel 6a4711ee…)
+2026-07-06T08:57:24  linkedin[audience]: gated. window:ok(window 8-10) | cap:blocked(cap_hit today=1 cap=1)
+2026-07-06T08:57:24  x[credibility]: gated. window:blocked(outside_windows hour=8)
+2026-07-06T08:57:24  x[audience]: FAILED id=c0b9dbbd28d4 backend=buffer detail=[{"message": "Variable \"$input\" got invalid value \"paste-6a4710585ab6d2f1069b334e\" at \"input.channelId\"; Invalid ChannelId format.", "path": ["createPost"], "extensions": {"code": "BAD_USER_INPUT"}}]
+2026-07-06T08:57:24  bluesky[credibility]: gated. window:blocked(outside_windows hour=8)
+2026-07-06T08:57:24  bluesky[audience]: no unposted items
+2026-07-06T08:57:24  mastodon[credibility]: gated. window:blocked(outside_windows hour=8)
+2026-07-06T08:57:24  mastodon[audience]: no unposted items
