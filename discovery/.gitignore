@@ -1,0 +1,7 @@
+output/raw/
+output/task_log.jsonl
+output/contractors.db
+output/contractors_master.csv
+output/summary.md
+__pycache__/
+*.pyc

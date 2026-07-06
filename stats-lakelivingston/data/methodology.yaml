@@ -1,26 +1,24 @@
 # How every score, medal, and "#1 bar" on this site is computed.
-# Kept in one place so the trade pages and the methodology page never drift.
+# Kept in one place so trade pages and the methodology page never drift.
 
-version: "0.1.0"
+version: "0.2.0"
 
-# The Presence Score (0-100) — how "findable and trustworthy" a company looks.
+# The Presence Score (0-100) — how "findable and trustworthy" a company looks
+# from public signals we can capture without visiting the website. Rebalanced
+# in v0.2 to sum to 100 using ONLY fields Outscraper returns from Google
+# Business Profile. Phase 2 will add a website-audit crawler and re-weight.
 presence_score:
   weights:
-    website:                20    # has a working website
-    website_https:           5    # https + valid cert
-    mobile_friendly:         5    # passes viewport / no horizontal scroll
-    gbp_claimed:            15    # Google Business Profile claimed
-    gbp_reviews_count:      15    # points scaled 0-15 by review count vs top-3 median
-    gbp_avg_rating:         10    # points scaled 0-10 by star rating (>=4.5 = full)
-    review_recency:         10    # points if reviews within 60 days
-    website_phone_click:     5    # tap-to-call in the header
-    website_service_area:    5    # names their towns/counties
-    schema_localbusiness:    5    # LocalBusiness / Plumber schema markup
-    social_presence:         5    # at least one active social profile
+    has_website:         25    # `site` field is non-empty
+    gbp_claimed:         20    # `verified` == 1
+    reviews_volume:      20    # 0-20, scaled: min(1, reviews / 50) * 20
+    avg_rating:          15    # 0-15, scaled: 4.5+=15, 4.0=9, <4=0
+    photos_count:        10    # 0-10, scaled: min(1, photos / 20) * 10
+    phone_present:       10    # `phone` field is non-empty
   bands:
-    - {min: 85, label: "Category Leader",  color: "#2e6b45"}
-    - {min: 65, label: "Strong",           color: "#5b8e4a"}
-    - {min: 40, label: "Findable",         color: "#eaa92b"}
+    - {min: 85, label: "Category Leader",   color: "#2e6b45"}
+    - {min: 65, label: "Strong",            color: "#5b8e4a"}
+    - {min: 40, label: "Findable",          color: "#eaa92b"}
     - {min:  0, label: "Missing in Action", color: "#b83227"}
 
 # Leaderboard rules — how #1 / #2 / #3 are picked per trade.
@@ -28,9 +26,18 @@ leaderboard:
   primary_sort: presence_score
   tiebreak_sort: reviews_count
   medal_count: 3
+  min_reviews_for_medal: 5     # a shop with 0 reviews doesn't get a medal
+
+# The "#1 bar" is auto-computed from top-3 medians when a trade YAML sets
+# the number_one_bar values to `auto`. Explicit numbers in YAML override.
+number_one_bar_auto:
+  reviews_source: "median of top 3 by presence score"
+  rating_source:  "min avg_rating of top 3"
+  website_source: "true if all top 3 have websites"
 
 # What we DO NOT track (and why)
 excluded:
   - "Company revenue (private, unverifiable)"
   - "Head count (rarely accurate on public sources)"
   - "Yelp count when GBP count is available (Yelp under-samples in East TX)"
+  - "Mobile-friendliness, schema markup, page speed (Phase 2 audit crawler)"

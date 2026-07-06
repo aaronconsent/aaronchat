@@ -11,37 +11,129 @@ service_area:
   towns:
     - Livingston
     - Onalaska
-    - Coldspring
-    - Trinity
-    - Point Blank
+    - Corrigan
     - Goodrich
-    - Shepherd
-    - Riverside
+    - Leggett
+    - Huntsville
     - New Waverly
-    - Willis
-  counties: [Polk, San Jacinto, Trinity, Walker]
+    - Riverside
+    - Coldspring
+    - Shepherd
+    - Point Blank
+    - Oakhurst
+  counties: [Polk, Walker, San Jacinto]
 
-# Trades tracked in this hub. Each key maps to data/trades/<key>.yaml.
-# Order controls appearance in the home page grid.
+# County keys used in the contractors CSV (county_keys_seen JSON array).
+# Businesses that surfaced in any of these counties count for the hub.
+county_keys: [polk, walker, san_jacinto]
+
+# Trades tracked. `discovery_slug` maps to the slug used in
+# discovery/output/contractors_master.csv's `trades` JSON array.
 trades:
   - key: plumbers
+    discovery_slug: plumber
     name: "Plumbers"
     icon: "🚰"
     tagline: "Water heaters, slab leaks, septic connections, remodels."
-    status: seeded          # seeded | researched | published
+
   - key: hvac
+    discovery_slug: hvac
     name: "HVAC + AC Service"
     icon: "❄️"
     tagline: "Summer's brutal on Lake Livingston. This trade prints money in June."
-    status: draft
+
   - key: electricians
+    discovery_slug: electrician
     name: "Electricians"
     icon: "⚡"
     tagline: "Boat-house wiring, panel upgrades, generator installs."
-    status: draft
 
-# Attribution + methodology one-liners shown site-wide
+  - key: roofing
+    discovery_slug: roofing
+    name: "Roofing Contractors"
+    icon: "🏠"
+    tagline: "Storm-damage claims, metal-roof retrofits, insurance work."
+
+  - key: garage-door
+    discovery_slug: garage_door
+    name: "Garage Door Repair"
+    icon: "🚪"
+    tagline: "Broken springs, opener failures, emergency lockouts."
+
+  - key: pest-control
+    discovery_slug: pest_control
+    name: "Pest Control"
+    icon: "🐜"
+    tagline: "Fire ants, termites, mosquitoes — the East Texas holy trinity."
+
+  - key: lawn-care
+    discovery_slug: lawn_care
+    name: "Lawn Care + Landscaping"
+    icon: "🌿"
+    tagline: "Weekly mow, seasonal cleanup, and full-yard makeovers."
+
+  - key: tree-service
+    discovery_slug: tree_service
+    name: "Tree Service"
+    icon: "🌳"
+    tagline: "Storm cleanup, removal, and lot clearing on lakefront property."
+
+  - key: fencing
+    discovery_slug: fencing
+    name: "Fence Contractors"
+    icon: "🚧"
+    tagline: "Wood, chain-link, and hurricane-rated fencing across rural lots."
+
+  - key: concrete
+    discovery_slug: concrete
+    name: "Concrete Contractors"
+    icon: "🧱"
+    tagline: "Driveways, boat ramps, slabs, and stamped patios."
+
+  - key: painters
+    discovery_slug: painter
+    name: "Painters"
+    icon: "🎨"
+    tagline: "Exterior repaints, cabinet refinishing, HOA-color compliance."
+
+  - key: pool-service
+    discovery_slug: pool_service
+    name: "Pool Service + Cleaning"
+    icon: "🏊"
+    tagline: "Weekly chemistry, equipment repair, resurfacing, and heaters."
+
+  - key: septic
+    discovery_slug: septic
+    name: "Septic System Service"
+    icon: "🚽"
+    tagline: "Aerobic system pumping, alarm servicing, and full replacements."
+
+  - key: gutters
+    discovery_slug: gutter
+    name: "Gutter Service"
+    icon: "🌧️"
+    tagline: "Seamless installs, leaf-guard retrofits, and quarterly cleaning."
+
+  - key: pressure-washing
+    discovery_slug: pressure_washing
+    name: "Pressure Washing"
+    icon: "💦"
+    tagline: "Roof-safe soft-wash, driveway clean-off, and deck restoration."
+
+  - key: appliance-repair
+    discovery_slug: appliance_repair
+    name: "Appliance Repair"
+    icon: "🧊"
+    tagline: "Refrigerator, oven, washer/dryer, and dishwasher fixes."
+
+  - key: general-contractor
+    discovery_slug: general_contractor
+    name: "General Contractors + Remodeling"
+    icon: "🔨"
+    tagline: "Room additions, whole-home remodels, and post-storm rebuilds."
+
 attribution: |
-  Data collected weekly from Google Business Profile, Yelp, Better Business
-  Bureau, and the company's own website. If we got something wrong, email
-  hello@aaron.chat and we'll correct it in the next weekly build.
+  Business data captured via Outscraper's Google Maps API, deduped by
+  place_id, and filtered to businesses that surfaced in Polk, Walker, or
+  San Jacinto county searches. Presence Score is computed from public
+  signals only. If we got something wrong, email hello@aaron.chat.

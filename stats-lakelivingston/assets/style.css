@@ -406,6 +406,49 @@ footer {
 footer a { color: var(--brown); border-bottom: 1px dotted var(--tan); text-decoration: none; }
 footer .publisher { font-family: "Alfa Slab One", serif; color: var(--red); }
 
+/* ---------- market snapshot list ---------- */
+.snapshot {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 32px;
+  display: grid;
+  gap: 8px;
+}
+.snapshot li {
+  background: #fffcf5;
+  border: 2px solid var(--tan);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.98rem;
+  color: var(--ink);
+}
+.snapshot li b {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 600;
+  color: var(--red);
+  font-variant-numeric: tabular-nums;
+}
+
+.medal-card .no-site {
+  color: var(--red);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.85rem;
+}
+.medal-card a {
+  color: var(--green);
+  border-bottom: 1px dotted var(--green);
+  text-decoration: none;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.9rem;
+}
+.medal-card a:hover { border-bottom-style: solid; }
+
+.company-table a {
+  color: var(--green);
+  text-decoration: none;
+  font-weight: 700;
+}
+
 /* ---------- responsive ---------- */
 @media (max-width: 640px) {
   main { padding: 16px; }
