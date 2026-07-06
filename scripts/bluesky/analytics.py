@@ -30,14 +30,20 @@ def _write_jsonl(path, rows):
             f.write(json.dumps(r, separators=(",", ":")) + "\n")
 
 
+def _g(obj, key, default=None):
+    """Safe attribute-or-key accessor for pydantic models AND dicts.
+
+    Bluesky SDK returns pydantic Response objects that don't have `.get()`, so
+    the old pattern `getattr(o, k, None) or o.get(k)` blows up when the attr
+    is missing/None — it falls through and calls .get() on a non-dict.
+    """
+    if isinstance(obj, dict):
+        return obj.get(key, default)
+    return getattr(obj, key, default)
+
+
 def _posts_metrics(post_view):
     """Extract likeCount/repostCount/replyCount/quoteCount from a PostView."""
-    def _g(o, k):
-        if hasattr(o, k):
-            return getattr(o, k)
-        if isinstance(o, dict):
-            return o.get(k)
-        return None
     return {
         "likes":    _g(post_view, "likeCount") or 0,
         "reposts":  _g(post_view, "repostCount") or 0,
@@ -59,13 +65,13 @@ def snapshot_own_posts(client, lookback_days=30, dry_run=False):
     while not stop:
         page = reading.get_author_feed(client, actor=client.me.did, cursor=cursor, limit=100,
                                         filter="posts_and_author_threads")
-        feed = page.feed if hasattr(page, "feed") else page.get("feed", [])
+        feed = _g(page, "feed") or []
         for item in feed:
-            post = getattr(item, "post", None) or item.get("post")
+            post = _g(item, "post")
             if post is None:
                 continue
-            record = getattr(post, "record", None) or post.get("record", {})
-            created = getattr(record, "createdAt", None) or record.get("createdAt")
+            record = _g(post, "record") or {}
+            created = _g(record, "createdAt")
             if created:
                 try:
                     when = dt.datetime.fromisoformat(created.replace("Z", "+00:00")).replace(tzinfo=None)
@@ -75,7 +81,7 @@ def snapshot_own_posts(client, lookback_days=30, dry_run=False):
                 except Exception:
                     pass
             metrics = _posts_metrics(post)
-            uri = getattr(post, "uri", None) or post.get("uri")
+            uri = _g(post, "uri")
             rows.append({
                 "snapshot_date": _today(),
                 "handle": handle,
@@ -83,7 +89,7 @@ def snapshot_own_posts(client, lookback_days=30, dry_run=False):
                 "created_at": created,
                 **metrics,
             })
-        cursor = getattr(page, "cursor", None) or page.get("cursor")
+        cursor = _g(page, "cursor")
         if not cursor:
             break
 
@@ -107,16 +113,13 @@ def snapshot_competitors(client, handles, dry_run=False):
             rows.append({"snapshot_date": _today(), "handle": handle,
                          "error": str(ex)[:200]})
             continue
-        def _g(k):
-            return getattr(resp, k, None) if hasattr(resp, k) else (
-                resp.get(k) if isinstance(resp, dict) else None)
         rows.append({
             "snapshot_date": _today(),
-            "handle":     _g("handle") or handle,
-            "did":        _g("did"),
-            "followers":  _g("followersCount") or 0,
-            "follows":    _g("followsCount") or 0,
-            "posts":      _g("postsCount") or 0,
+            "handle":     _g(resp, "handle") or handle,
+            "did":        _g(resp, "did"),
+            "followers":  _g(resp, "followersCount") or 0,
+            "follows":    _g(resp, "followsCount") or 0,
+            "posts":      _g(resp, "postsCount") or 0,
         })
 
     if dry_run:
