@@ -30,3 +30,11 @@
 2026-07-06T17:22:40  bluesky[audience]: no unposted items
 2026-07-06T17:22:40  mastodon[credibility]: gated. window:blocked(outside_windows hour=17)
 2026-07-06T17:22:40  mastodon[audience]: no unposted items
+2026-07-06T19:16:56  linkedin[credibility]: gated. window:blocked(outside_windows hour=19)
+2026-07-06T19:16:56  linkedin[audience]: gated. window:blocked(outside_windows hour=19)
+2026-07-06T19:16:56  x[credibility]: gated. window:blocked(outside_windows hour=19)
+2026-07-06T19:16:56  x[audience]: gated. window:blocked(outside_windows hour=19)
+2026-07-06T19:16:56  bluesky[credibility]: gated. window:blocked(outside_windows hour=19)
+2026-07-06T19:16:56  bluesky[audience]: gated. window:blocked(outside_windows hour=19)
+2026-07-06T19:16:56  mastodon[credibility]: gated. window:blocked(outside_windows hour=19)
+2026-07-06T19:16:56  mastodon[audience]: gated. window:blocked(outside_windows hour=19)
