@@ -158,3 +158,11 @@
 2026-07-08T14:48:59  bluesky[audience]: gated. window:blocked(outside_windows hour=14)
 2026-07-08T14:48:59  mastodon[credibility]: gated. window:ok(window 9-17) | cap:blocked(cap_hit today=1 cap=1)
 2026-07-08T14:48:59  mastodon[audience]: gated. window:blocked(outside_windows hour=14)
+2026-07-08T16:19:41  linkedin[credibility]: gated. window:ok(window 8-18) | cap:blocked(cap_hit today=1 cap=1)
+2026-07-08T16:19:41  linkedin[audience]: gated. window:blocked(outside_windows hour=16)
+2026-07-08T16:19:41  x[credibility]: FAILED id=befc44b9ea08 backend=buffer detail=[{"message": "Argument \"input\" of non-null type \"CreatePostInput!\" must not be null.", "path": ["createPost"], "extensions": {"code": "INTERNAL_SERVER_ERROR"}}]
+2026-07-08T16:19:41  x[audience]: gated. window:blocked(outside_windows hour=16)
+2026-07-08T16:19:41  bluesky[credibility]: gated. window:ok(window 9-17) | cap:blocked(cap_hit today=1 cap=1)
+2026-07-08T16:19:41  bluesky[audience]: gated. window:blocked(outside_windows hour=16)
+2026-07-08T16:19:41  mastodon[credibility]: gated. window:ok(window 9-17) | cap:blocked(cap_hit today=1 cap=1)
+2026-07-08T16:19:41  mastodon[audience]: gated. window:blocked(outside_windows hour=16)
