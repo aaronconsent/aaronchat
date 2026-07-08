@@ -166,3 +166,11 @@
 2026-07-08T16:19:41  bluesky[audience]: gated. window:blocked(outside_windows hour=16)
 2026-07-08T16:19:41  mastodon[credibility]: gated. window:ok(window 9-17) | cap:blocked(cap_hit today=1 cap=1)
 2026-07-08T16:19:41  mastodon[audience]: gated. window:blocked(outside_windows hour=16)
+2026-07-08T18:19:23  linkedin[credibility]: gated. window:blocked(outside_windows hour=18)
+2026-07-08T18:19:23  linkedin[audience]: gated. window:blocked(outside_windows hour=18)
+2026-07-08T18:19:23  x[credibility]: gated. window:blocked(outside_windows hour=18)
+2026-07-08T18:19:24  x[audience]: FAILED id=c0b9dbbd28d4 backend=buffer detail=[{"message": "Argument \"input\" of non-null type \"CreatePostInput!\" must not be null.", "path": ["createPost"], "extensions": {"code": "INTERNAL_SERVER_ERROR"}}]
+2026-07-08T18:19:24  bluesky[credibility]: gated. window:blocked(outside_windows hour=18)
+2026-07-08T18:19:24  bluesky[audience]: no unposted items
+2026-07-08T18:19:24  mastodon[credibility]: gated. window:blocked(outside_windows hour=18)
+2026-07-08T18:19:24  mastodon[audience]: no unposted items
