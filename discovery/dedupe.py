@@ -102,14 +102,41 @@ def _extract(biz):
 # Dedup
 # ---------------------------------------------------------------------------
 
+# Google Maps' geographic disambiguation is imperfect. A search for
+# "plumber in Huntsville TX" happily returns results in Huntsville AL, Onalaska
+# WI, Riverside CA, Livingston NJ, Oakhurst CA, and Goodrich MI (all towns
+# that share names with our target East Texas cities). Filter every record
+# to Texas. Kept as a set so operators can extend later.
+ACCEPTED_STATES = {"Texas", "TX", "texas", "tx"}
+
+
+def _is_texas(rec):
+    """True if this business is in Texas. Falls back to address suffix if the
+    `state` field is empty (Outscraper sometimes returns state as null)."""
+    state = (rec.get("state") or "").strip()
+    if state in ACCEPTED_STATES:
+        return True
+    if not state:
+        # Check the address for a ", TX " or " TX " marker
+        addr = (rec.get("full_address") or "")
+        if ", TX " in addr or addr.endswith(" TX") or ", Texas " in addr:
+            return True
+        return False
+    return False
+
+
 def dedupe_records(raw_paths):
     """Walk every raw file, key by place_id, merge trades[] + queries_matched[]."""
     by_id = {}
+    dropped_non_tx = 0
     for biz, meta in _iter_business_rows(raw_paths):
         rec = _extract(biz)
         pid = rec["place_id"] or rec["google_id"]
         if not pid:
             continue          # unindexable — drop
+        if not _is_texas(rec):
+            dropped_non_tx += 1
+            continue          # cross-state contamination — drop
         rec["place_id"] = pid
 
         trade_slug = meta.get("trade_slug", "")
@@ -141,6 +168,9 @@ def dedupe_records(raw_paths):
         rec["trades"] = sorted(rec["trades"])
         rec["queries_matched"] = sorted(rec["queries_matched"])
         rec["county_keys_seen"] = sorted(rec["county_keys_seen"])
+    if dropped_non_tx:
+        print(f"[dedupe] dropped {dropped_non_tx} cross-state rows "
+              f"(matches for our search-term cities that live in other US states)")
     return list(by_id.values())
 
 

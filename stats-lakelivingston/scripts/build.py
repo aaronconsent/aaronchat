@@ -90,6 +90,43 @@ def _norm_city(s):
     return (s or "").strip().lower().replace(".", "")
 
 
+# Per-trade category filter. A business is kept for a trade only if its
+# Google Maps `category` field matches ANY of the substrings for that trade.
+# Prevents Harbor Freight showing up as a plumber, Grease Monkey as HVAC,
+# gas stations as electricians, etc. Substring match — case-insensitive.
+TRADE_CATEGORY_MATCHERS = {
+    "plumber":            ["plumb"],
+    "roofing":            ["roof"],
+    "hvac":               ["hvac", "heating", "air condition", "cool", "furnace"],
+    "electrician":        ["electric"],
+    "garage_door":        ["garage door", "overhead door"],
+    "pest_control":       ["pest", "extermin"],
+    "lawn_care":          ["lawn", "landscap", "gardener", "arborist"],
+    "tree_service":       ["tree"],
+    "fencing":            ["fenc"],
+    "concrete":           ["concrete", "cement", "mason"],
+    "painter":            ["paint"],
+    "pool_service":       ["pool", "spa"],
+    "septic":             ["septic", "sewer"],
+    "gutter":             ["gutter"],
+    "pressure_washing":   ["pressure wash", "power wash", "wash", "clean"],
+    "appliance_repair":   ["appliance"],
+    "general_contractor": ["general contractor", "remodel", "construction",
+                            "builder", "home builder", "custom home"],
+}
+
+
+def _matches_trade(category, trade_slug):
+    """Substring-match a business's Google category against the trade's allowed list."""
+    if not category:
+        return False
+    needles = TRADE_CATEGORY_MATCHERS.get(trade_slug, [])
+    if not needles:
+        return True   # unknown trade — keep everything
+    c = category.lower()
+    return any(n in c for n in needles)
+
+
 def load_contractors(site):
     """Return {discovery_slug: [company_dict, ...]} filtered to site.county_keys.
 
@@ -131,8 +168,13 @@ def load_contractors(site):
                 "county_keys":    sorted(counties),
                 "is_local":       _norm_city(row.get("city")) in local_towns,
             }
+            # Only attach the business to a trade if its Google category
+            # actually matches. Prevents Grease Monkey as HVAC, Harbor Freight
+            # as plumber, etc.
+            category = row.get("category") or ""
             for slug in trades:
-                by_trade.setdefault(slug, []).append(company)
+                if _matches_trade(category, slug):
+                    by_trade.setdefault(slug, []).append(company)
     return by_trade
 
 
