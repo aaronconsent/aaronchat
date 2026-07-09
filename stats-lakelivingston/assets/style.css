@@ -449,6 +449,139 @@ footer .publisher { font-family: "Alfa Slab One", serif; color: var(--red); }
   font-weight: 700;
 }
 
+/* ---------- find-your-business search ---------- */
+.finder { margin: 8px 0 34px; }
+.finder input[type="search"] {
+  width: 100%;
+  font-family: "Bree Serif", serif;
+  font-size: 1.05rem;
+  padding: 14px 18px;
+  border: 3px solid var(--brown);
+  border-radius: 14px;
+  background: #fffcf5;
+  color: var(--ink);
+  box-shadow: 4px 4px 0 var(--tan);
+}
+.finder input[type="search"]:focus { outline: none; border-color: var(--red); }
+.trade-finder { margin: 26px 0 6px; }
+#global-results { margin-top: 12px; display: grid; gap: 8px; }
+#global-results .hit {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+  background: #fffcf5; border: 2px solid var(--tan); border-radius: 10px;
+  padding: 10px 14px; text-decoration: none; color: var(--ink);
+}
+#global-results .hit:hover { border-color: var(--brown); }
+#global-results .hit b { color: var(--brown); }
+#global-results .hit span {
+  color: var(--muted); font-size: 0.85rem;
+  font-family: "IBM Plex Mono", monospace; white-space: nowrap;
+}
+#global-results .no-hit {
+  color: var(--muted); font-size: 0.92rem; padding: 8px 4px; margin: 0;
+}
+
+/* ---------- how-it-works / steps ---------- */
+.steps-list { padding-left: 22px; margin: 0 0 20px; }
+.steps-list li { padding: 6px 0; line-height: 1.55; }
+.how-it-works .attribution { color: var(--muted); font-size: 0.88rem; }
+
+/* ---------- trade playbook ---------- */
+.playbook { margin: 8px 0 20px; }
+.playbook-list {
+  list-style: none; counter-reset: play; padding: 0; margin: 0;
+  display: grid; gap: 12px;
+}
+.playbook-list li {
+  counter-increment: play;
+  background: #fffcf5; border: 2px solid var(--brown); border-radius: 14px;
+  padding: 16px 18px 16px 64px; position: relative;
+  box-shadow: 4px 4px 0 var(--tan);
+}
+.playbook-list li::before {
+  content: counter(play);
+  position: absolute; left: 16px; top: 16px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--red); color: var(--cream);
+  font-family: "Alfa Slab One", serif; font-size: 1rem;
+  display: grid; place-items: center;
+}
+.playbook-list li b { color: var(--brown); display: block; margin-bottom: 4px; }
+.playbook-list li .desc { color: var(--ink); font-size: 0.94rem; display: block; }
+
+/* ---------- scorecard ---------- */
+.scorecard-head h1 { font-size: clamp(1.5rem, 3.4vw, 2.2rem); }
+.score-hero {
+  display: flex; align-items: center; gap: 22px; margin-top: 18px; flex-wrap: wrap;
+}
+.score-dial {
+  width: 118px; height: 118px; border-radius: 50%;
+  border: 8px solid var(--green); background: #fffcf5;
+  display: grid; place-items: center; align-content: center;
+  box-shadow: 4px 4px 0 var(--tan); flex-shrink: 0;
+}
+.score-dial .score-n {
+  font-family: "Alfa Slab One", serif; font-size: 2.2rem; color: var(--brown);
+  line-height: 1; font-variant-numeric: tabular-nums;
+}
+.score-dial .score-d {
+  font-family: "IBM Plex Mono", monospace; font-size: 0.78rem; color: var(--muted);
+}
+.score-band { max-width: 46ch; }
+.score-band .band.big {
+  font-size: 0.85rem; padding: 4px 14px; margin-bottom: 8px; display: inline-block;
+  font-family: "Alfa Slab One", serif; border-radius: 999px; color: var(--cream);
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.score-band p { margin: 6px 0 0; color: var(--muted); font-size: 0.92rem; }
+.score-band a { color: var(--brown); }
+
+.factor-table .fl { width: 30px; text-align: center; font-weight: 700; }
+.factor-table tr.ok .fl { color: var(--green); }
+.factor-table tr.miss .fl { color: var(--red); }
+.factor-table tr.miss td { background: rgba(184, 50, 39, 0.05); }
+
+/* opportunity cards */
+.opps { display: grid; gap: 14px; margin-top: 6px; }
+.opp {
+  background: #fffcf5; border: 2px solid var(--brown); border-radius: 14px;
+  padding: 16px 18px; box-shadow: 4px 4px 0 var(--tan);
+}
+.opp-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+.opp-rank {
+  font-family: "Alfa Slab One", serif; font-size: 0.78rem; color: var(--cream);
+  background: var(--red); border-radius: 999px; padding: 3px 12px;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.opp-gain {
+  font-family: "IBM Plex Mono", monospace; font-weight: 600; color: var(--green);
+  font-size: 1.05rem;
+}
+.opp h4 {
+  font-family: "Alfa Slab One", serif; color: var(--brown); font-size: 1.05rem;
+  margin: 0 0 6px; line-height: 1.2; text-wrap: balance;
+}
+.opp p { margin: 0; font-size: 0.95rem; }
+.opp-summary {
+  margin: 14px 0 0; padding: 12px 16px;
+  background: var(--paper); border-left: 4px solid var(--gold);
+  border-radius: 0 10px 10px 0; font-size: 0.95rem; color: var(--brown);
+}
+
+.scorecard-cta {
+  margin-top: 40px; padding: 18px 20px;
+  background: var(--paper); border: 2px dashed var(--tan); border-radius: 14px;
+  font-size: 0.92rem; color: var(--brown);
+}
+.scorecard-cta p { margin: 0 0 8px; }
+.scorecard-cta p:last-child { margin: 0; }
+.scorecard-cta .cta-line { font-weight: 600; }
+.scorecard-cta a { color: var(--red); }
+
+@media print {
+  .scorecard-cta, nav.crumbs, footer { display: none; }
+  body { background: #fff; }
+}
+
 /* ---------- responsive ---------- */
 @media (max-width: 640px) {
   main { padding: 16px; }

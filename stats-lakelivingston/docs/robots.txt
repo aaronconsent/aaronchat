@@ -1,3 +1,0 @@
-User-agent: *
-Allow: /
-Sitemap: https://stats.lakelivingston.aaron.chat/sitemap.xml

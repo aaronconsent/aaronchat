@@ -1,0 +1,147 @@
+# Roster hygiene — drops businesses that Google's category graph wrongly
+# surfaced in trade searches (hardware stores as "plumbers", rest areas as
+# "tree service", car washes as "pressure washing").
+#
+# Rules run in order:
+#   1. If category matches keep_exact → KEEP (overrides everything below)
+#   2. If category contains any drop_category_contains token → DROP
+#   3. If category matches drop_category_exact → DROP
+#   4. If name matches drop_name_contains → DROP
+#   5. If place_id in drop_place_ids → DROP
+# Everything else stays.
+
+# Categories that LOOK like retail/supply but are how Google labels real
+# service companies. Checked before any drop rule.
+keep_exact:
+  - "Garage door supplier"          # how garage-door repair cos are tagged
+  - "Electric generator shop"       # Generac/Kohler dealers do installs
+
+# Substring match, case-insensitive. Retail, attractions, auto, lodging,
+# food, government, misc non-service.
+drop_category_contains:
+  - "store"
+  - "supplier"
+  - "supply"
+  - "dealer"
+  - "wholesaler"
+  - "wholesale"
+  - "rental"
+  - "nursery"
+  - "garden center"
+  - "attraction"
+  - "landmark"
+  - "rest stop"
+  - "gas station"
+  - "car wash"
+  - "oil change"
+  - "truck stop"
+  - "laundromat"
+  - "apartment"
+  - "hotel"
+  - "lodge"
+  - "bed & breakfast"
+  - "farmstay"
+  - "restaurant"
+  - "bar"
+  - "night club"
+  - "grocery"
+  - "utility"
+  - "courthouse"
+  - "government"
+  - "chamber of commerce"
+  - "association"
+  - "hospice"
+  - "emergency room"
+  - "gym"
+  - "yoga"
+  - "event venue"
+  - "recreation center"
+  - "museum"
+  - "education"
+  - "employment"
+  - "tax preparation"
+  - "credit counseling"
+  - "career guidance"
+  - "animal shelter"
+  - "animal control"
+  - "towing"
+  - "tire shop"
+  - "muffler"
+  - "transmission"
+  - "mechanic"
+  - "auto repair"
+  - "truck repair"
+  - "diesel engine"
+  - "vehicle inspection"
+  - "rv park"
+  - "rv repair"
+  - "rv detailing"
+  - "car detailing"
+  - "saw mill"
+  - "asphalt mixing"
+  - "manufacturer"
+  - "shipping"
+  - "transportation"
+  - "portable toilet"
+  - "real estate developer"
+  - "housing development"
+  - "residents"
+  - "homeowners"
+  - "interior designer"
+  - "architectural designer"
+  - "building designer"
+  - "painting studio"
+  - "christmas tree farm"
+  - "tree farm"
+  - "firewood"
+  - "non-profit"
+  - "executor"
+  - "electrical substation"
+  - "television repair"
+  - "vacuum cleaner"
+  - "furniture repair"
+  - "air compressor"
+  - "waste management"
+  - "garbage collection"
+  - "solar energy company"
+  - "solar energy equipment"
+  - "mobile home dealer"
+  - "dry cleaner"
+  - "shop"                # catch-all for retail *shop categories (after keep_exact)
+
+# Exact-match drops that don't fit a substring rule
+drop_category_exact:
+  - "attractions"
+  - "Area"
+  - "Lake"
+  - "Swimming pool"       # public pools / swim parks (NOT pool contractors)
+  - "bars"
+  - "hotels"
+  - "restaurants"
+  - "Foundation"          # ambiguous — the 2 rows are non-profits, not slab work
+  - "Dollar store"
+  - "Variety store"
+  - "General store"
+  - "Agricultural service"
+  - "Line marking service"
+  - "Civil engineering company"
+  - "Party equipment rental service"
+
+# Name-based catch for anything whose category slipped through
+drop_name_contains:
+  - "statue"
+  - "rest area"
+  - "dollar general"
+  - "harbor freight"
+  - "tractor supply"
+  - "walmart"
+  - "lowe's"
+  - "home depot"
+  - "chevron"
+  - "exxon"
+  - "shell station"
+  - "pilot travel"
+  - "buc-ee"
+
+# Specific place_ids to drop (curated over time as weird ones surface)
+drop_place_ids: []
