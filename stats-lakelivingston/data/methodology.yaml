@@ -1,7 +1,23 @@
 # How every score, medal, and "#1 bar" on this site is computed.
 # Kept in one place so trade pages and the methodology page never drift.
 
-version: "0.2.0"
+version: "0.3.0"
+
+# Letter grades — aligned to the presence-score bands so the words and the
+# letters never disagree ("Strong" is always a B, "Category Leader" an A).
+# Used for the overall grade and, applied to percent-of-max, per-factor grades.
+grades:
+  - {min: 96, letter: "A+"}
+  - {min: 90, letter: "A"}
+  - {min: 85, letter: "A-"}   # Category Leader starts here
+  - {min: 79, letter: "B+"}
+  - {min: 72, letter: "B"}
+  - {min: 65, letter: "B-"}   # Strong starts here
+  - {min: 57, letter: "C+"}
+  - {min: 49, letter: "C"}
+  - {min: 40, letter: "C-"}   # Findable starts here
+  - {min: 25, letter: "D"}
+  - {min:  0, letter: "F"}    # Missing in Action
 
 # The Presence Score (0-100) — how "findable and trustworthy" a company looks
 # from public signals we can capture without visiting the website. Rebalanced

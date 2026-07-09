@@ -232,7 +232,7 @@ def score_breakdown(c, methodology):
         "Profile is claimed" if claimed else "Listing is unclaimed — anyone can suggest edits")
     rv = min(1.0, rc / 50.0) * w["reviews_volume"]
     add("reviews_volume", "Review volume", rv, w["reviews_volume"], rc >= 50,
-        f"{rc} Google reviews" + ("" if rc >= 50 else f" — full points at 50"))
+        f"{rc} Google review{'s' if rc != 1 else ''}" + ("" if rc >= 50 else " — full points at 50"))
     if ar >= 4.5:
         ap, ok = w["avg_rating"], True
     elif ar >= 4.0:
@@ -243,7 +243,7 @@ def score_breakdown(c, methodology):
         f"★ {ar}" if ar else "No rating yet")
     pp = min(1.0, pc / 20.0) * w["photos_count"]
     add("photos_count", "Listing photos", pp, w["photos_count"], pc >= 20,
-        f"{pc} photos" + ("" if pc >= 20 else " — full points at 20"))
+        f"{pc} photo{'s' if pc != 1 else ''}" + ("" if pc >= 20 else " — full points at 20"))
     add("phone_present", "Phone on listing",
         w["phone_present"] if has_phone else 0, w["phone_present"], has_phone,
         "Tap-to-call number present" if has_phone else "No phone number on the listing")
@@ -256,6 +256,14 @@ def score_breakdown(c, methodology):
 def compute_presence_score(c, methodology):
     total, band, _ = score_breakdown(c, methodology)
     return total, band
+
+
+def grade_for(pct, methodology):
+    """Letter grade for a 0-100 value (overall score or percent-of-max)."""
+    for g in methodology.get("grades") or []:
+        if pct >= g["min"]:
+            return g["letter"]
+    return "F"
 
 
 # ---------- fix playbook copy (per factor) ----------
@@ -420,7 +428,7 @@ def render_home(site, trades_data, methodology, built_at):
             out.innerHTML = hits.length
               ? hits.map(function(b) {{
                   return '<a class="hit" href="/biz/' + b.s + '/"><b>' + b.n + '</b>' +
-                         '<span>' + (b.c || "") + ' · score ' + b.p + '/100</span></a>';
+                         '<span>' + (b.c || "") + ' · grade ' + (b.g || "?") + ' · ' + b.p + '/100</span></a>';
                 }}).join("")
               : '<p class="no-hit">No match — we may not have picked your business up yet. Email hello@aaron.chat and we\\'ll add you to the next weekly build.</p>';
           }});
@@ -585,6 +593,7 @@ def render_trade(trade_meta, trade_yaml, companies_with_scores, methodology,
         medal_cards = []
         labels = ["Gold · #1", "Silver · #2", "Bronze · #3"]
         for i, c in enumerate(top3):
+            letter = grade_for(c["_score"], methodology)
             quick = " · ".join(x for x in [
                 f'{c.get("reviews")} reviews' if c.get("reviews") is not None else None,
                 f'★ {c.get("rating")}' if c.get("rating") is not None else None,
@@ -593,8 +602,8 @@ def render_trade(trade_meta, trade_yaml, companies_with_scores, methodology,
               <article class="medal-card rank-{i+1}">
                 <span class="medal">{labels[i]}</span>
                 <h3><a href="/biz/{e(c["slug"])}/">{e(c["name"])}</a></h3>
-                <span class="score">Presence {c["_score"]}/100 · {e(quick)}</span>
-                <p class="quick"><a href="/biz/{e(c["slug"])}/">Full scorecard →</a></p>
+                <span class="score">Grade {letter} · {c["_score"]}/100 · {e(quick)}</span>
+                <p class="quick"><a href="/biz/{e(c["slug"])}/">Full report card →</a></p>
               </article>''')
         leaderboard = f'''
           <p class="section-title">Leaderboard <span class="count">top {len(top3)} local by presence score</span></p>
@@ -608,6 +617,7 @@ def render_trade(trade_meta, trade_yaml, companies_with_scores, methodology,
         rows = []
         for i, c in enumerate(subset):
             band = c["_band"]
+            letter = grade_for(c["_score"], methodology)
             site_cell = "✓" if c.get("site") else "—"
             rows.append(f'''
               <tr data-name="{e((c.get("name") or "").lower())}">
@@ -618,7 +628,8 @@ def render_trade(trade_meta, trade_yaml, companies_with_scores, methodology,
                 <td class="num">{c.get("reviews") if c.get("reviews") is not None else "—"}</td>
                 <td class="num">{c.get("rating") if c.get("rating") is not None else "—"}</td>
                 <td>{site_cell}</td>
-                <td><span class="band" style="background:{band['color']}">{e(band['label'])}</span></td>
+                <td><span class="band grade-chip" title="{e(band['label'])}"
+                     style="background:{band['color']}">{letter}</span></td>
               </tr>''')
         return f'''
           <p class="section-title">{title} <span class="count">{count_label}</span></p>
@@ -626,7 +637,7 @@ def render_trade(trade_meta, trade_yaml, companies_with_scores, methodology,
             <table class="company-table searchable">
               <thead><tr>
                 <th>#</th><th>Company</th><th>Town</th><th>Score</th>
-                <th>Reviews</th><th>★</th><th>Site</th><th>Band</th>
+                <th>Reviews</th><th>★</th><th>Site</th><th>Grade</th>
               </tr></thead>
               <tbody>{"".join(rows)}</tbody>
             </table>
@@ -718,123 +729,165 @@ def render_trade(trade_meta, trade_yaml, companies_with_scores, methodology,
 
 def render_scorecard(c, methodology, site, trade_contexts, built_at):
     total, band, factors = score_breakdown(c, methodology)
+    overall_grade = grade_for(total, methodology)
 
-    # factor table
-    factor_rows = "".join(f'''
-      <tr class="{'ok' if f['ok'] else 'miss'}">
-        <td class="fl">{'✓' if f['ok'] else '✗'}</td>
-        <td class="name">{e(f["label"])}</td>
-        <td>{e(f["detail"])}</td>
-        <td class="num">{f["earned"]:g} / {f["max"]}</td>
-      </tr>''' for f in factors)
-
-    # opportunities: biggest point gaps first
-    primary_trade = None
+    # primary trade context (first trade we track)
+    primary = None
     for t in c.get("trades") or []:
         if t in trade_contexts:
-            primary_trade = trade_contexts[t]
+            primary = trade_contexts[t]
             break
-    tctx = primary_trade or {}
+    tctx = primary or {}
+
+    # class rank + honor roll
+    rank_num = None
+    rank_line = "unranked (outside the service area)"
+    if primary and c.get("is_local") and c["place_id"] in primary["local_rank_by_pid"]:
+        rank_num = primary["local_rank_by_pid"][c["place_id"]]
+        rank_line = f'#{rank_num} of {primary["n_local"]} local {primary["name"].lower()}'
+    honor_roll = rank_num is not None and rank_num <= 3
+
+    stamp = ('<div class="rc-stamp honor">★ HONOR ROLL ★<span>top 3 in trade</span></div>'
+             if honor_roll else
+             '<div class="rc-stamp">UPDATED WEEKLY<span>public Google data</span></div>')
+
+    # subjects table — report-card style with per-factor letter grades
+    subject_rows = []
+    for f in factors:
+        pct = 100.0 * f["earned"] / f["max"] if f["max"] else 0
+        letter = grade_for(pct, methodology)
+        subject_rows.append(f'''
+          <tr class="{'ok' if f['ok'] else 'miss'}">
+            <td class="subj">{e(f["label"])}</td>
+            <td class="found">{e(f["detail"])}</td>
+            <td class="num">{f["earned"]:g}&thinsp;/&thinsp;{f["max"]}</td>
+            <td class="grade-cell"><span class="grade-pen">{letter}</span></td>
+          </tr>''')
+    subject_rows.append(f'''
+          <tr class="rc-total">
+            <td class="subj">Overall</td>
+            <td class="found">{e(band["label"])}</td>
+            <td class="num">{total}&thinsp;/&thinsp;100</td>
+            <td class="grade-cell"><span class="grade-pen big">{overall_grade}</span></td>
+          </tr>''')
+
+    # teacher's comments — the fixes, ranked by point gain
     opps = sorted([f for f in factors if f["max"] - f["earned"] >= 1],
-                  key=lambda f: -(f["max"] - f["earned"]))
-    opp_cards = []
-    for i, f in enumerate(opps[:3], 1):
+                  key=lambda f: -(f["max"] - f["earned"]))[:3]
+    comment_items = []
+    for i, f in enumerate(opps, 1):
         gain = round(f["max"] - f["earned"])
         head, body = factor_fix(f["key"], c, tctx)
-        opp_cards.append(f'''
-          <article class="opp">
-            <div class="opp-head">
-              <span class="opp-rank">Fix #{i}</span>
-              <span class="opp-gain">+{gain} pts</span>
-            </div>
-            <h4>{e(head)}</h4>
+        comment_items.append(f'''
+          <li>
+            <span class="pen-gain">+{gain} pts</span>
+            <span class="pen-head">{e(head)}</span>
             <p>{e(body)}</p>
-          </article>''')
-    opportunities = ""
-    if opp_cards:
-        new_total = min(100, total + sum(round(f["max"] - f["earned"]) for f in opps[:3]))
-        opportunities = f'''
-          <p class="section-title">Your biggest opportunities <span class="count">ranked by point gain</span></p>
-          <div class="opps">{"".join(opp_cards)}</div>
-          <p class="opp-summary">Close these {len(opp_cards)} gaps and your score goes from
-          <b>{total}</b> to roughly <b>{new_total}</b> — {'that’s "' + e(next(b for b in methodology["presence_score"]["bands"] if new_total >= b["min"])["label"]) + '" territory' if new_total > total else 'keep going'}.</p>
-        '''
+          </li>''')
+    if opps:
+        new_total = min(100, total + sum(round(f["max"] - f["earned"]) for f in opps))
+        new_grade = grade_for(new_total, methodology)
+        new_band = next(b for b in methodology["presence_score"]["bands"] if new_total >= b["min"])
+        promotion = (f'Address all {len(opps)} comment{"s" if len(opps) > 1 else ""} above and the '
+                     f'projected grade is <b class="grade-pen">{new_grade}</b> '
+                     f'({new_total}/100 — {e(new_band["label"])}).')
     else:
-        opportunities = '''
-          <p class="section-title">Your biggest opportunities</p>
-          <p class="opp-summary">Full marks across the board — you're running this trade's
-          best-practice playbook already. Defend the lead: keep review velocity up and
-          photos fresh.</p>
-        '''
+        comment_items.append('''
+          <li>
+            <span class="pen-head">Straight A's — a pleasure to have in class.</span>
+            <p>Full marks on every factor. Defend the lead: keep review velocity up
+            and photos fresh, because the shops below you are reading this site too.</p>
+          </li>''')
+        promotion = "Keep it up — this is what the rest of the trade is measured against."
 
-    # benchmarks per trade
+    # trades line for the student block
+    trade_names = [trade_contexts[t]["name"] for t in (c.get("trades") or []) if t in trade_contexts]
+
+    # class averages (multi-trade benchmark)
     bench_rows = []
     for t in c.get("trades") or []:
         ctx = trade_contexts.get(t)
         if not ctx:
             continue
-        rank_str = "—"
+        r = "—"
         if c.get("is_local") and c["place_id"] in ctx["local_rank_by_pid"]:
-            rank_str = f'#{ctx["local_rank_by_pid"][c["place_id"]]} of {ctx["n_local"]}'
+            r = f'#{ctx["local_rank_by_pid"][c["place_id"]]} of {ctx["n_local"]}'
         bench_rows.append(f'''
           <tr>
             <td class="name"><a href="/{e(ctx["key"])}/">{e(ctx["name"])}</a></td>
-            <td class="num">{rank_str}</td>
+            <td class="num">{r}</td>
             <td class="num">{ctx["median_reviews"]}</td>
             <td class="num">{ctx["top3_median_reviews"] or "—"}</td>
           </tr>''')
     benchmarks = ""
     if bench_rows:
         benchmarks = f'''
-          <p class="section-title">Where you rank</p>
+          <p class="section-title">Class averages <span class="count">how the local trade scores</span></p>
           <div class="company-table-wrap">
             <table class="company-table">
-              <thead><tr><th>Trade</th><th>Your local rank</th><th>Local median reviews</th><th>Top-3 median</th></tr></thead>
+              <thead><tr><th>Trade</th><th>Class rank</th><th>Local median reviews</th><th>Top-3 median</th></tr></thead>
               <tbody>{"".join(bench_rows)}</tbody>
             </table>
           </div>
         '''
 
-    quick_facts = " · ".join(x for x in [
-        e(c.get("city") or ""),
+    def student_row(label, value):
+        return (f'<div class="rc-row"><span class="rc-label">{e(label)}</span>'
+                f'<span class="rc-fill">{value}</span></div>')
+
+    quick_stats = " · ".join(x for x in [
         f'★ {c.get("rating")}' if c.get("rating") else None,
-        f'{c.get("reviews")} reviews' if c.get("reviews") is not None else None,
-        e(c.get("category") or "")] if x)
+        f'{c.get("reviews")} review{"s" if c.get("reviews") != 1 else ""}' if c.get("reviews") is not None else None,
+    ] if x) or "—"
 
     content = f'''
-      <header class="masthead scorecard-head">
-        <p class="eyebrow">Business scorecard · public data · updated weekly</p>
-        <h1>{e(c["name"])}</h1>
-        <p class="tagline">{quick_facts}</p>
-        <div class="score-hero">
-          <div class="score-dial" style="border-color:{band['color']}">
-            <span class="score-n">{total}</span>
-            <span class="score-d">/100</span>
+      <article class="report-card">
+        {stamp}
+        <header class="rc-masthead">
+          <p class="rc-institution">The Lake Livingston Service Pro Report</p>
+          <p class="rc-doctitle">Official Business Report Card</p>
+          <p class="rc-term">Week of {built_at} · Polk, Walker &amp; San Jacinto counties, Texas</p>
+        </header>
+
+        <div class="rc-student">
+          <div class="rc-rows">
+            {student_row("Business", "<h1>" + e(c["name"]) + "</h1>")}
+            {student_row("Town", e(c.get("city") or "—"))}
+            {student_row("Trade", e(", ".join(trade_names) or (c.get("category") or "—")))}
+            {student_row("Class rank", e(rank_line))}
+            {student_row("Google standing", e(quick_stats))}
           </div>
-          <div class="score-band">
-            <span class="band big" style="background:{band['color']}">{e(band['label'])}</span>
-            <p>Presence Score — how findable and trustworthy this business looks
-            to a homeowner searching Google right now. <a href="/methodology/">How scoring works →</a></p>
+          <div class="rc-gradebox" style="border-color:{band['color']}">
+            <span class="rc-grade" style="color:{band['color']}">{overall_grade}</span>
+            <span class="rc-score">{total}/100</span>
+            <span class="band" style="background:{band['color']}">{e(band['label'])}</span>
           </div>
         </div>
-        <div class="weekly-stamp">Built {built_at}</div>
-      </header>
 
-      <p class="section-title">Score breakdown</p>
-      <div class="company-table-wrap">
-        <table class="company-table factor-table">
-          <thead><tr><th></th><th>Factor</th><th>What we found</th><th>Points</th></tr></thead>
-          <tbody>{factor_rows}</tbody>
+        <table class="rc-subjects">
+          <thead><tr><th>Subject</th><th>What we found</th><th>Points</th><th>Grade</th></tr></thead>
+          <tbody>{"".join(subject_rows)}</tbody>
         </table>
-      </div>
 
-      {opportunities}
+        <section class="rc-comments">
+          <h3>Comments</h3>
+          <ol>{"".join(comment_items)}</ol>
+          <p class="rc-promotion">{promotion}</p>
+        </section>
+
+        <footer class="rc-footer">
+          <span>Prepared by {e(site["publisher"])} from public Google Business Profile data ·
+          <a href="/methodology/">grading rubric</a></span>
+          <button class="btn-print" onclick="window.print()">Print this report card</button>
+        </footer>
+      </article>
+
       {benchmarks}
 
       <div class="scorecard-cta">
-        <p>This scorecard is built from public Google data and refreshed weekly.
-        Something wrong? Email <a href="mailto:hello@aaron.chat">hello@aaron.chat</a> and we'll fix it in the next build.</p>
-        <p class="cta-line">Want these gaps closed for you? That's literally what we do —
+        <p>Refreshed weekly. Something wrong? Email
+        <a href="mailto:hello@aaron.chat">hello@aaron.chat</a> and we'll fix it in the next build.</p>
+        <p class="cta-line">Want the comments section handled for you? That's literally what we do —
         <a href="{e(site["publisher_url"])}">Hey Aaron! Marketing</a>.</p>
       </div>
     '''
@@ -882,6 +935,12 @@ def render_methodology(site, methodology, built_at):
         <td><span class="band" style="background:{b["color"]}">{e(b["label"])}</span></td>
         <td class="num">{b["min"]}+</td>
       </tr>''' for b in methodology["presence_score"]["bands"])
+    grades = methodology.get("grades") or []
+    grade_rows = "".join(f'''
+      <tr>
+        <td><span class="grade-pen">{e(g["letter"])}</span></td>
+        <td class="num">{g["min"]}{"–" + str(grades[i-1]["min"] - 1) if i else "–100"}</td>
+      </tr>''' for i, g in enumerate(grades))
     excluded = "".join(f"<li>{e(x)}</li>" for x in methodology.get("excluded") or [])
 
     content = f'''
@@ -906,6 +965,18 @@ def render_methodology(site, methodology, built_at):
         <table class="company-table">
           <thead><tr><th>Band</th><th>Score</th></tr></thead>
           <tbody>{band_rows}</tbody>
+        </table>
+      </div>
+
+      <p class="section-title">Letter grades</p>
+      <p>Report cards translate the score into a letter grade, aligned with the bands
+      so the words and the letter always agree — "Category Leader" is A territory,
+      "Strong" is a B, "Findable" is a C. Per-factor grades use the same scale applied
+      to the percent of available points earned.</p>
+      <div class="company-table-wrap">
+        <table class="company-table">
+          <thead><tr><th>Grade</th><th>Score</th></tr></thead>
+          <tbody>{grade_rows}</tbody>
         </table>
       </div>
 
@@ -1038,7 +1109,8 @@ def main():
                 continue
             seen2.add(c["place_id"])
             index.append({"n": c["name"], "c": c.get("city") or "",
-                          "s": c["slug"], "p": c["_score"]})
+                          "s": c["slug"], "p": c["_score"],
+                          "g": grade_for(c["_score"], methodology)})
     index.sort(key=lambda x: x["n"] or "")
     write(os.path.join(DOCS, "search-index.json"),
           json.dumps(index, separators=(",", ":"), ensure_ascii=False))

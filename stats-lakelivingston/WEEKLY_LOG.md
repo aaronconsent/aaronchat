@@ -3,6 +3,26 @@
 Reverse-chronological. Each entry names what changed, why, and what's queued
 for next week.
 
+## 2026-07-09 (evening) · Week 2.5 — the report-card redesign
+
+**What landed**
+- Scorecards redesigned as **official report cards**: certificate double
+  border, rotated rubber stamp ("UPDATED WEEKLY", or gold "HONOR ROLL"
+  for top-3 businesses), institution masthead, student block with dotted
+  fill-ins (Business / Town / Trade / Class rank / Google standing),
+  handwritten letter grade in the gradebox.
+- **Letter grades** (methodology v0.3) aligned to bands so words and
+  letters never disagree: Category Leader = A range, Strong = B,
+  Findable = C, Missing in Action = D/F. Per-subject grades in a red/green
+  "pen" hand (Caveat) on a ruled subjects table.
+- Fixes are now **teacher's comments** on lined paper, with +pts gains in
+  the margin and a promotion line ("address all 3 comments → projected A").
+- Grade chips replace band chips on rosters; leaderboard + search results
+  show grades; grading rubric added to /methodology/.
+- Print button + print stylesheet — the card prints clean as a one-page
+  leave-behind.
+- OG meta tags site-wide (scorecards get texted; links now unfurl).
+
 ## 2026-07-09 · Week 2 — the scorecard release
 
 **What landed**
