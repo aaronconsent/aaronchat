@@ -790,3 +790,11 @@
 2026-07-16T15:08:25  bluesky[audience]: gated. window:blocked(outside_windows hour=15)
 2026-07-16T15:08:26  mastodon[credibility]: gated. window:ok(window 9-17) | cap:ok(cap_room today=0 cap=1) | spacing:blocked(spacing_too_close 30.1h < 36h)
 2026-07-16T15:08:26  mastodon[audience]: gated. window:blocked(outside_windows hour=15)
+2026-07-16T17:11:52  linkedin[credibility]: gated. window:ok(window 8-18) | cap:ok(cap_room today=0 cap=1) | spacing:blocked(spacing_too_close 28.6h < 48h)
+2026-07-16T17:11:52  linkedin[audience]: gated. window:blocked(outside_windows hour=17)
+2026-07-16T17:11:52  x[credibility]: gated. window:blocked(outside_windows hour=17)
+2026-07-16T17:11:52  x[audience]: FAILED id=c0b9dbbd28d4 backend=buffer detail=[{"message": "Variable \"$input\" got invalid value \"paste-6a4710585ab6d2f1069b334e\" at \"input.channelId\"; Invalid ChannelId format.", "path": ["createPost"], "extensions": {"code": "BAD_USER_INPUT"}}]
+2026-07-16T17:11:52  bluesky[credibility]: gated. window:blocked(outside_windows hour=17)
+2026-07-16T17:11:52  bluesky[audience]: no unposted items
+2026-07-16T17:11:52  mastodon[credibility]: gated. window:blocked(outside_windows hour=17)
+2026-07-16T17:11:52  mastodon[audience]: no unposted items
