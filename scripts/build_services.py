@@ -257,6 +257,15 @@ SERVICES = [
 SVC_BY_SLUG = {s["slug"]: s for s in SERVICES}
 ORDER = [s["slug"] for s in SERVICES]
 
+# Professor imagery rotated across the service-page heroes (img, object-position%)
+HERO_IMAGES = [
+    ("/brand/media/hero-professor.jpg", 68),
+    ("/brand/media/professor-left.jpg", 32),
+    ("/brand/media/era-future.jpg", 72),
+    ("/brand/media/era-greece.jpg", 50),
+    ("/brand/media/era-renaissance.jpg", 62),
+]
+
 
 def render_service(s):
     plan_label, plan_url = PLAN_LINKS[s["plan"]]
@@ -275,19 +284,24 @@ def render_service(s):
 
     title = f'{s["name"].replace("&amp;", "&")} — Top of Class Marketing'
     desc = s["tag"].replace('&ldquo;', '"').replace('&rdquo;', '"')
+    # rotate professor imagery across the service heroes for variety
+    img, pos = HERO_IMAGES[i % len(HERO_IMAGES)]
     return f"""{page_head(title, desc, f'/services/{s["slug"]}/')}
 
 <nav class="crumbs" style="max-width:1080px;margin:0 auto;padding:14px 22px 0;font-size:.88rem;color:var(--slate)">
   <a href="/services/" style="color:var(--pen);text-decoration:none">Services</a> &rsaquo; {s['name']}
 </nav>
 
-<div class="hero">
+<div class="hero hero--split">
   <div class="wrap">
+    <div class="hero-copy">
     <p class="kicker">{cat_name}</p>
     <h1>{s['name']}</h1>
     <p class="sub">{s['tag']}</p>
     <a class="btn btn-primary" href="/report-card/">Get my free report card</a>
     <a class="btn btn-ghost" href="/pricing/">See the plans</a>
+    </div>
+    <div class="hero-figure"><img src="{img}" alt="Aaron, Top of Class Marketing" width="1000" height="1250" style="object-position:{pos}% center" loading="eager"></div>
   </div>
 </div>
 
