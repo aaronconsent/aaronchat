@@ -231,9 +231,13 @@ section h2 { font-size: clamp(1.5rem, 3.4vw, 2.1rem); margin: 0 0 14px; }
   border: 3px solid rgba(255, 255, 255, 0.14);
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
 }
+/* lesson hero — wide chalkboard-diagram image, shown whole (not cropped to portrait) */
+.hero--lesson .hero-figure { align-self: center; align-items: center; }
+.hero--lesson .hero-figure img { aspect-ratio: auto; height: auto; object-fit: contain; }
 @media (max-width: 860px) {
   .hero--split .wrap { grid-template-columns: 1fr; gap: 28px; }
   .hero--split .hero-figure img { aspect-ratio: 16 / 10; object-position: 70% center; max-height: 360px; }
+  .hero--lesson .hero-figure img { aspect-ratio: auto; height: auto; object-fit: contain; max-height: none; }
 }
 
 /* "A History of Teaching" era gallery */
