@@ -213,6 +213,51 @@ section h2 { font-size: clamp(1.5rem, 3.4vw, 2.1rem); margin: 0 0 14px; }
 .site-foot .hand { color: var(--star); font-size: 1.4rem; }
 .site-foot p { margin: 6px 0; }
 
+/* services hub */
+.svc-cat { margin-top: 46px; }
+.svc-cat:first-of-type { margin-top: 8px; }
+.svc-cat > .eyebrow { margin-bottom: 2px; }
+.svc-cat > h2 { font-size: clamp(1.3rem, 3vw, 1.7rem); margin: 0 0 20px; }
+.svc-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+.svc-card {
+  display: flex; flex-direction: column; text-decoration: none; color: var(--ink);
+  background: var(--white); border: 1.5px solid var(--line); border-radius: 14px;
+  padding: 22px 22px 20px; box-shadow: 0 2px 0 var(--line);
+  transition: transform 0.08s ease, box-shadow 0.08s ease, border-color 0.08s ease;
+}
+.svc-card:hover { transform: translateY(-3px); box-shadow: 0 6px 0 var(--line); border-color: var(--board); }
+.svc-card .svc-icon { font-size: 1.9rem; line-height: 1; margin-bottom: 12px; }
+.svc-card h3 { margin: 0 0 6px; font-size: 1.18rem; }
+.svc-card p { margin: 0 0 16px; font-size: 0.95rem; color: var(--slate); flex: 1; }
+.svc-card .svc-plan {
+  align-self: flex-start; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.02em;
+  color: var(--board); background: var(--paper); border: 1px solid var(--line);
+  padding: 4px 10px; border-radius: 999px;
+}
+.svc-card .svc-more { margin-top: 14px; font-weight: 700; color: var(--pen); font-size: 0.9rem; }
+
+/* service page: deliverables + plan badge */
+.deliverables { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 0; }
+.deliverables li {
+  position: relative; padding: 12px 0 12px 34px; border-bottom: 1px dashed var(--line);
+  font-size: 1rem;
+}
+.deliverables li:last-child { border-bottom: 0; }
+.deliverables li::before {
+  content: "✓"; position: absolute; left: 4px; top: 12px;
+  color: var(--pass); font-weight: 700; font-size: 1.05rem;
+}
+.plan-badge {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 8px;
+  background: var(--board); color: var(--chalk); border-radius: 12px;
+  padding: 14px 20px; font-size: 1rem;
+}
+.plan-badge b { color: #fff; }
+.plan-badge a { color: var(--star); font-weight: 700; white-space: nowrap; }
+.svc-nextprev { display: flex; justify-content: space-between; gap: 16px; margin-top: 40px; flex-wrap: wrap; }
+.svc-nextprev a { color: var(--pen); font-weight: 700; text-decoration: none; }
+.svc-nextprev a:hover { text-decoration: underline; }
+
 @media (max-width: 640px) {
   .hero { padding: 44px 0 52px; }
   .btn-ghost { margin-left: 0; margin-top: 10px; }

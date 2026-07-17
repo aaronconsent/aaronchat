@@ -1,6 +1,40 @@
-# --- Rebrand (2026-07): diner-era pages retired → Top of Class pages ---
-/services/* /pricing/ 301
-/services /pricing/ 301
+# --- Old diner-era service URLs → new Services hub (specific, so real /services/* pages serve) ---
+/services/local-eyeballs/* /services/social-media/ 301
+/services/local-eyeballs /services/social-media/ 301
+/services/local-group-sharing/* /services/group-sharing/ 301
+/services/local-group-sharing /services/group-sharing/ 301
+/services/booked-by-facebook/* /services/paid-advertising/ 301
+/services/booked-by-facebook /services/paid-advertising/ 301
+/services/facebook-ads/* /services/paid-advertising/ 301
+/services/facebook-ads /services/paid-advertising/ 301
+/services/adwords-on-google/* /services/paid-advertising/ 301
+/services/adwords-on-google /services/paid-advertising/ 301
+/services/google-local-services-ads/* /services/paid-advertising/ 301
+/services/google-local-services-ads /services/paid-advertising/ 301
+/services/right-here-referrals/* /services/reviews/ 301
+/services/right-here-referrals /services/reviews/ 301
+/services/review-rocket/* /services/reviews/ 301
+/services/review-rocket /services/reviews/ 301
+/services/list-me-local/* /services/google-business-profile/ 301
+/services/list-me-local /services/google-business-profile/ 301
+/services/found-on-google/* /services/google-business-profile/ 301
+/services/found-on-google /services/google-business-profile/ 301
+/services/rank-me-local/* /services/local-seo/ 301
+/services/rank-me-local /services/local-seo/ 301
+/services/built-for-you-website/* /services/website/ 301
+/services/built-for-you-website /services/website/ 301
+/services/stay-in-touch/* /services/customer-newsletter/ 301
+/services/stay-in-touch /services/customer-newsletter/ 301
+/services/lead-hustler/* /services/ 301
+/services/lead-hustler /services/ 301
+/services/seasonal-promos/* /services/ 301
+/services/seasonal-promos /services/ 301
+/services/verified-local/* /services/ 301
+/services/verified-local /services/ 301
+/services/call-tracking/* /services/paid-advertising/ 301
+/services/call-tracking /services/paid-advertising/ 301
+
+# --- Rebrand (2026-07): other diner-era pages retired → Top of Class pages ---
 /plans/* /pricing/ 301
 /plans /pricing/ 301
 /who-we-help/hvac-ac-service-pros/* /hvac-marketing/ 301
