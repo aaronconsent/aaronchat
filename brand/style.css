@@ -213,6 +213,49 @@ section h2 { font-size: clamp(1.5rem, 3.4vw, 2.1rem); margin: 0 0 14px; }
 .site-foot .hand { color: var(--star); font-size: 1.4rem; }
 .site-foot p { margin: 6px 0; }
 
+/* image hero — professor stands in the chalkboard, headline chalked beside him */
+.hero--image {
+  background-size: cover;
+  background-position: 78% center;
+  background-repeat: no-repeat;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+}
+.hero--image .hero-copy { max-width: 600px; }
+@media (max-width: 720px) {
+  .hero--image { min-height: 0; background-position: 68% top; position: relative; }
+  .hero--image::before { content: ""; position: absolute; inset: 0; background: rgba(30,61,49,0.74); }
+  .hero--image .wrap { position: relative; z-index: 1; }
+  .hero--image .hero-copy { max-width: 100%; }
+}
+
+/* "A History of Teaching" era gallery */
+.era-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+  margin-top: 30px;
+}
+.era-card {
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 0 var(--line);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.era-card:hover { transform: translateY(-3px); box-shadow: 0 6px 0 var(--line); }
+.era-card img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.era-card .era-body { padding: 14px 16px 16px; }
+.era-card .era-when {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--pen); margin: 0 0 3px;
+}
+.era-card h3 { margin: 0 0 5px; font-size: 1.1rem; }
+.era-card p { margin: 0; font-size: 0.9rem; color: var(--slate); }
+
 /* services hub */
 .svc-cat { margin-top: 46px; }
 .svc-cat:first-of-type { margin-top: 8px; }
