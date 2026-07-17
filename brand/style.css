@@ -213,21 +213,27 @@ section h2 { font-size: clamp(1.5rem, 3.4vw, 2.1rem); margin: 0 0 14px; }
 .site-foot .hand { color: var(--star); font-size: 1.4rem; }
 .site-foot p { margin: 6px 0; }
 
-/* image hero — professor stands in the chalkboard, headline chalked beside him */
-.hero--image {
-  background-size: cover;
-  background-position: 78% center;
-  background-repeat: no-repeat;
-  min-height: 600px;
-  display: flex;
+/* split hero — copy on the left, professor image on the right */
+.hero--split .wrap {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 44px;
   align-items: center;
 }
-.hero--image .hero-copy { max-width: 600px; }
-@media (max-width: 720px) {
-  .hero--image { min-height: 0; background-position: 68% top; position: relative; }
-  .hero--image::before { content: ""; position: absolute; inset: 0; background: rgba(30,61,49,0.74); }
-  .hero--image .wrap { position: relative; z-index: 1; }
-  .hero--image .hero-copy { max-width: 100%; }
+.hero--split .hero-copy { max-width: none; }
+.hero--split .hero-figure { align-self: stretch; display: flex; }
+.hero--split .hero-figure img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 68% center;
+  border-radius: 16px;
+  border: 3px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
+}
+@media (max-width: 860px) {
+  .hero--split .wrap { grid-template-columns: 1fr; gap: 28px; }
+  .hero--split .hero-figure img { aspect-ratio: 16 / 10; object-position: 70% center; max-height: 360px; }
 }
 
 /* "A History of Teaching" era gallery */
