@@ -257,7 +257,21 @@ SERVICES = [
 SVC_BY_SLUG = {s["slug"]: s for s in SERVICES}
 ORDER = [s["slug"] for s in SERVICES]
 
-# Professor imagery rotated across the service-page heroes (img, object-position%)
+# Purpose-built landscape hero per service — each a different educator persona.
+# (img, alt). Any slug not listed falls back to the rotating pool below.
+SVC_IMAGES = {
+    "website":                 ("/brand/media/svc-website.jpg",  "Aaron as a Renaissance inventor sketching website blueprints"),
+    "google-business-profile": ("/brand/media/svc-gbp.jpg",      "Aaron holding a giant map pin beside a chalkboard town map"),
+    "reviews":                 ("/brand/media/svc-reviews.jpg",  "Aaron in graduation regalia holding a straight-A report card"),
+    "auto-blog":               ("/brand/media/svc-autoblog.jpg", "Aaron as a Victorian schoolmaster at a printing press churning out pages"),
+    "social-media":            ("/brand/media/svc-social.jpg",   "Aaron as an orchestra conductor conducting glowing social icons"),
+    "email-outreach":          ("/brand/media/svc-email.jpg",    "Aaron as a caveman teacher sending a message from a stone tablet"),
+    "reel-video":              ("/brand/media/svc-reels.jpg",    "Aaron cranking an antique Edison-era movie camera"),
+    "ai-optimization":         ("/brand/media/svc-ai.jpg",       "Aaron as a mad scientist with a tin robot and a neural-network board"),
+    "paid-advertising":        ("/brand/media/svc-ads.jpg",      "Aaron as a Wild West schoolmaster pointing at a WANTED bullseye board"),
+}
+
+# Fallback professor imagery rotated across any remaining service heroes (img, object-position%)
 HERO_IMAGES = [
     ("/brand/media/hero-professor.jpg", 68),
     ("/brand/media/professor-left.jpg", 32),
@@ -284,8 +298,15 @@ def render_service(s):
 
     title = f'{s["name"].replace("&amp;", "&")} — Top of Class Marketing'
     desc = s["tag"].replace('&ldquo;', '"').replace('&rdquo;', '"')
-    # rotate professor imagery across the service heroes for variety
-    img, pos = HERO_IMAGES[i % len(HERO_IMAGES)]
+    # dedicated persona shot if we have one, else rotate the fallback pool
+    if s["slug"] in SVC_IMAGES:
+        src, alt = SVC_IMAGES[s["slug"]]
+        img_tag = (f'<img src="{src}" alt="{alt}" width="1500" height="843" '
+                   f'style="object-position:center" loading="eager">')
+    else:
+        img, pos = HERO_IMAGES[i % len(HERO_IMAGES)]
+        img_tag = (f'<img src="{img}" alt="Aaron, Top of Class Marketing" width="1000" height="1250" '
+                   f'style="object-position:{pos}% center" loading="eager">')
     return f"""{page_head(title, desc, f'/services/{s["slug"]}/')}
 
 <nav class="crumbs" style="max-width:1080px;margin:0 auto;padding:14px 22px 0;font-size:.88rem;color:var(--slate)">
@@ -301,7 +322,7 @@ def render_service(s):
     <a class="btn btn-primary" href="/report-card/">Get my free report card</a>
     <a class="btn btn-ghost" href="/pricing/">See the plans</a>
     </div>
-    <div class="hero-figure"><img src="{img}" alt="Aaron, Top of Class Marketing" width="1000" height="1250" style="object-position:{pos}% center" loading="eager"></div>
+    <div class="hero-figure">{img_tag}</div>
   </div>
 </div>
 
