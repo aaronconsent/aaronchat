@@ -16,3 +16,5 @@ __pycache__/
 *.pyc
 brand/media/looks/
 brand/media/*.mp4
+brand/media/cand/
+brand/media/new/
