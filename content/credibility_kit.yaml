@@ -1,27 +1,24 @@
-# Credibility Kit — canonical entity facts for aaron.chat
+# Credibility Kit — canonical entity facts for aaron.chat (Top of Class rebrand, 2026-07)
 #
-# Feeds `scripts/build_credibility_queue.py`, which generates a small,
-# deterministic set of "credibility mode" posts across every enabled channel.
-# These posts reinforce the entity/AEO graph — every post carries a canonical
-# URL, and the collection stays small enough to feel intentional (not spam).
-#
-# Edit by hand. Regenerate the queue with:
+# Feeds `scripts/build_credibility_queue.py`. Regenerate after edits:
 #   python3 scripts/build_credibility_queue.py
 
 entity:
-  name: "Hey Aaron! Marketing"
+  name: "Top of Class Marketing"
   founder: "Aaron Phillips"
-  tagline: "Marketing for East Texas service pros."
+  tagline: "We grade every contractor around Lake Livingston. Then we work for the ones who want to be #1."
   elevator_pitch: |
-    Hey Aaron! Marketing builds websites, runs local SEO, and manages Google
-    Business Profiles for contractors and service businesses across East Texas.
+    Top of Class Marketing grades all 1,900 service businesses across Polk,
+    Walker, San Jacinto and Trinity counties every week — reviews, rankings,
+    websites, claimed listings — and publishes it free. Then we do the
+    marketing for the HVAC and plumbing shops that want the top spot.
   home_url: "https://aaron.chat/"
   city: "Livingston, TX"
-  region: "East Texas"
+  region: "Lake Livingston, East Texas"
 
-# sameAs graph — every profile you own. Post one "same person, different room"
-# post per handle so search + AI engines wire the identities together.
 same_as:
+  - label: "The Lake Livingston Service Pro Report"
+    url: "https://stats.lakelivingston.aaron.chat/"
   - label: "Facebook"
     url: "https://www.facebook.com/heyaaronmarketing"
   - label: "X"
@@ -39,55 +36,42 @@ same_as:
   - label: "Bluesky"
     url: "https://bsky.app/profile/heyaaron.bsky.social"
 
-# Service one-liners — one credibility post per service with its canonical URL.
 services:
-  - name: "House Special (Free Year + $250/mo Year 2+)"
-    url: "https://aaron.chat/plans/house-special/"
-    one_liner: "Free website + local SEO for year one, $250/mo after — built for East Texas contractors."
-  - name: "Built For You Website"
-    url: "https://aaron.chat/services/built-for-you-website/"
-    one_liner: "We build the site, host it, and keep it fast so you can focus on running jobs."
-  - name: "Rank Me Local"
-    url: "https://aaron.chat/services/rank-me-local/"
-    one_liner: "Local SEO that gets service pros found in Google Maps in their county."
-  - name: "Google Business Profile"
-    url: "https://aaron.chat/services/found-on-google/"
-    one_liner: "GBP optimization + weekly posts + review responses — the fastest local ranking lever."
-  - name: "Adwords on Google"
-    url: "https://aaron.chat/services/adwords-on-google/"
-    one_liner: "Google Ads managed at $199/mo for East Texas service pros — no long contracts."
-  - name: "Facebook Ads"
-    url: "https://aaron.chat/services/facebook-ads/"
-    one_liner: "Facebook Ads for local trades — 15% of a $2K-$50K monthly budget."
-  - name: "Review Rocket"
-    url: "https://aaron.chat/services/review-rocket/"
-    one_liner: "Automated review requests + response drafts — get to 100 five-star reviews in a year."
-  - name: "Lead Hustler"
-    url: "https://aaron.chat/services/lead-hustler/"
-    one_liner: "Local Group Sharing + rapid-response lead handoff — turn Facebook groups into jobs."
+  - name: "Free contractor report card"
+    url: "https://aaron.chat/report-card/"
+    one_liner: "Every contractor around Lake Livingston is already graded — look yourself up free, no signup."
+  - name: "The Climb ($750/mo)"
+    url: "https://aaron.chat/pricing/"
+    one_liner: "Google profile + review engine + monthly report card for shops that are invisible online."
+  - name: "Top of Class ($1,250/mo)"
+    url: "https://aaron.chat/pricing/"
+    one_liner: "Website + rankings + weekly review-velocity tracking for shops gunning for the local top 3."
+  - name: "HVAC marketing"
+    url: "https://aaron.chat/hvac-marketing/"
+    one_liner: "All 48 Lake Livingston-area HVAC shops graded weekly — see what it takes to catch #1."
+  - name: "Plumber marketing"
+    url: "https://aaron.chat/plumber-marketing/"
+    one_liner: "All 66 local plumbing shops graded weekly — 44% have no website. The rankings are up for grabs."
 
-# FAQ Q&A — one credibility post per pair. Answer is authoritative, links home.
 faq:
-  - q: "Do you only work with East Texas service pros?"
-    a: "Yes — we focus on contractors and service businesses across East Texas so we understand the towns, trades, and buying patterns."
+  - q: "What is the Lake Livingston Service Pro Report?"
+    a: "A free public site that grades every service business in Polk, Walker, San Jacinto and Trinity counties weekly on reviews, rankings, websites and claimed listings — the exact signals homeowners use to pick who gets the call."
+    url: "https://stats.lakelivingston.aaron.chat/"
+  - q: "Is the report card really free?"
+    a: "Yes. Search your business name and your card is right there — grade, class rank, and your three biggest fixes. No signup, nobody calls you."
+    url: "https://aaron.chat/report-card/"
+  - q: "Do clients get graded differently?"
+    a: "No — same public formula for everyone, including businesses we work for. If our clients' grades don't climb, everyone can see it. That's the accountability model."
     url: "https://aaron.chat/about/"
-  - q: "What is the House Special?"
-    a: "A free website and local SEO for year one, then $250/mo starting year two. Built for East Texas contractors who want to test us before committing."
-    url: "https://aaron.chat/plans/house-special/"
-  - q: "How long before I rank in Google Maps?"
-    a: "Most service pros see meaningful rank movement in 60-90 days when the GBP profile, on-page content, and citations are all handled together."
-    url: "https://aaron.chat/services/rank-me-local/"
   - q: "Do you require long contracts?"
-    a: "No long contracts. Month-to-month on every service so you can leave the moment we stop earning our keep."
+    a: "No. Month to month on every plan. The public scoreboard is the retention strategy — if the grade stops climbing, you should leave."
     url: "https://aaron.chat/pricing/"
 
-# Optional per-platform overrides. Leave blank to use defaults.
-# hashtags on X only, none on LinkedIn, etc.
 platform_hashtags:
-  x: ["EastTexas", "LocalSEO"]
+  x: ["EastTexas", "LakeLivingston"]
   bluesky: []
   mastodon: []
   linkedin: []
   facebook: []
-  instagram: ["EastTexas", "LocalSEO", "ContractorMarketing"]
+  instagram: ["EastTexas", "LakeLivingston", "HVAC", "Plumbing"]
   threads: []

@@ -22,6 +22,8 @@ COUNTIES = [
     {"key": "polk",        "name": "Polk County, TX",        "geo": "Polk County TX"},
     {"key": "walker",      "name": "Walker County, TX",      "geo": "Walker County TX"},
     {"key": "san_jacinto", "name": "San Jacinto County, TX", "geo": "San Jacinto County TX"},
+    # Expansion corridor (approved 2026-07): Montgomery-corridor + Trinity county
+    {"key": "trinity",     "name": "Trinity County, TX",     "geo": "Trinity County TX"},
 ]
 
 CITIES = [
@@ -40,6 +42,14 @@ CITIES = [
     {"key": "shepherd",     "county_key": "san_jacinto", "geo": "Shepherd TX"},
     {"key": "point_blank",  "county_key": "san_jacinto", "geo": "Point Blank TX"},
     {"key": "oakhurst",     "county_key": "san_jacinto", "geo": "Oakhurst TX"},
+    # Expansion corridor (approved 2026-07). Montgomery-corridor towns keyed to
+    # a synthetic 'corridor' county for reporting; Trinity towns to trinity.
+    {"key": "conroe",       "county_key": "corridor",    "geo": "Conroe TX"},
+    {"key": "willis",       "county_key": "corridor",    "geo": "Willis TX"},
+    {"key": "montgomery",   "county_key": "corridor",    "geo": "Montgomery TX"},
+    {"key": "cleveland",    "county_key": "corridor",    "geo": "Cleveland TX"},
+    {"key": "trinity_town", "county_key": "trinity",     "geo": "Trinity TX"},
+    {"key": "groveton",     "county_key": "trinity",     "geo": "Groveton TX"},
 ]
 
 

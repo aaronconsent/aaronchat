@@ -1,0 +1,219 @@
+/* Top of Class Marketing — aaron.chat rebrand (2026-07)
+   Chalkboard green + paper + red pen + gold star. School-report identity
+   anchored to the grading engine at stats.lakelivingston.aaron.chat.
+   Deliberately shares nothing with the retired diner theme. */
+
+@import url('https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;700&family=Public+Sans:wght@400;600;700&family=Caveat:wght@600;700&display=swap');
+
+:root {
+  --board:   #1e3d31;   /* chalkboard green */
+  --board-2: #163026;   /* darker board */
+  --paper:   #f5f3ec;   /* worksheet paper */
+  --white:   #fdfdfb;
+  --ink:     #1c2321;
+  --pen:     #d23c2e;   /* red pen */
+  --star:    #e0b100;   /* gold star */
+  --chalk:   #e8ede9;   /* chalk on board */
+  --slate:   #5d6a63;   /* muted */
+  --line:    #d8d4c6;   /* ruled line on paper */
+  --pass:    #2c7a4b;   /* passing green */
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Public Sans", system-ui, sans-serif;
+  font-size: 17px;
+  line-height: 1.65;
+}
+img { max-width: 100%; }
+a { color: var(--pen); }
+
+h1, h2, h3 { font-family: "Zilla Slab", serif; color: var(--board); line-height: 1.15; text-wrap: balance; }
+.hand { font-family: "Caveat", cursive; font-weight: 700; }
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 22px; }
+
+/* ---------- header ---------- */
+.site-head {
+  background: var(--board);
+  color: var(--chalk);
+  border-bottom: 4px solid var(--star);
+}
+.site-head .wrap {
+  display: flex; align-items: center; gap: 18px;
+  padding-top: 14px; padding-bottom: 14px; flex-wrap: wrap;
+}
+.logo {
+  font-family: "Zilla Slab", serif; font-weight: 700;
+  font-size: 1.3rem; color: var(--chalk); text-decoration: none;
+  display: flex; align-items: center; gap: 10px; letter-spacing: 0.01em;
+}
+.logo .mark {
+  display: inline-grid; place-items: center;
+  width: 34px; height: 34px; border-radius: 8px;
+  background: var(--paper); color: var(--pen);
+  font-family: "Caveat", cursive; font-weight: 700; font-size: 1.5rem;
+  transform: rotate(-4deg);
+}
+.site-nav { margin-left: auto; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
+.site-nav a { color: var(--chalk); text-decoration: none; font-weight: 600; font-size: 0.95rem; opacity: 0.9; }
+.site-nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+.site-nav .cta {
+  background: var(--pen); color: #fff; padding: 9px 18px; border-radius: 8px; opacity: 1;
+}
+.site-nav .cta:hover { text-decoration: none; filter: brightness(1.06); }
+
+/* ---------- hero ---------- */
+.hero { background: var(--board); color: var(--chalk); padding: 64px 0 72px; }
+.hero .kicker {
+  font-family: "Caveat", cursive; font-weight: 700; font-size: 1.5rem;
+  color: var(--star); margin: 0 0 10px;
+}
+.hero h1 {
+  color: #fff; font-size: clamp(2rem, 5vw, 3.1rem); margin: 0 0 18px; max-width: 21ch;
+}
+.hero .sub { font-size: 1.15rem; max-width: 58ch; margin: 0 0 30px; color: var(--chalk); }
+.hero .sub b { color: #fff; }
+.btn {
+  display: inline-block; font-weight: 700; text-decoration: none;
+  padding: 14px 26px; border-radius: 10px; font-size: 1.05rem;
+  border: 2px solid transparent;
+}
+.btn-primary { background: var(--pen); color: #fff; }
+.btn-primary:hover { filter: brightness(1.07); }
+.btn-ghost { border-color: var(--chalk); color: var(--chalk); margin-left: 12px; }
+.btn-ghost:hover { background: rgba(255,255,255,0.08); }
+.hero .proof-row {
+  display: flex; gap: 34px; margin-top: 42px; flex-wrap: wrap;
+}
+.hero .proof {
+  border-left: 3px solid var(--star); padding-left: 14px;
+}
+.hero .proof .n {
+  font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.9rem;
+  color: #fff; display: block; line-height: 1.1; font-variant-numeric: tabular-nums;
+}
+.hero .proof .l { font-size: 0.85rem; color: var(--chalk); opacity: 0.85; }
+
+/* ---------- sections ---------- */
+section { padding: 56px 0; }
+section.alt { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.eyebrow {
+  font-family: "Caveat", cursive; font-weight: 700; font-size: 1.4rem;
+  color: var(--pen); margin: 0 0 6px;
+}
+section h2 { font-size: clamp(1.5rem, 3.4vw, 2.1rem); margin: 0 0 14px; }
+.lede { font-size: 1.08rem; max-width: 62ch; color: var(--ink); }
+
+/* three-step cards */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 34px; }
+.step {
+  background: var(--white); border: 1.5px solid var(--line); border-radius: 14px;
+  padding: 26px 24px; position: relative;
+  box-shadow: 0 2px 0 var(--line);
+}
+.step .num {
+  position: absolute; top: -16px; left: 20px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--board); color: var(--star);
+  font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.15rem;
+  display: grid; place-items: center; border: 2px solid var(--star);
+}
+.step h3 { font-size: 1.15rem; margin: 8px 0 8px; }
+.step p { margin: 0; font-size: 0.97rem; color: var(--ink); }
+.step .free-tag {
+  display: inline-block; font-family: "Caveat", cursive; font-weight: 700;
+  color: var(--pass); font-size: 1.25rem; margin-bottom: 4px;
+}
+
+/* market-fact strip */
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; margin-top: 30px; }
+.fact {
+  background: var(--white); border-left: 4px solid var(--pen);
+  border-radius: 0 10px 10px 0; padding: 16px 18px;
+  border-top: 1px solid var(--line); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+}
+.fact .n { font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.7rem; color: var(--pen); display: block; line-height: 1.15; }
+.fact .l { font-size: 0.92rem; color: var(--slate); }
+
+/* pricing */
+.tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; margin-top: 34px; }
+.tier {
+  background: var(--white); border: 1.5px solid var(--line); border-radius: 16px;
+  padding: 30px 28px; display: flex; flex-direction: column;
+  box-shadow: 0 2px 0 var(--line);
+}
+.tier.featured { border: 2.5px solid var(--board); box-shadow: 0 4px 0 var(--star); }
+.tier .tier-name { font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.25rem; color: var(--board); }
+.tier .price { font-family: "Zilla Slab", serif; font-weight: 700; font-size: 2.2rem; color: var(--ink); margin: 8px 0 2px; }
+.tier .price small { font-size: 1rem; color: var(--slate); font-weight: 400; }
+.tier .for { font-size: 0.92rem; color: var(--slate); margin-bottom: 16px; }
+.tier ul { list-style: none; padding: 0; margin: 0 0 24px; }
+.tier li { padding: 7px 0 7px 28px; position: relative; font-size: 0.96rem; border-bottom: 1px dashed var(--line); }
+.tier li::before { content: "✓"; position: absolute; left: 2px; color: var(--pass); font-weight: 700; }
+.tier .btn { margin-top: auto; text-align: center; }
+.founding {
+  margin-top: 30px; background: var(--board); color: var(--chalk);
+  border-radius: 14px; padding: 26px 28px;
+}
+.founding .hand { color: var(--star); font-size: 1.6rem; display: block; margin-bottom: 6px; }
+.founding p { margin: 0; max-width: 75ch; }
+.founding b { color: #fff; }
+
+/* lead form */
+.lead-form {
+  background: var(--white); border: 1.5px solid var(--line); border-radius: 16px;
+  padding: 30px 28px; max-width: 560px; box-shadow: 0 2px 0 var(--line);
+}
+.lead-form label { display: block; font-weight: 600; font-size: 0.9rem; margin: 14px 0 5px; color: var(--board); }
+.lead-form input, .lead-form select, .lead-form textarea {
+  width: 100%; font: inherit; padding: 11px 13px;
+  border: 1.5px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink);
+}
+.lead-form input:focus, .lead-form select:focus, .lead-form textarea:focus { outline: 2px solid var(--board); border-color: var(--board); }
+.lead-form button {
+  margin-top: 20px; width: 100%; font: inherit; font-weight: 700; font-size: 1.05rem;
+  background: var(--pen); color: #fff; border: 0; border-radius: 10px; padding: 14px; cursor: pointer;
+}
+.lead-form button:hover { filter: brightness(1.07); }
+.lead-form .form-note { font-size: 0.83rem; color: var(--slate); margin-top: 10px; }
+.form-status { margin-top: 14px; font-weight: 600; display: none; }
+.form-status.ok { color: var(--pass); display: block; }
+.form-status.err { color: var(--pen); display: block; }
+
+/* report-card teaser */
+.teaser {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+}
+@media (max-width: 800px) { .teaser { grid-template-columns: 1fr; } }
+.mini-card {
+  background: var(--white); border: 2px solid var(--board); border-radius: 10px;
+  padding: 22px 24px; position: relative; max-width: 430px;
+  box-shadow: 5px 5px 0 var(--line);
+}
+.mini-card .mc-head { font-family: "Zilla Slab", serif; font-weight: 700; color: var(--board); border-bottom: 2px solid var(--board); padding-bottom: 8px; margin-bottom: 12px; font-size: 0.95rem; letter-spacing: 0.04em; text-transform: uppercase; }
+.mini-card .row { display: flex; justify-content: space-between; padding: 7px 2px; border-bottom: 1px solid var(--line); font-size: 0.95rem; }
+.mini-card .row .g { font-family: "Caveat", cursive; font-weight: 700; font-size: 1.35rem; }
+.mini-card .row .g.bad { color: var(--pen); }
+.mini-card .row .g.good { color: var(--pass); }
+.mini-card .stamp {
+  position: absolute; top: -14px; right: -10px; transform: rotate(8deg);
+  border: 2.5px double var(--pen); color: var(--pen); border-radius: 6px;
+  padding: 4px 10px; font-family: "Zilla Slab", serif; font-weight: 700; font-size: 0.7rem;
+  letter-spacing: 0.1em; background: var(--white);
+}
+
+/* footer */
+.site-foot { background: var(--board-2); color: var(--chalk); padding: 40px 0 46px; font-size: 0.92rem; }
+.site-foot a { color: var(--chalk); }
+.site-foot .cols { display: flex; gap: 40px; flex-wrap: wrap; justify-content: space-between; }
+.site-foot .hand { color: var(--star); font-size: 1.4rem; }
+.site-foot p { margin: 6px 0; }
+
+@media (max-width: 640px) {
+  .hero { padding: 44px 0 52px; }
+  .btn-ghost { margin-left: 0; margin-top: 10px; }
+}
