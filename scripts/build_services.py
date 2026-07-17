@@ -381,8 +381,9 @@ def render_hub():
             "Google profile, social, ads, and reels. One team, one bill, one report card.")
     return f"""{page_head(title, desc, '/services/')}
 
-<div class="hero">
+<div class="hero hero--split">
   <div class="wrap">
+    <div class="hero-copy">
     <p class="kicker">One team · one bill · one report card</p>
     <h1>Everything a shop needs to win. Under one roof.</h1>
     <p class="sub">Most contractors juggle a web guy, a review app, a social tool, and an ads
@@ -390,6 +391,8 @@ def render_hub():
     same public scoreboard, starting at <b>$300 a month</b>.</p>
     <a class="btn btn-primary" href="/report-card/">Get my free report card</a>
     <a class="btn btn-ghost" href="/pricing/">See the plans</a>
+    </div>
+    <div class="hero-figure"><img src="/brand/media/professor-left.jpg" alt="Aaron teaching at the chalkboard" width="1000" height="1250" style="object-position:32% center" loading="eager"></div>
   </div>
 </div>
 
