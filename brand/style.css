@@ -451,7 +451,11 @@ html.js .reveal.in { opacity: 1; transform: none; }
 .work-cat { font-family: "IBM Plex Mono", monospace; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--pen); }
 .work-card h3 { margin: 7px 0 7px; font-size: 1.22rem; }
 .work-card p { margin: 0 0 16px; font-size: 0.94rem; color: var(--slate); flex: 1; }
+.work-metric { display: block; margin: -6px 0 14px; font-family: "IBM Plex Mono", monospace; font-size: 0.76rem; font-weight: 600; letter-spacing: 0.02em; color: var(--pass); }
 .work-more { font-weight: 700; color: var(--pen); font-size: 0.9rem; }
+.case-stat { display: inline-flex; flex-direction: column; background: var(--white); border: 1px solid var(--line-2); border-left: 4px solid var(--pass); border-radius: var(--r); padding: 16px 26px; margin: 20px 0 4px; box-shadow: var(--sh-1); }
+.case-stat .n { font-family: "Zilla Slab", serif; font-weight: 700; font-size: 2.3rem; color: var(--pass); line-height: 1; font-variant-numeric: tabular-nums; }
+.case-stat .l { font-size: 0.86rem; color: var(--slate); margin-top: 5px; }
 .tags { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 6px; }
 .tag { font-size: 0.8rem; font-weight: 600; color: var(--board); background: var(--paper); border: 1px solid var(--line); padding: 6px 13px; border-radius: 999px; }
 

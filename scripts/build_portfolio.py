@@ -79,6 +79,32 @@ def page_head(title, desc, path):
 # ---- project data (factual, work-focused) -----------------------------------
 PROJECTS = [
     dict(
+        slug="jurassic-quest", name="Jurassic Quest", url="https://jurassicquest.com",
+        cat="Growth &amp; Platform", tag="Growth &amp; Platform", shot="jurassicquest.jpg",
+        metric_n="3,500", metric_l="ticket sales recovered",
+        blurb="North America&rsquo;s largest touring dinosaur experience &mdash; where I built an abandoned-cart recovery platform on their Universe.com ticketing that won back 3,500 sales.",
+        brief="Jurassic Quest sells event tickets through Universe.com. Like every ticketing store, a large share of buyers add tickets and leave before paying &mdash; and there was no built-in way to bring them back.",
+        work=[
+            "Built a shopping-cart recovery platform on top of their Universe.com ticketing store to catch abandoned checkouts.",
+            "Automated recovery outreach that reconnected drop-off buyers with the exact event they were about to book.",
+            "Recovered <b>3,500 ticket sales</b> that would otherwise have been lost.",
+        ],
+        stack=["Universe.com", "Cart-recovery automation", "Email"],
+    ),
+    dict(
+        slug="dosey-doe", name="Dosey Doe", url="https://doseydoe.com",
+        cat="Social &amp; Events", tag="Social &amp; Events", shot="doseydoe.jpg",
+        metric_n="600+", metric_l="events promoted",
+        blurb="A legendary live-music hall and restaurant in The Woodlands, TX &mdash; where I ran Facebook Events and social media across 600+ shows.",
+        brief="Dosey Doe runs a packed calendar of live music, and every show has to fill the room. That work starts on social &mdash; event pages, promotion, and audience engagement, week after week.",
+        work=[
+            "Managed Facebook Events and social-media promotion for <b>600+</b> live-music events.",
+            "Built and ran the event pages that drove ticket awareness and turnout, show after show.",
+            "Kept the social calendar full across a relentless live-event schedule.",
+        ],
+        stack=["Facebook Events", "Meta Business", "Social Media"],
+    ),
+    dict(
         slug="consent-resolve", name="Consent Resolve", url="https://consentresolve.com",
         cat="SaaS · Brand &amp; Web", tag="SaaS &amp; Web", shot="consentresolve.jpg",
         blurb="A compliance-first way for contractors to identify the real people visiting their site — and win the job — without ever cold-calling anyone.",
@@ -175,12 +201,14 @@ ORDER = [p["slug"] for p in PROJECTS]
 
 
 def card(p):
+    metric = (f'\n          <span class="work-metric">&#9733; {p["metric_n"]} {p["metric_l"]}</span>'
+              if p.get("metric_n") else "")
     return f"""      <a class="work-card reveal" href="/work/{p['slug']}/">
         <div class="work-shot"><img src="/brand/media/portfolio/{p['shot']}" alt="{p['name']} website" width="1280" height="800" loading="lazy" decoding="async"></div>
         <div class="work-body">
           <span class="work-cat">{p['cat']}</span>
           <h3>{p['name']}</h3>
-          <p>{p['blurb']}</p>
+          <p>{p['blurb']}</p>{metric}
           <span class="work-more">View case study &rarr;</span>
         </div>
       </a>"""
@@ -197,9 +225,10 @@ def render_index():
   <div class="wrap">
     <div class="hero-copy">
       <p class="kicker">Selected work</p>
-      <h1>Real sites. Real brands. All built here.</h1>
-      <p class="sub">Every project below is live and built by us &mdash; local service shops, a poker club,
-      a CNC machine shop, a compliance SaaS, and a few AI experiments. <b>This website is one of them.</b></p>
+      <h1>Real sites. Real brands. Real results.</h1>
+      <p class="sub">A national dinosaur tour, a poker club, a live-music hall, a CNC machine shop, a
+      compliance SaaS, and a stack of local shops &mdash; sites we&rsquo;ve built, platforms we&rsquo;ve
+      shipped, and campaigns we run. <b>This website is one of them.</b></p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="/report-card/">Get my free report card</a>
         <a class="btn btn-ghost" href="/services/">See what we do</a>
@@ -249,6 +278,8 @@ def render_case(p):
     desc = p["blurb"].replace("&mdash;", "—").replace("&rsquo;", "'")[:155]
     work = "\n".join(f"        <li>{w}</li>" for w in p["work"])
     tags = "\n".join(f'        <span class="tag">{t}</span>' for t in p["stack"])
+    stat = (f'\n    <div class="case-stat"><span class="n">{p["metric_n"]}</span>'
+            f'<span class="l">{p["metric_l"]}</span></div>' if p.get("metric_n") else "")
     return f"""{page_head(title, desc, f'/work/{p["slug"]}/')}
 
 <div class="hero hero--split hero--work">
@@ -273,7 +304,7 @@ def render_case(p):
 <section>
   <div class="wrap reveal" style="max-width:820px">
     <p class="eyebrow">The brief</p>
-    <p class="lede">{p['brief']}</p>
+    <p class="lede">{p['brief']}</p>{stat}
     <p class="eyebrow" style="margin-top:var(--sp-l)">What we built</p>
     <ul class="deliverables">
 {work}
