@@ -194,6 +194,30 @@ PROJECTS = [
         ],
         stack=["Cloudflare", "Static HTML"],
     ),
+    dict(
+        slug="first-byte", name="First Byte", url="https://firstbyte.agency",
+        cat="Website &amp; SEO", tag="Website &amp; SEO", shot="firstbyte.jpg",
+        blurb="An award-winning digital marketing agency in The Woodlands, TX &mdash; moved off WordPress onto a fast, self-owned stack.",
+        brief="First Byte&rsquo;s own site needed to be as fast and modern as the work they sell &mdash; off a heavy WordPress build and onto something they fully own.",
+        work=[
+            "Migrated the agency site off WordPress to a fast static build on Cloudflare Pages.",
+            "Built out the Local SEO / AEO foundation to grow organic discovery.",
+            "Set the structure up to scale toward their growth goals.",
+        ],
+        stack=["Cloudflare Pages", "Local SEO / AEO", "Static build"],
+    ),
+    dict(
+        slug="g4-electric", name="G4 Electric", url="https://g4electric.net",
+        cat="Website", tag="Website", shot="g4electric.jpg",
+        blurb="A family-run electrical contractor serving Montgomery County and The Woodlands, TX.",
+        brief="G4 Electric needed a clean, fast site that reads as trustworthy and local &mdash; and turns a phone search into a call.",
+        work=[
+            "Designed and built a mobile-first website for a family-run electrical contractor.",
+            "Organized it around their services and Montgomery County service area for local search.",
+            "Built for speed and easy updates.",
+        ],
+        stack=["Website", "Local SEO"],
+    ),
 ]
 
 PROJ_BY_SLUG = {p["slug"]: p for p in PROJECTS}
