@@ -120,4 +120,30 @@
   } else {
     reveals.forEach(function (el) { el.classList.add("in"); });
   }
+
+  /* ---- count-up stats (animate when scrolled into view, once) ---- */
+  var counters = document.querySelectorAll("[data-count]");
+  function animateCount(el) {
+    var target = parseInt(el.getAttribute("data-count"), 10);
+    if (isNaN(target)) return;
+    var dur = 1100, startTs = null;
+    function fmt(n) { return n.toLocaleString("en-US"); }
+    function tick(ts) {
+      if (startTs === null) startTs = ts;
+      var p = Math.min((ts - startTs) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+      el.textContent = fmt(Math.round(target * eased));
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = fmt(target);
+    }
+    requestAnimationFrame(tick);
+  }
+  if (counters.length && "IntersectionObserver" in window && !reduce) {
+    var cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { animateCount(e.target); cio.unobserve(e.target); }
+      });
+    }, { threshold: 0.4 });
+    counters.forEach(function (el) { cio.observe(el); });
+  }
 })();

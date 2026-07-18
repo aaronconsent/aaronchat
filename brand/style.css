@@ -268,14 +268,21 @@ html.js .reveal.in { opacity: 1; transform: none; }
 .hero--home { padding: 0; }
 .hero--home .wrap { min-height: calc(100svh - 80px); align-content: center; padding-top: 14px; padding-bottom: 14px; }
 .hero--home .kicker { margin-bottom: 8px; font-size: 1.3rem; }
-.hero--home h1 { margin-bottom: 14px; }
-.hero--home .sub { margin-bottom: 18px; font-size: var(--step-0); }
-.hero--home .trust-line { margin-top: 12px; }
-.hero--home .proof-row { margin-top: 18px; gap: clamp(16px, 3vw, 34px); }
-.hero--home .proof .n { font-size: 1.5rem; }
+.hero--home h1 { margin-bottom: 16px; font-size: var(--step-5); }
+.hero--home .sub { margin-bottom: 20px; font-size: var(--step-1); }
+.hero--home .trust-line { margin-top: 14px; }
+/* photo column: image + small animated stat strip beneath it */
+.hero--home .hero-figure { flex-direction: column; align-items: stretch; gap: 16px; }
+.hero--home .hero-imgwrap { position: relative; }
+.hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid rgba(255,255,255,.16); }
+.hero-stats .hstat { padding: 12px 6px 0; text-align: center; border-right: 1px solid rgba(255,255,255,.09); }
+.hero-stats .hstat:last-child { border-right: 0; }
+.hero-stats .n { display: block; font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.4rem; color: var(--star); line-height: 1; font-variant-numeric: tabular-nums; }
+.hero-stats .l { display: block; font-size: 0.7rem; color: var(--chalk-dim); margin-top: 5px; line-height: 1.25; }
 @media (max-width: 860px) {
   .hero--home .wrap { min-height: 0; }
-  .hero--home .proof-row { display: none; } /* keep the mobile hero tight; stats live in the data band */
+  .hero--home h1 { font-size: var(--step-4); }
+  .hero-stats { display: none; } /* keep the mobile hero tight; stats live in the data band below */
 }
 
 /* lesson hero variant kept for compatibility (now same as split) */
