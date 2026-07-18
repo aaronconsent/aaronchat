@@ -203,6 +203,7 @@ html.js .reveal.in { opacity: 1; transform: none; }
   opacity: 0; transform: translateY(-8px); transition: opacity .28s ease, transform .28s ease;
   overflow-y: auto;
 }
+.m-nav[hidden] { display: none; } /* critical: keep the closed overlay out of the click path */
 .m-nav.open { opacity: 1; transform: none; }
 .m-nav .m-top { display: flex; align-items: center; margin-bottom: 30px; }
 .m-nav .m-close { margin-left: auto; width: 46px; height: 46px; border: 0; border-radius: 10px; background: rgba(255,255,255,.08); color: var(--chalk); cursor: pointer; font-size: 1.4rem; }
@@ -262,6 +263,20 @@ html.js .reveal.in { opacity: 1; transform: none; }
   box-shadow: var(--sh-2);
 }
 @media (max-width: 860px) { .hero--split .wrap { grid-template-columns: 1fr; gap: 26px; } .hero--split .hero-figure { order: -1; } }
+
+/* home hero: fill one desktop screen, vertically centered */
+.hero--home { padding: 0; }
+.hero--home .wrap { min-height: calc(100svh - 80px); align-content: center; padding-top: 14px; padding-bottom: 14px; }
+.hero--home .kicker { margin-bottom: 8px; font-size: 1.3rem; }
+.hero--home h1 { margin-bottom: 14px; }
+.hero--home .sub { margin-bottom: 18px; font-size: var(--step-0); }
+.hero--home .trust-line { margin-top: 12px; }
+.hero--home .proof-row { margin-top: 18px; gap: clamp(16px, 3vw, 34px); }
+.hero--home .proof .n { font-size: 1.5rem; }
+@media (max-width: 860px) {
+  .hero--home .wrap { min-height: 0; }
+  .hero--home .proof-row { display: none; } /* keep the mobile hero tight; stats live in the data band */
+}
 
 /* lesson hero variant kept for compatibility (now same as split) */
 .hero--lesson .hero-figure { align-self: center; align-items: center; }
@@ -360,6 +375,7 @@ html.js .reveal.in { opacity: 1; transform: none; }
 .lead-form input:focus-visible, .lead-form select:focus-visible, .lead-form textarea:focus-visible { outline: none; border-color: var(--board); box-shadow: 0 0 0 3px rgba(30,61,49,.16); }
 .lead-form button { margin-top: 22px; width: 100%; font: inherit; font-weight: 700; font-size: 1.05rem; background: var(--pen); color: #fff; border: 0; border-radius: var(--r); padding: 15px; cursor: pointer; box-shadow: 0 6px 16px rgba(210,60,46,.26); transition: background .18s, box-shadow .18s, transform .18s; }
 .lead-form button:hover { background: var(--pen-dark); box-shadow: 0 12px 24px rgba(210,60,46,.32); transform: translateY(-1px); }
+.lead-form .form-reassure { text-align: center; font-size: 0.88rem; color: var(--pass); font-weight: 600; margin: 12px 0 0; }
 .lead-form .form-note { font-size: 0.83rem; color: var(--slate); margin-top: 12px; }
 .form-status { margin-top: 16px; font-weight: 600; display: none; }
 .form-status.ok { color: var(--pass); display: block; }
