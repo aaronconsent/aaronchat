@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add('js')</script>
 <title>Pricing — Top of Class Marketing</title>
 <meta name="description" content="Plans from $300/mo — website, social, SEO, AI optimization, auto blog, Google profile, and a monthly report card. Month-to-month, graded on a public scoreboard.">
 <link rel="canonical" href="https://aaron.chat/pricing/">
@@ -10,6 +11,8 @@
 <meta property="og:title" content="Pricing — Top of Class Marketing">
 <meta property="og:description" content="Enrolled $300 · Honor Roll $600 · Top of Class $1,200 · Valedictorian $2,400. Month-to-month, measured on a public scoreboard.">
 <meta property="og:url" content="https://aaron.chat/pricing/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/brand/style.css">
 <!-- Meta Pixel -->
 <script>
@@ -48,12 +51,12 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
     <a style="color:var(--chalk)" href="https://stats.lakelivingston.aaron.chat/">the county scoreboard</a>.
     Your grade goes up, or you fire us. That's the accountability model.</p>
   </div>
-    <div class="hero-figure"><img src="/brand/media/era-future.jpg" alt="Aaron as an AI-era educator" width="1000" height="1250" style="object-position:72% center" loading="eager"></div>
+    <div class="hero-figure"><img src="/brand/media/era-future.jpg" alt="Aaron as an AI-era educator" width="1600" height="900" loading="eager" decoding="async"><span class="tag-badge">$300 = the AI edge</span></div>
   </div>
 </div>
 
 <section>
-  <div class="wrap">
+  <div class="wrap reveal">
     <div class="tiers">
       <div class="tier" id="enrolled">
         <span class="tier-name">🎒 Enrolled</span>
@@ -71,6 +74,7 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
         <a class="btn btn-primary" href="/report-card/">Start with the free card</a>
       </div>
       <div class="tier featured" id="honor-roll">
+        <span class="badge-pop">Class favorite</span>
         <span class="tier-name">⭐ Honor Roll</span>
         <span class="price">$600<small>/mo</small></span>
         <span class="for">Everything in Enrolled, plus the review flywheel.</span>
@@ -121,7 +125,7 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
 </section>
 
 <section class="alt">
-  <div class="wrap">
+  <div class="wrap reveal">
     <p class="eyebrow">Add-ons &amp; one-time</p>
     <h2>Extra credit.</h2>
     <div class="steps">
@@ -132,6 +136,24 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
         <p>Not ready for monthly? One pass fixes everything fixable — Google profile claimed
         and rebuilt, a proper website stood up, photos loaded, review link set up — keys
         handed over with a checklist.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap reveal">
+    <p class="eyebrow">Office hours</p>
+    <div class="section-head"><h2>Pricing questions, answered.</h2></div>
+    <div class="faq">
+      <details><summary>Are there contracts?</summary><div class="faq-body"><p>No long-term contracts — everything is month-to-month. Your grade goes up on the public scoreboard or you should fire us. That's the whole model.</p></div></details>
+      <details><summary>What's the "ad spend separate + 10%" part?</summary><div class="faq-body"><p>On plans with ad management, the plan fee covers the work; the money that actually goes to Facebook/Google is yours and billed by them, and we add 10% of that spend for managing it. So a $1,000 ad budget = $100 management on top of your plan.</p></div></details>
+      <details><summary>Can I switch plans later?</summary><div class="faq-body"><p>Any month, up or down. Most shops start at Enrolled (or the founding-five Honor Roll deal) and move up once the reviews and rankings start compounding.</p></div></details>
+      <details><summary>How is this so much cheaper than an agency?</summary><div class="faq-body"><p>It's run by an AI-powered stack built with Claude Code — the same one that grades 1,900 shops a week — instead of a room full of account managers. You get the output without the overhead.</p></div></details>
+      <details><summary>What do I actually get first?</summary><div class="faq-body"><p>Your free report card and a 30-minute walkthrough — before you pay anything. If it makes sense to keep going, we start on the plan you pick. If it doesn't, you keep the card and the fix list.</p></div></details>
+    </div>
+    <div class="hero-actions" style="margin-top:var(--sp-l)">
+      <a class="btn btn-primary btn-lg" href="/report-card/">Get my free report card</a>
+      <a class="btn btn-ghost" href="/services/">See all 14 services</a>
     </div>
   </div>
 </section>
@@ -149,6 +171,7 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
     </div>
   </div>
 </footer>
-<script src="/brand/lead.js"></script>
+<script src="/brand/nav.js" defer></script>
+<script src="/brand/lead.js" defer></script>
 </body>
 </html>

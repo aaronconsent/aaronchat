@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add('js')</script>
 <title>Perfect Attendance — Local Citations — Top of Class Marketing</title>
 <meta name="description" content="Listed correctly everywhere that matters — and kept in sync.">
 <link rel="canonical" href="https://aaron.chat/services/citations/">
@@ -10,6 +11,8 @@
 <meta property="og:title" content="Perfect Attendance — Local Citations — Top of Class Marketing">
 <meta property="og:description" content="Listed correctly everywhere that matters — and kept in sync.">
 <meta property="og:url" content="https://aaron.chat/services/citations/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/brand/style.css">
 <!-- Meta Pixel -->
 <script>
@@ -31,6 +34,7 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
       <a href="/hvac-marketing/">HVAC</a>
       <a href="/plumber-marketing/">Plumbing</a>
       <a href="/pricing/">Pricing</a>
+      <a href="/about/">About</a>
       <a class="cta" href="/report-card/">Get your report card</a>
     </nav>
   </div>
@@ -46,8 +50,10 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
     <p class="kicker">Get Found</p>
     <h1>Perfect Attendance — Local Citations</h1>
     <p class="sub">Listed correctly everywhere that matters — and kept in sync.</p>
-    <a class="btn btn-primary" href="/report-card/">Get my free report card</a>
-    <a class="btn btn-ghost" href="/pricing/">See the plans</a>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="/report-card/">Get my free report card</a>
+      <a class="btn btn-ghost" href="/pricing/">See the plans</a>
+    </div>
     </div>
     <div class="hero-figure"><img src="/brand/media/era-renaissance.jpg" alt="Aaron, Top of Class Marketing" width="1000" height="1250" style="object-position:62% center" loading="eager"></div>
   </div>
@@ -107,6 +113,7 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
     </div>
   </div>
 </footer>
-<script src="/brand/lead.js"></script>
+<script src="/brand/nav.js" defer></script>
+<script src="/brand/lead.js" defer></script>
 </body>
 </html>

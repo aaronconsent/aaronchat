@@ -27,6 +27,7 @@ HEADER = """<header class="site-head">
       <a href="/hvac-marketing/">HVAC</a>
       <a href="/plumber-marketing/">Plumbing</a>
       <a href="/pricing/">Pricing</a>
+      <a href="/about/">About</a>
       <a class="cta" href="/report-card/">Get your report card</a>
     </nav>
   </div>
@@ -46,7 +47,8 @@ FOOTER = """<footer class="site-foot">
     </div>
   </div>
 </footer>
-<script src="/brand/lead.js"></script>"""
+<script src="/brand/nav.js" defer></script>
+<script src="/brand/lead.js" defer></script>"""
 
 
 def page_head(title, desc, path):
@@ -55,6 +57,7 @@ def page_head(title, desc, path):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add('js')</script>
 <title>{title}</title>
 <meta name="description" content="{desc}">
 <link rel="canonical" href="https://aaron.chat{path}">
@@ -62,6 +65,8 @@ def page_head(title, desc, path):
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="https://aaron.chat{path}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/brand/style.css">
 {PIXEL}
 </head>
@@ -319,8 +324,10 @@ def render_service(s):
     <p class="kicker">{cat_name}</p>
     <h1>{s['name']}</h1>
     <p class="sub">{s['tag']}</p>
-    <a class="btn btn-primary" href="/report-card/">Get my free report card</a>
-    <a class="btn btn-ghost" href="/pricing/">See the plans</a>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="/report-card/">Get my free report card</a>
+      <a class="btn btn-ghost" href="/pricing/">See the plans</a>
+    </div>
     </div>
     <div class="hero-figure">{img_tag}</div>
   </div>
@@ -410,10 +417,12 @@ def render_hub():
     <p class="sub">Most contractors juggle a web guy, a review app, a social tool, and an ads
     freelancer — and none of them talk to each other. We run all of it, measured against the
     same public scoreboard, starting at <b>$300 a month</b>.</p>
-    <a class="btn btn-primary" href="/report-card/">Get my free report card</a>
-    <a class="btn btn-ghost" href="/pricing/">See the plans</a>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="/report-card/">Get my free report card</a>
+      <a class="btn btn-ghost" href="/pricing/">See the plans</a>
     </div>
-    <div class="hero-figure"><img src="/brand/media/professor-left.jpg" alt="Aaron teaching at the chalkboard" width="1000" height="1250" style="object-position:32% center" loading="eager"></div>
+    </div>
+    <div class="hero-figure"><img src="/brand/media/professor-left.jpg" alt="Aaron teaching at the chalkboard" width="1600" height="900" loading="eager" decoding="async"></div>
   </div>
 </div>
 
