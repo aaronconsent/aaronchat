@@ -439,6 +439,22 @@ html.js .reveal.in { opacity: 1; transform: none; }
 .svc-nextprev a { color: var(--pen); font-weight: 700; text-decoration: none; }
 .svc-nextprev a:hover { text-decoration: underline; }
 
+/* =========================================================== PORTFOLIO */
+.hero--work .hero-figure img { aspect-ratio: 16 / 10; object-position: top center; }
+.work-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 22px; margin-top: var(--sp-m); }
+.work-card { display: flex; flex-direction: column; text-decoration: none; color: var(--ink); background: var(--white); border: 1px solid var(--line-2); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sh-1); transition: transform .18s ease, box-shadow .18s ease; }
+.work-card:hover { transform: translateY(-5px); box-shadow: var(--sh-2); }
+.work-shot { aspect-ratio: 16 / 10; overflow: hidden; background: var(--paper-2); border-bottom: 1px solid var(--line-2); }
+.work-shot img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform .5s ease; }
+.work-card:hover .work-shot img { transform: scale(1.04); }
+.work-body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; }
+.work-cat { font-family: "IBM Plex Mono", monospace; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--pen); }
+.work-card h3 { margin: 7px 0 7px; font-size: 1.22rem; }
+.work-card p { margin: 0 0 16px; font-size: 0.94rem; color: var(--slate); flex: 1; }
+.work-more { font-weight: 700; color: var(--pen); font-size: 0.9rem; }
+.tags { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 6px; }
+.tag { font-size: 0.8rem; font-weight: 600; color: var(--board); background: var(--paper); border: 1px solid var(--line); padding: 6px 13px; border-radius: 999px; }
+
 /* ============================================================ FOOTER */
 .site-foot { background: var(--board-2); color: var(--chalk); padding: var(--sp-xl) 0 calc(var(--sp-xl) + env(safe-area-inset-bottom)); font-size: 0.92rem; }
 .site-foot a { color: var(--chalk); }

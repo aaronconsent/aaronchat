@@ -24,6 +24,7 @@ HEADER = """<header class="site-head">
     <a class="logo" href="/"><span class="mark">A+</span> Top of Class Marketing</a>
     <nav class="site-nav">
       <a href="/services/">Services</a>
+      <a href="/work/">Work</a>
       <a href="/hvac-marketing/">HVAC</a>
       <a href="/plumber-marketing/">Plumbing</a>
       <a href="/pricing/">Pricing</a>
