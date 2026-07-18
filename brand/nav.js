@@ -105,20 +105,31 @@
     document.body.classList.add("has-mbar");
   }
 
-  /* ---- fire-once scroll reveals ---- */
+  /* ---- scroll reveals — bulletproof: content is NEVER left hidden ---- */
   var reveals = document.querySelectorAll(".reveal");
-  if (reveals.length && "IntersectionObserver" in window && !reduce) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+  function revealAll() { reveals.forEach(function (el) { el.classList.add("in"); }); }
+  if (reveals.length) {
+    if (reduce || !("IntersectionObserver" in window)) {
+      revealAll();
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+        });
+      }, { threshold: 0, rootMargin: "0px 0px -5% 0px" });
+      reveals.forEach(function (el, i) {
+        el.style.transitionDelay = (i % 6) * 60 + "ms";
+        io.observe(el);
       });
-    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
-    reveals.forEach(function (el, i) {
-      el.style.transitionDelay = (i % 6) * 60 + "ms";
-      io.observe(el);
-    });
-  } else {
-    reveals.forEach(function (el) { el.classList.add("in"); });
+      // reveal anything already on-screen now (some engines don't fire IO for initial in-view nodes)
+      requestAnimationFrame(function () {
+        reveals.forEach(function (el) {
+          if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add("in");
+        });
+      });
+      // failsafe: if the observer never fires, content still appears — never stays invisible
+      setTimeout(revealAll, 1500);
+    }
   }
 
   /* ---- count-up stats (animate when scrolled into view, once) ---- */
