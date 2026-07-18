@@ -268,9 +268,10 @@ html.js .reveal.in { opacity: 1; transform: none; }
 .hero--home { padding: 0; }
 .hero--home .wrap { min-height: calc(100svh - 80px); align-content: center; padding-top: 14px; padding-bottom: 14px; }
 .hero--home .kicker { margin-bottom: 8px; font-size: 1.3rem; }
-.hero--home h1 { margin-bottom: 16px; font-size: var(--step-5); }
+.hero--home h1 { margin-bottom: 16px; font-size: calc(var(--step-5) * 0.7); }
 .hero--home .sub { margin-bottom: 20px; font-size: var(--step-1); }
 .hero--home .trust-line { margin-top: 14px; }
+.hero--home .hero-actions { flex-wrap: nowrap; }
 /* photo column: image + small animated stat strip beneath it */
 .hero--home .hero-figure { flex-direction: column; align-items: stretch; gap: 16px; }
 .hero--home .hero-imgwrap { position: relative; }
@@ -281,7 +282,8 @@ html.js .reveal.in { opacity: 1; transform: none; }
 .hero-stats .l { display: block; font-size: 0.7rem; color: var(--chalk-dim); margin-top: 5px; line-height: 1.25; }
 @media (max-width: 860px) {
   .hero--home .wrap { min-height: 0; }
-  .hero--home h1 { font-size: var(--step-4); }
+  .hero--home h1 { font-size: calc(var(--step-4) * 0.85); }
+  .hero--home .hero-actions { flex-wrap: wrap; }
   .hero-stats { display: none; } /* keep the mobile hero tight; stats live in the data band below */
 }
 
