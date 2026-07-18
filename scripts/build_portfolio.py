@@ -49,8 +49,8 @@ FOOTER = """<footer class="site-foot">
     </div>
   </div>
 </footer>
-<script src="/brand/nav.js?v=5" defer></script>
-<script src="/brand/lead.js?v=5" defer></script>"""
+<script src="/brand/nav.js?v=6" defer></script>
+<script src="/brand/lead.js?v=6" defer></script>"""
 
 
 def page_head(title, desc, path):
@@ -69,7 +69,7 @@ def page_head(title, desc, path):
 <meta property="og:url" content="https://aaron.chat{path}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/style.css?v=5">
+<link rel="stylesheet" href="/brand/style.css?v=6">
 {PIXEL}
 </head>
 <body>
@@ -218,7 +218,36 @@ PROJECTS = [
         ],
         stack=["Website", "Local SEO"],
     ),
+    dict(
+        slug="monarx", name="Monarx", url="https://monarx.com",
+        cat="CMO &middot; Marketing &amp; Web", tag="Marketing &amp; Web", shot="monarx.jpg",
+        blurb="An AI-powered website &amp; server security platform for web hosts &mdash; where I served as CMO for a year, owning marketing and the website.",
+        brief="Monarx protects web hosts and their customers from malware and compromised servers at scale. As CMO for a full year, I owned the go-to-market and the company&rsquo;s web presence.",
+        work=[
+            "Served as CMO for a full year, owning marketing end-to-end.",
+            "Managed the company website and kept it current.",
+            "Led brand and growth for an AI-powered web &amp; server-security platform.",
+        ],
+        stack=["Marketing", "Web", "Brand &amp; Growth"],
+    ),
 ]
+
+# Per-project A+ report card — why each earns the grade (label, grade). Honest,
+# grounded in the work actually delivered. Rendered as a report-card panel.
+REPORTS = {
+    "jurassic-quest": [("Recovered 3,500 lost sales", "A+"), ("Fully automated recovery", "A+"), ("Zero manual follow-up", "A+"), ("Pure upside on abandoned carts", "A+")],
+    "dosey-doe": [("600+ events promoted", "A+"), ("Full-calendar coverage", "A+"), ("Always-on social presence", "A+"), ("Turnout, show after show", "A")],
+    "consent-resolve": [("Fast, edge-hosted (Astro/CF)", "A+"), ("Compliance-first, low-risk", "A+"), ("A demo that sells itself", "A+"), ("Clear conversion path", "A")],
+    "deuces-wild-poker": [("Loads instantly (CF Workers)", "A+"), ("20 local pages + schema", "A+"), ("Owned outright, no builder", "A+"), ("Built to fill seats", "A")],
+    "booked-job": [("Runs itself, no laptop", "A+"), ("Every channel covered", "A+"), ("Every stat fact-checked", "A+"), ("Brand-locked video engine", "A")],
+    "br-productions": [("Off the page builder", "A+"), ("All 212 images self-hosted", "A+"), ("Working quote form", "A+"), ("Fast &amp; owned", "A+")],
+    "lakeside-ink-threadz": [("SPA &rarr; a real, ownable site", "A+"), ("Every route captured", "A+"), ("Working contact + quote forms", "A+"), ("Self-hosted &amp; fast", "A")],
+    "polk-county-golf-carts": [("Fast, self-owned site", "A+"), ("Built-in rental booking tool", "A+"), ("Automated emails", "A+"), ("Full SEO scaffold", "A")],
+    "midwest-cnc": [("Mobile-first, loads fast", "A+"), ("Structured for local search", "A+"), ("Clean, technical, trustworthy", "A+"), ("Owned Cloudflare stack", "A")],
+    "first-byte": [("Off WordPress &rarr; fast static", "A+"), ("Local SEO / AEO built in", "A+"), ("Owned on Cloudflare", "A+"), ("Modern, on-brand design", "A")],
+    "g4-electric": [("Mobile-first for on-the-go", "A+"), ("Local-search ready", "A+"), ("Fast &amp; easy to update", "A+"), ("Clean, trustworthy design", "A")],
+    "monarx": [("CMO for a full year", "A+"), ("Marketing owned end-to-end", "A+"), ("Website managed", "A+"), ("Brand + growth", "A")],
+}
 
 PROJ_BY_SLUG = {p["slug"]: p for p in PROJECTS}
 ORDER = [p["slug"] for p in PROJECTS]
@@ -304,6 +333,10 @@ def render_case(p):
     tags = "\n".join(f'        <span class="tag">{t}</span>' for t in p["stack"])
     stat = (f'\n    <div class="case-stat"><span class="n">{p["metric_n"]}</span>'
             f'<span class="l">{p["metric_l"]}</span></div>' if p.get("metric_n") else "")
+    rows = REPORTS.get(p["slug"], [("Fast &amp; modern", "A+"), ("Mobile-first", "A+"), ("Findable", "A+"), ("Owned outright", "A+")])
+    report_rows = "\n".join(
+        f'        <div class="row"><span>{lbl}</span><span class="g good">{g}</span></div>'
+        for lbl, g in rows)
     return f"""{page_head(title, desc, f'/work/{p["slug"]}/')}
 
 <div class="hero hero--split hero--work">
@@ -326,18 +359,28 @@ def render_case(p):
 </div>
 
 <section>
-  <div class="wrap reveal" style="max-width:820px">
-    <p class="eyebrow">The brief</p>
-    <p class="lede">{p['brief']}</p>{stat}
-    <p class="eyebrow" style="margin-top:var(--sp-l)">What we built</p>
-    <ul class="deliverables">
+  <div class="wrap case-grid reveal">
+    <div class="case-main">
+      <p class="eyebrow">The brief</p>
+      <p class="lede">{p['brief']}</p>{stat}
+      <p class="eyebrow" style="margin-top:var(--sp-l)">What we built</p>
+      <ul class="deliverables">
 {work}
-    </ul>
-    <p class="eyebrow" style="margin-top:var(--sp-l)">Built with</p>
-    <div class="tags">
+      </ul>
+      <p class="eyebrow" style="margin-top:var(--sp-l)">Built with</p>
+      <div class="tags">
 {tags}
+      </div>
+      <div class="svc-nextprev">{prev_link}{next_link}</div>
     </div>
-    <div class="svc-nextprev">{prev_link}{next_link}</div>
+    <aside class="case-side">
+      <div class="mini-card report-card">
+        <div class="stamp">A+</div>
+        <div class="mc-head">Why it's an A+</div>
+{report_rows}
+        <div class="row row-total"><span>Overall grade</span><span class="g good">A+</span></div>
+      </div>
+    </aside>
   </div>
 </section>
 

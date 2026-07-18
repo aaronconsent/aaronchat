@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://aaron.chat/work/lakeside-ink-threadz/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/style.css?v=5">
+<link rel="stylesheet" href="/brand/style.css?v=6">
 <!-- Meta Pixel -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -61,23 +61,36 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
 </div>
 
 <section>
-  <div class="wrap reveal" style="max-width:820px">
-    <p class="eyebrow">The brief</p>
-    <p class="lede">Lakeside&rsquo;s site lived inside an AI builder that shipped a single-page app &mdash; impossible to own, hard to change, and invisible to search. They needed the real thing.</p>
-    <p class="eyebrow" style="margin-top:var(--sp-l)">What we built</p>
-    <ul class="deliverables">
+  <div class="wrap case-grid reveal">
+    <div class="case-main">
+      <p class="eyebrow">The brief</p>
+      <p class="lede">Lakeside&rsquo;s site lived inside an AI builder that shipped a single-page app &mdash; impossible to own, hard to change, and invisible to search. They needed the real thing.</p>
+      <p class="eyebrow" style="margin-top:var(--sp-l)">What we built</p>
+      <ul class="deliverables">
         <li>Migrated the shop off Mocha (an AI builder that shipped a client-rendered SPA) to a static, self-owned site on Cloudflare Workers.</li>
         <li>Built a Playwright headless-Chromium snapshot pipeline to capture real, per-page HTML from the single-page app across 31 routes.</li>
         <li>Rebuilt working contact and quote forms on a Cloudflare Worker with Resend email and spam protection.</li>
         <li>Self-hosted every image and asset and shipped a branded 404, sitemap, and robots.</li>
-    </ul>
-    <p class="eyebrow" style="margin-top:var(--sp-l)">Built with</p>
-    <div class="tags">
+      </ul>
+      <p class="eyebrow" style="margin-top:var(--sp-l)">Built with</p>
+      <div class="tags">
         <span class="tag">Cloudflare Workers</span>
         <span class="tag">Playwright</span>
         <span class="tag">Resend</span>
+      </div>
+      <div class="svc-nextprev"><a href="/work/br-productions/">&larr; B&amp;R Productions</a><a href="/work/polk-county-golf-carts/">Polk County Golf Carts &rarr;</a></div>
     </div>
-    <div class="svc-nextprev"><a href="/work/br-productions/">&larr; B&amp;R Productions</a><a href="/work/polk-county-golf-carts/">Polk County Golf Carts &rarr;</a></div>
+    <aside class="case-side">
+      <div class="mini-card report-card">
+        <div class="stamp">A+</div>
+        <div class="mc-head">Why it's an A+</div>
+        <div class="row"><span>SPA &rarr; a real, ownable site</span><span class="g good">A+</span></div>
+        <div class="row"><span>Every route captured</span><span class="g good">A+</span></div>
+        <div class="row"><span>Working contact + quote forms</span><span class="g good">A+</span></div>
+        <div class="row"><span>Self-hosted &amp; fast</span><span class="g good">A</span></div>
+        <div class="row row-total"><span>Overall grade</span><span class="g good">A+</span></div>
+      </div>
+    </aside>
   </div>
 </section>
 
@@ -101,7 +114,7 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
     </div>
   </div>
 </footer>
-<script src="/brand/nav.js?v=5" defer></script>
-<script src="/brand/lead.js?v=5" defer></script>
+<script src="/brand/nav.js?v=6" defer></script>
+<script src="/brand/lead.js?v=6" defer></script>
 </body>
 </html>
