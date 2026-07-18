@@ -459,6 +459,23 @@ html.js .reveal.in { opacity: 1; transform: none; }
 .tags { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 6px; }
 .tag { font-size: 0.8rem; font-weight: 600; color: var(--board); background: var(--paper); border: 1px solid var(--line); padding: 6px 13px; border-radius: 999px; }
 
+/* full-bleed auto-scroll screenshot marquee */
+.marquee { position: relative; overflow: hidden; margin-top: var(--sp-m); padding: 6px 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
+.marquee-track { display: flex; gap: 22px; width: max-content; animation: marquee 55s linear infinite; }
+.marquee:hover .marquee-track, .marquee:focus-within .marquee-track { animation-play-state: paused; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 11px)); } }
+.mq-item { position: relative; flex: 0 0 auto; width: min(80vw, 440px); aspect-ratio: 16 / 10;
+  border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sh-2); border: 1px solid var(--line-2);
+  text-decoration: none; background: var(--paper-2); }
+.mq-item img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform .5s ease; }
+.mq-item:hover img { transform: scale(1.05); }
+.mq-cat { position: absolute; top: 12px; left: 12px; font-family: "IBM Plex Mono", monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--board); background: var(--star); padding: 4px 9px; border-radius: 999px; }
+.mq-label { position: absolute; left: 0; right: 0; bottom: 0; padding: 20px 16px 14px; color: #fff; font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.1rem; background: linear-gradient(to top, rgba(22,48,38,.92) 10%, transparent); }
+.mq-label .mq-metric { display: block; font-family: "IBM Plex Mono", monospace; font-weight: 600; font-size: 0.72rem; color: var(--star); margin-top: 3px; }
+@media (prefers-reduced-motion: reduce) { .marquee { overflow-x: auto; } .marquee-track { animation: none; } }
+
 /* ============================================================ FOOTER */
 .site-foot { background: var(--board-2); color: var(--chalk); padding: var(--sp-xl) 0 calc(var(--sp-xl) + env(safe-area-inset-bottom)); font-size: 0.92rem; }
 .site-foot a { color: var(--chalk); }
