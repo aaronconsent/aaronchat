@@ -314,10 +314,6 @@ def render_service(s):
                    f'style="object-position:{pos}% center" loading="eager">')
     return f"""{page_head(title, desc, f'/services/{s["slug"]}/')}
 
-<nav class="crumbs" style="max-width:1080px;margin:0 auto;padding:14px 22px 0;font-size:.88rem;color:var(--slate)">
-  <a href="/services/" style="color:var(--pen);text-decoration:none">Services</a> &rsaquo; {s['name']}
-</nav>
-
 <div class="hero hero--split">
   <div class="wrap">
     <div class="hero-copy">
