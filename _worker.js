@@ -1145,15 +1145,32 @@ async function handleLookup(request, env) {
     const list = await loadLookup(env, url.origin);
     const looksDomain = /\./.test(q) && !/\s/.test(q);
     const nd = normDomain(q), nn = normName(q);
+    const stripTld = (s) => s.replace(/\.(com|net|org|co|us|biz|info|io|dev|agency|services|solutions)$/, "");
     let hit = null;
     if (looksDomain) {
-      hit = list.find((x) => x.d && x.d === nd);
-      if (!hit) hit = list.find((x) => x.d && x.d.length > 4 && (x.d.includes(nd) || nd.includes(x.d.split(".")[0])));
-    }
-    if (!hit) {
+      // 1) exact domain
+      hit = list.find((x) => x.d && (x.d === nd || "www." + x.d === nd || x.d === "www." + nd));
+      // 2) same registrable base (ignore TLD)
+      if (!hit) {
+        const base = stripTld(nd.replace(/^www\./, ""));
+        if (base.length > 3) hit = list.find((x) => x.d && stripTld(x.d.replace(/^www\./, "")) === base);
+      }
+      // 3) recover via business name — many shops have no domain on file
+      if (!hit) {
+        const core = nd.replace(/\..*$/, "").replace(/[^a-z0-9]/g, "");
+        if (core.length >= 5) {
+          hit = list.map((x) => ({ x, k: (x.nn || "").replace(/ /g, "") }))
+            .filter((o) => o.k && (o.k === core || o.k.startsWith(core) || (core.startsWith(o.k) && o.k.length >= 6)))
+            .sort((a, b) => a.k.length - b.k.length).map((o) => o.x)[0];
+        }
+      }
+    } else {
+      // name: exact, then prefix, then all query words present (most specific first)
       hit = list.find((x) => x.nn === nn);
-      if (!hit && nn.length >= 3) {
-        hit = list.filter((x) => x.nn.includes(nn) || nn.includes(x.nn)).sort((a, b) => a.nn.length - b.nn.length)[0];
+      if (!hit && nn.length >= 4) hit = list.find((x) => x.nn.startsWith(nn) || (nn.startsWith(x.nn) && x.nn.length >= 5));
+      if (!hit) {
+        const toks = nn.split(" ").filter((t) => t.length > 2);
+        if (toks.length) hit = list.filter((x) => toks.every((t) => x.nn.includes(t))).sort((a, b) => a.nn.length - b.nn.length)[0];
       }
     }
     if (!hit) return json({ found: false, q });
