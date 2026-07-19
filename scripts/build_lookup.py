@@ -41,6 +41,16 @@ PATH = [
     {"g": "B", "pts": 72, "plan": "Honor Roll", "mo": 600, "time": "about 3 months"},
     {"g": "A", "pts": 90, "plan": "Top of Class", "mo": 1200, "time": "about 6 months"},
 ]
+# trade token -> the grading site's ranked-list page slug
+TRADE_SLUG = {
+    "electrician": "electricians", "plumber": "plumbers", "hvac": "hvac",
+    "roofing": "roofing", "general_contractor": "general-contractor",
+    "pool_service": "pool-service", "fencing": "fencing", "tree_service": "tree-service",
+    "pressure_washing": "pressure-washing", "lawn_care": "lawn-care", "septic": "septic",
+    "concrete": "concrete", "pest_control": "pest-control", "garage_door": "garage-door",
+    "painter": "painters", "gutters": "gutters", "appliance": "appliance-repair",
+    "appliance_repair": "appliance-repair",
+}
 # rubric subject -> (short key, "what the top shops do" action)
 FACTORS = [
     ("Working website", "site", "Run a real, fast website"),
@@ -210,6 +220,9 @@ def main():
         leadsTop = est_leads(st["leaderRev"], st["leaderScore"])
         missed_jobs = max(0, leadsTop - leadsYou) * CLOSE_RATE
         missed_rev = int(round(missed_jobs * job / 100.0) * 100)
+        cpjYou, cpjTop = est_cpj(score), est_cpj(max(score, 92))
+        cplYou, cplTop = int(round(cpjYou * CLOSE_RATE)), int(round(cpjTop * CLOSE_RATE))
+        new_jobs = max(2, int(round(max(0, leadsTop - leadsYou) * CLOSE_RATE)))
         mine = passes(r.get("rc"))
         tactics = []
         for subj, k, action in FACTORS:
@@ -220,14 +233,17 @@ def main():
         path = [p for p in PATH if p["pts"] > score]
         if not path:  # already an A / A+
             path = [{"g": "A+", "pts": 96, "plan": "Top of Class", "mo": 1200, "time": "ongoing"}]
+        target = path[-1]
         r["fomo"] = {
             "n": st["n"], "pctSite": st["pctSite"], "avgRev": st["avgRev"],
             "avgPh": st["avgPh"], "top5Rev": st["top5Rev"],
             "yourRev": int(reviews), "yourPh": r["ph"],
             "leadsYou": leadsYou, "leadsTop": leadsTop,
-            "cpjYou": est_cpj(score), "cpjTop": est_cpj(max(score, 92)),
+            "cpjYou": cpjYou, "cpjTop": cpjTop, "cplYou": cplYou, "cplTop": cplTop,
             "missed": missed_rev, "job": job, "social": SOCIAL_BENCH,
             "path": path, "tactics": tactics,
+            "trslug": TRADE_SLUG.get(r["tr"], ""),
+            "deal": {"mo": target["mo"], "plan": target["plan"], "jobs": new_jobs, "cpl": cplTop},
         }
         if st["ldN"] != r["n"]:
             r["fomo"]["ldn"] = st["ldN"]

@@ -553,6 +553,36 @@ body.rc-page .mbar { display: none !important; }
   .hero--diag .fomo-rank { font-size: 1.02rem; }
 }
 
+/* outcome dashboard (step 2) */
+.dash { background: var(--white); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 18px 20px 20px; margin-bottom: 14px; box-shadow: var(--sh-1); }
+.dash-head { display: flex; gap: 15px; align-items: center; margin-bottom: 16px; }
+.dash-head .rc-grade { flex: none; width: 62px; height: 62px; border-radius: 14px; display: grid; place-items: center; color: #fff; box-shadow: var(--sh-1); }
+.dash-head .rc-grade span { font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.8rem; line-height: 1; }
+.dash-head .rc-when { font-family: "IBM Plex Mono", monospace; font-size: 0.66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--pen); margin: 0 0 2px; }
+.dash-head h3 { margin: 0 0 3px; font-size: 1.2rem; line-height: 1.1; }
+.dash-rank { font-weight: 600; font-size: 0.86rem; color: var(--pen); text-decoration: none; }
+.dash-rank:hover { text-decoration: underline; }
+.dash-lbl { font-family: "IBM Plex Mono", monospace; font-size: 0.66rem; letter-spacing: .07em; text-transform: uppercase; color: var(--slate); margin: 0 0 8px; font-weight: 600; }
+
+.dash-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0 0 16px; }
+.dt { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 12px 13px; }
+.dt-big { display: block; font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.35rem; color: var(--board); line-height: 1.05; }
+.dt-big sup { font-size: 0.55em; }
+.dt-sub { display: block; font-size: 0.75rem; color: var(--slate); margin-top: 5px; line-height: 1.35; }
+
+.dash-metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 0 0 16px; }
+.dm { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 12px 14px; }
+.dm-k { display: block; font-size: 0.78rem; color: var(--slate); font-weight: 600; }
+.dm-v { display: block; font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.5rem; color: var(--pen); line-height: 1.1; margin: 2px 0; }
+.dm-goal { display: block; font-size: 0.78rem; color: var(--pass); font-weight: 600; }
+
+.dash-deal { background: var(--board); color: var(--chalk); border-radius: var(--r-lg); padding: 13px 16px; font-size: 0.95rem; line-height: 1.4; margin: 0 0 14px; text-align: center; }
+.dash-deal b { color: var(--star); }
+
+@media (max-width: 620px) {
+  .dash-tiles, .dash-metrics { grid-template-columns: 1fr; }
+}
+
 /* report-card teaser + mini card */
 .teaser { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,5vw,54px); align-items: center; }
 @media (max-width: 800px) { .teaser { grid-template-columns: 1fr; } }

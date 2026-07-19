@@ -36,43 +36,45 @@
     return "There's a lot of easy ground to gain here. Good news: that's the fastest kind to win.";
   }
 
-  /* ---- competitive standing / FOMO (full card + action steps get emailed) ---- */
+  /* ---- outcome dashboard (full card + action steps get emailed) ---- */
   function renderCard(d) {
     var wrap = $("#diag-card");
     if (!d.found) {
       wrap.innerHTML =
-        '<div class="fomo notfound"><div class="fomo-head">' +
+        '<div class="dash notfound"><div class="dash-head">' +
           '<div class="rc-grade g-f"><span>?</span></div>' +
-          '<div class="rc-id"><p class="rc-when">Not in this week’s index</p><h3>We couldn’t find you.</h3></div></div>' +
+          '<div class="dash-id"><p class="rc-when">Not in this week’s index</p><h3>We couldn’t find you.</h3></div></div>' +
           '<p class="fomo-magnet">That usually means you’re hard to find online — exactly what’s costing you jobs. Aaron will grade you by hand and send it over. Where do we reach you?</p></div>';
       return;
     }
-    var g = d.grade, rc = d.rc, rk = d.rk;
-    var f = d.fomo || {};
-    var ld = f.ldn ? { n: f.ldn, g: f.ldg, rv: f.ldrv } : null;
-    var head =
-      '<div class="fomo-head"><div class="rc-grade ' + gradeClass(g) + '"><span>' + esc(g) + "</span></div>" +
-      '<div class="rc-id"><p class="rc-when">Your grade' + (d.city ? " · " + esc(d.city) : "") + '</p><h3>' + esc(d.name) + "</h3></div></div>";
-    var body = "";
-    if (rk) {
-      var ahead = Math.max(0, rk[0] - 1);
-      body += '<p class="fomo-rank">You rank <b>#' + rk[0] + " of " + rk[1] + "</b> " + esc(rk[2]) + " around Lake Livingston.</p>";
-      if (ahead > 0) body += '<p class="fomo-ahead"><b>' + ahead + " shop" + (ahead === 1 ? "" : "s") + " ahead of you</b> — winning the calls you’re not.</p>";
-    } else {
-      body += '<p class="fomo-rank">You’re graded <b>' + esc(g) + "</b>. The top shops in your trade near you are scoring <b>A+</b>.</p>";
+    var g = d.grade, rk = d.rk, f = d.fomo || {};
+    var rankTxt = rk ? ("#" + rk[0] + " of " + rk[1] + " " + rk[2] + " around the lake") : "";
+    var rankHtml = rankTxt
+      ? (f.trslug
+          ? '<a class="dash-rank" href="https://stats.lakelivingston.aaron.chat/' + f.trslug + '/" target="_blank" rel="noopener">' + esc(rankTxt) + " ↗</a>"
+          : '<span class="dash-rank">' + esc(rankTxt) + "</span>")
+      : "";
+    var H = '<div class="dash-head"><div class="rc-grade ' + gradeClass(g) + '"><span>' + esc(g) + "</span></div>" +
+      '<div class="dash-id"><p class="rc-when">Your grade' + (d.city ? " · " + esc(d.city) : "") + '</p><h3>' + esc(d.name) + "</h3>" + rankHtml + "</div></div>";
+
+    H += '<p class="dash-lbl">Work with us — here’s what changes</p><div class="dash-tiles">' +
+      '<div class="dt"><span class="dt-big">1/100<sup>th</sup></span><span class="dt-sub">the cost of a serious online presence — an AI stack does the work of a whole agency</span></div>' +
+      '<div class="dt"><span class="dt-big">16× faster</span><span class="dt-sub">to build, update and get you seen</span></div>' +
+      '<div class="dt"><span class="dt-big">Automated</span><span class="dt-sub">website, social, email outreach &amp; brand voice — one well-oiled machine</span></div>' +
+      "</div>";
+
+    if (f.cplYou) {
+      H += '<p class="dash-lbl">The two numbers we drive — on your report card every month</p><div class="dash-metrics">' +
+        '<div class="dm"><span class="dm-k">Cost / lead</span><span class="dm-v">~$' + f.cplYou + '</span><span class="dm-goal">→ ~$' + f.cplTop + " at an A</span></div>" +
+        '<div class="dm"><span class="dm-k">Cost / booked job</span><span class="dm-v">~$' + f.cpjYou + '</span><span class="dm-goal">→ ~$' + f.cpjTop + " at an A</span></div>" +
+        "</div>";
     }
-    if (ld && ld.n) {
-      body += '<div class="fomo-leader"><span class="fl-ico">🏆</span><span>#1 in your trade near you: <b>' + esc(ld.n) + "</b> — " + esc(ld.g) + ", " + esc(ld.rv) + " reviews</span></div>";
+    if (f.deal) {
+      H += '<div class="dash-deal">Spend <b>~$' + Number(f.deal.mo).toLocaleString() + '/mo</b> with us → we project <b>~' + f.deal.jobs +
+        " new booked jobs</b> a month at <b>~$" + f.deal.cpl + " / lead</b>.</div>";
     }
-    if (rc && rc.rows) {
-      var miss = rc.rows.filter(function (r) { return r[4] !== "ok"; });
-      if (miss.length) {
-        var names = miss.slice(0, 4).map(function (r) { return r[0]; }).join(", ");
-        body += '<p class="fomo-fix">You’re losing points on <b>' + miss.length + " of " + rc.rows.length + "</b> factors: " + esc(names) + ".</p>";
-      }
-    }
-    body += '<p class="fomo-magnet">Your full report card — every factor scored — plus the fastest fixes to climb is ready. Where do we send it?</p>';
-    wrap.innerHTML = '<div class="fomo">' + head + body + "</div>";
+    H += '<p class="fomo-magnet">Your full report card + the exact plan to get there is ready. Where do we send it?</p>';
+    wrap.innerHTML = '<div class="dash">' + H + "</div>";
   }
 
   /* ---- lookup (used by form submit + autocomplete pick) ---- */
