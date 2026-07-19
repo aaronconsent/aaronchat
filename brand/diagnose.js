@@ -162,7 +162,8 @@
       var name = $("#diag-name").value.trim(), email = $("#diag-email").value.trim(), phone = $("#diag-phone").value.trim();
       var e3 = $(".diag-step[data-s='3'] .diag-err");
       if (!name) { err(e3, "What's your name?"); return; }
-      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err(e3, "Add a valid email so we can send your report."); return; }
+      if (!email) { err(e3, "Add your email so we can send your report."); return; }
+      if (!/\S+@\S+\.\S+/.test(email)) { err(e3, "That email looks off — mind double-checking it?"); return; }
       err(e3, "");
       state.name = name; state.email = email; state.phone = phone;
       var btn = el; btn.disabled = true; var t = btn.textContent; btn.textContent = "Sending…";
