@@ -1267,7 +1267,7 @@ async function sendEmail(env, { subject, text, reply_to, to }) {
   return res.ok;
 }
 
-async function handleDiagnose(request, env) {
+async function handleDiagnose(request, env, ctx) {
   if (request.method !== "POST") return json({ ok: false, error: "Method not allowed" }, 405);
   try {
     const d = await request.json().catch(() => ({}));
@@ -1290,33 +1290,36 @@ async function handleDiagnose(request, env) {
       when ? `Wants to meet: ${when}` : null,
       `Wants a free website preview: ${build ? "YES — kick off Claude Code" : "no"}`,
     ].filter((l) => l !== null);
-    if (d.lead !== false) {
-      await sendEmail(env, { subject: `New diagnose lead: ${name || business}${build ? " · WANTS SITE" : ""}`, text: lines.join("\n"), reply_to: email });
-    }
+    const origin = new URL(request.url).origin;
 
-    // email the prospect their own report card + action steps (the magnet)
-    if (slug) {
+    // Send the emails in the background so the form responds instantly.
+    const bg = (async () => {
       try {
-        const list = await loadLookup(env, new URL(request.url).origin);
-        const hit = list.find((x) => x.s === slug);
-        if (hit && hit.rc) {
-          await sendEmail(env, {
-            to: email, reply_to: env.CONTACT_TO || "hello@aaron.chat",
-            subject: `Your report card — ${hit.n} (grade ${hit.g})`,
-            text: reportEmailText(hit),
-          });
+        if (d.lead !== false) {
+          await sendEmail(env, { subject: `New diagnose lead: ${name || business}${build ? " · WANTS SITE" : ""}`, text: lines.join("\n"), reply_to: email });
         }
-      } catch (e) { console.log("report email error", e && e.message); }
-    }
-
-    if (build) {
-      const prompt = buildSitePlanPrompt({
-        businessName: business, ownerName: name, trade, mainCity: city, state: "Texas",
-        publicPhone: phone, publicEmail: email, existingSite: domain,
-        notes: `Auto-kicked from the aaron.chat report-card diagnose flow. Current grade: ${grade || "n/a"}. Build a fast preview site to show them within the hour, then hand off.`,
-      });
-      await sendEmail(env, { subject: `🚀 Claude Code website kickoff: ${business || name}`, text: prompt });
-    }
+        if (slug && d.report !== false) {
+          const list = await loadLookup(env, origin);
+          const hit = list.find((x) => x.s === slug);
+          if (hit && hit.rc) {
+            await sendEmail(env, {
+              to: email, reply_to: env.CONTACT_TO || "hello@aaron.chat",
+              subject: `Your report card — ${hit.n} (grade ${hit.g})`,
+              text: reportEmailText(hit),
+            });
+          }
+        }
+        if (build) {
+          const prompt = buildSitePlanPrompt({
+            businessName: business, ownerName: name, trade, mainCity: city, state: "Texas",
+            publicPhone: phone, publicEmail: email, existingSite: domain,
+            notes: `Auto-kicked from the aaron.chat report-card diagnose flow. Current grade: ${grade || "n/a"}. Build a fast preview site to show them within the hour, then hand off.`,
+          });
+          await sendEmail(env, { subject: `🚀 Claude Code website kickoff: ${business || name}`, text: prompt });
+        }
+      } catch (e) { console.log("diagnose bg error", e && e.message); }
+    })();
+    if (ctx && ctx.waitUntil) ctx.waitUntil(bg); else await bg;
     return json({ ok: true });
   } catch (e) {
     console.log("diagnose error", e && e.message);
@@ -1325,7 +1328,7 @@ async function handleDiagnose(request, env) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
     // Existing routes
@@ -1333,7 +1336,7 @@ export default {
     if (url.pathname === "/api/order") return handleOrder(request, env);
     if (url.pathname === "/api/lookup") return handleLookup(request, env);
     if (url.pathname === "/api/suggest") return handleSuggest(request, env);
-    if (url.pathname === "/api/diagnose") return handleDiagnose(request, env);
+    if (url.pathname === "/api/diagnose") return handleDiagnose(request, env, ctx);
 
     // Wizard routes
     if (url.pathname === "/api/setup/login") return handleSetupLogin(request, env);
