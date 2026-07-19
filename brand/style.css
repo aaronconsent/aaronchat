@@ -414,6 +414,50 @@ html.js .reveal.in { opacity: 1; transform: none; }
 .form-status.ok { color: var(--pass); display: block; }
 .form-status.err { color: var(--pen); display: block; }
 
+/* ===================================== DIAGNOSE FLOW (key conversion) */
+.diag { background: var(--white); border: 1px solid var(--line-2); border-radius: var(--r-xl); padding: clamp(24px, 4vw, 40px); max-width: 620px; box-shadow: var(--sh-2); }
+.diag-prog { display: flex; gap: 7px; margin-bottom: 22px; }
+.diag-prog span { flex: 1; height: 5px; border-radius: 99px; background: var(--line); transition: background .3s ease; }
+.diag-prog span.on { background: var(--pass); }
+.diag-step[hidden] { display: none; }
+.diag-step .eyebrow { margin-bottom: 6px; }
+.diag-step h2 { font-size: var(--step-2); margin: 0 0 8px; }
+.diag-step .lede { font-size: var(--step-0); margin: 0 0 18px; }
+.diag-step input { width: 100%; font: inherit; font-size: 16px; padding: 0.9rem 1rem; border: 1.5px solid rgba(30,61,49,.24); border-radius: var(--r-sm); background: #fff; color: var(--ink); margin-bottom: 12px; transition: border-color .15s, box-shadow .15s; }
+.diag-step input:focus-visible { outline: none; border-color: var(--board); box-shadow: 0 0 0 3px rgba(30,61,49,.16); }
+.diag-lookup { display: flex; gap: 10px; margin-bottom: 8px; }
+.diag-lookup input { margin-bottom: 0; }
+.diag-lookup button { flex: none; white-space: nowrap; }
+.diag-hint { font-size: 0.82rem; color: var(--slate); margin: 0; }
+.diag-hint code, .diag-hint b { color: var(--pen); }
+.diag-err { color: var(--pen); font-weight: 600; font-size: 0.9rem; margin: 10px 0 0; }
+.diag-actions, .diag-yn { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+.diag-yn { margin-top: 22px; }
+
+/* report-card result inside the flow */
+.diag-rc { display: flex; gap: 20px; align-items: center; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 20px 22px; margin-bottom: 16px; }
+.diag-rc .rc-grade { flex: none; width: 84px; height: 84px; border-radius: 16px; display: grid; place-items: center; color: #fff; box-shadow: var(--sh-1); }
+.diag-rc .rc-grade span { font-family: "Zilla Slab", serif; font-weight: 700; font-size: 2.4rem; line-height: 1; }
+.rc-grade.g-a { background: var(--pass); }
+.rc-grade.g-b { background: #4a8a5f; }
+.rc-grade.g-c { background: var(--star); color: var(--board); }
+.rc-grade.g-f { background: var(--pen); }
+.diag-rc .rc-body { min-width: 0; }
+.diag-rc .rc-when { font-family: "IBM Plex Mono", monospace; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pen); margin: 0 0 3px; }
+.diag-rc h3 { margin: 0 0 4px; font-size: 1.25rem; }
+.diag-rc .rc-meta { font-size: 0.9rem; color: var(--slate); display: block; }
+.diag-rc .rc-link { font-weight: 700; font-size: 0.88rem; display: inline-block; margin-top: 6px; }
+
+/* when-to-meet chips */
+.diag-when { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
+.diag-when button { font: inherit; font-weight: 600; font-size: 0.92rem; padding: 10px 16px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--white); color: var(--board); cursor: pointer; transition: border-color .15s, background .15s; }
+.diag-when button:hover { border-color: var(--board); }
+.diag-when button.sel { background: var(--board); color: var(--chalk); border-color: var(--board); }
+
+.diag-done { text-align: center; }
+.diag-check { width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%; background: var(--pass); color: #fff; display: grid; place-items: center; font-size: 2rem; }
+@media (max-width: 480px) { .diag-lookup { flex-direction: column; } .diag-lookup button { width: 100%; } }
+
 /* report-card teaser + mini card */
 .teaser { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,5vw,54px); align-items: center; }
 @media (max-width: 800px) { .teaser { grid-template-columns: 1fr; } }

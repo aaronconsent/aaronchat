@@ -1117,6 +1117,110 @@ async function handleSetupUi(request, env) {
   return noCacheResponse(asset);
 }
 
+// ============================================================
+// /api/lookup — report-card lookup by domain or company name
+// /api/diagnose — diagnose-flow lead + optional Claude Code site kickoff
+// ============================================================
+
+let LOOKUP_CACHE = null;
+async function loadLookup(env, origin) {
+  if (LOOKUP_CACHE) return LOOKUP_CACHE;
+  const res = await env.ASSETS.fetch(new Request(new URL("/data/lookup-index.json", origin)));
+  LOOKUP_CACHE = await res.json();
+  return LOOKUP_CACHE;
+}
+function normName(s) { return (s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim(); }
+function normDomain(s) {
+  return (s || "").trim().toLowerCase().replace(/^https?:\/\//, "").replace(/^www\./, "").split("/")[0].split("?")[0];
+}
+
+async function handleLookup(request, env) {
+  try {
+    const url = new URL(request.url);
+    let q = "";
+    if (request.method === "POST") { const b = await request.json().catch(() => ({})); q = b.q || ""; }
+    else q = url.searchParams.get("q") || "";
+    q = clean(q, 200);
+    if (!q) return json({ found: false });
+    const list = await loadLookup(env, url.origin);
+    const looksDomain = /\./.test(q) && !/\s/.test(q);
+    const nd = normDomain(q), nn = normName(q);
+    let hit = null;
+    if (looksDomain) {
+      hit = list.find((x) => x.d && x.d === nd);
+      if (!hit) hit = list.find((x) => x.d && x.d.length > 4 && (x.d.includes(nd) || nd.includes(x.d.split(".")[0])));
+    }
+    if (!hit) {
+      hit = list.find((x) => x.nn === nn);
+      if (!hit && nn.length >= 3) {
+        hit = list.filter((x) => x.nn.includes(nn) || nn.includes(x.nn)).sort((a, b) => a.nn.length - b.nn.length)[0];
+      }
+    }
+    if (!hit) return json({ found: false, q });
+    return json({
+      found: true, name: hit.n, grade: hit.g, city: hit.c,
+      rating: hit.r, reviews: hit.rv, slug: hit.s,
+      cardUrl: `https://stats.lakelivingston.aaron.chat/biz/${hit.s}/`,
+    });
+  } catch (e) {
+    console.log("lookup error", e && e.message);
+    return json({ found: false });
+  }
+}
+
+async function sendEmail(env, { subject, text, reply_to }) {
+  const body = {
+    from: env.CONTACT_FROM || "Hey Aaron! Website <forms@aaron.chat>",
+    to: [env.CONTACT_TO || "hello@aaron.chat"], subject, text,
+  };
+  if (reply_to) body.reply_to = reply_to;
+  const res = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) console.log("Resend send error", res.status, await res.text().catch(() => ""));
+  return res.ok;
+}
+
+async function handleDiagnose(request, env) {
+  if (request.method !== "POST") return json({ ok: false, error: "Method not allowed" }, 405);
+  try {
+    const d = await request.json().catch(() => ({}));
+    if (clean(d._gotcha, 100)) return json({ ok: true });
+    const name = clean(d.name, 200), email = clean(d.email, 200), phone = clean(d.phone, 50);
+    const business = clean(d.business, 200), domain = clean(d.domain, 200);
+    const grade = clean(d.grade, 10), city = clean(d.city, 120), trade = clean(d.trade, 120);
+    const when = clean(d.when, 120), build = !!d.buildWebsite;
+    if (!name || !email) return json({ ok: false, error: "Please add your name and email." }, 400);
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return json({ ok: false, error: "Please enter a valid email address." }, 400);
+    if (!env.RESEND_API_KEY) return json({ ok: false, error: "Email is not configured yet." }, 500);
+
+    const lines = [
+      "New report-card diagnose lead from aaron.chat", "",
+      `Name: ${name}`, `Email: ${email}`, phone ? `Phone: ${phone}` : null,
+      business ? `Business: ${business}` : null, domain ? `Domain: ${domain}` : null,
+      grade ? `Current grade: ${grade}` : null, city ? `City: ${city}` : null, trade ? `Trade: ${trade}` : null,
+      when ? `Wants to meet: ${when}` : null,
+      `Wants a free website preview: ${build ? "YES — kick off Claude Code" : "no"}`,
+    ].filter((l) => l !== null);
+    await sendEmail(env, { subject: `New diagnose lead: ${name}${build ? " · WANTS SITE" : ""}`, text: lines.join("\n"), reply_to: email });
+
+    if (build) {
+      const prompt = buildSitePlanPrompt({
+        businessName: business, ownerName: name, trade, mainCity: city, state: "Texas",
+        publicPhone: phone, publicEmail: email, existingSite: domain,
+        notes: `Auto-kicked from the aaron.chat report-card diagnose flow. Current grade: ${grade || "n/a"}. Build a fast preview site to show them within the hour, then hand off.`,
+      });
+      await sendEmail(env, { subject: `🚀 Claude Code website kickoff: ${business || name}`, text: prompt });
+    }
+    return json({ ok: true });
+  } catch (e) {
+    console.log("diagnose error", e && e.message);
+    return json({ ok: false, error: FALLBACK_ERR }, 500);
+  }
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -1124,6 +1228,8 @@ export default {
     // Existing routes
     if (url.pathname === "/api/contact") return handleContact(request, env);
     if (url.pathname === "/api/order") return handleOrder(request, env);
+    if (url.pathname === "/api/lookup") return handleLookup(request, env);
+    if (url.pathname === "/api/diagnose") return handleDiagnose(request, env);
 
     // Wizard routes
     if (url.pathname === "/api/setup/login") return handleSetupLogin(request, env);

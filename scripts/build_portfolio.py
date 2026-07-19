@@ -49,8 +49,8 @@ FOOTER = """<footer class="site-foot">
     </div>
   </div>
 </footer>
-<script src="/brand/nav.js?v=9" defer></script>
-<script src="/brand/lead.js?v=9" defer></script>"""
+<script src="/brand/nav.js?v=10" defer></script>
+<script src="/brand/lead.js?v=10" defer></script>"""
 
 
 def page_head(title, desc, path):
@@ -69,7 +69,7 @@ def page_head(title, desc, path):
 <meta property="og:url" content="https://aaron.chat{path}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/style.css?v=9">
+<link rel="stylesheet" href="/brand/style.css?v=10">
 {PIXEL}
 </head>
 <body>
