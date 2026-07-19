@@ -1138,28 +1138,52 @@ function lookupResult(hit) {
   return {
     found: true, name: hit.n, grade: hit.g, city: hit.c,
     rating: hit.r, reviews: hit.rv, slug: hit.s, domain: hit.d || "", rc: hit.rc || null,
-    rk: hit.rk || null, ld: hit.ld || null,
+    rk: hit.rk || null, fomo: hit.fomo || null,
     cardUrl: `https://stats.lakelivingston.aaron.chat/biz/${hit.s}/`,
   };
 }
 
 // Compose the report-card + action-steps email sent to the prospect.
 function reportEmailText(hit) {
-  const L = [];
+  const f = hit.fomo, L = [];
   L.push(`Your Top of Class report card — ${hit.n}`);
   L.push("");
   L.push(`Overall grade: ${hit.g}` + (hit.rc && hit.rc.tot ? `  (${hit.rc.tot[1]})` : ""));
   if (hit.rk) L.push(`Class rank: #${hit.rk[0]} of ${hit.rk[1]} ${hit.rk[2]} around Lake Livingston`);
-  if (hit.ld && hit.ld.n !== hit.n) L.push(`#1 in your trade near you: ${hit.ld.n} — ${hit.ld.g}, ${hit.ld.rv} reviews`);
+  if (f && f.ldn) L.push(`#1 in your trade near you: ${f.ldn} — ${f.ldg}, ${f.ldrv} reviews`);
+  if (f && f.missed) {
+    L.push("");
+    L.push(`ESTIMATED $${f.missed.toLocaleString()}/MONTH in jobs is going to shops ahead of you.`);
+    L.push(`(est. ${f.leadsTop} booked-job leads/mo for the top shop vs ~${f.leadsYou} for you, ~$${f.job}/job)`);
+  }
+  if (f) {
+    L.push("");
+    L.push(`YOU vs THE ${f.n} ${hit.rk ? hit.rk[2] : "shops"} AROUND THE LAKE`);
+    L.push(`  Google reviews:   you ${f.yourRev}   ·   market avg ${f.avgRev}   ·   top 5 avg ${f.top5Rev}`);
+    L.push(`  Listing photos:   you ${f.yourPh}   ·   market avg ${f.avgPh}`);
+    L.push(`  Have a website:   ${f.pctSite}% of your competitors do`);
+    L.push(`  Social posts/mo:  most post fewer than ${f.social}; the winners post weekly`);
+    L.push(`  Est. cost/booked job:  you ~$${f.cpjYou}   ·   at an A ~$${f.cpjTop}`);
+  }
+  if (f && f.tactics && f.tactics.length) {
+    L.push("");
+    L.push("WHAT THE TOP 5 SHOPS DO THAT YOU DON'T");
+    for (const t of f.tactics) L.push(`  • ${t}`);
+  }
   L.push("");
   L.push("HOW YOU SCORED");
   if (hit.rc && hit.rc.rows) {
     for (const r of hit.rc.rows) L.push(`  ${r[3].padEnd(3)}  ${r[2].padStart(6)}  ${r[0]} — ${r[1]}`);
     if (hit.rc.tot) L.push(`  ${hit.rc.tot[2].padEnd(3)}  ${hit.rc.tot[1].padStart(6)}  Overall`);
   }
+  if (f && f.path && f.path.length) {
+    L.push("");
+    L.push("YOUR CLIMB (what it takes to move up)");
+    for (const p of f.path) L.push(`  To a ${p.g}:  ${p.plan} plan, ~$${p.mo}/mo, ${p.time}`);
+  }
   if (hit.rc && hit.rc.cmt) {
     L.push("");
-    L.push("YOUR ACTION PLAN");
+    L.push("FASTEST WINS");
     L.push(hit.rc.cmt);
   }
   L.push("");

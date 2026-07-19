@@ -37,6 +37,17 @@
   }
 
   /* ---- competitive standing / FOMO (full card + action steps get emailed) ---- */
+  function cmpRow(label, you, ctx, bad) {
+    return '<div class="fc-row' + (bad ? " bad" : "") + '"><span class="fc-l">' + esc(label) + "</span>" +
+      '<span class="fc-you">' + esc(String(you)) + '</span><span class="fc-ctx">' + esc(ctx) + "</span></div>";
+  }
+  function hasFactor(rc, subj) {
+    if (!rc || !rc.rows) return false;
+    for (var i = 0; i < rc.rows.length; i++) if (rc.rows[i][0] === subj && rc.rows[i][4] === "ok") return true;
+    return false;
+  }
+  function money(n) { return "$" + Number(n).toLocaleString(); }
+
   function renderCard(d) {
     var wrap = $("#diag-card");
     if (!d.found) {
@@ -47,30 +58,48 @@
           '<p class="fomo-magnet">That usually means you’re hard to find online — exactly what’s costing you jobs. Aaron will grade you by hand and send it over. Where do we reach you?</p></div>';
       return;
     }
-    var g = d.grade, rc = d.rc, rk = d.rk, ld = d.ld;
-    var head =
-      '<div class="fomo-head"><div class="rc-grade ' + gradeClass(g) + '"><span>' + esc(g) + "</span></div>" +
+    var g = d.grade, rc = d.rc, rk = d.rk, f = d.fomo, H = "";
+    H += '<div class="fomo-head"><div class="rc-grade ' + gradeClass(g) + '"><span>' + esc(g) + "</span></div>" +
       '<div class="rc-id"><p class="rc-when">Your grade' + (d.city ? " · " + esc(d.city) : "") + '</p><h3>' + esc(d.name) + "</h3></div></div>";
-    var body = "";
     if (rk) {
       var ahead = Math.max(0, rk[0] - 1);
-      body += '<p class="fomo-rank">You rank <b>#' + rk[0] + " of " + rk[1] + "</b> " + esc(rk[2]) + " around Lake Livingston.</p>";
-      if (ahead > 0) body += '<p class="fomo-ahead"><b>' + ahead + " shop" + (ahead === 1 ? "" : "s") + " ahead of you</b> — winning the calls you’re not.</p>";
+      H += '<p class="fomo-rank">You rank <b>#' + rk[0] + " of " + rk[1] + "</b> " + esc(rk[2]) + " around Lake Livingston." +
+        (ahead > 0 ? ' <b class="hot">' + ahead + " ahead of you.</b>" : "") + "</p>";
     } else {
-      body += '<p class="fomo-rank">You’re graded <b>' + esc(g) + "</b>. The top shops in your trade near you are scoring <b>A+</b>.</p>";
+      H += '<p class="fomo-rank">You’re graded <b>' + esc(g) + "</b> — the shops winning your jobs are scoring <b>A+</b>.</p>";
     }
-    if (ld && ld.n) {
-      body += '<div class="fomo-leader"><span class="fl-ico">🏆</span><span>#1 in your trade near you: <b>' + esc(ld.n) + "</b> — " + esc(ld.g) + ", " + esc(ld.rv) + " reviews</span></div>";
-    }
-    if (rc && rc.rows) {
-      var miss = rc.rows.filter(function (r) { return r[4] !== "ok"; });
-      if (miss.length) {
-        var names = miss.slice(0, 4).map(function (r) { return r[0]; }).join(", ");
-        body += '<p class="fomo-fix">You’re losing points on <b>' + miss.length + " of " + rc.rows.length + "</b> factors: " + esc(names) + ".</p>";
+    if (f) {
+      if (f.missed) {
+        H += '<div class="fomo-money"><span class="fm-amt">≈ ' + money(f.missed) + "/mo</span>" +
+          '<span class="fm-lbl">in booked jobs is going to shops ahead of you</span>' +
+          '<span class="fm-sub">est. ' + f.leadsTop + " job-leads/mo for the #1 shop" + (f.ldn ? " (" + esc(f.ldn) + ")" : "") +
+          " vs ~" + f.leadsYou + " for you · ~" + money(f.job) + "/job</span></div>";
+      }
+      var site = hasFactor(rc, "Working website");
+      H += '<div class="fomo-cmp"><p class="fc-h">You vs the ' + f.n + " shops around the lake</p>" +
+        cmpRow("Google reviews", f.yourRev, "market " + f.avgRev + " · top 5 " + f.top5Rev, f.yourRev < f.avgRev) +
+        cmpRow("Listing photos", f.yourPh, "market avg " + f.avgPh, f.yourPh < f.avgPh) +
+        cmpRow("Working website", site ? "Yes" : "No", f.pctSite + "% of rivals have one", !site) +
+        cmpRow("Social posts / mo", "few", "winners post weekly", true) +
+        cmpRow("Est. cost / booked job", money(f.cpjYou), "at an A: " + money(f.cpjTop), f.cpjYou > f.cpjTop) +
+        "</div>";
+      if (f.tactics && f.tactics.length) {
+        H += '<div class="fomo-tac"><p class="fc-h">What the top 5 do that you don’t</p><ul>';
+        f.tactics.forEach(function (t) { H += "<li>" + esc(t) + "</li>"; });
+        H += "</ul></div>";
+      }
+      if (f.path && f.path.length) {
+        H += '<div class="fomo-path"><p class="fc-h">Your climb — and what it takes</p>';
+        f.path.forEach(function (p) {
+          H += '<div class="fp-row"><span class="fp-g ' + gradeClass(p.g) + '">' + esc(p.g) + "</span>" +
+            '<span class="fp-plan">' + esc(p.plan) + " plan</span>" +
+            '<span class="fp-cost">~' + money(p.mo) + "/mo · " + esc(p.time) + "</span></div>";
+        });
+        H += "</div>";
       }
     }
-    body += '<p class="fomo-magnet">Your full report card — every factor scored — plus the fastest fixes to climb is ready. Where do we send it?</p>';
-    wrap.innerHTML = '<div class="fomo">' + head + body + "</div>";
+    H += '<p class="fomo-magnet">Your full report card — every number above, scored and explained — plus your exact fix list is ready. Where do we send it?</p>';
+    wrap.innerHTML = '<div class="fomo">' + H + "</div>";
   }
 
   /* ---- lookup (used by form submit + autocomplete pick) ---- */
