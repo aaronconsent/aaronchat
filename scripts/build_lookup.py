@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Build data/lookup-index.json for the report-card diagnose flow.
 
-Joins the grading engine's search-index.json (name, grade, city, slug) with
-contractors_master.csv (domain, rating, reviews) AND parses each business's
-real report card out of stats-lakelivingston/docs/biz/<slug>/index.html so the
-site can render the full card inline (no need to send visitors off-site).
+Per business we bundle: name/grade/city/slug, domain+rating+reviews (from the
+master CSV), the real report card (parsed from the grading engine's biz page),
+the in-area competitive rank ("#39 of 50 local electricians"), the trade + score,
+and the #1 shop in that trade — everything the FOMO step needs.
 Run: python3 scripts/build_lookup.py  (re-run when the grading data updates).
 """
 import os, csv, json, re, html
@@ -30,56 +30,57 @@ def norm_domain(s):
     return s.split("/")[0].split("?")[0].strip()
 
 
+def trade_token(s):
+    m = re.search(r"[a-z_]+", (s or "").lower())
+    return m.group(0) if m else ""
+
+
 def _txt(s):
     s = re.sub(r"<[^>]+>", "", s)
-    s = s.replace("&thinsp;", "").replace(" ", "")
-    return html.unescape(re.sub(r"\s+", " ", s)).strip()
+    s = s.replace("&thinsp;", "")
+    s = html.unescape(s)
+    s = re.sub(r"[    ]", "", s)  # thin / narrow / nbsp spaces only
+    return re.sub(r"\s+", " ", s).strip()
 
 
-def parse_rc(slug):
-    """Parse the real report card from the grading engine's biz page."""
+def parse_biz(slug):
+    """Return (report_card_dict, rank_tuple) from a business's biz page."""
     fn = os.path.join(BIZ, slug, "index.html")
     if not os.path.isfile(fn):
-        return None
+        return None, None
     h = open(fn, encoding="utf-8").read()
+    # ---- rank ----
+    rk = None
+    rm = re.search(r'Class rank</span><span class="rc-fill">#(\d+) of (\d+) (?:local )?([^<]+)</span>', h)
+    if rm:
+        rk = [int(rm.group(1)), int(rm.group(2)), rm.group(3).strip()]
+    # ---- report card ----
     m = re.search(r'<table class="rc-subjects">.*?</table>', h, re.S)
     if not m:
-        return None
-    table = m.group(0)
+        return None, rk
     rows, total = [], None
-    for tr in re.findall(r"<tr class=\"([^\"]+)\">(.*?)</tr>", table, re.S):
-        cls, body = tr
-        subj = re.search(r'class="subj"[^>]*>(.*?)</td>', body, re.S)
-        found = re.search(r'class="found"[^>]*>(.*?)</td>', body, re.S)
-        num = re.search(r'class="num"[^>]*>(.*?)</td>', body, re.S)
-        grade = re.search(r'class="grade-[^"]*"[^>]*>(.*?)</span>', body, re.S)
-        row = [
-            _txt(subj.group(1)) if subj else "",
-            _txt(found.group(1)) if found else "",
-            _txt(num.group(1)).replace(" / ", "/") if num else "",
-            _txt(grade.group(1)) if grade else "",
-        ]
+    for cls, body in re.findall(r"<tr class=\"([^\"]+)\">(.*?)</tr>", m.group(0), re.S):
+        def cell(k, tag="td"):
+            mm = re.search(r'class="' + k + r'[^"]*"[^>]*>(.*?)</' + tag + r'>', body, re.S)
+            return _txt(mm.group(1)) if mm else ""
+        row = [cell("subj"), cell("found"), cell("num").replace(" / ", "/"),
+               (re.search(r'class="grade-[^"]*"[^>]*>(.*?)</span>', body, re.S) or [None, ""])[1]]
+        row[3] = _txt(row[3])
         if cls == "rc-total":
-            total = row  # [label, "Overall", pts, grade] -> subj is "Overall", found is label
+            total = row
         else:
-            rows.append(row + [cls])  # +status class (ok / miss / ...)
+            rows.append(row + [cls])
     if not rows:
-        return None
-    # class rank + comment (plain text scrape; whitespace already collapsed)
+        return None, rk
     plain = _txt(re.sub(r"<(script|style).*?</\1>", "", h, flags=re.S))
-    rank = ""
-    rm = re.search(r"Class rank\s+(.*?)\s+Google standing", plain)
-    if rm:
-        rank = rm.group(1).strip()
     cmt = ""
     cm = re.search(r"\bComments\b\s+(.*?)\s+(?:Prepared by|Print this|Class averages|$)", plain)
     if cm:
         cmt = re.sub(r"\s+", " ", cm.group(1)).strip()[:360]
-    out = {"rows": rows, "rank": rank, "cmt": cmt}
+    rc = {"rows": rows, "cmt": cmt}
     if total:
-        # total row: subj="Overall", found=label (e.g. Category Leader), num=pts, grade
-        out["tot"] = [total[1], total[2], total[3]]
-    return out
+        rc["tot"] = [total[1], total[2], total[3]]
+    return rc, rk
 
 
 def main():
@@ -93,32 +94,45 @@ def main():
                 "d": norm_domain(row.get("site")),
                 "r": row.get("rating") or "",
                 "rv": row.get("reviews") or "",
+                "tr": trade_token(row.get("trades")),
             })
 
     idx = json.load(open(SEARCH))
-    out, matched, carded = [], 0, 0
+    out = []
     for x in idx:
         nn = norm_name(x.get("n"))
         extra = by_name.get(nn, {})
-        if extra:
-            matched += 1
-        rc = parse_rc(x.get("s"))
-        if rc:
-            carded += 1
+        rc, rk = parse_biz(x.get("s"))
         rec = {
             "n": x.get("n"), "nn": nn, "g": x.get("g"), "c": x.get("c"),
             "s": x.get("s"), "d": extra.get("d", ""),
             "r": extra.get("r", ""), "rv": extra.get("rv", ""),
+            "p": x.get("p"), "tr": extra.get("tr", ""),
         }
         if rc:
             rec["rc"] = rc
+        if rk:
+            rec["rk"] = rk
         out.append(rec)
+
+    # trade leaders: among in-area (ranked) shops, the #1 of each trade
+    leaders = {}
+    for r in out:
+        if r.get("rk") and r["tr"]:
+            cur = leaders.get(r["tr"])
+            if not cur or (r.get("p") or 0) > (cur.get("p") or 0):
+                leaders[r["tr"]] = r
+    ranked_ct = sum(1 for r in out if r.get("rk"))
+    for r in out:
+        L = leaders.get(r["tr"])
+        if L and L["n"] != r["n"]:
+            r["ld"] = {"n": L["n"], "g": L["g"], "rv": L["rv"]}
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     json.dump(out, open(OUT, "w"), separators=(",", ":"))
     kb = os.path.getsize(OUT) // 1024
-    print(f"wrote {len(out)} businesses to {OUT} ({kb} KB); "
-          f"{matched} with domain/rating, {carded} with full report cards")
+    print(f"wrote {len(out)} businesses ({kb} KB); {ranked_ct} ranked in-area, "
+          f"{len(leaders)} trade leaders")
 
 
 if __name__ == "__main__":

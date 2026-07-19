@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://aaron.chat/report-card/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/style.css?v=13">
+<link rel="stylesheet" href="/brand/style.css?v=14">
 <!-- Meta Pixel — replace 2449103548914877 with the real Pixel ID to activate -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -49,7 +49,7 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
         <div class="diag-prog"><span class="on"></span><span></span><span></span><span></span></div>
 
         <div class="diag-step" data-s="1">
-          <p class="eyebrow">Step 1 of 4</p>
+          <p class="eyebrow">Free · 30 seconds</p>
           <h2>Find your shop.</h2>
           <form class="diag-lookup" autocomplete="off" novalidate>
             <input type="text" id="diag-q" placeholder="yourshop.com  ·  or your business name" required aria-label="Website or business name">
@@ -60,42 +60,36 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
         </div>
 
         <div class="diag-step" data-s="2" hidden>
-          <p class="eyebrow">Step 2 of 4 · your report card</p>
+          <p class="eyebrow">Here's where you stand</p>
           <div id="diag-card"></div>
           <div class="diag-actions">
-            <button class="btn btn-primary" data-next>Let's fix it — talk to Aaron →</button>
+            <button class="btn btn-primary" data-next>Email me my report card + action plan →</button>
             <button class="btn btn-ghost" data-back>← Search again</button>
           </div>
         </div>
 
         <div class="diag-step" data-s="3" hidden>
-          <p class="eyebrow">Step 3 of 4</p>
-          <h2>Grab a time with Aaron.</h2>
-          <p class="lede">He'll call and walk you through your card line by line — free, no pressure.</p>
-          <div class="diag-when">
-            <button type="button" data-when="ASAP — today if possible">ASAP</button>
-            <button type="button" data-when="This week">This week</button>
-            <button type="button" data-when="Next week">Next week</button>
-            <button type="button" data-when="Just email me the card">Just email it</button>
-          </div>
+          <p class="eyebrow">Almost there</p>
+          <h2>Where do we send it?</h2>
+          <p class="lede">Your full report card + action plan, free. We'll only call if you ask us to.</p>
           <input type="text" id="diag-name" placeholder="Your name" autocomplete="name" aria-label="Your name">
-          <input type="tel" id="diag-phone" placeholder="Phone (so Aaron can call)" autocomplete="tel" aria-label="Phone">
-          <input type="email" id="diag-email" placeholder="Email" autocomplete="email" aria-label="Email">
+          <input type="email" id="diag-email" placeholder="Email — where your report goes" autocomplete="email" aria-label="Email">
+          <input type="tel" id="diag-phone" placeholder="Phone (optional — for a call)" autocomplete="tel" aria-label="Phone">
           <div class="diag-actions">
-            <button class="btn btn-primary" data-next3>Next →</button>
+            <button class="btn btn-primary" data-next3>Send my report card →</button>
             <button class="btn btn-ghost" data-back>← Back</button>
           </div>
           <p class="diag-err" hidden></p>
         </div>
 
         <div class="diag-step" data-s="4" hidden>
-          <p class="eyebrow">Step 4 of 4 · the fun part</p>
-          <h2>Want a free website preview?</h2>
-          <p class="lede">Say yes and we'll build you a real, custom site to look at — usually in under
-          an hour, using everything we just learned about your shop. No cost, no commitment.</p>
+          <p class="eyebrow">Your report’s on its way 🎉</p>
+          <h2>Want a free website preview too?</h2>
+          <p class="lede">While we've got everything about your shop — we'll build you a real, custom
+          site to look at, usually in under an hour. No cost, no commitment.</p>
           <div class="diag-yn">
             <button class="btn btn-primary" data-build="1">Yes — build me one →</button>
-            <button class="btn btn-ghost" data-build="0">No thanks, just the card</button>
+            <button class="btn btn-ghost" data-build="0">No thanks, just the report</button>
           </div>
           <p class="diag-err" hidden></p>
         </div>
@@ -125,7 +119,7 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
     </div>
   </div>
 </footer>
-<script src="/brand/nav.js?v=13" defer></script>
-<script src="/brand/diagnose.js?v=13" defer></script>
+<script src="/brand/nav.js?v=14" defer></script>
+<script src="/brand/diagnose.js?v=14" defer></script>
 </body>
 </html>

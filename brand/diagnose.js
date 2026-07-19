@@ -6,7 +6,7 @@
   var root = document.getElementById("diag");
   if (!root) return;
 
-  var state = { q: "", card: null, when: "", name: "", phone: "", email: "", build: null };
+  var state = { q: "", card: null, slug: "", domain: "", grade: "", city: "", rankStr: "", business: "", when: "", name: "", phone: "", email: "", build: null };
   var $ = function (s, r) { return (r || root).querySelector(s); };
   var steps = root.querySelectorAll(".diag-step");
   var bars = root.querySelectorAll(".diag-prog span");
@@ -36,50 +36,41 @@
     return "There's a lot of easy ground to gain here. Good news: that's the fastest kind to win.";
   }
 
-  /* ---- inline report card (rendered on aaron.chat; no off-site link) ---- */
+  /* ---- competitive standing / FOMO (full card + action steps get emailed) ---- */
   function renderCard(d) {
     var wrap = $("#diag-card");
     if (!d.found) {
       wrap.innerHTML =
-        '<div class="rc-inline notfound"><div class="rc-head">' +
+        '<div class="fomo notfound"><div class="fomo-head">' +
           '<div class="rc-grade g-f"><span>?</span></div>' +
-          '<div class="rc-id"><p class="rc-when">Not in this week’s index</p>' +
-          "<h3>We couldn’t find you.</h3></div></div>" +
-          "<p class=\"lede\">That usually means you’re hard to find online — which is exactly what’s costing you jobs. Aaron will grade you by hand and walk you through it.</p></div>";
+          '<div class="rc-id"><p class="rc-when">Not in this week’s index</p><h3>We couldn’t find you.</h3></div></div>' +
+          '<p class="fomo-magnet">That usually means you’re hard to find online — exactly what’s costing you jobs. Aaron will grade you by hand and send it over. Where do we reach you?</p></div>';
       return;
     }
-    var rc = d.rc;
-    var meta = d.rating ? "★ " + esc(d.rating) + (d.reviews ? " · " + esc(d.reviews) + " reviews" : "") : "";
-    if (rc && rc.tot) meta += (meta ? " · " : "") + esc(rc.tot[1]);
+    var g = d.grade, rc = d.rc, rk = d.rk, ld = d.ld;
     var head =
-      '<div class="rc-head">' +
-        '<div class="rc-grade ' + gradeClass(d.grade) + '"><span>' + esc(d.grade) + "</span></div>" +
-        '<div class="rc-id"><p class="rc-when">Report card' + (d.city ? " · " + esc(d.city) : "") + "</p>" +
-        "<h3>" + esc(d.name) + "</h3>" + (meta ? '<span class="rc-meta">' + meta + "</span>" : "") +
-        "</div></div>";
+      '<div class="fomo-head"><div class="rc-grade ' + gradeClass(g) + '"><span>' + esc(g) + "</span></div>" +
+      '<div class="rc-id"><p class="rc-when">Your grade' + (d.city ? " · " + esc(d.city) : "") + '</p><h3>' + esc(d.name) + "</h3></div></div>";
     var body = "";
-    if (rc && rc.rows && rc.rows.length) {
-      body += '<ul class="rc-rows">';
-      rc.rows.forEach(function (r) {
-        var st = r[4] === "ok" ? "ok" : (r[4] === "miss" ? "miss" : "warn");
-        body +=
-          '<li class="' + st + '">' +
-            '<span class="rc-subj">' + esc(r[0]) + "</span>" +
-            '<span class="rc-found">' + esc(r[1]) + "</span>" +
-            '<span class="rc-pts">' + esc(r[2]) + "</span>" +
-            '<span class="rc-rg">' + esc(r[3]) + "</span>" +
-          "</li>";
-      });
-      body +=
-        '<li class="rc-total"><span class="rc-subj">Overall</span>' +
-        '<span class="rc-found">' + esc(rc.tot ? rc.tot[0] : "") + "</span>" +
-        '<span class="rc-pts">' + esc(rc.tot ? rc.tot[1] : "") + "</span>" +
-        '<span class="rc-rg">' + esc(d.grade) + "</span></li></ul>";
-      if (rc.cmt) body += '<p class="rc-cmt">' + esc(rc.cmt) + "</p>";
+    if (rk) {
+      var ahead = Math.max(0, rk[0] - 1);
+      body += '<p class="fomo-rank">You rank <b>#' + rk[0] + " of " + rk[1] + "</b> " + esc(rk[2]) + " around Lake Livingston.</p>";
+      if (ahead > 0) body += '<p class="fomo-ahead"><b>' + ahead + " shop" + (ahead === 1 ? "" : "s") + " ahead of you</b> — winning the calls you’re not.</p>";
     } else {
-      body += '<p class="lede">' + verdict(d.grade) + "</p>";
+      body += '<p class="fomo-rank">You’re graded <b>' + esc(g) + "</b>. The top shops in your trade near you are scoring <b>A+</b>.</p>";
     }
-    wrap.innerHTML = '<div class="rc-inline">' + head + body + "</div>";
+    if (ld && ld.n) {
+      body += '<div class="fomo-leader"><span class="fl-ico">🏆</span><span>#1 in your trade near you: <b>' + esc(ld.n) + "</b> — " + esc(ld.g) + ", " + esc(ld.rv) + " reviews</span></div>";
+    }
+    if (rc && rc.rows) {
+      var miss = rc.rows.filter(function (r) { return r[4] !== "ok"; });
+      if (miss.length) {
+        var names = miss.slice(0, 4).map(function (r) { return r[0]; }).join(", ");
+        body += '<p class="fomo-fix">You’re losing points on <b>' + miss.length + " of " + rc.rows.length + "</b> factors: " + esc(names) + ".</p>";
+      }
+    }
+    body += '<p class="fomo-magnet">Your full report card — every factor scored — plus the fastest fixes to climb is ready. Where do we send it?</p>';
+    wrap.innerHTML = '<div class="fomo">' + head + body + "</div>";
   }
 
   /* ---- lookup (used by form submit + autocomplete pick) ---- */
@@ -94,8 +85,11 @@
       .then(function (r) { return r.json(); })
       .then(function (d) {
         state.card = d;
-        if (d.found) { state.business = d.name; state.grade = d.grade; state.city = d.city; state.domain = d.slug; }
-        else { state.business = payload.q || state.q; }
+        if (d.found) {
+          state.business = d.name; state.grade = d.grade; state.city = d.city;
+          state.slug = d.slug; state.domain = d.domain || "";
+          state.rankStr = d.rk ? ("#" + d.rk[0] + " of " + d.rk[1] + " " + d.rk[2]) : "";
+        } else { state.business = payload.q || state.q; state.slug = ""; state.rankStr = ""; }
         renderCard(d); show(2);
       })
       .catch(function () { err(e1, "Something hiccuped — try again, or just book a call below."); })
@@ -168,38 +162,43 @@
       var name = $("#diag-name").value.trim(), email = $("#diag-email").value.trim(), phone = $("#diag-phone").value.trim();
       var e3 = $(".diag-step[data-s='3'] .diag-err");
       if (!name) { err(e3, "What's your name?"); return; }
-      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err(e3, "Add a valid email so Aaron can reach you."); return; }
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err(e3, "Add a valid email so we can send your report."); return; }
       err(e3, "");
       state.name = name; state.email = email; state.phone = phone;
-      show(4);
+      var btn = el; btn.disabled = true; var t = btn.textContent; btn.textContent = "Sending…";
+      postDiagnose({ report: true, lead: true, buildWebsite: false })
+        .then(function (d) {
+          if (!d || !d.ok) { err(e3, (d && d.error) || "Couldn't send — call or text 713-384-8985."); return; }
+          if (window.fbq) fbq("track", "Lead");
+          show(4);
+        })
+        .catch(function () { err(e3, "Couldn't send — call or text 713-384-8985."); })
+        .finally(function () { btn.disabled = false; btn.textContent = t; });
     }
-    else if (el.hasAttribute("data-build")) { state.build = el.getAttribute("data-build") === "1"; submit(); }
+    else if (el.hasAttribute("data-build")) {
+      state.build = el.getAttribute("data-build") === "1";
+      if (state.build) postDiagnose({ buildWebsite: true, report: false, lead: false }).catch(function () {});
+      var h = $("#diag-done-h"), p = $("#diag-done-p");
+      if (state.build) {
+        h.textContent = "On its way — plus we’re building your site. 🎨";
+        p.textContent = "Your report card + action plan is headed to " + state.email + ", and we’re building you a free website preview to look at — usually within the hour.";
+      } else {
+        h.textContent = "Check your inbox. ✅";
+        p.textContent = "Your report card + action plan is on its way to " + state.email + ". Want Aaron to walk you through it? Call or text 713-384-8985.";
+      }
+      show(5);
+    }
   });
 
-  /* ---- final submit ---- */
-  function submit() {
-    var e4 = $(".diag-step[data-s='4'] .diag-err");
+  /* ---- POST the diagnose lead / report request ---- */
+  function postDiagnose(extra) {
     var payload = {
-      q: state.q, business: state.business || "", domain: state.domain || "", grade: state.grade || "",
-      city: state.city || "", when: state.when || "", name: state.name, phone: state.phone,
-      email: state.email, buildWebsite: state.build,
+      q: state.q, business: state.business || "", domain: state.domain || "", slug: state.slug || "",
+      grade: state.grade || "", rank: state.rankStr || "", city: state.city || "", when: state.when || "",
+      name: state.name, phone: state.phone, email: state.email,
     };
-    root.querySelectorAll("[data-build]").forEach(function (b) { b.disabled = true; });
-    fetch("/api/diagnose", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
-      .then(function (r) { return r.json(); })
-      .then(function (d) {
-        if (!d.ok) { err(e4, d.error || "Couldn't send — call or text 713-384-8985."); root.querySelectorAll("[data-build]").forEach(function (b) { b.disabled = false; }); return; }
-        if (window.fbq) fbq("track", "Lead");
-        var h = $("#diag-done-h"), p = $("#diag-done-p");
-        if (state.build) {
-          h.textContent = "We're already sketching your site. 🎨";
-          p.textContent = "Your report card and a call from Aaron are on the way — and we're building you a free website preview to look at, usually within the hour.";
-        } else {
-          h.textContent = "You're all set. ✅";
-          p.textContent = "Your report card and a call from Aaron are on the way. Worst case, you leave with a list of free fixes and his number.";
-        }
-        show(5);
-      })
-      .catch(function () { err(e4, "Couldn't send — call or text 713-384-8985."); root.querySelectorAll("[data-build]").forEach(function (b) { b.disabled = false; }); });
+    for (var k in extra) payload[k] = extra[k];
+    return fetch("/api/diagnose", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
+      .then(function (r) { return r.json(); });
   }
 })();

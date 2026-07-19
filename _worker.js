@@ -1137,9 +1137,35 @@ function normDomain(s) {
 function lookupResult(hit) {
   return {
     found: true, name: hit.n, grade: hit.g, city: hit.c,
-    rating: hit.r, reviews: hit.rv, slug: hit.s, rc: hit.rc || null,
+    rating: hit.r, reviews: hit.rv, slug: hit.s, domain: hit.d || "", rc: hit.rc || null,
+    rk: hit.rk || null, ld: hit.ld || null,
     cardUrl: `https://stats.lakelivingston.aaron.chat/biz/${hit.s}/`,
   };
+}
+
+// Compose the report-card + action-steps email sent to the prospect.
+function reportEmailText(hit) {
+  const L = [];
+  L.push(`Your Top of Class report card — ${hit.n}`);
+  L.push("");
+  L.push(`Overall grade: ${hit.g}` + (hit.rc && hit.rc.tot ? `  (${hit.rc.tot[1]})` : ""));
+  if (hit.rk) L.push(`Class rank: #${hit.rk[0]} of ${hit.rk[1]} ${hit.rk[2]} around Lake Livingston`);
+  if (hit.ld && hit.ld.n !== hit.n) L.push(`#1 in your trade near you: ${hit.ld.n} — ${hit.ld.g}, ${hit.ld.rv} reviews`);
+  L.push("");
+  L.push("HOW YOU SCORED");
+  if (hit.rc && hit.rc.rows) {
+    for (const r of hit.rc.rows) L.push(`  ${r[3].padEnd(3)}  ${r[2].padStart(6)}  ${r[0]} — ${r[1]}`);
+    if (hit.rc.tot) L.push(`  ${hit.rc.tot[2].padEnd(3)}  ${hit.rc.tot[1].padStart(6)}  Overall`);
+  }
+  if (hit.rc && hit.rc.cmt) {
+    L.push("");
+    L.push("YOUR ACTION PLAN");
+    L.push(hit.rc.cmt);
+  }
+  L.push("");
+  L.push("Want Aaron to knock these out for you? Reply to this email or call/text 713-384-8985.");
+  L.push("— Top of Class Marketing · aaron.chat");
+  return L.join("\n");
 }
 
 async function handleSuggest(request, env) {
@@ -1226,10 +1252,10 @@ async function handleLookup(request, env) {
   }
 }
 
-async function sendEmail(env, { subject, text, reply_to }) {
+async function sendEmail(env, { subject, text, reply_to, to }) {
   const body = {
     from: env.CONTACT_FROM || "Hey Aaron! Website <forms@aaron.chat>",
-    to: [env.CONTACT_TO || "hello@aaron.chat"], subject, text,
+    to: [to || env.CONTACT_TO || "hello@aaron.chat"], subject, text,
   };
   if (reply_to) body.reply_to = reply_to;
   const res = await fetch("https://api.resend.com/emails", {
@@ -1249,20 +1275,39 @@ async function handleDiagnose(request, env) {
     const name = clean(d.name, 200), email = clean(d.email, 200), phone = clean(d.phone, 50);
     const business = clean(d.business, 200), domain = clean(d.domain, 200);
     const grade = clean(d.grade, 10), city = clean(d.city, 120), trade = clean(d.trade, 120);
+    const slug = clean(d.slug, 200), rank = clean(d.rank, 120);
     const when = clean(d.when, 120), build = !!d.buildWebsite;
-    if (!name || !email) return json({ ok: false, error: "Please add your name and email." }, 400);
+    if (!email || (!name && !business)) return json({ ok: false, error: "Please add your email." }, 400);
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return json({ ok: false, error: "Please enter a valid email address." }, 400);
     if (!env.RESEND_API_KEY) return json({ ok: false, error: "Email is not configured yet." }, 500);
 
     const lines = [
       "New report-card diagnose lead from aaron.chat", "",
-      `Name: ${name}`, `Email: ${email}`, phone ? `Phone: ${phone}` : null,
+      `Name: ${name || "(not given)"}`, `Email: ${email}`, phone ? `Phone: ${phone}` : null,
       business ? `Business: ${business}` : null, domain ? `Domain: ${domain}` : null,
-      grade ? `Current grade: ${grade}` : null, city ? `City: ${city}` : null, trade ? `Trade: ${trade}` : null,
+      grade ? `Current grade: ${grade}` : null, rank ? `Rank: ${rank}` : null,
+      city ? `City: ${city}` : null, trade ? `Trade: ${trade}` : null,
       when ? `Wants to meet: ${when}` : null,
       `Wants a free website preview: ${build ? "YES — kick off Claude Code" : "no"}`,
     ].filter((l) => l !== null);
-    await sendEmail(env, { subject: `New diagnose lead: ${name}${build ? " · WANTS SITE" : ""}`, text: lines.join("\n"), reply_to: email });
+    if (d.lead !== false) {
+      await sendEmail(env, { subject: `New diagnose lead: ${name || business}${build ? " · WANTS SITE" : ""}`, text: lines.join("\n"), reply_to: email });
+    }
+
+    // email the prospect their own report card + action steps (the magnet)
+    if (slug) {
+      try {
+        const list = await loadLookup(env, new URL(request.url).origin);
+        const hit = list.find((x) => x.s === slug);
+        if (hit && hit.rc) {
+          await sendEmail(env, {
+            to: email, reply_to: env.CONTACT_TO || "hello@aaron.chat",
+            subject: `Your report card — ${hit.n} (grade ${hit.g})`,
+            text: reportEmailText(hit),
+          });
+        }
+      } catch (e) { console.log("report email error", e && e.message); }
+    }
 
     if (build) {
       const prompt = buildSitePlanPrompt({
