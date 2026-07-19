@@ -48,8 +48,8 @@ FOOTER = """<footer class="site-foot">
     </div>
   </div>
 </footer>
-<script src="/brand/nav.js?v=8" defer></script>
-<script src="/brand/lead.js?v=8" defer></script>"""
+<script src="/brand/nav.js?v=9" defer></script>
+<script src="/brand/lead.js?v=9" defer></script>"""
 
 
 def page_head(title, desc, path):
@@ -68,7 +68,7 @@ def page_head(title, desc, path):
 <meta property="og:url" content="https://aaron.chat{path}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/style.css?v=8">
+<link rel="stylesheet" href="/brand/style.css?v=9">
 {PIXEL}
 </head>
 <body>
@@ -373,6 +373,73 @@ def render_service(s):
 """
 
 
+# plan comparison matrix (columns) + features (rows). Values: True=✓, False=—, or text.
+PLANS = [("🎒 Enrolled", "$300/mo"), ("⭐ Honor Roll", "$600/mo"),
+         ("🏆 Top of Class", "$1,200/mo"), ("🎓 Valedictorian", "$2,400/mo")]
+FEAT_COL = 1  # index of the highlighted (featured) plan column
+
+MATRIX = [
+    ("Get found", [
+        ("Website built &amp; managed", [True, True, True, True]),
+        ("Local SEO", [True, True, True, True]),
+        ("AI Engine Optimization", [True, True, True, True]),
+        ("Google Business Profile", [True, True, True, True]),
+        ("Local citations (50+ directories)", [False, True, True, True]),
+    ]),
+    ("Get chosen", [
+        ("Auto blog &mdash; ranking content", [True, True, True, True]),
+        ("Reviews engine (Gold Stars)", [False, True, True, True]),
+        ("Social channels, posted for you", ["3", "6", "6", "All"]),
+        ("Report card", ["Monthly", "Monthly", "Weekly", "Weekly"]),
+    ]),
+    ("Keep them coming back", [
+        ("Automated email outreach", ["1,000/mo", "2,500/mo", "2,500/mo", "10,000/mo"]),
+        ("Customer newsletter (Class Notes)", [False, False, True, True]),
+    ]),
+    ("Paid growth", [
+        ("Facebook Ads managed", [False, False, True, True]),
+        ("Google Ads + Local Services Ads", [False, False, False, True]),
+        ("Local Group Sharing + Nextdoor", [False, False, True, True]),
+        ("Call tracking", [False, False, True, True]),
+        ("Reel videos", ["Add-on", "Add-on", "Add-on", "2/mo"]),
+        ("Seasonal campaign calendar", [False, False, False, True]),
+        ("In-person strategy visits + priority support", [False, False, False, True]),
+    ]),
+]
+
+
+def _cell(v, feat):
+    fc = " feat" if feat else ""
+    if v is True:
+        return f'<td class="yes{fc}" aria-label="included">&#10003;</td>'
+    if v is False:
+        return f'<td class="no{fc}" aria-label="not included">&mdash;</td>'
+    return f'<td class="val{fc}">{v}</td>'
+
+
+def render_matrix():
+    heads = "".join(
+        f'<th class="{"feat" if i == FEAT_COL else ""}">{name}<span>{price}</span></th>'
+        for i, (name, price) in enumerate(PLANS))
+    body = ""
+    for group, rows in MATRIX:
+        body += f'\n        <tr class="grp"><td colspan="5">{group}</td></tr>'
+        for label, vals in rows:
+            cells = "".join(_cell(v, i == FEAT_COL) for i, v in enumerate(vals))
+            body += f'\n        <tr><th scope="row">{label}</th>{cells}</tr>'
+    starts = "".join(
+        f'<td class="{"feat" if i == FEAT_COL else ""}"><a class="btn btn-primary" href="/report-card/">Start</a></td>'
+        for i in range(len(PLANS)))
+    body += f'\n        <tr class="cta-row"><th scope="row"></th>{starts}</tr>'
+    return f"""<div class="matrix-wrap">
+    <table class="matrix">
+      <thead><tr><th class="corner">What's included</th>{heads}</tr></thead>
+      <tbody>{body}
+      </tbody>
+    </table>
+  </div>"""
+
+
 def render_hub():
     cats_html = ""
     for cat_slug, cat_name, cat_sub in CATEGORIES:
@@ -430,6 +497,16 @@ def render_hub():
 </section>
 
 <section class="alt">
+  <div class="wrap">
+    <p class="eyebrow">Compare plans</p>
+    <div class="section-head"><h2>What's included in each plan.</h2>
+      <p class="lede">Every plan is one team, one bill, one report card. Here's exactly what you get
+      as you move up &mdash; or see the <a href="/pricing/">full pricing page</a>.</p></div>
+    {render_matrix()}
+  </div>
+</section>
+
+<section>
   <div class="wrap">
     <p class="eyebrow">The honest version</p>
     <h2>How all of this fits in a $300 plan.</h2>
