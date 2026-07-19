@@ -79,6 +79,10 @@ def trade_token(s):
     return m.group(0) if m else ""
 
 
+def slugify(s):
+    return re.sub(r"[^a-z0-9]+", "-", (s or "").lower()).strip("-")
+
+
 def num(s, d=0):
     try:
         return float(re.sub(r"[^0-9.]", "", str(s)))
@@ -162,11 +166,17 @@ def main():
                 "ph": int(num(row.get("photos_count"))),
             })
 
+    # shared ranking (built by build_rankings.py — run that first): slug -> [rank, N, label]
+    ranks_fn = os.path.join(ROOT, "data/ranks.json")
+    ranks = json.load(open(ranks_fn)) if os.path.isfile(ranks_fn) else {}
+
     idx = json.load(open(SEARCH))
     out = []
     for x in idx:
         e = by_name.get(norm_name(x.get("n")), {})
-        rc, rk = parse_biz(x.get("s"))
+        rc, _rk = parse_biz(x.get("s"))
+        rr = ranks.get(x.get("s"))
+        rk = [rr[0], rr[1], rr[2]] if rr else None
         rec = {
             "n": x.get("n"), "nn": norm_name(x.get("n")), "g": x.get("g"), "c": x.get("c"),
             "s": x.get("s"), "d": e.get("d", ""), "r": e.get("r", ""), "rv": e.get("rv", ""),
@@ -242,7 +252,7 @@ def main():
             "cpjYou": cpjYou, "cpjTop": cpjTop, "cplYou": cplYou, "cplTop": cplTop,
             "missed": missed_rev, "job": job, "social": SOCIAL_BENCH,
             "path": path, "tactics": tactics,
-            "trslug": TRADE_SLUG.get(r["tr"], ""),
+            "trslug": slugify(r["rk"][2]) if r.get("rk") else "",
             "deal": {"mo": target["mo"], "plan": target["plan"], "jobs": new_jobs, "cpl": cplTop},
         }
         if st["ldN"] != r["n"]:

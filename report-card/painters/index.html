@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add('js')</script>
+<title>Painters around Lake Livingston, graded — Top of Class Marketing</title>
+<meta name="description" content="All 3 painters around Lake Livingston, ranked this week by the six things that decide who gets the call.">
+<link rel="canonical" href="https://aaron.chat/report-card/painters/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Painters around Lake Livingston, graded.">
+<meta property="og:description" content="All 3 painters around Lake Livingston, ranked this week by the six things that decide who gets the call.">
+<meta property="og:url" content="https://aaron.chat/report-card/painters/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/brand/style.css?v=19">
+</head>
+<body class="rank-page">
+<header class="site-head">
+  <div class="wrap">
+    <a class="logo" href="/"><span class="mark">A+</span> Top of Class Marketing</a>
+    <nav class="site-nav">
+      <a href="/services/">Services</a>
+      <a href="/work/">Work</a>
+      <a href="/hvac-marketing/">HVAC</a>
+      <a href="/plumber-marketing/">Plumbing</a>
+      <a href="/pricing/">Pricing</a>
+      <a href="/about/">About</a>
+      <a class="cta" href="/report-card/">Get your report card</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero rank-hero">
+  <div class="wrap">
+    <p class="kicker">Updated weekly · public Google data</p>
+    <h1>Painters around Lake Livingston, graded.</h1>
+    <p class="sub"><b>3 shops.</b> A handful are pulling away and getting the calls — everyone below is
+    fighting for what's left. Here's this week's board.</p>
+    <p id="rank-you" class="rank-you" hidden></p>
+  </div>
+</div>
+
+<section class="rank-sec">
+  <div class="wrap">
+    <ol class="rank-list">
+      <li class="rr top" data-slug="texas-paintworks-llc" data-rank="1" data-total="3" style="--sc:81%"><span class="rr-n">1</span><span class="rr-grade g-b">B+</span><span class="rr-main"><span class="rr-name">Texas Paintworks LLC</span><span class="rr-meta">★ 5.0 · 3 reviews · Point Blank</span></span><span class="rr-score">81</span></li>
+      <li class="rr top" data-slug="frank-bowe-paint-rdcrtng" data-rank="2" data-total="3" style="--sc:40%"><span class="rr-n">2</span><span class="rr-grade g-c">C-</span><span class="rr-main"><span class="rr-name">Frank Bowe Paint &amp; Rdcrtng</span><span class="rr-meta">★ 4.0 · 2 reviews · Huntsville</span></span><span class="rr-score">40</span></li>
+      <li class="rr top" data-slug="john-waynes-painting-services" data-rank="3" data-total="3" style="--sc:32%"><span class="rr-n">3</span><span class="rr-grade g-f">D</span><span class="rr-main"><span class="rr-name">John Wayne&#x27;s Painting Services</span><span class="rr-meta">no reviews · Shepherd</span></span><span class="rr-score">32</span></li>
+    </ol>
+    <div class="rank-cta">
+      <h2>Not where you want to be?</h2>
+      <p>Where you land on this board decides who gets the call. See your own report card — every factor
+      scored — and the exact plan to climb, free.</p>
+      <a class="btn btn-primary" href="/report-card/">Get my free report card →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-foot">
+  <div class="wrap cols">
+    <div>
+      <span class="hand">Top of Class Marketing</span>
+      <p>Aaron Phillips · Livingston, Texas</p>
+      <p><a href="tel:+17133848985">713-384-8985</a> · <a href="mailto:hello@aaron.chat">hello@aaron.chat</a></p>
+    </div>
+    <div>
+      <p><a href="/report-card/">Get your report card</a> · <a href="/pricing/">Pricing</a> · <a href="/about/">About</a></p>
+      <p><a href="/privacy-policy/">Privacy</a> · <a href="/terms-of-service/">Terms</a></p>
+    </div>
+  </div>
+</footer>
+<script src="/brand/nav.js?v=19" defer></script>
+<script>
+(function(){
+  var you = new URLSearchParams(location.search).get('you');
+  var row = you && document.querySelector('.rr[data-slug="' + you.replace(/[^a-z0-9-]/gi,'') + '"]');
+  var banner = document.getElementById('rank-you');
+  if (row) {
+    row.classList.add('is-you');
+    var n = row.getAttribute('data-rank'), m = row.getAttribute('data-total');
+    if (banner) { banner.innerHTML = 'That\u2019s you at <b>#' + n + ' of ' + m + '</b>. Every shop above you is getting calls you\u2019re not \u2014 <a href="/report-card/">here\u2019s how to pass them \u2192</a>'; banner.hidden = false; }
+    setTimeout(function(){ row.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300);
+  }
+})();
+</script>
+</body>
+</html>

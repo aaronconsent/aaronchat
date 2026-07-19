@@ -583,6 +583,37 @@ body.rc-page .mbar { display: none !important; }
   .dash-tiles, .dash-metrics { grid-template-columns: 1fr; }
 }
 
+/* trade leaderboard (/report-card/<trade>/) */
+.rank-hero .sub b { color: var(--star); }
+.rank-you { display: inline-block; margin-top: 16px; background: var(--star); color: var(--board); font-weight: 600; padding: 10px 16px; border-radius: var(--r-sm); font-size: 0.96rem; }
+.rank-you a { color: var(--board); text-decoration: underline; }
+.rank-sec { padding-top: var(--sp-l); }
+.rank-list { list-style: none; margin: 0; padding: 0; max-width: 760px; }
+.rr { position: relative; display: grid; grid-template-columns: 40px 46px 1fr auto; gap: 12px; align-items: center; padding: 11px 16px; border: 1px solid var(--line); border-radius: var(--r-sm); background: var(--white); margin-bottom: 8px; box-shadow: var(--sh-1); overflow: hidden; }
+.rr::before { content: ""; position: absolute; top: 0; left: 0; bottom: 0; width: var(--sc, 0%); background: var(--board); opacity: .05; }
+.rr > * { position: relative; }
+.rr-n { font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.2rem; color: var(--slate); text-align: center; }
+.rr-grade { width: 44px; height: 38px; border-radius: 9px; display: grid; place-items: center; color: #fff; font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.05rem; }
+.rr-grade.g-a { background: var(--pass); }
+.rr-grade.g-b { background: #4a8a5f; }
+.rr-grade.g-c { background: var(--star); color: var(--board); }
+.rr-grade.g-f { background: var(--pen); }
+.rr-main { min-width: 0; }
+.rr-name { display: block; font-weight: 700; color: var(--ink); font-size: 0.98rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rr-meta { display: block; font-size: 0.78rem; color: var(--slate); }
+.rr-score { font-family: "IBM Plex Mono", monospace; font-weight: 600; color: var(--slate); font-variant-numeric: tabular-nums; }
+.rr.top { border-color: var(--star); }
+.rr.top .rr-n { color: var(--star); }
+.rr.is-you { border: 2px solid var(--pen); box-shadow: 0 0 0 4px color-mix(in srgb, var(--pen) 16%, transparent); background: color-mix(in srgb, var(--pen) 5%, #fff); }
+.rr.is-you::after { content: "You"; position: absolute; top: -9px; right: 14px; background: var(--pen); color: #fff; font-size: 0.64rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: 2px 8px; border-radius: 99px; }
+.rank-cta { text-align: center; background: var(--board); color: var(--chalk); border-radius: var(--r-lg); padding: 28px 24px; margin-top: 22px; }
+.rank-cta h2 { color: #fff; margin: 0 0 8px; }
+.rank-cta p { color: var(--chalk-dim); max-width: 46ch; margin: 0 auto 18px; }
+@media (max-width: 560px) {
+  .rr { grid-template-columns: 30px 40px 1fr auto; gap: 9px; padding: 10px 12px; }
+  .rr-name { font-size: 0.9rem; }
+}
+
 /* report-card teaser + mini card */
 .teaser { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,5vw,54px); align-items: center; }
 @media (max-width: 800px) { .teaser { grid-template-columns: 1fr; } }

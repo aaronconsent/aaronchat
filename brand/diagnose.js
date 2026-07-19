@@ -51,7 +51,7 @@
     var rankTxt = rk ? ("#" + rk[0] + " of " + rk[1] + " " + rk[2] + " around the lake") : "";
     var rankHtml = rankTxt
       ? (f.trslug
-          ? '<a class="dash-rank" href="https://stats.lakelivingston.aaron.chat/' + f.trslug + '/" target="_blank" rel="noopener">' + esc(rankTxt) + " ↗</a>"
+          ? '<a class="dash-rank" href="/report-card/' + f.trslug + "/?you=" + encodeURIComponent(d.slug) + '" target="_blank" rel="noopener">' + esc(rankTxt) + " ↗</a>"
           : '<span class="dash-rank">' + esc(rankTxt) + "</span>")
       : "";
     var H = '<div class="dash-head"><div class="rc-grade ' + gradeClass(g) + '"><span>' + esc(g) + "</span></div>" +
