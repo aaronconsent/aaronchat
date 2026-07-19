@@ -49,8 +49,8 @@ FOOTER = """<footer class="site-foot">
     </div>
   </div>
 </footer>
-<script src="/brand/nav.js?v=6" defer></script>
-<script src="/brand/lead.js?v=6" defer></script>"""
+<script src="/brand/nav.js?v=7" defer></script>
+<script src="/brand/lead.js?v=7" defer></script>"""
 
 
 def page_head(title, desc, path):
@@ -69,7 +69,7 @@ def page_head(title, desc, path):
 <meta property="og:url" content="https://aaron.chat{path}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/style.css?v=6">
+<link rel="stylesheet" href="/brand/style.css?v=7">
 {PIXEL}
 </head>
 <body>
@@ -106,9 +106,10 @@ PROJECTS = [
     ),
     dict(
         slug="consent-resolve", name="Consent Resolve", url="https://consentresolve.com",
-        cat="SaaS · Brand &amp; Web", tag="SaaS &amp; Web", shot="consentresolve.jpg",
-        blurb="A compliance-first way for contractors to identify the real people visiting their site — and win the job — without ever cold-calling anyone.",
-        brief="Consent Resolve needed a marketing site that sold a genuinely new idea — warm-inbound visitor identification — while staying on the right side of U.S. privacy law. The whole thing had to feel trustworthy, not creepy.",
+        cat="Co-founder &middot; SaaS", tag="SaaS &amp; Web", shot="consentresolve.jpg",
+        role="Co-founder &amp; CMO",
+        blurb="The privacy-first visitor-ID platform I co-founded for home-service contractors &mdash; identify site visitors by name and email, only with consent, at a flat $7 a lead. I lead marketing and built the site.",
+        brief="Consent Resolve is my company &mdash; I co-founded it and run marketing as CMO. It had to sell a genuinely new, compliance-first idea (warm-inbound visitor identification) while staying on the right side of TCPA, CIPA and the Texas TDPSA. Trustworthy, never creepy.",
         work=[
             "Designed and built the full marketing site (Astro &rarr; Cloudflare) around a locked &ldquo;warm-inbound&rdquo; story: identify a consented email, feed the client&rsquo;s own retargeting, let the homeowner come back and call.",
             "Reframed the compliance narrative around real U.S. contractor risk &mdash; TCPA, CIPA, and the Texas TDPSA &mdash; instead of generic GDPR boilerplate.",
@@ -221,12 +222,13 @@ PROJECTS = [
     dict(
         slug="monarx", name="Monarx", url="https://monarx.com",
         cat="CMO &middot; Marketing &amp; Web", tag="Marketing &amp; Web", shot="monarx.jpg",
-        blurb="An AI-powered website &amp; server security platform for web hosts &mdash; where I served as CMO for a year, owning marketing and the website.",
-        brief="Monarx protects web hosts and their customers from malware and compromised servers at scale. As CMO for a full year, I owned the go-to-market and the company&rsquo;s web presence.",
+        role="CMO &middot; 2 years",
+        blurb="An anti-malware platform for web hosts that turns malicious activity into high-converting leads &mdash; where I was CMO for two years, owning marketing and the website.",
+        brief="Monarx&rsquo;s anti-malware technology detects and prevents more threats than other tools, and turns that activity into a stream of qualified leads for hosting providers. As CMO for two years, I owned go-to-market and the company&rsquo;s web presence.",
         work=[
-            "Served as CMO for a full year, owning marketing end-to-end.",
-            "Managed the company website and kept it current.",
-            "Led brand and growth for an AI-powered web &amp; server-security platform.",
+            "Led marketing end-to-end as CMO for two years.",
+            "Owned positioning and go-to-market for an anti-malware platform serving web-hosting providers.",
+            "Managed the company website and brand.",
         ],
         stack=["Marketing", "Web", "Brand &amp; Growth"],
     ),
@@ -246,7 +248,7 @@ REPORTS = {
     "midwest-cnc": [("Mobile-first, loads fast", "A+"), ("Structured for local search", "A+"), ("Clean, technical, trustworthy", "A+"), ("Owned Cloudflare stack", "A")],
     "first-byte": [("Off WordPress &rarr; fast static", "A+"), ("Local SEO / AEO built in", "A+"), ("Owned on Cloudflare", "A+"), ("Modern, on-brand design", "A")],
     "g4-electric": [("Mobile-first for on-the-go", "A+"), ("Local-search ready", "A+"), ("Fast &amp; easy to update", "A+"), ("Clean, trustworthy design", "A")],
-    "monarx": [("CMO for a full year", "A+"), ("Marketing owned end-to-end", "A+"), ("Website managed", "A+"), ("Brand + growth", "A")],
+    "monarx": [("CMO for two years", "A+"), ("Marketing owned end-to-end", "A+"), ("Website managed", "A+"), ("Brand + growth", "A")],
 }
 
 PROJ_BY_SLUG = {p["slug"]: p for p in PROJECTS}
@@ -344,6 +346,7 @@ def render_case(p):
     <div class="hero-copy">
       <p class="kicker">{p['cat']}</p>
       <h1>{p['name']}</h1>
+      {f'<p class="case-role"><span>My role</span>{p["role"]}</p>' if p.get("role") else ""}
       <p class="sub">{p['blurb']}</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="{p['url']}" target="_blank" rel="noopener">Visit the live site &#8599;</a>
