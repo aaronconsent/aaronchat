@@ -21,7 +21,7 @@
     bars.forEach(function (b, i) { b.classList.toggle("on", i < Math.min(n, 4)); });
     root.setAttribute("data-step", n);
     var focusable = $(".diag-step[data-s='" + n + "'] input, .diag-step[data-s='" + n + "'] button");
-    if (focusable && n > 1) { try { focusable.focus(); } catch (e) {} }
+    if (focusable && n > 1) { try { focusable.focus({ preventScroll: true }); } catch (e) { try { focusable.focus(); } catch (e2) {} } }
   }
   function err(el, msg) { el.textContent = msg; el.hidden = !msg; }
   function gradeClass(g) {

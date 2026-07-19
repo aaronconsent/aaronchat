@@ -458,12 +458,13 @@ html.js .reveal.in { opacity: 1; transform: none; }
 .diag-check { width: 64px; height: 64px; margin: 0 auto 16px; border-radius: 50%; background: var(--pass); color: #fff; display: grid; place-items: center; font-size: 2rem; }
 @media (max-width: 480px) { .diag-lookup { flex-direction: column; } .diag-lookup button { width: 100%; } }
 
-/* diagnose widget inside the hero */
-.hero--diag .wrap { align-items: start; }
-.hero--diag .hero-form { align-self: start; }
-.hero--diag .hero-trust { font-size: 0.85rem; color: var(--slate); margin-top: 6px; }
-.hero--diag .diag { max-width: none; width: 100%; padding: clamp(20px, 3vw, 30px); }
-@media (max-width: 860px) { .hero--diag .diag { max-width: 620px; margin: 0 auto; } }
+/* diagnose widget inside the hero (centered, form only) */
+.hero--diag .wrap { max-width: 600px; }
+.hero--diag .hero-form { text-align: center; }
+.hero--diag .kicker { justify-content: center; }
+.hero--diag h1 { font-size: var(--step-3); line-height: 1.06; margin: 8px 0 20px; }
+.hero--diag .diag { max-width: none; width: 100%; text-align: left; padding: clamp(20px, 3vw, 30px); }
+.hero--diag .form-note { text-align: center; margin-top: 12px; }
 
 /* autocomplete "sneak preview" dropdown */
 .diag-lookup { position: relative; }
