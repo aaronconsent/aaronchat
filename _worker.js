@@ -1134,15 +1134,60 @@ function normDomain(s) {
   return (s || "").trim().toLowerCase().replace(/^https?:\/\//, "").replace(/^www\./, "").split("/")[0].split("?")[0];
 }
 
+function lookupResult(hit) {
+  return {
+    found: true, name: hit.n, grade: hit.g, city: hit.c,
+    rating: hit.r, reviews: hit.rv, slug: hit.s, rc: hit.rc || null,
+    cardUrl: `https://stats.lakelivingston.aaron.chat/biz/${hit.s}/`,
+  };
+}
+
+async function handleSuggest(request, env) {
+  try {
+    const url = new URL(request.url);
+    const q = clean(url.searchParams.get("q") || "", 100);
+    const nn = normName(q);
+    if (nn.length < 2) return json({ items: [] });
+    const list = await loadLookup(env, url.origin);
+    const looksDomain = /\./.test(q) && !/\s/.test(q);
+    const nd = normDomain(q);
+    const score = (x) => {
+      if (looksDomain && x.d) {
+        if (x.d === nd) return 0;
+        if (x.d.startsWith(nd) || nd.startsWith(x.d.split(".")[0])) return 1;
+      }
+      if (x.nn === nn) return 0;
+      if (x.nn.startsWith(nn)) return 2;
+      const toks = nn.split(" ").filter((t) => t.length > 1);
+      if (toks.length && toks.every((t) => x.nn.includes(t))) return 3 + x.nn.length / 100;
+      if (x.nn.includes(nn)) return 4 + x.nn.length / 100;
+      return 99;
+    };
+    const items = list.map((x) => ({ x, s: score(x) }))
+      .filter((o) => o.s < 90).sort((a, b) => a.s - b.s).slice(0, 6)
+      .map((o) => ({ name: o.x.n, grade: o.x.g, city: o.x.c, slug: o.x.s }));
+    return json({ items });
+  } catch (e) {
+    console.log("suggest error", e && e.message);
+    return json({ items: [] });
+  }
+}
+
 async function handleLookup(request, env) {
   try {
     const url = new URL(request.url);
-    let q = "";
-    if (request.method === "POST") { const b = await request.json().catch(() => ({})); q = b.q || ""; }
-    else q = url.searchParams.get("q") || "";
-    q = clean(q, 200);
-    if (!q) return json({ found: false });
+    let q = "", slug = "";
+    if (request.method === "POST") {
+      const b = await request.json().catch(() => ({}));
+      q = b.q || ""; slug = b.slug || "";
+    } else { q = url.searchParams.get("q") || ""; slug = url.searchParams.get("slug") || ""; }
+    q = clean(q, 200); slug = clean(slug, 200);
     const list = await loadLookup(env, url.origin);
+    if (slug) {
+      const bySlug = list.find((x) => x.s === slug);
+      if (bySlug) return json(lookupResult(bySlug));
+    }
+    if (!q) return json({ found: false });
     const looksDomain = /\./.test(q) && !/\s/.test(q);
     const nd = normDomain(q), nn = normName(q);
     const stripTld = (s) => s.replace(/\.(com|net|org|co|us|biz|info|io|dev|agency|services|solutions)$/, "");
@@ -1174,11 +1219,7 @@ async function handleLookup(request, env) {
       }
     }
     if (!hit) return json({ found: false, q });
-    return json({
-      found: true, name: hit.n, grade: hit.g, city: hit.c,
-      rating: hit.r, reviews: hit.rv, slug: hit.s,
-      cardUrl: `https://stats.lakelivingston.aaron.chat/biz/${hit.s}/`,
-    });
+    return json(lookupResult(hit));
   } catch (e) {
     console.log("lookup error", e && e.message);
     return json({ found: false });
@@ -1246,6 +1287,7 @@ export default {
     if (url.pathname === "/api/contact") return handleContact(request, env);
     if (url.pathname === "/api/order") return handleOrder(request, env);
     if (url.pathname === "/api/lookup") return handleLookup(request, env);
+    if (url.pathname === "/api/suggest") return handleSuggest(request, env);
     if (url.pathname === "/api/diagnose") return handleDiagnose(request, env);
 
     // Wizard routes
