@@ -539,47 +539,18 @@ body.rc-page .mbar { display: none !important; }
 .fomo-head .rc-grade span { font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.8rem; line-height: 1; }
 .fomo-head .rc-when { font-family: "IBM Plex Mono", monospace; font-size: 0.66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--pen); margin: 0 0 2px; }
 .fomo-head h3 { margin: 0; font-size: 1.2rem; line-height: 1.1; }
-.fomo-rank { font-size: var(--step-0); line-height: 1.3; margin: 0 0 12px; color: var(--ink); }
-.fomo-rank b { color: var(--pen); }
-.fc-h { font-family: "IBM Plex Mono", monospace; font-size: 0.68rem; letter-spacing: .07em; text-transform: uppercase; color: var(--slate); margin: 0 0 6px; font-weight: 600; }
-
-/* the money "oh no" line */
-.fomo-money { background: var(--pen); color: #fff; border-radius: var(--r-lg); padding: 14px 16px; margin: 0 0 16px; text-align: center; box-shadow: var(--sh-1); }
-.fomo-money .fm-amt { display: block; font-family: "Zilla Slab", serif; font-weight: 700; font-size: clamp(1.9rem, 5vw, 2.5rem); line-height: 1.02; }
-.fomo-money .fm-lbl { display: block; font-weight: 600; font-size: 0.96rem; margin-top: 5px; }
-.fomo-money .fm-sub { display: block; font-size: 0.76rem; opacity: .88; margin-top: 7px; }
-
-/* you-vs-market comparison */
-.fomo-cmp { margin: 0 0 16px; }
-.fc-row { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "l you" "ctx you"; gap: 0 12px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--line); }
-.fc-row:last-child { border-bottom: 0; }
-.fc-l { grid-area: l; font-weight: 600; font-size: 0.9rem; color: var(--ink); }
-.fc-ctx { grid-area: ctx; font-size: 0.76rem; color: var(--slate); }
-.fc-you { grid-area: you; font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.05rem; color: var(--pass); text-align: right; white-space: nowrap; }
-.fc-row.bad .fc-you { color: var(--pen); }
-
-/* tactics + climb */
-.fomo-tac { margin: 0 0 16px; }
-.fomo-tac ul { list-style: none; margin: 0; padding: 0; }
-.fomo-tac li { position: relative; padding: 4px 0 4px 24px; font-size: 0.9rem; color: var(--ink); }
-.fomo-tac li::before { content: "✓"; position: absolute; left: 2px; top: 4px; color: var(--pass); font-weight: 700; }
-.fomo-path { margin: 0 0 16px; }
-.fp-row { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--line); }
-.fp-row:last-child { border-bottom: 0; }
-.fp-g { flex: none; width: 30px; height: 26px; border-radius: 7px; display: grid; place-items: center; color: #fff; font-family: "Zilla Slab", serif; font-weight: 700; font-size: 0.85rem; }
-.fp-g.g-a { background: var(--pass); }
-.fp-g.g-b { background: #4a8a5f; }
-.fp-g.g-c { background: var(--star); color: var(--board); }
-.fp-g.g-f { background: var(--pen); }
-.fp-plan { font-weight: 600; font-size: 0.9rem; color: var(--ink); }
-.fp-cost { font-size: 0.82rem; color: var(--slate); text-align: right; white-space: nowrap; }
-
+.fomo-rank { font-size: var(--step-1); line-height: 1.25; margin: 0 0 8px; color: var(--ink); }
+.fomo-rank b, .fomo-ahead b, .fomo-fix b { color: var(--pen); }
+.fomo-ahead { font-size: var(--step-0); margin: 0 0 12px; color: var(--ink); }
+.fomo-leader { display: flex; gap: 9px; align-items: center; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 9px 12px; font-size: 0.88rem; color: var(--board); margin: 0 0 12px; }
+.fomo-leader .fl-ico { flex: none; }
+.fomo-fix { font-size: 0.9rem; color: var(--slate); margin: 0 0 12px; }
 .fomo-magnet { font-size: 0.92rem; font-weight: 600; color: var(--ink); margin: 0; padding-top: 12px; border-top: 1px dashed var(--line-2); }
 @media (max-width: 560px) {
   .hero--diag .fomo { padding: 15px 16px 16px; }
   .hero--diag .fomo-head .rc-grade { width: 52px; height: 52px; }
   .hero--diag .fomo-head .rc-grade span { font-size: 1.45rem; }
-  .fp-cost, .fc-ctx { font-size: 0.72rem; }
+  .hero--diag .fomo-rank { font-size: 1.02rem; }
 }
 
 /* report-card teaser + mini card */
