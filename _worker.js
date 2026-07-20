@@ -1355,6 +1355,11 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
+    // Friendly aliases for the cinematic second homepage, which lives at /v2/.
+    if (/^\/(indexv2|index-v2|v2\/index\.html)\/?$/i.test(url.pathname)) {
+      return Response.redirect(new URL("/v2/", url).toString(), 301);
+    }
+
     // Existing routes
     if (url.pathname === "/api/contact") return handleContact(request, env);
     if (url.pathname === "/api/order") return handleOrder(request, env);
