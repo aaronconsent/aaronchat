@@ -1,0 +1,122 @@
+/* Style guide — only loaded on /style-guide/*, never on marketing pages.
+   Built from the same tokens it documents. */
+
+.sg-page .mbar { display: none; }
+
+/* ---------------------------------------------------------------- header */
+.sg-head { background: var(--board); color: var(--chalk); padding: clamp(28px, 5vw, 52px) 0 0; }
+.sg-head h1 { color: #fff; margin: 0 0 8px; }
+.sg-up { display: inline-block; color: var(--chalk-dim); text-decoration: none; font-size: 0.86rem; margin-bottom: 14px; }
+.sg-up:hover { color: var(--star); }
+.sg-desc { color: var(--chalk-dim); max-width: 62ch; margin: 0 0 22px; }
+
+.sg-nav { display: flex; flex-wrap: wrap; gap: 2px; margin: 0 -4px; }
+.sg-nav a {
+  color: var(--chalk-dim); text-decoration: none; font-size: 0.88rem; font-weight: 600;
+  padding: 10px 14px; border-radius: var(--r-sm) var(--r-sm) 0 0; border-bottom: 3px solid transparent;
+  transition: color .18s var(--ease-out), border-color .18s var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) { .sg-nav a:hover { color: #fff; } }
+.sg-nav a.on { color: var(--board); background: var(--paper); border-bottom-color: var(--star); }
+
+/* ----------------------------------------------------------------- layout */
+.sg-main { padding: var(--sp-l) 0 var(--sp-2xl); }
+/* the site's global `section { padding: var(--sp-3xl) 0 }` would stack 128px of
+   dead space on every block here — the guide sets its own rhythm. */
+.sg-main section.sg-sec { padding: 0; margin-bottom: var(--sp-xl); }
+.sg-sec > h2 { margin-top: 0; }
+.sg-lede { font-size: var(--step-1); line-height: 1.45; max-width: 60ch; color: var(--ink); }
+.sg-note { font-size: 0.86rem; color: var(--slate); max-width: 66ch; margin-top: 12px; }
+.sg-warn { border-left: 1px solid var(--line); background: color-mix(in srgb, var(--star) 12%, transparent);
+  border-radius: var(--r-sm); padding: 12px 14px; color: var(--ink); }
+.sg-tablewrap { overflow-x: auto; }
+.sg-tablewrap table { border-collapse: collapse; width: 100%; min-width: 420px; font-size: 0.92rem; }
+.sg-tablewrap th, .sg-tablewrap td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.sg-tablewrap th { font-family: "IBM Plex Mono", monospace; font-size: 0.7rem; text-transform: uppercase;
+  letter-spacing: 0.07em; color: var(--slate); }
+.sg-list { padding-left: 1.1em; }
+.sg-list li { margin-bottom: 8px; max-width: 68ch; }
+
+/* ------------------------------------------------------------------ index */
+.sg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin-top: var(--sp-m); }
+.sg-card { display: block; text-decoration: none; color: var(--ink); background: var(--white);
+  border: 1px solid var(--line-2); border-radius: var(--r-lg); padding: 22px 22px 18px; box-shadow: var(--sh-1);
+  transition: transform .18s var(--ease-out), box-shadow .18s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) { .sg-card:hover { transform: translateY(-4px); box-shadow: var(--sh-2); } }
+.sg-card h3 { margin: 0 0 6px; }
+.sg-card p { font-size: 0.9rem; color: var(--slate); margin: 0 0 12px; }
+.sg-go { font-weight: 700; color: var(--pen); font-size: 0.88rem; }
+
+/* ------------------------------------------------------------------ prose */
+.sg-prose { max-width: 74ch; }
+.sg-prose h2 { margin-top: var(--sp-l); padding-top: var(--sp-s); border-top: 1px solid var(--line); }
+.sg-prose h3 { margin-top: var(--sp-m); }
+.sg-prose h4 { margin-top: var(--sp-s); margin-bottom: 4px; font-size: 1rem; }
+.sg-prose p, .sg-prose li { max-width: 70ch; }
+.sg-prose code { font-family: "IBM Plex Mono", monospace; font-size: 0.86em; background: var(--paper-2);
+  padding: 1px 5px; border-radius: 4px; }
+.sg-prose hr { border: 0; border-top: 1px solid var(--line); margin: var(--sp-l) 0; }
+.sg-prose table code { background: transparent; padding: 0; }
+
+/* --------------------------------------------------------------- rules */
+.sg-rule { border: 1px solid var(--line); border-radius: var(--r); padding: 18px 20px; margin-bottom: 12px;
+  background: var(--white); }
+.sg-rule h3 { margin: 0 0 6px; font-size: 1.08rem; }
+.sg-rule p { margin: 0; color: var(--slate); max-width: 72ch; font-size: 0.94rem; }
+.sg-rule--hard { border-color: color-mix(in srgb, var(--pen) 40%, var(--line)); }
+.sg-rule--hard h3::before { content: "Hard rule"; display: block; font-family: "IBM Plex Mono", monospace;
+  font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pen); margin-bottom: 3px; }
+.sg-rule--process h3::before { content: "Process"; display: block; font-family: "IBM Plex Mono", monospace;
+  font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate); margin-bottom: 3px; }
+.sg-anti { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 16px; }
+.sg-anti > div { background: var(--paper-2); border-radius: var(--r); padding: 16px 18px; }
+.sg-anti h4 { margin: 0 0 5px; font-size: 0.98rem; color: var(--pen); }
+.sg-anti p { margin: 0; font-size: 0.88rem; color: var(--slate); }
+
+/* ------------------------------------------------------------------ color */
+.sg-toks { list-style: none; margin: 0 0 var(--sp-m); padding: 0; }
+.sg-tok { display: grid; grid-template-columns: 46px minmax(160px, 1fr) minmax(0, 1.2fr) auto auto;
+  gap: 14px; align-items: center; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+.sg-sw { width: 34px; height: 34px; border-radius: 7px; border: 1px solid var(--line-2); box-shadow: var(--sh-1); }
+.sg-tokname code { font-family: "IBM Plex Mono", monospace; font-size: 0.84rem; font-weight: 600; }
+.sg-tokval { display: block; font-family: "IBM Plex Mono", monospace; font-size: 0.74rem; color: var(--slate); }
+.sg-toknote { font-size: 0.86rem; color: var(--slate); }
+.sg-cx { font-family: "IBM Plex Mono", monospace; font-size: 0.72rem; color: var(--slate); white-space: nowrap;
+  font-variant-numeric: tabular-nums; }
+.sg-cx b { color: var(--ink); }
+.sg-badges { display: flex; gap: 12px; }
+@media (max-width: 780px) {
+  .sg-tok { grid-template-columns: 40px 1fr; row-gap: 4px; }
+  .sg-toknote, .sg-cx { grid-column: 2; }
+}
+
+/* ------------------------------------------------------------- typography */
+.sg-fam { border-bottom: 1px solid var(--line); padding: 16px 0; }
+.sg-famname { font-size: 1.7rem; font-weight: 700; color: var(--board); display: block; }
+.sg-fam p { font-size: 0.9rem; color: var(--slate); margin: 4px 0 8px; max-width: 66ch; }
+.sg-famspec { display: block; font-size: 1.05rem; color: var(--ink); }
+.sg-spec { display: flex; align-items: baseline; gap: 18px; padding: 8px 0; border-bottom: 1px solid var(--line-2); }
+.sg-speclbl { flex: 0 0 108px; }
+.sg-speclbl code { font-family: "IBM Plex Mono", monospace; font-size: 0.72rem; color: var(--slate); }
+.sg-specimen { font-family: "Zilla Slab", serif; font-weight: 700; color: var(--board); line-height: 1.05; }
+
+/* ------------------------------------------------------------- components */
+.sg-demo { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 4px; }
+.sg-demo-list { max-width: 620px; margin-top: 4px; }
+.sg-demo-dash { max-width: 640px; }
+.sg-demo .diag-step { flex: 1 1 320px; }
+.sg-demo-dash .dash-tiles { grid-template-columns: repeat(2, 1fr); }
+
+/* ----------------------------------------------------------------- motion */
+.sg-ease { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-top: 16px; }
+.sg-ease > div { background: var(--white); border: 1px solid var(--line-2); border-radius: var(--r);
+  padding: 16px 18px; box-shadow: var(--sh-1); overflow: hidden; }
+.sg-ease code { font-family: "IBM Plex Mono", monospace; font-weight: 600; color: var(--board); }
+.sg-ease span { display: block; font-family: "IBM Plex Mono", monospace; font-size: 0.74rem; color: var(--slate); }
+.sg-ease p { font-size: 0.86rem; color: var(--slate); margin: 6px 0 12px; }
+.sg-ball { width: 22px; height: 22px; border-radius: 50%; background: var(--pen);
+  transition: transform 700ms var(--e, ease); }
+@media (hover: hover) and (pointer: fine) {
+  .sg-ease > div:hover .sg-ball { transform: translateX(calc(100% + 140px)); }
+}
+@media (prefers-reduced-motion: reduce) { .sg-ball { transition: none; } }

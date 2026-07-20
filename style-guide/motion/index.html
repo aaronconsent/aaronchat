@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add('js')</script>
+<title>Motion · Top of Class Style Guide</title>
+<meta name="description" content="Easing tokens, the duration budget, and the rules that keep it honest.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/brand/style.css?v=24">
+<link rel="stylesheet" href="/brand/styleguide.css?v=24">
+</head>
+<body class="sg-page">
+<header class="site-head">
+  <div class="wrap">
+    <a class="logo" href="/"><span class="mark">A+</span> Top of Class Marketing</a>
+    <nav class="site-nav"><a href="/style-guide/">Style guide</a><a class="cta" href="/">Back to site</a></nav>
+  </div>
+</header>
+
+<div class="sg-head">
+  <div class="wrap">
+    <a class="sg-up" href="/style-guide/">&larr; Style guide</a>
+    <h1>Motion</h1>
+    <p class="sg-desc">Easing tokens, the duration budget, and the rules that keep it honest.</p>
+    <nav class="sg-nav"><a href="/style-guide/">Style guide</a><a href="/style-guide/voice/">Voice</a><a href="/style-guide/directives/">Directives</a><a href="/style-guide/color/">Color</a><a href="/style-guide/typography/">Typography</a><a href="/style-guide/components/">Components</a><a href="/style-guide/motion/" class="on">Motion</a></nav>
+  </div>
+</div>
+
+<main class="wrap sg-main">
+
+<section class="sg-sec">
+  <h2>Easing</h2>
+  <p>Two tokens. The built-in <code>ease</code> is too weak for deliberate motion, and <code>ease-in</code> on UI
+  is banned outright because it delays the exact moment someone is watching.</p>
+  <div class="sg-ease">
+    <div><code>--ease-out</code><span>cubic-bezier(.22, 1, .36, 1)</span><p>Movement: transforms, reveals, lifts.</p>
+      <div class="sg-ball" style="--e:var(--ease-out)"></div></div>
+    <div><code>--ease-out-soft</code><span>cubic-bezier(.33, 1, .68, 1)</span><p>Opacity and color.</p>
+      <div class="sg-ball" style="--e:var(--ease-out-soft)"></div></div>
+  </div>
+  <p class="sg-note">Hover a swatch to run it.</p>
+</section>
+<section class="sg-sec">
+  <h2>Duration budget</h2>
+  <div class="sg-tablewrap"><table>
+    <thead><tr><th>What</th><th>Duration</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Hover, focus, small state</td><td>180&ndash;200ms</td><td>Feels instant, still reads as motion.</td></tr>
+      <tr><td>Overlays, mobile nav</td><td>~280ms</td><td>Enough to track a larger surface arriving.</td></tr>
+      <tr><td>Dashboard reveal</td><td>320ms</td><td>Staggered 90&ndash;130ms between siblings.</td></tr>
+      <tr><td>Scroll reveal</td><td>420ms</td><td>Deliberate exception. Once per visit.</td></tr>
+      <tr><td>Report-card count-up</td><td>950ms</td><td>Deliberate exception. The duration is the point:
+        the number has to be readable while it climbs.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="sg-note">Under 300ms is the rule. The two exceptions above are once-per-visit reveals, argued
+  individually. A third exception needs the same argument.</p>
+</section>
+<section class="sg-sec">
+  <h2>Non-negotiable</h2>
+  <ul class="sg-list">
+    <li><b>Reduced motion.</b> Every animation needs a <code>prefers-reduced-motion</code> path. Not decoration.</li>
+    <li><b>Hover gating.</b> All hover motion sits behind <code>@media (hover: hover) and (pointer: fine)</code>.
+      Ungated, a hover state sticks after a tap, and most of our traffic is a phone.</li>
+    <li><b>GPU only.</b> Animate <code>transform</code> and <code>opacity</code>. Animating width, height, padding
+      or margin causes layout thrash.</li>
+    <li><b>Never gate content on a transition.</b> Transitions pause in background tabs and headless renderers.
+      Content is visible by default; motion is additive, with a <code>setTimeout</code> finaliser behind it.</li>
+    <li><b>One orchestrated moment beats scattered ones.</b> Fading in every section identically is a reflex,
+      not a design.</li>
+  </ul>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap cols">
+    <div><span class="hand">Top of Class Marketing</span><p>Internal reference. Not indexed.</p></div>
+    <div><p><a href="/style-guide/">Style guide index</a> · <a href="/">aaron.chat</a></p></div>
+  </div>
+</footer>
+<script src="/brand/nav.js?v=24" defer></script>
+</body>
+</html>

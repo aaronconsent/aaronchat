@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add('js')</script>
+<title>Directives · Top of Class Style Guide</title>
+<meta name="description" content="The non-negotiables. Read these before writing a line of copy or code.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/brand/style.css?v=24">
+<link rel="stylesheet" href="/brand/styleguide.css?v=24">
+</head>
+<body class="sg-page">
+<header class="site-head">
+  <div class="wrap">
+    <a class="logo" href="/"><span class="mark">A+</span> Top of Class Marketing</a>
+    <nav class="site-nav"><a href="/style-guide/">Style guide</a><a class="cta" href="/">Back to site</a></nav>
+  </div>
+</header>
+
+<div class="sg-head">
+  <div class="wrap">
+    <a class="sg-up" href="/style-guide/">&larr; Style guide</a>
+    <h1>Directives</h1>
+    <p class="sg-desc">The non-negotiables. Read these before writing a line of copy or code.</p>
+    <nav class="sg-nav"><a href="/style-guide/">Style guide</a><a href="/style-guide/voice/">Voice</a><a href="/style-guide/directives/" class="on">Directives</a><a href="/style-guide/color/">Color</a><a href="/style-guide/typography/">Typography</a><a href="/style-guide/components/">Components</a><a href="/style-guide/motion/">Motion</a></nav>
+  </div>
+</div>
+
+<main class="wrap sg-main">
+
+<section class="sg-sec">
+  <p class="sg-lede">Two kinds of rule. <b>Hard</b> rules protect the brand's credibility and are not
+  negotiable without Aaron. <b>Process</b> rules stop the site breaking in ways that are hard to notice.</p>
+  <div class="sg-rule sg-rule--hard"><h3>Never fabricate proof</h3><p>No invented testimonials, no client outcome metrics, no "300% more calls." We are pre-first-client for marketing services and the copy must never imply otherwise. Every number traces to public data or a documented model. One invented number poisons the whole proposition, because the proposition is that the grade is honest.</p></div><div class="sg-rule sg-rule--hard"><h3>Label anything modeled</h3><p>Leads per month, cost per lead, cost per booked job and revenue-left-on-the-table are projections from tunable constants in <code>scripts/build_lookup.py</code>. They ship with "est." or "we project" attached, every time. Never dressed up as measurement.</p></div><div class="sg-rule sg-rule--hard"><h3>WCAG 2.2 AA, treated as the floor</h3><p>Body text 4.5:1, large text 3:1, visible keyboard focus on everything interactive, a <code>prefers-reduced-motion</code> alternative for every animation. The audience is 40+ reading a phone outdoors in Texas daylight. AA is where we start, not where we aim.</p></div><div class="sg-rule sg-rule--hard"><h3>Meaning never rides on color alone</h3><p>Grade badges always carry the letter. Status is never green-vs-red with nothing else to read.</p></div><div class="sg-rule sg-rule--hard"><h3>Three plans, no offers</h3><p>$300 Enrolled, $600 Honor Roll, $1,200 Top of Class. Month to month. No founding-five, no free first year, no scarcity claims. If a page still shows an old offer, the page is wrong.</p></div><div class="sg-rule sg-rule--process"><h3>Bump the asset version</h3><p>Every <code>/brand/*.css</code> and <code>/brand/*.js</code> reference is stamped <code>?v=N</code>. Change either file and you bump N across all HTML plus the Python generators, or the edge serves stale assets to everyone.</p></div><div class="sg-rule sg-rule--process"><h3>Internal docs never get served</h3><p><code>PRODUCT.md</code>, <code>DESIGN.md</code>, <code>.claude</code>, <code>.impeccable</code> and <code>.docs</code> are in <code>.assetsignore</code>. The repo root is the served directory, so anything not excluded is public. Verify with a curl after deploying.</p></div><div class="sg-rule sg-rule--process"><h3>Reveals enhance, never gate</h3><p>Content is visible by default; motion is added on top. Reveal classes sit behind <code>html.js</code> and every JS-driven animation has a <code>setTimeout</code> finaliser, because a backgrounded tab throttles <code>requestAnimationFrame</code> to zero and would otherwise ship a blank section.</p></div>
+</section>
+<section class="sg-sec">
+  <h2>Anti-references</h2>
+  <p>What this must never look like. Each of these would cost us the argument we're making.</p>
+  <div class="sg-anti">
+    <div><h4>Generic SaaS / AI startup</h4><p>Purple-blue gradients, glass cards, 3D blobs, stock teams at
+    laptops. It would make real grading data look invented.</p></div>
+    <div><h4>Big-city agency polish</h4><p>The Dallas or Houston firm look. We are positioned against it;
+    resembling it defeats the point.</p></div>
+    <div><h4>Cheap contractor template</h4><p>The Wix look our prospects already have. We must visibly out-class
+    the sites we grade.</p></div>
+    <div><h4>Literal schoolhouse clip-art</h4><p>Cartoon apples and crayon fonts. The report-card metaphor has to
+    stay sharp and adult, or the grade stops reading as a real judgment.</p></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap cols">
+    <div><span class="hand">Top of Class Marketing</span><p>Internal reference. Not indexed.</p></div>
+    <div><p><a href="/style-guide/">Style guide index</a> · <a href="/">aaron.chat</a></p></div>
+  </div>
+</footer>
+<script src="/brand/nav.js?v=24" defer></script>
+</body>
+</html>

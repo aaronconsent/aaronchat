@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add('js')</script>
+<title>Components · Top of Class Style Guide</title>
+<meta name="description" content="The built vocabulary. Reuse before inventing.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/brand/style.css?v=24">
+<link rel="stylesheet" href="/brand/styleguide.css?v=24">
+</head>
+<body class="sg-page">
+<header class="site-head">
+  <div class="wrap">
+    <a class="logo" href="/"><span class="mark">A+</span> Top of Class Marketing</a>
+    <nav class="site-nav"><a href="/style-guide/">Style guide</a><a class="cta" href="/">Back to site</a></nav>
+  </div>
+</header>
+
+<div class="sg-head">
+  <div class="wrap">
+    <a class="sg-up" href="/style-guide/">&larr; Style guide</a>
+    <h1>Components</h1>
+    <p class="sg-desc">The built vocabulary. Reuse before inventing.</p>
+    <nav class="sg-nav"><a href="/style-guide/">Style guide</a><a href="/style-guide/voice/">Voice</a><a href="/style-guide/directives/">Directives</a><a href="/style-guide/color/">Color</a><a href="/style-guide/typography/">Typography</a><a href="/style-guide/components/" class="on">Components</a><a href="/style-guide/motion/">Motion</a></nav>
+  </div>
+</div>
+
+<main class="wrap sg-main">
+
+<section class="sg-sec">
+  <h2>Buttons</h2>
+  <div class="sg-demo"><a class="btn btn-primary" href="#">Get my free report card</a>
+  <a class="btn btn-ghost" href="#">See the live grades &rarr;</a></div>
+  <p class="sg-note">Red pen primary, one per view. Gold focus ring. Hover lift is gated behind
+  <code>@media (hover: hover)</code> so it never sticks after a tap on a phone.</p>
+</section>
+<section class="sg-sec">
+  <h2>Leaderboard row</h2>
+  <ol class="rank-list sg-demo-list">
+    <li class="rr top" style="--sc:94%"><span class="rr-n">1</span><span class="rr-grade g-a">A</span>
+      <span class="rr-main"><span class="rr-name">Example Plumbing Co.</span>
+      <span class="rr-meta">&#9733; 4.9 &middot; 412 reviews &middot; Livingston</span></span>
+      <span class="rr-score">94</span></li>
+    <li class="rr is-you" style="--sc:48%"><span class="rr-n">29</span><span class="rr-grade g-c">C</span>
+      <span class="rr-main"><span class="rr-name">Your Shop</span>
+      <span class="rr-meta">&#9733; 4.6 &middot; 11 reviews &middot; Onalaska</span></span>
+      <span class="rr-score">48</span></li>
+  </ol>
+  <p class="sg-note">Top three take the gold border. The visitor's own row takes the red border and the
+  &ldquo;You&rdquo; pin, driven by <code>?you=&lt;slug&gt;</code>. The faint fill behind each row is the score.</p>
+</section>
+<section class="sg-sec">
+  <h2>Report-card dashboard</h2>
+  <div class="dash is-in sg-demo-dash">
+    <div class="dash-head"><div class="rc-grade g-c"><span>C</span></div>
+      <div class="dash-id"><p class="rc-when">Your grade &middot; Onalaska</p><h3>Your Shop</h3>
+      <span class="dash-rank">#29 of 32 plumbers around the lake</span></div></div>
+    <p class="dash-lbl">Work with us &mdash; here's what changes</p>
+    <div class="dash-tiles">
+      <div class="dt"><span class="dt-big">1/100<sup>th</sup></span>
+        <span class="dt-vs"><b>$300</b><i>vs</i><s>$30,000</s></span>
+        <span class="dt-sub">the cost of a serious online presence</span></div>
+      <div class="dt"><span class="dt-big">16&times; faster</span><span class="dt-chip">Build in 3 days</span>
+        <span class="dt-sub">to build, update and get you seen</span></div>
+    </div>
+  </div>
+  <p class="sg-note sg-warn"><b>Known debt.</b> This screen is the conversion surface and currently reads as a
+  generic card dashboard rather than a graded document. Slated for a rebuild against the report-card metaphor:
+  ruled rows, a stamped grade, margin annotations. Do not copy this layout into new work.</p>
+</section>
+<section class="sg-sec">
+  <h2>Form fields</h2>
+  <div class="diag-step sg-demo"><input type="text" placeholder="Your business name or website"></div>
+  <p class="sg-note">16px minimum on inputs, always &mdash; anything smaller triggers zoom-on-focus in iOS Safari.
+  Focus is a board-green ring, never a removed outline.</p>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap cols">
+    <div><span class="hand">Top of Class Marketing</span><p>Internal reference. Not indexed.</p></div>
+    <div><p><a href="/style-guide/">Style guide index</a> · <a href="/">aaron.chat</a></p></div>
+  </div>
+</footer>
+<script src="/brand/nav.js?v=24" defer></script>
+</body>
+</html>

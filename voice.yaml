@@ -1,44 +1,104 @@
-# aaron.chat voice profile — professional agency tone
-# Explicitly NOT booked-job's blunt/edgy tone (see engine-build-spec.md Part C).
-# Matches the About-page voice already established across the site.
+# Top of Class Marketing voice profile — machine-readable form of .docs/voice.md
+#
+# SOURCE OF TRUTH IS .docs/voice.md (published at /style-guide/voice/).
+# This file exists only so the posting engine can read the rules programmatically.
+# If the two disagree, voice.md wins and this file is the bug.
+#
+# Regenerated 2026-07-20. Supersedes the v1.0 profile, which was stale in four ways:
+#   - branded "Hey Aaron! Marketing" (retired name)
+#   - register "authoritative-conversational", explicitly NOT blunt (now inverted)
+#   - instructed "use em-dashes for emphasis" (now banned; it is the loudest AI tell)
+#   - advertised a free-first-year / $250 offer that no longer exists
 
-version: "1.0"
-brand: Hey Aaron! Marketing
+version: "2.0"
+brand: Top of Class Marketing
+source: .docs/voice.md
+published: https://aaron.chat/style-guide/voice/
 
 tone:
-  register: authoritative-conversational
-  reading_level: 8                 # 8th-grade Flesch-Kincaid target
-  emoji_per_post: 1                # max 1 emoji, never in the first line
-  first_person: "we"               # matches on-site voice
+  register: blunt-confident-anti-agency
+  reading_level: 8
+  emoji_per_post: 0                # the old 1-emoji allowance is gone; it reads as agency-chummy
+  first_person: "we"               # used sparingly; the copy is about them, not us
+  second_person: "you"             # default voice
   sentence_max_words: 20
 
 do:
-  - name specific East Texas towns (Livingston, Coldspring, Cleveland, Trinity, Onalaska, Willis, Splendora, Shepherd, Riverside, Panorama Village, New Waverly, Goodrich)
-  - name specific counties (Polk, San Jacinto, Trinity, Montgomery, Walker, Liberty)
-  - use exact dollar amounts and specific numbers
-  - reference the trades we serve (plumbers, electricians, HVAC, roofers, handymen, lawn care, cleaners, contractors)
-  - lead with the concrete outcome, not the promise
-  - short sentences over long ones
-  - use em-dashes for emphasis, not exclamation marks
+  - lead with the consequence, not the feature
+  - use a real number instead of an adjective, or cut the claim
+  - name specific towns (Livingston, Onalaska, Coldspring, Shepherd, Trinity, Huntsville, Point Blank, Goodrich)
+  - name specific counties (Polk, San Jacinto, Trinity, Walker, Montgomery, Liberty)
+  - name the specific trade, never "home services"
+  - use exact dollar amounts
+  - short sentences, one idea each
+  - end on the single next action
 
 dont:
-  - "no yokel-isms: ain't, fixin's, folks out here, y'all"
-  - "no marketing jargon: synergize, leverage, 10x, unlock, revolutionize, disrupt"
-  - "no exclamation marks in body text (headings ok)"
+  - "NO EM-DASHES. Use a period, comma, or colon. This reverses the v1.0 rule and is not optional."
+  - "no exclamation marks in body copy (a heading may carry one, rarely)"
+  - "no yokel-isms: ain't, fixin' to, folks out here, y'all"
   - "no clickbait: you won't believe, this one trick, must-read"
-  - "no self-congratulatory adjectives: thrilled, excited, proud to announce"
+  - "no hedges: might, could potentially, in many cases"
+  - "no self-congratulation: thrilled, excited, proud to announce"
+  - "no claimed results we have not measured (see canonical_facts.proof_we_do_not_have)"
 
 banned_words:
   - revolutionize
   - thrilled
   - excited
+  - proud to announce
   - synergy
   - impactful
   - unlock
   - leverage
-  - amazing
-  - disrupt
   - game-changing
+  - disrupt
+  - amazing
+  - seamless
+  - robust
+  - best-in-class
+  - elevate
+  - supercharge
+  - 10x
+  - cutting-edge
+  - journey
+  - empower
+
+preferred_phrases:
+  - shows up
+  - gets the call
+  - booked
+  - costing you
+  - catchable
+  - ahead of you
+  - behind you
+  - graded
+  - ranked
+  - month to month
+
+# Block C. Nothing outside this may be stated as fact.
+canonical_facts:
+  founder: Aaron Phillips
+  location: Livingston, Texas
+  phone: "713-384-8985"
+  email: hello@aaron.chat
+  plans:
+    - { name: Enrolled, price_usd_month: 300 }
+    - { name: Honor Roll, price_usd_month: 600 }
+    - { name: Top of Class, price_usd_month: 1200 }
+  offers: none          # no founding-five, no free first year, no $250 rate, no scarcity claims
+  graded_businesses: 1887
+  trades_tracked: 17
+  ranked_businesses: 474
+  grading_subjects: "website 25, claimed profile 20, review volume 20, star rating 15, photos 10, phone 10"
+  proof_we_have:
+    - the grading engine and its weekly report cards
+    - twelve live client sites on /work/, as built work only
+    - Aaron's career record (cPanel CBO, Monarx CMO, 20+ years)
+  proof_we_do_not_have:
+    - client testimonials (none exist; never write or paraphrase one)
+    - performance results (no call-volume, ranking, or revenue claims)
+    - client names attached to outcomes
 
 hashtags:
   linkedin_max: 3
@@ -48,30 +108,26 @@ hashtags:
     - ServicePros
     - EastTexas
     - ContractorMarketing
-    - SmallBusinessMarketing
-    - RoofingMarketing
     - PlumbingMarketing
     - HVACMarketing
+    - RoofingMarketing
 
 cta:
-  # Default CTAs the PageAdapter can append to variants.
-  # Rotates deterministically to avoid every post reading the same.
+  # Primary conversion is always the free report card. No offer language.
   variants:
-    - "Talk to us — first year is free. (link in comments / bio)"
-    - "Free first year. $250/mo after. See if we have an opening in your town."
-    - "One client per trade per town. Reach out if you want that seat."
+    - "Get your free report card. We grade 1,887 shops around the lake every week."
+    - "See where your shop ranks against every other one around the lake. Free."
+    - "Your grade goes up, or you fire us. Month to month, $300."
 
 hooks:
-  # Reusable hook openers for LinkedIn variants — used by PageAdapter to vary the first line
   linkedin:
-    - "Most service-pro marketing agencies get one thing backwards:"
-    - "Here's what we ship for a service pro in their first 90 days:"
-    - "A [trade] in [town] came to us with:"
-    - "The math no marketing agency wants to show you:"
-    - "Why we won't take on more than one [trade] per town:"
+    - "We graded every [trade] around Lake Livingston this week. Here's what we found:"
+    - "[N] of [M] [trade]s around the lake have no working website."
+    - "The median local [trade] has [N] reviews. The top three have [N]."
+    - "Here's what a shop at a C grade is giving away:"
+    - "Most marketing agencies won't show you this math:"
   x:
-    - "Real talk on"
-    - "Most service pros miss this:"
-    - "The math on"
-    - "Under-rated for service pros:"
+    - "Graded every [trade] around Lake Livingston:"
+    - "The math on local [trade] reviews:"
+    - "[N]% of local shops have no working website."
     - "If you run a [trade]:"

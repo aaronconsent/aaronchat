@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add('js')</script>
+<title>Typography · Top of Class Style Guide</title>
+<meta name="description" content="Four families, one job each, and the fluid scale.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/brand/style.css?v=24">
+<link rel="stylesheet" href="/brand/styleguide.css?v=24">
+</head>
+<body class="sg-page">
+<header class="site-head">
+  <div class="wrap">
+    <a class="logo" href="/"><span class="mark">A+</span> Top of Class Marketing</a>
+    <nav class="site-nav"><a href="/style-guide/">Style guide</a><a class="cta" href="/">Back to site</a></nav>
+  </div>
+</header>
+
+<div class="sg-head">
+  <div class="wrap">
+    <a class="sg-up" href="/style-guide/">&larr; Style guide</a>
+    <h1>Typography</h1>
+    <p class="sg-desc">Four families, one job each, and the fluid scale.</p>
+    <nav class="sg-nav"><a href="/style-guide/">Style guide</a><a href="/style-guide/voice/">Voice</a><a href="/style-guide/directives/">Directives</a><a href="/style-guide/color/">Color</a><a href="/style-guide/typography/" class="on">Typography</a><a href="/style-guide/components/">Components</a><a href="/style-guide/motion/">Motion</a></nav>
+  </div>
+</div>
+
+<main class="wrap sg-main">
+
+<section class="sg-sec">
+  <h2>Four families, one job each</h2>
+  <p>Paired on a real contrast axis: slab serif, neutral sans, script, mono. Never two similar sans faces.</p>
+  <div class="sg-fam"><span class="sg-famname" style="font-family:"Zilla Slab", Georgia, serif">Zilla Slab</span><p>Display and every heading, plus stat figures and rank numbers. The slab does the identity work.</p><span class="sg-famspec" style="font-family:"Zilla Slab", Georgia, serif">ABCDEFGHIJKLM abcdefghijklm 0123456789 $300 #29 of 32</span></div><div class="sg-fam"><span class="sg-famname" style="font-family:"Public Sans", system-ui, sans-serif">Public Sans</span><p>Body copy, UI, forms. Deliberately neutral so the slab keeps the character.</p><span class="sg-famspec" style="font-family:"Public Sans", system-ui, sans-serif">ABCDEFGHIJKLM abcdefghijklm 0123456789 $300 #29 of 32</span></div><div class="sg-fam"><span class="sg-famname" style="font-family:"Caveat", cursive">Caveat</span><p>Handwriting, via <code>.hand</code> only. The teacher's margin note. A garnish, never a heading.</p><span class="sg-famspec" style="font-family:"Caveat", cursive">ABCDEFGHIJKLM abcdefghijklm 0123456789 $300 #29 of 32</span></div><div class="sg-fam"><span class="sg-famname" style="font-family:"IBM Plex Mono", monospace">IBM Plex Mono</span><p>Data, scores, tabular figures. Earns its place on numbers; it is not a decorative label font.</p><span class="sg-famspec" style="font-family:"IBM Plex Mono", monospace">ABCDEFGHIJKLM abcdefghijklm 0123456789 $300 #29 of 32</span></div>
+</section>
+<section class="sg-sec">
+  <h2>The scale</h2>
+  <p>Fluid <code>clamp()</code> from <code>--step--1</code> to <code>--step-5</code>, topping out at 4.6rem.
+  Headings get <code>text-wrap: balance</code>, <code>line-height 1.08</code> and
+  <code>letter-spacing -0.015em</code>. Body measure is capped at 66 characters.</p>
+  <div class="sg-spec"><span class="sg-speclbl"><code>--step--1</code></span><span class="sg-specimen" style="font-size:var(--step--1)">More booked jobs.</span></div><div class="sg-spec"><span class="sg-speclbl"><code>--step-0</code></span><span class="sg-specimen" style="font-size:var(--step-0)">More booked jobs.</span></div><div class="sg-spec"><span class="sg-speclbl"><code>--step-1</code></span><span class="sg-specimen" style="font-size:var(--step-1)">More booked jobs.</span></div><div class="sg-spec"><span class="sg-speclbl"><code>--step-2</code></span><span class="sg-specimen" style="font-size:var(--step-2)">More booked jobs.</span></div><div class="sg-spec"><span class="sg-speclbl"><code>--step-3</code></span><span class="sg-specimen" style="font-size:var(--step-3)">More booked jobs.</span></div><div class="sg-spec"><span class="sg-speclbl"><code>--step-4</code></span><span class="sg-specimen" style="font-size:var(--step-4)">More booked jobs.</span></div><div class="sg-spec"><span class="sg-speclbl"><code>--step-5</code></span><span class="sg-specimen" style="font-size:var(--step-5)">More booked jobs.</span></div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap cols">
+    <div><span class="hand">Top of Class Marketing</span><p>Internal reference. Not indexed.</p></div>
+    <div><p><a href="/style-guide/">Style guide index</a> · <a href="/">aaron.chat</a></p></div>
+  </div>
+</footer>
+<script src="/brand/nav.js?v=24" defer></script>
+</body>
+</html>

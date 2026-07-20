@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add('js')</script>
+<title>Color · Top of Class Style Guide</title>
+<meta name="description" content="Every token, its job, and its measured contrast.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/brand/style.css?v=24">
+<link rel="stylesheet" href="/brand/styleguide.css?v=24">
+</head>
+<body class="sg-page">
+<header class="site-head">
+  <div class="wrap">
+    <a class="logo" href="/"><span class="mark">A+</span> Top of Class Marketing</a>
+    <nav class="site-nav"><a href="/style-guide/">Style guide</a><a class="cta" href="/">Back to site</a></nav>
+  </div>
+</header>
+
+<div class="sg-head">
+  <div class="wrap">
+    <a class="sg-up" href="/style-guide/">&larr; Style guide</a>
+    <h1>Color</h1>
+    <p class="sg-desc">Every token, its job, and its measured contrast.</p>
+    <nav class="sg-nav"><a href="/style-guide/">Style guide</a><a href="/style-guide/voice/">Voice</a><a href="/style-guide/directives/">Directives</a><a href="/style-guide/color/" class="on">Color</a><a href="/style-guide/typography/">Typography</a><a href="/style-guide/components/">Components</a><a href="/style-guide/motion/">Motion</a></nav>
+  </div>
+</div>
+
+<main class="wrap sg-main">
+
+<section class="sg-sec">
+  <p class="sg-lede">Strategy is <b>committed</b>: chalkboard green carries the large surfaces, red pen is the
+  single action color and stays under about a tenth of any view, gold is punctuation. Contrast is measured, not
+  assumed. Body text needs 4.5:1 and large text needs 3:1.</p>
+  <p class="sg-note sg-warn"><b>Use <code>--pen-text</code> for red text, not <code>--pen</code>.</b>
+  <code>--pen</code> measures 4.27:1 on paper, which fails AA for body-size text. It stays the fill and border
+  color (buttons, the &ldquo;You&rdquo; pin, badges); anything set in red type uses <code>--pen-text</code> at
+  5.13:1. Caught by auditing this page's own numbers.</p>
+  <h2>Brand</h2><ul class="sg-toks"><li class="sg-tok"><span class="sg-sw" style="background:#1e3d31"></span><span class="sg-tokname"><code>--board</code><span class="sg-tokval">#1e3d31</span></span><span class="sg-toknote">chalkboard green</span><span class="sg-cx">on paper <b>10.7:1</b></span><span class="sg-cx">on board <b>1.0:1</b></span></li><li class="sg-tok"><span class="sg-sw" style="background:#163026"></span><span class="sg-tokname"><code>--board-2</code><span class="sg-tokval">#163026</span></span><span class="sg-toknote">darker board</span><span class="sg-cx">on paper <b>12.7:1</b></span><span class="sg-cx">on board <b>1.2:1</b></span></li><li class="sg-tok"><span class="sg-sw" style="background:#2c5142"></span><span class="sg-tokname"><code>--board-tint</code><span class="sg-tokval">#2c5142</span></span><span class="sg-toknote">elevated / hover green</span><span class="sg-cx">on paper <b>8.0:1</b></span><span class="sg-cx">on board <b>1.3:1</b></span></li><li class="sg-tok"><span class="sg-sw" style="background:#d23c2e"></span><span class="sg-tokname"><code>--pen</code><span class="sg-tokval">#d23c2e</span></span><span class="sg-toknote">red pen</span><span class="sg-cx">on paper <b>4.3:1</b></span><span class="sg-cx">on board <b>2.5:1</b></span></li><li class="sg-tok"><span class="sg-sw" style="background:#bd3427"></span><span class="sg-tokname"><code>--pen-dark</code><span class="sg-tokval">#bd3427</span></span><span class="sg-toknote"></span><span class="sg-cx">on paper <b>5.1:1</b></span><span class="sg-cx">on board <b>2.1:1</b></span></li><li class="sg-tok"><span class="sg-sw" style="background:#bd3427"></span><span class="sg-tokname"><code>--pen-text</code><span class="sg-tokval">#bd3427</span></span><span class="sg-toknote">red pen for TEXT on paper/white — --pen itself is 4.27:1, under AA</span><span class="sg-cx">on paper <b>5.1:1</b></span><span class="sg-cx">on board <b>2.1:1</b></span></li><li class="sg-tok"><span class="sg-sw" style="background:#e0b100"></span><span class="sg-tokname"><code>--star</code><span class="sg-tokval">#e0b100</span></span><span class="sg-toknote">gold star</span><span class="sg-cx">on paper <b>1.8:1</b></span><span class="sg-cx">on board <b>5.9:1</b></span></li><li class="sg-tok"><span class="sg-sw" style="background:#d9a441"></span><span class="sg-tokname"><code>--gold</code><span class="sg-tokval">#d9a441</span></span><span class="sg-toknote">softer gold for accents/focus</span><span class="sg-cx">on paper <b>2.0:1</b></span><span class="sg-cx">on board <b>5.3:1</b></span></li><li class="sg-tok"><span class="sg-sw" style="background:#2c7a4b"></span><span class="sg-tokname"><code>--pass</code><span class="sg-tokval">#2c7a4b</span></span><span class="sg-toknote">passing green</span><span class="sg-cx">on paper <b>4.7:1</b></span><span class="sg-cx">on board <b>2.3:1</b></span></li></ul><h2>Surface</h2><ul class="sg-toks"><li class="sg-tok"><span class="sg-sw" style="background:#f5f3ec"></span><span class="sg-tokname"><code>--paper</code><span class="sg-tokval">#f5f3ec</span></span><span class="sg-toknote">worksheet paper</span><span class="sg-cx">on paper <b>1.0:1</b></span><span class="sg-cx">on board <b>10.7:1</b></span></li><li class="sg-tok"><span class="sg-sw" style="background:#efece1"></span><span class="sg-tokname"><code>--paper-2</code><span class="sg-tokval">#efece1</span></span><span class="sg-toknote">slightly deeper paper</span><span class="sg-cx">on paper <b>1.1:1</b></span><span class="sg-cx">on board <b>10.0:1</b></span></li><li class="sg-tok"><span class="sg-sw" style="background:#fdfdfb"></span><span class="sg-tokname"><code>--white</code><span class="sg-tokval">#fdfdfb</span></span><span class="sg-toknote"></span><span class="sg-cx">on paper <b>1.1:1</b></span><span class="sg-cx">on board <b>11.7:1</b></span></li></ul><h2>Text</h2><ul class="sg-toks"><li class="sg-tok"><span class="sg-sw" style="background:#1c2321"></span><span class="sg-tokname"><code>--ink</code><span class="sg-tokval">#1c2321</span></span><span class="sg-toknote">warm off-black — never pure #000</span><span class="sg-cx">on paper <b>14.4:1</b></span><span class="sg-cx">on board <b>1.3:1</b></span></li><li class="sg-tok"><span class="sg-sw" style="background:#5d6a63"></span><span class="sg-tokname"><code>--slate</code><span class="sg-tokval">#5d6a63</span></span><span class="sg-toknote">muted text</span><span class="sg-cx">on paper <b>5.1:1</b></span><span class="sg-cx">on board <b>2.1:1</b></span></li><li class="sg-tok"><span class="sg-sw" style="background:#e8ede9"></span><span class="sg-tokname"><code>--chalk</code><span class="sg-tokval">#e8ede9</span></span><span class="sg-toknote">chalk on board</span><span class="sg-cx">on paper <b>1.1:1</b></span><span class="sg-cx">on board <b>10.0:1</b></span></li><li class="sg-tok"><span class="sg-sw" style="background:#b9c6bd"></span><span class="sg-tokname"><code>--chalk-dim</code><span class="sg-tokval">#b9c6bd</span></span><span class="sg-toknote"></span><span class="sg-cx">on paper <b>1.6:1</b></span><span class="sg-cx">on board <b>6.7:1</b></span></li></ul><h2>Line</h2><ul class="sg-toks"><li class="sg-tok"><span class="sg-sw" style="background:#d8d4c6"></span><span class="sg-tokname"><code>--line</code><span class="sg-tokval">#d8d4c6</span></span><span class="sg-toknote">ruled line on paper</span><span class="sg-cx">on paper <b>1.3:1</b></span><span class="sg-cx">on board <b>8.0:1</b></span></li><li class="sg-tok"><span class="sg-sw" style="background:rgba(30,61,49,.10)"></span><span class="sg-tokname"><code>--line-2</code><span class="sg-tokval">rgba(30,61,49,.10)</span></span><span class="sg-toknote">hairline on cream</span></li></ul>
+</section>
+<section class="sg-sec">
+  <h2>Grade badges</h2>
+  <p>Semantic and fixed. The letter is always present, so the grade never depends on color being perceived.</p>
+  <div class="sg-badges">
+    <div class="rc-grade g-a"><span>A</span></div><div class="rc-grade g-b"><span>B</span></div>
+    <div class="rc-grade g-c"><span>C</span></div><div class="rc-grade g-f"><span>F</span></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-foot">
+  <div class="wrap cols">
+    <div><span class="hand">Top of Class Marketing</span><p>Internal reference. Not indexed.</p></div>
+    <div><p><a href="/style-guide/">Style guide index</a> · <a href="/">aaron.chat</a></p></div>
+  </div>
+</footer>
+<script src="/brand/nav.js?v=24" defer></script>
+</body>
+</html>
