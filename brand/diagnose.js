@@ -68,7 +68,7 @@
 
     H += '<p class="dash-lbl">Work with us — here’s what changes</p><div class="dash-tiles">' +
       '<div class="dt" style="--dly:0ms"><span class="dt-big">1/100<sup>th</sup></span>' +
-        '<span class="dt-vs"><b class="dt-n" data-to="299" data-money="1">$0</b><i>vs</i><s class="dt-n" data-to="30000" data-money="1">$0</s></span>' +
+        '<span class="dt-vs"><b class="dt-n" data-to="300" data-money="1">$0</b><i>vs</i><s class="dt-n" data-to="30000" data-money="1">$0</s></span>' +
         '<span class="dt-sub">the cost of a serious online presence — an AI stack does the work of a whole agency</span></div>' +
       '<div class="dt" style="--dly:120ms"><span class="dt-big"><span class="dt-n" data-to="16" data-suffix="×">0×</span> faster</span>' +
         '<span class="dt-chip">Build in 3 days</span>' +
@@ -77,7 +77,7 @@
         '<span class="dt-sub">website, social, email outreach &amp; brand voice — one well-oiled machine with your personal touch</span></div>' +
       "</div>";
 
-    H += '<p class="dash-lbl">Everything in the $299/mo plan</p><div class="dash-feats">';
+    H += '<p class="dash-lbl">Everything in the $300/mo plan</p><div class="dash-feats">';
     for (var i = 0; i < FEATS.length; i++) {
       H += '<div class="df" style="--dly:' + (380 + i * 90) + 'ms"><span class="df-t">' + FEATS[i][0] +
         '</span><span class="df-s">' + FEATS[i][1] + "</span></div>";

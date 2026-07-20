@@ -12,7 +12,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BIZ = os.path.join(ROOT, "stats-lakelivingston/docs/biz")
 OUT = os.path.join(ROOT, "report-card")
 RANKS = os.path.join(ROOT, "data/ranks.json")
-VER = "21"
+VER = "22"
 
 
 def slugify(s):
