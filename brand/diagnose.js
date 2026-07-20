@@ -58,9 +58,14 @@
       '<div class="dash-id"><p class="rc-when">Your grade' + (d.city ? " · " + esc(d.city) : "") + '</p><h3>' + esc(d.name) + "</h3>" + rankHtml + "</div></div>";
 
     H += '<p class="dash-lbl">Work with us — here’s what changes</p><div class="dash-tiles">' +
-      '<div class="dt"><span class="dt-big">1/100<sup>th</sup></span><span class="dt-sub">the cost of a serious online presence — an AI stack does the work of a whole agency</span></div>' +
-      '<div class="dt"><span class="dt-big">16× faster</span><span class="dt-sub">to build, update and get you seen</span></div>' +
-      '<div class="dt"><span class="dt-big">Automated</span><span class="dt-sub">website, social, email outreach &amp; brand voice — one well-oiled machine</span></div>' +
+      '<div class="dt" style="--dly:0ms"><span class="dt-big">1/100<sup>th</sup></span>' +
+        '<span class="dt-vs"><b class="dt-n" data-to="299" data-money="1">$0</b><i>vs</i><s class="dt-n" data-to="30000" data-money="1">$0</s></span>' +
+        '<span class="dt-sub">the cost of a serious online presence — an AI stack does the work of a whole agency</span></div>' +
+      '<div class="dt" style="--dly:120ms"><span class="dt-big"><span class="dt-n" data-to="16" data-suffix="×">0×</span> faster</span>' +
+        '<span class="dt-chip">Build in 3 days</span>' +
+        '<span class="dt-sub">to build, update and get you seen</span></div>' +
+      '<div class="dt" style="--dly:240ms"><span class="dt-big"><span class="dt-n" data-to="100" data-suffix="%">0%</span> Automated</span>' +
+        '<span class="dt-sub">website, social, email outreach &amp; brand voice — one well-oiled machine with your personal touch</span></div>' +
       "</div>";
 
     if (f.cplYou) {
@@ -69,12 +74,39 @@
         '<div class="dm"><span class="dm-k">Cost / booked job</span><span class="dm-v">~$' + f.cpjYou + '</span><span class="dm-goal">→ ~$' + f.cpjTop + " at an A</span></div>" +
         "</div>";
     }
-    if (f.deal) {
-      H += '<div class="dash-deal">Spend <b>~$' + Number(f.deal.mo).toLocaleString() + '/mo</b> with us → we project <b>~' + f.deal.jobs +
-        " new booked jobs</b> a month at <b>~$" + f.deal.cpl + " / lead</b>.</div>";
-    }
     H += '<p class="fomo-magnet">Your full report card + the exact plan to get there is ready. Where do we send it?</p>';
     wrap.innerHTML = '<div class="dash">' + H + "</div>";
+    animateDash(wrap.querySelector(".dash"));
+  }
+
+  /* ---- stat animation: staggered tile reveal + count-up figures ---- */
+  function animateDash(root) {
+    if (!root) return;
+    // rAF is throttled to zero in a backgrounded tab, so every step is also
+    // driven/finalised by a setTimeout — the stats can never be left at $0.
+    var reduce = (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) ||
+      document.visibilityState === "hidden";
+    setTimeout(function () { root.classList.add("is-in"); }, 20);
+    Array.prototype.forEach.call(root.querySelectorAll(".dt-n"), function (el, i) {
+      var to = Number(el.getAttribute("data-to")) || 0;
+      var money = el.getAttribute("data-money") === "1";
+      var suf = el.getAttribute("data-suffix") || "";
+      function fmt(v) { return (money ? "$" + v.toLocaleString() : String(v)) + suf; }
+      function done() { el.textContent = fmt(to); }
+      if (reduce) { done(); return; }
+      el.textContent = fmt(0);
+      var t0 = null, dur = 950, delay = 320 + i * 130, raf = window.requestAnimationFrame;
+      setTimeout(function () {
+        if (!raf) return done();
+        raf(function tick(ts) {
+          if (t0 === null) t0 = ts;
+          var p = Math.min(1, (ts - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+          el.textContent = fmt(Math.round(to * e));
+          if (p < 1) raf(tick);
+        });
+      }, delay);
+      setTimeout(done, delay + dur + 400); // failsafe: snap to the real number
+    });
   }
 
   /* ---- lookup (used by form submit + autocomplete pick) ---- */

@@ -569,6 +569,16 @@ body.rc-page .mbar { display: none !important; }
 .dt-big { display: block; font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.35rem; color: var(--board); line-height: 1.05; }
 .dt-big sup { font-size: 0.55em; }
 .dt-sub { display: block; font-size: 0.75rem; color: var(--slate); margin-top: 5px; line-height: 1.35; }
+.dt-n { font-variant-numeric: tabular-nums; }
+.dt-vs { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.dt-vs b { font-family: "Zilla Slab", serif; font-size: 1.02rem; color: var(--pen); }
+.dt-vs i { font-style: normal; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--slate); }
+.dt-vs s { font-size: 0.9rem; color: var(--slate); opacity: 0.75; }
+.dt-chip { display: inline-block; margin-top: 7px; background: var(--star); color: var(--board); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; }
+/* staggered reveal — gated on html.js so no-JS keeps the tiles visible */
+.js .dt { opacity: 0; transform: translateY(10px); transition: opacity .5s ease var(--dly, 0ms), transform .5s cubic-bezier(.2,.7,.3,1) var(--dly, 0ms); }
+.js .dash.is-in .dt { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .js .dt { opacity: 1; transform: none; transition: none; } }
 
 .dash-metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 0 0 16px; }
 .dm { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 12px 14px; }
