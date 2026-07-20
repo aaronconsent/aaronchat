@@ -36,6 +36,15 @@
     return "There's a lot of easy ground to gain here. Good news: that's the fastest kind to win.";
   }
 
+  /* the four headline deliverables of the entry plan — these mirror the
+     "Enrolled" bullets on /pricing/; keep the two in sync. */
+  var FEATS = [
+    ["Your website, handled", "Built, hosted and secured — unlimited updates, never a change fee"],
+    ["Social + blog on autopilot", "3 channels posted for you, plus fresh ranking content every week"],
+    ["Found on Google &amp; in AI answers", "Your Google profile managed, SEO + AI Engine Optimization for ChatGPT and AI Overviews"],
+    ["1,000 outreach emails a month", "Automated — plus your monthly report card: your grade, your rank, your rivals"]
+  ];
+
   /* ---- outcome dashboard (full card + action steps get emailed) ---- */
   function renderCard(d) {
     var wrap = $("#diag-card");
@@ -68,12 +77,12 @@
         '<span class="dt-sub">website, social, email outreach &amp; brand voice — one well-oiled machine with your personal touch</span></div>' +
       "</div>";
 
-    if (f.cplYou) {
-      H += '<p class="dash-lbl">The two numbers we drive — on your report card every month</p><div class="dash-metrics">' +
-        '<div class="dm"><span class="dm-k">Cost / lead</span><span class="dm-v">~$' + f.cplYou + '</span><span class="dm-goal">→ ~$' + f.cplTop + " at an A</span></div>" +
-        '<div class="dm"><span class="dm-k">Cost / booked job</span><span class="dm-v">~$' + f.cpjYou + '</span><span class="dm-goal">→ ~$' + f.cpjTop + " at an A</span></div>" +
-        "</div>";
+    H += '<p class="dash-lbl">Everything in the $299/mo plan</p><div class="dash-feats">';
+    for (var i = 0; i < FEATS.length; i++) {
+      H += '<div class="df" style="--dly:' + (380 + i * 90) + 'ms"><span class="df-t">' + FEATS[i][0] +
+        '</span><span class="df-s">' + FEATS[i][1] + "</span></div>";
     }
+    H += "</div>";
     H += '<p class="fomo-magnet">Your full report card + the exact plan to get there is ready. Where do we send it?</p>';
     wrap.innerHTML = '<div class="dash">' + H + "</div>";
     animateDash(wrap.querySelector(".dash"));

@@ -576,21 +576,22 @@ body.rc-page .mbar { display: none !important; }
 .dt-vs s { font-size: 0.9rem; color: var(--slate); opacity: 0.75; }
 .dt-chip { display: inline-block; margin-top: 7px; background: var(--star); color: var(--board); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 9px; border-radius: 99px; }
 /* staggered reveal — gated on html.js so no-JS keeps the tiles visible */
-.js .dt { opacity: 0; transform: translateY(10px); transition: opacity .5s ease var(--dly, 0ms), transform .5s cubic-bezier(.2,.7,.3,1) var(--dly, 0ms); }
-.js .dash.is-in .dt { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) { .js .dt { opacity: 1; transform: none; transition: none; } }
+.js .dt, .js .df { opacity: 0; transform: translateY(10px); transition: opacity .5s ease var(--dly, 0ms), transform .5s cubic-bezier(.2,.7,.3,1) var(--dly, 0ms); }
+.js .dash.is-in .dt, .js .dash.is-in .df { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .js .dt, .js .df { opacity: 1; transform: none; transition: none; } }
 
-.dash-metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 0 0 16px; }
-.dm { background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 12px 14px; }
-.dm-k { display: block; font-size: 0.78rem; color: var(--slate); font-weight: 600; }
-.dm-v { display: block; font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.5rem; color: var(--pen); line-height: 1.1; margin: 2px 0; }
-.dm-goal { display: block; font-size: 0.78rem; color: var(--pass); font-weight: 600; }
+/* the four things the entry plan buys them */
+.dash-feats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 0 0 16px; }
+.df { position: relative; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 13px 14px 13px 40px; }
+.df::before { content: "✓"; position: absolute; left: 13px; top: 14px; width: 19px; height: 19px; border-radius: 50%; background: var(--pass); color: #fff; font-size: 0.68rem; font-weight: 700; line-height: 1; display: grid; place-items: center; }
+.df-t { display: block; font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.04rem; color: var(--board); line-height: 1.2; }
+.df-s { display: block; font-size: 0.75rem; color: var(--slate); margin-top: 4px; line-height: 1.35; }
 
 .dash-deal { background: var(--board); color: var(--chalk); border-radius: var(--r-lg); padding: 13px 16px; font-size: 0.95rem; line-height: 1.4; margin: 0 0 14px; text-align: center; }
 .dash-deal b { color: var(--star); }
 
 @media (max-width: 620px) {
-  .dash-tiles, .dash-metrics { grid-template-columns: 1fr; }
+  .dash-tiles, .dash-feats { grid-template-columns: 1fr; }
 }
 
 /* trade leaderboard (/report-card/<trade>/) */
