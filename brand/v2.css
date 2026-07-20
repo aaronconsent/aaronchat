@@ -1,0 +1,238 @@
+/* ===========================================================================
+   v2 — "IMPOSSIBLE" · cinematic showcase homepage
+   A deliberately different world from the graded-sheet site. Near-black,
+   oversized display type, letterboxed frames, scroll-driven motion.
+   No dependencies: motion is native CSS scroll-timelines with a JS fallback
+   only where an interaction genuinely needs it.
+   =========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=Martian+Mono:wght@400;600&display=swap');
+
+:root {
+  --ink:    #05060a;   /* near-black, a touch of blue so it isn't dead */
+  --char:   #0d0f14;
+  --char-2: #15181f;
+  --char-3: #1e222b;
+  --num:    #626a7a;   /* recessive but legible: step numerals must clear 3:1 */
+  --off:    #f2f0eb;   /* off-white, warm */
+  --dim:    #8b8f99;
+  --volt:   #00e5a0;   /* electric green, the only accent */
+  --volt-d: #00b57e;
+
+  --d-hero: clamp(3.4rem, 15vw, 13rem);
+  --d-1:    clamp(2.6rem, 8.5vw, 7.5rem);
+  --d-2:    clamp(1.9rem, 4.6vw, 3.4rem);
+  --body:   clamp(1rem, 1.05vw, 1.18rem);
+  --meta:   clamp(0.62rem, 0.72vw, 0.74rem);
+
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --gut: clamp(18px, 4.4vw, 78px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body.v2 {
+  margin: 0; background: var(--ink); color: var(--off);
+  font-family: "Archivo", system-ui, sans-serif; font-size: var(--body); line-height: 1.55;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+body.v2 img, body.v2 svg { display: block; max-width: 100%; }
+body.v2 ::selection { background: var(--volt); color: var(--ink); }
+.v2 a { color: inherit; text-decoration: none; }
+.v2 h1, .v2 h2, .v2 h3 {
+  font-family: "Anton", "Archivo", sans-serif; font-weight: 400; text-transform: uppercase;
+  line-height: .86; letter-spacing: -0.018em; margin: 0; text-wrap: balance;
+}
+.v2 p { margin: 0; }
+.meta {
+  font-family: "Martian Mono", ui-monospace, monospace; font-size: var(--meta);
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim);
+}
+.volt { color: var(--volt); }
+.shell { padding-inline: var(--gut); }
+.v2 :focus-visible { outline: 2px solid var(--volt); outline-offset: 4px; border-radius: 2px; }
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: var(--gut); top: 12px; z-index: 99; background: var(--volt); color: var(--ink);
+  padding: 10px 16px; font-weight: 700; }
+
+/* ------------------------------------------------------------------ grain */
+/* one fixed SVG-noise layer over everything — the film texture */
+.grain {
+  position: fixed; inset: -120%; z-index: 60; pointer-events: none; opacity: .16;
+  background-image: var(--noise); background-size: 190px 190px;
+  animation: grainshift 900ms steps(4, end) infinite;
+}
+@keyframes grainshift {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-3%, 2%); }
+  50%  { transform: translate(2%, -3%); }
+  75%  { transform: translate(-2%, -2%); }
+  100% { transform: translate(0, 0); }
+}
+@media (prefers-reduced-motion: reduce) { .grain { animation: none; } }
+
+/* ------------------------------------------------------------------- nav */
+.v2-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex;
+  align-items: center; justify-content: space-between; padding: 18px var(--gut);
+  mix-blend-mode: difference;
+}
+.v2-mark { font-family: "Anton", sans-serif; font-size: 1.15rem; letter-spacing: .02em; text-transform: uppercase; }
+.v2-nav .meta { color: var(--off); }
+.v2 .v2-cta {
+  border: 1px solid var(--volt); color: var(--volt); padding: 9px 18px; border-radius: 99px;
+  font-weight: 600; font-size: .82rem; transition: background .25s var(--ease), color .25s var(--ease);
+}
+@media (hover: hover) and (pointer: fine) { .v2-cta:hover { background: var(--volt); color: var(--ink); } }
+
+/* ------------------------------------------------------------------ hero */
+.hero2 { min-height: 100svh; display: grid; align-content: center; position: relative; padding-block: 22svh 12svh; }
+.hero2 h1 { font-size: var(--d-hero); }
+.hero2 h1 .ln { display: block; overflow: hidden; }
+.hero2 h1 .ln > span { display: block; animation: riseIn 1.1s var(--ease) backwards; }
+.hero2 h1 .ln:nth-child(1) > span { animation-delay: .12s; }
+.hero2 h1 .ln:nth-child(2) > span { animation-delay: .24s; }
+@keyframes riseIn { from { transform: translateY(105%); } to { transform: none; } }
+/* Anton at line-height .86 leaves no room under the baseline — the sub needs
+   real clearance or it reads as a collision, not a stack. */
+.v2 .hero2-sub { max-width: 34ch; margin-top: clamp(34px, 5.5vh, 72px); color: var(--dim); font-size: clamp(1rem, 1.5vw, 1.32rem); }
+.hero2-sub b { color: var(--off); font-weight: 600; }
+.hero2-top { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 26px; flex-wrap: wrap; }
+.scrollcue { position: absolute; bottom: 26px; left: var(--gut); display: flex; align-items: center; gap: 12px; }
+.scrollcue i { display: block; width: 1px; height: 42px; background: linear-gradient(var(--volt), transparent);
+  animation: cue 1.9s var(--ease) infinite; transform-origin: top; }
+@keyframes cue { 0%,100% { transform: scaleY(.35); opacity: .4 } 50% { transform: scaleY(1); opacity: 1 } }
+
+/* --------------------------------------------------------------- frames */
+/* every image is a letterboxed film frame with slate metadata */
+.frame {
+  position: relative; overflow: hidden; background: var(--char);
+  aspect-ratio: var(--ar, 2.39 / 1); isolation: isolate;
+}
+.frame::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 40%, transparent 40%, rgba(0,0,0,.55) 100%);
+}
+.frame--p { --ar: 3 / 4; }
+.frame--s { --ar: 1 / 1; }
+.frame img { width: 100%; height: 100%; object-fit: cover; }
+/* placeholder state: a slate, not a broken image */
+.frame.pending {
+  display: grid; place-content: center; gap: 10px; text-align: center; padding: 22px;
+  background:
+    repeating-linear-gradient(45deg, var(--char-2) 0 12px, var(--char) 12px 24px);
+  border: 1px solid var(--char-3);
+}
+.frame.pending .slate { font-family: "Anton", sans-serif; font-size: clamp(1rem, 2.2vw, 1.7rem);
+  text-transform: uppercase; color: var(--off); line-height: 1; }
+.frame.pending .meta { color: var(--volt); }
+.frame.pending .cue { color: var(--dim); font-size: .78rem; max-width: 28ch; margin-inline: auto; line-height: 1.4; }
+
+/* ------------------------------------------------------- scroll reveals */
+.rise { opacity: 0; transform: translateY(38px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.rise.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .rise { opacity: 1; transform: none; transition: none; } }
+
+/* native scroll-driven parallax where supported — zero JS, compositor only */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .par { animation: par linear both; animation-timeline: view(); animation-range: entry 0% exit 100%; }
+    @keyframes par { from { transform: translateY(7%) scale(1.06); } to { transform: translateY(-7%) scale(1.06); } }
+    .wipe { animation: wipe linear both; animation-timeline: view(); animation-range: entry 10% cover 45%; }
+    @keyframes wipe { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+  }
+}
+
+/* ------------------------------------------------------------- sections */
+.sec { padding-block: clamp(90px, 15vh, 200px); position: relative; }
+.sec-hd { display: flex; justify-content: space-between; align-items: end; gap: 24px;
+  flex-wrap: wrap; margin-bottom: clamp(30px, 5vw, 62px); }
+.sec-hd h2 { font-size: var(--d-1); max-width: 15ch; }
+.sec-hd p { max-width: 34ch; color: var(--dim); }
+
+/* --------------------------------------------------- 2. transform wall */
+.wall { display: grid; grid-auto-flow: column; grid-auto-columns: clamp(230px, 26vw, 380px);
+  gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 18px;
+  scrollbar-width: thin; scrollbar-color: var(--char-3) transparent; }
+.wall > * { scroll-snap-align: start; }
+.card2 { position: relative; }
+.card2 .frame { transition: transform .5s var(--ease); }
+.card2 figcaption { display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; align-items: baseline; }
+.card2 .who { font-family: "Anton", sans-serif; text-transform: uppercase; font-size: 1.15rem; line-height: 1; }
+.card2 .what { color: var(--volt); }
+.card2 .why { color: var(--dim); font-size: .84rem; margin-top: 5px; max-width: 30ch; }
+@media (hover: hover) and (pointer: fine) {
+  .card2:hover .frame { transform: translateY(-8px); }
+  .card2:hover .who { color: var(--volt); }
+}
+
+/* ------------------------------------------------- 3. before / after */
+.ba { position: relative; overflow: hidden; aspect-ratio: 21 / 9; background: var(--char); }
+.ba > div { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; padding: 20px; }
+.ba-before { background: #17181a; color: #6e7076; }
+.ba-after { background: linear-gradient(120deg, #06251c, #041a14); color: var(--off);
+  clip-path: inset(0 0 0 var(--split, 50%)); }
+.ba h3 { font-size: clamp(1.6rem, 5vw, 4rem); }
+.ba .meta { margin-top: 10px; }
+.ba-handle { position: absolute; top: 0; bottom: 0; left: var(--split, 50%); width: 2px;
+  background: var(--volt); z-index: 3; cursor: ew-resize; }
+.ba-handle::after { content: "↔"; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  background: var(--volt); color: var(--ink); width: 40px; height: 40px; border-radius: 50%;
+  display: grid; place-content: center; font-weight: 700; }
+.ba-range { position: absolute; inset: 0; z-index: 4; opacity: 0; cursor: ew-resize; width: 100%; }
+
+/* --------------------------------------------------- 4. how it's made */
+.pipe { display: grid; gap: 2px; background: var(--char-3); border: 1px solid var(--char-3); }
+.pipe-step { background: var(--ink); padding: clamp(20px, 3vw, 40px); display: grid; gap: 10px;
+  grid-template-columns: 4.5rem 1fr; align-items: start; transition: background .4s var(--ease); }
+.pipe-step .n { font-family: "Anton", sans-serif; font-size: clamp(1.8rem, 4vw, 3.2rem); color: var(--num); line-height: .8; }
+.pipe-step h3 { font-size: var(--d-2); }
+.pipe-step p { color: var(--dim); max-width: 46ch; margin-top: 6px; }
+.pipe-step.in { background: var(--char); }
+.pipe-step.in .n { color: var(--volt); }
+
+/* --------------------------------------------------------- 5. worlds */
+.worlds { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 14px; }
+.world { position: relative; overflow: hidden; }
+.world .frame { --ar: 4 / 5; }
+.world-lbl { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px; z-index: 2;
+  background: linear-gradient(transparent, rgba(0,0,0,.85)); }
+.world-lbl h3 { font-size: clamp(1.2rem, 2.4vw, 1.9rem); }
+.world-lbl .meta { color: var(--volt); }
+
+/* ------------------------------------------------------- 6. playground */
+.play { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 14px; }
+.toy { border: 1px solid var(--char-3); padding: clamp(20px, 2.6vw, 32px); background: var(--char);
+  display: flex; flex-direction: column; gap: 14px; }
+.toy h3 { font-size: 1.5rem; }
+.toy p { color: var(--dim); font-size: .92rem; }
+.toy-out { min-height: 108px; border: 1px dashed var(--char-3); display: grid; place-content: center;
+  text-align: center; padding: 16px; font-family: "Martian Mono", monospace; font-size: .78rem;
+  color: var(--volt); line-height: 1.6; }
+.v2 .btn2 { align-self: start; background: var(--volt); color: var(--ink); border: 0; font: inherit;
+  font-weight: 700; padding: 11px 20px; border-radius: 99px; cursor: pointer;
+  transition: transform .2s var(--ease), background .2s var(--ease); }
+@media (hover: hover) and (pointer: fine) { .btn2:hover { transform: translateY(-2px); background: #24f5b6; } }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 1px solid var(--char-3); border-radius: 99px; padding: 6px 13px; font-size: .8rem;
+  color: var(--dim); cursor: pointer; background: none; font: inherit; transition: all .2s var(--ease); }
+.chip[aria-pressed="true"] { border-color: var(--volt); color: var(--volt); }
+
+/* -------------------------------------------------------------- 7. CTA */
+.end { min-height: 96svh; display: grid; place-content: center; text-align: center; position: relative; }
+.end h2 { font-size: var(--d-1); max-width: 16ch; margin-inline: auto; }
+.end .meta { margin-bottom: 20px; }
+.end-do { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 34px; }
+.v2 .end-btn { background: var(--volt); color: var(--ink); font-weight: 700; padding: 15px 30px;
+  border-radius: 99px; transition: transform .2s var(--ease); }
+.v2 .end-ghost { border: 1px solid var(--char-3); color: var(--off); padding: 15px 30px; border-radius: 99px; }
+@media (hover: hover) and (pointer: fine) { .end-btn:hover { transform: translateY(-3px); } }
+
+.v2-foot { border-top: 1px solid var(--char-2); padding: 34px var(--gut); display: flex;
+  justify-content: space-between; gap: 18px; flex-wrap: wrap; align-items: center; }
+
+@media (max-width: 720px) {
+  .pipe-step { grid-template-columns: 1fr; gap: 4px; }
+  .ba { aspect-ratio: 4 / 3; }
+  .sec-hd { align-items: start; }
+}
