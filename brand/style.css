@@ -763,3 +763,232 @@ body.rc-page .mbar { display: none !important; }
   body.has-mbar { padding-bottom: 76px; }
   .mbar { display: flex; }
 }
+
+/* ================================================================= v3
+   THE GRADED SHEET — structural layer, July 2026.
+
+   Replaces the card-grid composition that made the site read as templated.
+   Three devices carry the identity now:
+     1. --marg   a red margin rule: one continuous vertical line, the page spine.
+                 Content hangs off it. It tucks to the edge on phones rather than
+                 disappearing, because most traffic is a phone.
+     2. rules    horizontal rules ONLY where content genuinely divides, so they
+                 are always attached to content and can never look off-baseline.
+     3. .doc     full ruling reserved for things that really are documents.
+                 The page is the desk; the sheet is the paper.
+   Cards are no longer the default container. Do not add another one.
+   ==================================================================== */
+
+:root {
+  --marg-x: 78px;          /* distance from container edge to the margin rule */
+  --marg-gap: 34px;        /* gap from rule to content */
+  --rule: 1px solid var(--line);
+}
+
+/* ------------------------------------------------------- the margin spine */
+.sheet { position: relative; }
+.sheet::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: var(--marg-x);
+  width: 2px; background: var(--pen); opacity: .45;
+}
+.sheet > .wrap { padding-left: calc(var(--marg-x) + var(--marg-gap)); }
+/* the margin gutter: where a teacher writes */
+.mark {
+  position: absolute; left: 0; width: calc(var(--marg-x) - 14px);
+  font-family: "Caveat", cursive; font-weight: 700; font-size: 1.15rem; line-height: 1.15;
+  color: var(--pen-text); transform: rotate(-3deg); text-align: right;
+}
+.sheet--board::before { background: var(--star); opacity: .5; }
+.sheet--board .mark { color: var(--star); }
+
+/* ------------------------------------------------------------- band system */
+/* alternating surfaces are art direction, not autopilot: pick one per section */
+.band-paper { background: var(--paper); }
+.band-white { background: var(--white); }
+.band-board { background: var(--board); color: var(--chalk); }
+.band-board h2, .band-board h3, .band-board h4 { color: #fff; }
+.band-board a { color: var(--star); }
+/* buttons keep their own colours on a board band */
+.band-board .btn-primary { color: #fff; }
+.band-board .btn-ghost { color: var(--chalk); border-color: var(--chalk-dim); }
+.band-board .btn-ghost:hover { color: #fff; }
+.band-board .lede, .band-board p { color: var(--chalk); }
+
+/* deliberate, uneven pacing — not one spacing value everywhere */
+.pace-tight  { padding: var(--sp-l) 0; }
+.pace-normal { padding: var(--sp-xl) 0; }
+.pace-open   { padding: var(--sp-2xl) 0; }
+
+/* --------------------------------------------------- headings & findings */
+/* a heading states the finding, not the topic (see /style-guide/voice/) */
+.finding { max-width: 20ch; margin-bottom: var(--sp-xs); }
+.finding--wide { max-width: 26ch; }
+.said { max-width: 54ch; font-size: var(--step-1); line-height: 1.45; color: var(--ink); }
+.band-board .said { color: var(--chalk); }
+
+/* ------------------------------------------------- rules that own content */
+/* replaces the card grid: rows divided by real rules, never boxes */
+.rows { list-style: none; margin: var(--sp-m) 0 0; padding: 0; border-top: var(--rule); }
+.rows > li, .rows > .row-i {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 26px;
+  align-items: baseline; padding: 16px 0; border-bottom: var(--rule);
+}
+.rows--3 > li, .rows--3 > .row-i { grid-template-columns: 4rem minmax(0, 1fr) auto; }
+.row-k { font-weight: 700; color: var(--board); font-size: 1.05rem; }
+.band-board .row-k { color: #fff; }
+.row-s { font-size: 0.88rem; color: var(--slate); grid-column: 1 / -1; margin: -6px 0 0; max-width: 58ch; }
+.band-board .row-s { color: var(--chalk-dim); }
+.row-v {
+  font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.6rem; line-height: 1;
+  color: var(--pen-text); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.band-board .row-v { color: var(--star); }
+/* step numerals carry order, so they must clear 3:1 — --line was 1.34:1 */
+.row-n { font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.5rem; color: var(--slate); line-height: 1; }
+.band-board .row-n { color: var(--chalk-dim); }
+
+/* figures set in a ruled column instead of stat cards */
+.figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 0;
+  margin-top: var(--sp-m); border-top: var(--rule); }
+.fig { padding: 18px 26px 18px 0; border-bottom: var(--rule); }
+.fig b { display: block; font-family: "Zilla Slab", serif; font-weight: 700; line-height: 1;
+  font-size: clamp(1.9rem, 3.4vw, 2.7rem); color: var(--pen-text); font-variant-numeric: tabular-nums; }
+.fig span { display: block; font-size: 0.86rem; color: var(--slate); margin-top: 7px; line-height: 1.4; max-width: 30ch; }
+.band-board .fig b { color: var(--star); }
+.band-board .fig span { color: var(--chalk-dim); }
+
+/* ------------------------------------------------------ the document itself */
+/* the ONLY place full ruling appears — rows are built to sit on it */
+.doc {
+  background: var(--white); border: 1px solid var(--line); box-shadow: var(--sh-paper);
+  padding: 0; position: relative; max-width: 520px;
+  /* a sheet is always paper, even on a board band — reset every inherited colour
+     or the band's chalk text lands on white at ~1.1:1 */
+  color: var(--ink);
+}
+.band-board .doc h1, .band-board .doc h2, .band-board .doc h3, .band-board .doc h4 { color: var(--board); }
+.band-board .doc p, .band-board .doc span, .band-board .doc li { color: inherit; }
+.band-board .doc a { color: var(--pen-text); }
+.band-board .doc .rc-when { color: var(--pen-text); }
+.doc-hd {
+  display: flex; align-items: center; gap: 14px; padding: 18px 22px 14px;
+  border-bottom: 2px solid var(--board);
+}
+.doc-hd h3 { margin: 0; font-size: 1.15rem; line-height: 1.15; }
+.doc-hd .rc-when { margin: 0 0 2px; }
+.doc-rows { list-style: none; margin: 0; padding: 0 22px 6px; }
+.doc-rows li {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  padding: 11px 0; border-bottom: var(--rule); font-size: 0.96rem;
+}
+.doc-rows li:last-child { border-bottom: 0; }
+.doc-rows .pts { font-family: "Zilla Slab", serif; font-weight: 700; font-variant-numeric: tabular-nums; }
+.doc-rows .miss .pts { color: var(--pen-text); }
+.doc-rows .ok .pts { color: var(--pass); }
+.doc-ft { padding: 14px 22px 18px; border-top: 2px solid var(--board); display: flex;
+  justify-content: space-between; align-items: baseline; }
+.doc-ft .tot { font-family: "Zilla Slab", serif; font-weight: 700; font-size: 1.5rem; color: var(--board); }
+
+/* the stamp — a grade pressed onto the sheet, not a badge in a box */
+.stamp {
+  position: absolute; top: -16px; right: -14px; transform: rotate(8deg);
+  border: 3px double var(--pen); color: var(--pen-text); background: rgba(253,253,251,.9);
+  border-radius: 6px; padding: 7px 13px 6px; text-align: center; line-height: 1;
+}
+.stamp b { display: block; font-family: "Zilla Slab", serif; font-weight: 700; font-size: 2rem; }
+.stamp i { display: block; font-style: normal; font-family: "IBM Plex Mono", monospace;
+  font-size: 0.56rem; letter-spacing: 0.12em; margin-top: 4px; }
+.stamp--pass { border-color: var(--pass); color: var(--pass); }
+
+/* ------------------------------------------------------------- responsive */
+@media (max-width: 900px) { :root { --marg-x: 54px; --marg-gap: 24px; } }
+@media (max-width: 640px) {
+  /* the spine tucks to the edge rather than disappearing */
+  :root { --marg-x: 11px; --marg-gap: 13px; }
+  .mark { position: static; width: auto; text-align: left; transform: rotate(-1.5deg);
+    display: block; margin-bottom: 10px; }
+  .rows > li, .rows > .row-i, .rows--3 > li { grid-template-columns: minmax(0,1fr) auto; }
+  .row-n { display: none; }
+  .fig { padding-right: 0; }
+  .doc { max-width: none; }
+  .stamp { right: -6px; top: -13px; }
+  .stamp b { font-size: 1.6rem; }
+}
+
+/* -------------------------------------------------- image slots (pending) */
+/* Deliberate paste-up placeholders, not broken images. Each maps by data-slot
+   to an entry in .docs/image-prompts.md. Full prompts stay out of the public
+   HTML. Delete .imgslot and drop in <img> once the asset is generated. */
+.imgslot {
+  position: relative; display: flex; flex-direction: column; justify-content: flex-end;
+  aspect-ratio: var(--ar, 4 / 3); background: var(--paper-2);
+  border: 1px solid var(--line); border-radius: 2px; padding: 16px 18px; overflow: hidden;
+}
+.imgslot::before {
+  content: ""; position: absolute; inset: 9px; border: 1px dashed var(--line);
+  border-radius: 2px; pointer-events: none;
+}
+.imgslot::after {
+  content: attr(data-slot); position: absolute; top: 12px; left: 14px;
+  font-family: "IBM Plex Mono", monospace; font-size: 0.6rem; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--slate); opacity: .8;
+}
+.imgslot span {
+  position: relative; font-family: "Caveat", cursive; font-weight: 700;
+  font-size: clamp(1.05rem, 2.2vw, 1.4rem); line-height: 1.2; color: var(--pen-text);
+  max-width: 30ch;
+}
+.imgslot b {
+  position: relative; display: block; font-family: "IBM Plex Mono", monospace; font-weight: 500;
+  font-size: 0.62rem; letter-spacing: 0.06em; color: var(--slate); margin-top: 6px;
+}
+.imgslot--board { background: var(--board-2); border-color: var(--board-tint); }
+.imgslot--board::before { border-color: rgba(255,255,255,.18); }
+.imgslot--board::after { color: var(--chalk-dim); }
+.imgslot--board span { color: var(--star); }
+.imgslot--board b { color: var(--chalk-dim); }
+.imgslot--portrait { --ar: 4 / 5; }
+.imgslot--wide { --ar: 16 / 9; }
+.imgslot--square { --ar: 1 / 1; }
+
+/* ------------------------------------------------------- homepage v3 */
+.hero-sheet { padding: clamp(38px, 7vw, 84px) 0 clamp(44px, 7vw, 92px); }
+.hero-sheet-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  gap: clamp(28px, 5vw, 64px); align-items: center; }
+.hero-where { font-family: "Caveat", cursive; font-weight: 700; font-size: 1.3rem; color: var(--star);
+  margin: 0 0 6px; }
+.hero-sheet h1 { font-size: var(--step-5); color: #fff; margin-bottom: 14px; }
+.hero-do { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+.hero-fine { font-size: 0.86rem; color: var(--chalk-dim); margin: 14px 0 0; }
+.band-white .hero-fine, .band-paper .hero-fine { color: var(--slate); }
+.hero-doc { display: flex; justify-content: flex-end; }
+.hero-doc .doc { width: 100%; max-width: 420px; transform: rotate(-1.2deg); box-shadow: 0 22px 48px rgba(0,0,0,.34); }
+
+.after-figs { margin-top: 18px; font-size: 0.94rem; color: var(--slate); }
+.band-board .after-figs { color: var(--chalk-dim); }
+.after-figs a { font-weight: 700; }
+
+/* "who this is for" — a checked list, not cards */
+.rows--fit > li { grid-template-columns: 26px minmax(0, 1fr); align-items: start; }
+.rows--fit > li::before { content: "\2713"; font-weight: 700; color: var(--pass); font-size: 1.05rem; line-height: 1.3; }
+.rows--fit > li.no::before { content: "\2715"; color: var(--pen-text); }
+.rows--fit .row-k { grid-column: 2; }
+.rows--fit .row-s { grid-column: 2; }
+.rows--3 .row-k em { font-style: normal; font-weight: 400; color: var(--slate); font-size: 0.92rem; }
+.band-board .rows--3 .row-k em { color: var(--chalk-dim); }
+.rows--3 .row-k, .rows--3 .row-s { grid-column: 2; }
+
+.era-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: var(--sp-m); }
+.founder-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  gap: clamp(24px, 4vw, 52px); align-items: center; }
+
+@media (max-width: 900px) {
+  .hero-sheet-grid, .founder-grid { grid-template-columns: 1fr; }
+  .hero-doc { justify-content: flex-start; }
+  .hero-doc .doc { max-width: 460px; transform: none; }
+  .era-row { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .era-row { grid-template-columns: 1fr 1fr; gap: 9px; }
+  .hero-sheet h1 { font-size: clamp(2.1rem, 11vw, 3rem); }
+}

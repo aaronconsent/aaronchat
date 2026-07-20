@@ -16,7 +16,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "style-guide")
 CSS = os.path.join(ROOT, "brand/style.css")
 VOICE = os.path.join(ROOT, ".docs/voice.md")
-VER = "24"
+VER = "25"
 
 PAGES = [
     ("", "Style guide", "The locked system: voice, color, type, components, motion, and the rules that don't bend."),
