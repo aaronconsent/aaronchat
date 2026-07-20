@@ -13,6 +13,14 @@ config.yaml
 voice.yaml
 icp.yaml
 aaron-chat-site.zip
+
+# design/strategy context — internal only, never serve publicly
+PRODUCT.md
+DESIGN.md
+.impeccable
+.claude
+CLAUDE.md
+
 *.py
 *.pyc
 __pycache__
