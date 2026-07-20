@@ -1110,3 +1110,11 @@
 2026-07-20T09:28:03  bluesky[audience]: gated. window:blocked(outside_windows hour=9)
 2026-07-20T09:28:05  mastodon[credibility]: POSTED id=60fa28865f9a via own_app (posted @heyaaron → https://mastodon.social/@heyaaron/116952772408129096)
 2026-07-20T09:28:05  mastodon[audience]: gated. window:blocked(outside_windows hour=9)
+2026-07-20T11:40:43  linkedin[credibility]: gated. window:ok(window 8-18) | cap:blocked(cap_hit today=1 cap=1)
+2026-07-20T11:40:43  linkedin[audience]: gated. window:blocked(outside_windows hour=11)
+2026-07-20T11:40:43  x[credibility]: FAILED id=befc44b9ea08 backend=buffer detail=[{"message": "Variable \"$input\" got invalid value \"paste-6a4710585ab6d2f1069b334e\" at \"input.channelId\"; Invalid ChannelId format.", "path": ["createPost"], "extensions": {"code": "BAD_USER_INPUT"}}]
+2026-07-20T11:40:43  x[audience]: gated. window:blocked(outside_windows hour=11)
+2026-07-20T11:40:43  bluesky[credibility]: gated. window:ok(window 9-17) | cap:blocked(cap_hit today=1 cap=1)
+2026-07-20T11:40:43  bluesky[audience]: gated. window:blocked(outside_windows hour=11)
+2026-07-20T11:40:43  mastodon[credibility]: gated. window:ok(window 9-17) | cap:blocked(cap_hit today=1 cap=1)
+2026-07-20T11:40:43  mastodon[audience]: gated. window:blocked(outside_windows hour=11)
