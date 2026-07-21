@@ -992,3 +992,27 @@ body.rc-page .mbar { display: none !important; }
   .era-row { grid-template-columns: 1fr 1fr; gap: 9px; }
   .hero-sheet h1 { font-size: clamp(2.1rem, 11vw, 3rem); }
 }
+
+/* ---------------------------------------------------------- legal pages */
+.legal { max-width: 760px; }
+.legal .lede { font-size: var(--step-1); color: var(--slate); max-width: 60ch; margin: 0 0 var(--sp-s); }
+.legal .updated { font-family: "IBM Plex Mono", monospace; font-size: 0.72rem; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--slate); margin: 0 0 var(--sp-m); }
+.legal h2 { font-size: var(--step-2); margin: var(--sp-l) 0 0.4em; scroll-margin-top: 90px; }
+.legal h3 { font-size: 1.12rem; margin: var(--sp-s) 0 0.3em; color: var(--ink); }
+.legal p, .legal li { max-width: 68ch; }
+.legal p { margin: 0 0 0.9em; }
+.legal ul { padding-left: 1.15em; margin: 0 0 1em; }
+.legal li { margin-bottom: 0.5em; }
+.legal a { font-weight: 600; }
+.legal .callout { border: 1px solid var(--line); border-top: 3px solid var(--pen);
+  background: var(--white); border-radius: var(--r-sm); padding: 18px 20px; margin: var(--sp-s) 0 var(--sp-m); }
+.legal .callout p:last-child { margin-bottom: 0; }
+.legal .callout strong { color: var(--board); }
+.legal dl { margin: 0 0 1em; }
+.legal dt { font-weight: 700; color: var(--board); margin-top: 0.7em; }
+.legal dd { margin: 0 0 0 0; color: var(--ink); }
+.legal .toc { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  padding: 14px 0; margin: 0 0 var(--sp-m); display: flex; flex-wrap: wrap; gap: 6px 20px; }
+.legal .toc a { font-size: 0.9rem; color: var(--slate); }
+.legal .toc a:hover { color: var(--pen-text); }
