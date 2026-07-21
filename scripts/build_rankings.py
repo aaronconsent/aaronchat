@@ -12,7 +12,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BIZ = os.path.join(ROOT, "stats-lakelivingston/docs/biz")
 OUT = os.path.join(ROOT, "report-card")
 RANKS = os.path.join(ROOT, "data/ranks.json")
-VER = "28"
+VER = "29"
 
 
 def slugify(s):
@@ -94,7 +94,8 @@ FOOTER = f"""<footer class="site-foot">
     </div>
   </div>
 </footer>
-<script src="/brand/nav.js?v={VER}" defer></script>"""
+<script src="/brand/nav.js?v={VER}" defer></script>
+<script src="/brand/chat.js?v={VER}" defer></script>"""
 
 HILITE = """<script>
 (function(){

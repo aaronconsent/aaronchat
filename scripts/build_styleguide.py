@@ -16,7 +16,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "style-guide")
 CSS = os.path.join(ROOT, "brand/style.css")
 VOICE = os.path.join(ROOT, ".docs/voice.md")
-VER = "28"
+VER = "29"
 
 PAGES = [
     ("", "Style guide", "The locked system: voice, color, type, components, motion, and the rules that don't bend."),
@@ -179,6 +179,7 @@ def page(slug, title, desc, body):
   </div>
 </footer>
 <script src="/brand/nav.js?v={VER}" defer></script>
+<script src="/brand/chat.js?v={VER}" defer></script>
 </body>
 </html>
 """
