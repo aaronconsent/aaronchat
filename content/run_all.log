@@ -1286,3 +1286,11 @@
 2026-07-22T15:23:14  bluesky[audience]: gated. window:blocked(outside_windows hour=15)
 2026-07-22T15:23:14  mastodon[credibility]: gated. window:ok(window 9-17) | cap:blocked(cap_hit today=1 cap=1)
 2026-07-22T15:23:14  mastodon[audience]: gated. window:blocked(outside_windows hour=15)
+2026-07-22T17:13:00  linkedin[credibility]: gated. window:ok(window 8-18) | cap:blocked(cap_hit today=1 cap=1)
+2026-07-22T17:13:00  linkedin[audience]: gated. window:blocked(outside_windows hour=17)
+2026-07-22T17:13:00  x[credibility]: gated. window:blocked(outside_windows hour=17)
+2026-07-22T17:13:00  x[audience]: no unposted items
+2026-07-22T17:13:00  bluesky[credibility]: gated. window:blocked(outside_windows hour=17)
+2026-07-22T17:13:00  bluesky[audience]: no unposted items
+2026-07-22T17:13:01  mastodon[credibility]: gated. window:blocked(outside_windows hour=17)
+2026-07-22T17:13:01  mastodon[audience]: no unposted items
