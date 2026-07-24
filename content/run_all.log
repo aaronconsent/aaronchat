@@ -1398,3 +1398,11 @@
 2026-07-24T06:50:54  bluesky[audience]: gated. window:blocked(outside_windows hour=6)
 2026-07-24T06:50:54  mastodon[credibility]: gated. window:blocked(outside_windows hour=6)
 2026-07-24T06:50:54  mastodon[audience]: gated. window:blocked(outside_windows hour=6)
+2026-07-24T09:04:47  linkedin[credibility]: gated. window:ok(window 8-18) | cap:ok(cap_room today=0 cap=1) | spacing:blocked(spacing_too_close 45.4h < 48h)
+2026-07-24T09:04:47  linkedin[audience]: no unposted items
+2026-07-24T09:04:47  x[credibility]: FAILED id=befc44b9ea08 backend=buffer detail=[{"message": "Variable \"$input\" got invalid value \"paste-6a4710585ab6d2f1069b334e\" at \"input.channelId\"; Invalid ChannelId format.", "path": ["createPost"], "extensions": {"code": "BAD_USER_INPUT"}}]
+2026-07-24T09:04:47  x[audience]: gated. window:blocked(outside_windows hour=9)
+2026-07-24T09:04:49  bluesky[credibility]: POSTED id=374eaa5c4633 via own_app (posted aaron.chat/post/3mrfjhlcvxr2l)
+2026-07-24T09:04:49  bluesky[audience]: gated. window:blocked(outside_windows hour=9)
+2026-07-24T09:04:50  mastodon[credibility]: POSTED id=1117638e559a via own_app (posted @heyaaron → https://mastodon.social/@heyaaron/116975330267496058)
+2026-07-24T09:04:50  mastodon[audience]: gated. window:blocked(outside_windows hour=9)
