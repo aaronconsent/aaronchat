@@ -1438,3 +1438,11 @@
 2026-07-24T16:15:34  bluesky[audience]: gated. window:blocked(outside_windows hour=16)
 2026-07-24T16:15:34  mastodon[credibility]: gated. window:ok(window 9-17) | cap:blocked(cap_hit today=1 cap=1)
 2026-07-24T16:15:34  mastodon[audience]: gated. window:blocked(outside_windows hour=16)
+2026-07-24T18:11:35  linkedin[credibility]: gated. window:blocked(outside_windows hour=18)
+2026-07-24T18:11:35  linkedin[audience]: gated. window:blocked(outside_windows hour=18)
+2026-07-24T18:11:35  x[credibility]: gated. window:blocked(outside_windows hour=18)
+2026-07-24T18:11:35  x[audience]: no unposted items
+2026-07-24T18:11:35  bluesky[credibility]: gated. window:blocked(outside_windows hour=18)
+2026-07-24T18:11:35  bluesky[audience]: no unposted items
+2026-07-24T18:11:35  mastodon[credibility]: gated. window:blocked(outside_windows hour=18)
+2026-07-24T18:11:35  mastodon[audience]: no unposted items
