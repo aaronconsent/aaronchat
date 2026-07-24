@@ -12,7 +12,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BIZ = os.path.join(ROOT, "stats-lakelivingston/docs/biz")
 OUT = os.path.join(ROOT, "report-card")
 RANKS = os.path.join(ROOT, "data/ranks.json")
-VER = "30"
+VER = "31"
 
 
 def slugify(s):
@@ -76,7 +76,7 @@ HEADER = """<header class="site-head">
       <a href="/plumber-marketing/">Plumbing</a>
       <a href="/pricing/">Pricing</a>
       <a href="/about/">About</a>
-      <a class="cta" href="/report-card/">Get your report card</a>
+      <a class="cta" href="/quote/">Get a quote</a>
     </nav>
   </div>
 </header>"""

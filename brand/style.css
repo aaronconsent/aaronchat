@@ -1016,3 +1016,50 @@ body.rc-page .mbar { display: none !important; }
   padding: 14px 0; margin: 0 0 var(--sp-m); display: flex; flex-wrap: wrap; gap: 6px 20px; }
 .legal .toc a { font-size: 0.9rem; color: var(--slate); }
 .legal .toc a:hover { color: var(--pen-text); }
+
+/* --------------------------------------------------------- quote form */
+.quote-grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(28px, 5vw, 60px); align-items: start; }
+.quote-intro h1 { margin-bottom: 0.3em; }
+.quote-points { list-style: none; padding: 0; margin: var(--sp-s) 0; }
+.quote-points li { position: relative; padding-left: 26px; margin-bottom: 10px; color: var(--ink); }
+.quote-points li::before { content: "\2713"; position: absolute; left: 0; color: var(--pass); font-weight: 700; }
+.quote-call { font-size: 0.94rem; color: var(--slate); }
+
+.qform { background: var(--white); border: 1px solid var(--line); box-shadow: var(--sh-paper);
+  border-radius: var(--r-sm); padding: clamp(22px, 3vw, 32px); position: relative; }
+.qf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.qf-field { margin-bottom: 14px; }
+.qf-field label { display: block; font-weight: 700; font-size: 0.86rem; color: var(--board); margin-bottom: 5px; }
+.qf-field .req { color: var(--pen-text); }
+.qf-field .qf-opt, .qf-opt { font-weight: 400; color: var(--slate); font-size: 0.82rem; }
+.qform input, .qform select, .qform textarea {
+  width: 100%; font: inherit; font-size: 16px; padding: 0.7rem 0.85rem;
+  border: 1.5px solid rgba(30,61,49,.24); border-radius: var(--r-sm); background: #fff; color: var(--ink);
+}
+.qform textarea { resize: vertical; }
+.qform input:focus-visible, .qform select:focus-visible, .qform textarea:focus-visible {
+  outline: none; border-color: var(--board); box-shadow: 0 0 0 3px rgba(30,61,49,.16); }
+
+.qf-consent { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: start;
+  margin: 6px 0 4px; padding: 14px 16px; background: var(--paper); border: 1px solid var(--line);
+  border-radius: var(--r-sm); }
+.qf-consent input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--pen); flex: none; }
+.qf-consent-text { font-size: 0.82rem; line-height: 1.5; color: var(--slate); }
+.qf-consent-text strong { color: var(--board); }
+.qf-consent-text a { color: var(--pen-text); font-weight: 600; }
+.qf-consent:focus-within { border-color: var(--board); box-shadow: 0 0 0 3px rgba(30,61,49,.12); }
+
+.qf-submit { width: 100%; margin-top: 16px; font: inherit; font-weight: 700; font-size: 1.05rem;
+  background: var(--pen); color: #fff; border: 0; border-radius: var(--r-sm); padding: 14px; cursor: pointer;
+  box-shadow: 0 6px 16px rgba(210,60,46,.26); transition: background .18s var(--ease-out), transform .18s var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .qf-submit:hover { background: var(--pen-dark); transform: translateY(-1px); } }
+.qf-submit:disabled { opacity: .7; cursor: default; transform: none; }
+.qf-fine { font-size: 0.78rem; color: var(--slate); margin: 12px 0 0; text-align: center; }
+.qform .form-status { margin: 12px 0 0; font-size: 0.92rem; font-weight: 600; }
+.qform .form-status.ok { color: var(--pass); }
+.qform .form-status.err { color: var(--pen-text); }
+
+@media (max-width: 820px) { .quote-grid { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .qf-row { grid-template-columns: 1fr; gap: 0; } }

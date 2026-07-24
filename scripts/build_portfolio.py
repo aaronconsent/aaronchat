@@ -30,7 +30,7 @@ HEADER = """<header class="site-head">
       <a href="/plumber-marketing/">Plumbing</a>
       <a href="/pricing/">Pricing</a>
       <a href="/about/">About</a>
-      <a class="cta" href="/report-card/">Get your report card</a>
+      <a class="cta" href="/quote/">Get a quote</a>
     </nav>
   </div>
 </header>"""
@@ -44,14 +44,14 @@ FOOTER = """<footer class="site-foot">
     </div>
     <div>
       <p><a href="/work/">Our work</a> · <a href="/services/">Services</a> · <a href="/pricing/">Pricing</a> · <a href="/about/">About</a></p>
-      <p><a href="https://stats.lakelivingston.aaron.chat/">The Lake Livingston Service Pro Report</a></p>
+      <p><a href="/report-card/">Get your free report card</a> · <a href="https://stats.lakelivingston.aaron.chat/">The Lake Livingston Service Pro Report</a></p>
       <p><a href="/privacy-policy/">Privacy</a> · <a href="/terms-of-service/">Terms</a></p>
     </div>
   </div>
 </footer>
-<script src="/brand/nav.js?v=30" defer></script>
-<script src="/brand/chat.js?v=30" defer></script>
-<script src="/brand/lead.js?v=30" defer></script>"""
+<script src="/brand/nav.js?v=31" defer></script>
+<script src="/brand/chat.js?v=31" defer></script>
+<script src="/brand/lead.js?v=31" defer></script>"""
 
 
 def page_head(title, desc, path):
@@ -70,7 +70,7 @@ def page_head(title, desc, path):
 <meta property="og:url" content="https://aaron.chat{path}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/style.css?v=30">
+<link rel="stylesheet" href="/brand/style.css?v=31">
 {PIXEL}
 </head>
 <body>

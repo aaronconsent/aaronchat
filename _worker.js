@@ -1351,12 +1351,110 @@ async function handleDiagnose(request, env, ctx) {
   }
 }
 
+// The exact consent language shown on the quote form. Bump the version whenever
+// the wording changes, so every stored consent record ties to what was actually
+// on screen when the person checked the box. This is the record that defends a
+// TCPA / 10DLC claim.
+const QUOTE_CONSENT_VERSION = "2026-07-21";
+const QUOTE_CONSENT_TEXT =
+  "By checking this box, I give Top of Class Marketing permission to contact me by " +
+  "phone call, text message (SMS), and email at the number and address I provided, " +
+  "including automated and marketing messages about my request and their services. " +
+  "Consent is not a condition of purchase. Message frequency varies. Message and data " +
+  "rates may apply. Reply STOP to opt out of texts, HELP for help. Privacy Policy and Terms apply.";
+
+async function handleQuote(request, env, ctx) {
+  if (request.method !== "POST") return json({ ok: false, error: "Method not allowed" }, 405);
+  try {
+    const ct = request.headers.get("content-type") || "";
+    let d = {};
+    if (ct.includes("application/json")) d = await request.json();
+    else { const form = await request.formData(); for (const [k, v] of form.entries()) d[k] = v; }
+
+    // Honeypot — silently accept so bots believe they succeeded
+    if (clean(d._gotcha, 100)) return json({ ok: true });
+
+    const name = clean(d.name, 200);
+    const business = clean(d.business, 200);
+    const phone = clean(d.phone, 50);
+    const email = clean(d.email, 200);
+    const trade = clean(d.trade, 100);
+    const message = clean(d.message, 5000);
+    const consent = d.consent === true || d.consent === "true" || d.consent === "on" || d.consent === "1";
+
+    if (!name || !phone || !email) {
+      return json({ ok: false, error: "Please add your name, phone, and email." }, 400);
+    }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      return json({ ok: false, error: "That email looks off — mind double-checking it?" }, 400);
+    }
+    if ((phone.replace(/\D/g, "") || "").length < 10) {
+      return json({ ok: false, error: "Please enter a valid phone number." }, 400);
+    }
+    // Consent is required — the whole point of the form is permission to reach out.
+    if (!consent) {
+      return json({ ok: false, error: "Please check the box so we're allowed to contact you." }, 400);
+    }
+
+    // Proof-of-consent record: who, when, from where, and the exact language they agreed to.
+    const nowISO = new Date().toISOString();
+    const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+    const ua = request.headers.get("User-Agent") || "unknown";
+    const ref = clean(d._page, 300) || request.headers.get("Referer") || "unknown";
+
+    const record = [
+      `New QUOTE request from aaron.chat`,
+      "",
+      `Name: ${name}`,
+      business ? `Business: ${business}` : null,
+      `Phone: ${phone}`,
+      `Email: ${email}`,
+      trade ? `Trade: ${trade}` : null,
+      "",
+      "What they need:",
+      message || "(none given)",
+      "",
+      "───────────── CONSENT RECORD (keep this) ─────────────",
+      `Consent given: YES (checkbox required, submitted checked)`,
+      `Channels authorized: phone call, SMS/text, email`,
+      `Timestamp (UTC): ${nowISO}`,
+      `IP address: ${ip}`,
+      `User agent: ${ua}`,
+      `Page: ${ref}`,
+      `Consent version: ${QUOTE_CONSENT_VERSION}`,
+      `Consent text shown:`,
+      QUOTE_CONSENT_TEXT,
+    ].filter((l) => l !== null);
+
+    if (!env.RESEND_API_KEY) return json({ ok: false, error: "Email is not configured yet." }, 500);
+
+    const send = fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: env.CONTACT_FROM || "Top of Class Marketing <forms@aaron.chat>",
+        to: [env.CONTACT_TO || "hello@aaron.chat"],
+        reply_to: email,
+        subject: `New quote request: ${name}${trade ? " (" + trade + ")" : ""}`,
+        text: record.join("\n"),
+      }),
+    }).then(() => {}).catch((e) => console.log("quote email error", e && e.message));
+
+    if (ctx && ctx.waitUntil) ctx.waitUntil(send); else await send;
+    return json({ ok: true });
+  } catch (e) {
+    console.log("quote error", e && e.message);
+    return json({ ok: false, error: "Something went wrong. Call or text 713-384-8985 instead." }, 500);
+  }
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
     // Existing routes
     if (url.pathname === "/api/contact") return handleContact(request, env);
+    if (url.pathname === "/api/quote") return handleQuote(request, env, ctx);
     if (url.pathname === "/api/order") return handleOrder(request, env);
     if (url.pathname === "/api/lookup") return handleLookup(request, env);
     if (url.pathname === "/api/suggest") return handleSuggest(request, env);
