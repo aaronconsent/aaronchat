@@ -1355,13 +1355,20 @@ async function handleDiagnose(request, env, ctx) {
 // the wording changes, so every stored consent record ties to what was actually
 // on screen when the person checked the box. This is the record that defends a
 // TCPA / 10DLC claim.
-const QUOTE_CONSENT_VERSION = "2026-07-21";
-const QUOTE_CONSENT_TEXT =
-  "By checking this box, I give Top of Class Marketing permission to contact me by " +
-  "phone call, text message (SMS), and email at the number and address I provided, " +
-  "including automated and marketing messages about my request and their services. " +
-  "Consent is not a condition of purchase. Message frequency varies. Message and data " +
-  "rates may apply. Reply STOP to opt out of texts, HELP for help. Privacy Policy and Terms apply.";
+//
+// Two SEPARATE consents (carriers reject bundling marketing into other consent):
+//   - contact: required; permission to reply to THIS request by phone/text/email.
+//   - marketing: optional, standalone; recurring promotional texts, self-contained
+//     with its own STOP/HELP/frequency/rate disclosures.
+const QUOTE_CONSENT_VERSION = "2026-07-22";
+const QUOTE_CONTACT_CONSENT_TEXT =
+  "I agree that Top of Class Marketing may contact me about this request by phone call, " +
+  "text message, and email at the number and address I provided.";
+const QUOTE_MARKETING_CONSENT_TEXT =
+  "I agree to receive recurring marketing and promotional text messages from Top of Class " +
+  "Marketing at the mobile number I provided. Consent is not a condition of any purchase. " +
+  "Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP " +
+  "for help. Privacy Policy and Terms apply.";
 
 async function handleQuote(request, env, ctx) {
   if (request.method !== "POST") return json({ ok: false, error: "Method not allowed" }, 405);
@@ -1380,7 +1387,9 @@ async function handleQuote(request, env, ctx) {
     const email = clean(d.email, 200);
     const trade = clean(d.trade, 100);
     const message = clean(d.message, 5000);
-    const consent = d.consent === true || d.consent === "true" || d.consent === "on" || d.consent === "1";
+    const truthy = (v) => v === true || v === "true" || v === "on" || v === "1";
+    const contactConsent = truthy(d.consent_contact);
+    const marketingConsent = truthy(d.consent_marketing);
 
     if (!name || !phone || !email) {
       return json({ ok: false, error: "Please add your name, phone, and email." }, 400);
@@ -1391,8 +1400,8 @@ async function handleQuote(request, env, ctx) {
     if ((phone.replace(/\D/g, "") || "").length < 10) {
       return json({ ok: false, error: "Please enter a valid phone number." }, 400);
     }
-    // Consent is required — the whole point of the form is permission to reach out.
-    if (!consent) {
+    // Only the contact consent is required. Marketing consent is optional and separate.
+    if (!contactConsent) {
       return json({ ok: false, error: "Please check the box so we're allowed to contact you." }, 400);
     }
 
@@ -1415,15 +1424,21 @@ async function handleQuote(request, env, ctx) {
       message || "(none given)",
       "",
       "───────────── CONSENT RECORD (keep this) ─────────────",
-      `Consent given: YES (checkbox required, submitted checked)`,
-      `Channels authorized: phone call, SMS/text, email`,
       `Timestamp (UTC): ${nowISO}`,
       `IP address: ${ip}`,
       `User agent: ${ua}`,
       `Page: ${ref}`,
       `Consent version: ${QUOTE_CONSENT_VERSION}`,
-      `Consent text shown:`,
-      QUOTE_CONSENT_TEXT,
+      "",
+      `[1] Contact consent: YES (required)`,
+      `    Channels: phone call, text, email — about this request`,
+      `    Text shown: ${QUOTE_CONTACT_CONSENT_TEXT}`,
+      "",
+      `[2] Marketing SMS consent: ${marketingConsent ? "YES" : "NO"} (optional, separate)`,
+      marketingConsent
+        ? `    OK to send recurring marketing texts to ${phone}.`
+        : `    DO NOT send marketing texts to this number.`,
+      `    Text shown: ${QUOTE_MARKETING_CONSENT_TEXT}`,
     ].filter((l) => l !== null);
 
     if (!env.RESEND_API_KEY) return json({ ok: false, error: "Email is not configured yet." }, 500);
@@ -1435,7 +1450,7 @@ async function handleQuote(request, env, ctx) {
         from: env.CONTACT_FROM || "Top of Class Marketing <forms@aaron.chat>",
         to: [env.CONTACT_TO || "hello@aaron.chat"],
         reply_to: email,
-        subject: `New quote request: ${name}${trade ? " (" + trade + ")" : ""}`,
+        subject: `New quote request: ${name}${trade ? " (" + trade + ")" : ""}${marketingConsent ? " [mktg opt-in]" : ""}`,
         text: record.join("\n"),
       }),
     }).then(() => {}).catch((e) => console.log("quote email error", e && e.message));

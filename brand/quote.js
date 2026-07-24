@@ -20,12 +20,13 @@
     var name = (f.get("name") || "").trim();
     var phone = (f.get("phone") || "").trim();
     var email = (f.get("email") || "").trim();
-    var consent = form.querySelector("#q-consent").checked;
+    var contactConsent = form.querySelector("#q-consent-contact").checked;
+    var marketingConsent = form.querySelector("#q-consent-marketing").checked;
 
     if (!name) return err("What's your name?");
     if (!phone || phone.replace(/\D/g, "").length < 10) return err("Add a phone number we can reach you at.");
     if (!email || !/\S+@\S+\.\S+/.test(email)) return err("That email looks off — mind double-checking it?");
-    if (!consent) return err("Please check the box so we're allowed to contact you.");
+    if (!contactConsent) return err("Please check the box so we're allowed to contact you.");
 
     var payload = {
       name: name,
@@ -34,7 +35,8 @@
       email: email,
       trade: (f.get("trade") || "").trim(),
       message: (f.get("message") || "").trim(),
-      consent: true,
+      consent_contact: true,
+      consent_marketing: marketingConsent,
       _page: location.href,
       _gotcha: f.get("_gotcha") || ""
     };

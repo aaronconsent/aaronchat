@@ -1049,6 +1049,8 @@ body.rc-page .mbar { display: none !important; }
 .qf-consent-text strong { color: var(--board); }
 .qf-consent-text a { color: var(--pen-text); font-weight: 600; }
 .qf-consent:focus-within { border-color: var(--board); box-shadow: 0 0 0 3px rgba(30,61,49,.12); }
+.qf-consent + .qf-consent { margin-top: 10px; }
+.qf-consent--optional { background: transparent; border-style: dashed; }
 
 .qf-submit { width: 100%; margin-top: 16px; font: inherit; font-weight: 700; font-size: 1.05rem;
   background: var(--pen); color: #fff; border: 0; border-radius: var(--r-sm); padding: 14px; cursor: pointer;
