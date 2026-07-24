@@ -1414,3 +1414,11 @@
 2026-07-24T10:41:47  bluesky[audience]: gated. window:blocked(outside_windows hour=10)
 2026-07-24T10:41:47  mastodon[credibility]: gated. window:ok(window 9-17) | cap:blocked(cap_hit today=1 cap=1)
 2026-07-24T10:41:47  mastodon[audience]: gated. window:blocked(outside_windows hour=10)
+2026-07-24T12:46:19  linkedin[credibility]: POSTED id=3566f41facd0 via buffer (queued to channel 6a4711ee…)
+2026-07-24T12:46:19  linkedin[audience]: no unposted items
+2026-07-24T12:46:19  x[credibility]: FAILED id=befc44b9ea08 backend=buffer detail=[{"message": "Variable \"$input\" got invalid value \"paste-6a4710585ab6d2f1069b334e\" at \"input.channelId\"; Invalid ChannelId format.", "path": ["createPost"], "extensions": {"code": "BAD_USER_INPUT"}}]
+2026-07-24T12:46:19  x[audience]: no unposted items
+2026-07-24T12:46:19  bluesky[credibility]: gated. window:ok(window 9-17) | cap:blocked(cap_hit today=1 cap=1)
+2026-07-24T12:46:19  bluesky[audience]: no unposted items
+2026-07-24T12:46:19  mastodon[credibility]: gated. window:ok(window 9-17) | cap:blocked(cap_hit today=1 cap=1)
+2026-07-24T12:46:19  mastodon[audience]: no unposted items
