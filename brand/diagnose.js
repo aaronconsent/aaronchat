@@ -210,7 +210,9 @@
       if (!email) { err(e3, "Add your email so we can send your report."); return; }
       if (!/\S+@\S+\.\S+/.test(email)) { err(e3, "That email looks off — mind double-checking it?"); return; }
       err(e3, "");
+      var consentBox = $("#diag-consent");
       state.name = name; state.email = email; state.phone = phone;
+      state.consentMarketing = consentBox ? consentBox.checked : false;
       var btn = el; btn.disabled = true; var t = btn.textContent; btn.textContent = "Sending…";
       postDiagnose({ report: true, lead: true, buildWebsite: false })
         .then(function (d) {
@@ -242,6 +244,7 @@
       q: state.q, business: state.business || "", domain: state.domain || "", slug: state.slug || "",
       grade: state.grade || "", rank: state.rankStr || "", city: state.city || "", when: state.when || "",
       name: state.name, phone: state.phone, email: state.email,
+      consent_marketing: !!state.consentMarketing, _page: location.href,
     };
     for (var k in extra) payload[k] = extra[k];
     return fetch("/api/diagnose", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })

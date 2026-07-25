@@ -72,6 +72,7 @@ async function handleContact(request, env) {
       "",
       "Message:",
       message || "(none)",
+      ...(phone ? marketingConsentLines(d, request) : []),
     ].filter((l) => l !== null);
 
     const res = await fetch("https://api.resend.com/emails", {
@@ -1313,6 +1314,7 @@ async function handleDiagnose(request, env, ctx) {
       city ? `City: ${city}` : null, trade ? `Trade: ${trade}` : null,
       when ? `Wants to meet: ${when}` : null,
       `Wants a free website preview: ${build ? "YES — kick off Claude Code" : "no"}`,
+      ...(phone ? marketingConsentLines(d, request) : []),
     ].filter((l) => l !== null);
     const origin = new URL(request.url).origin;
 
@@ -1356,19 +1358,46 @@ async function handleDiagnose(request, env, ctx) {
 // on screen when the person checked the box. This is the record that defends a
 // TCPA / 10DLC claim.
 //
-// Two SEPARATE consents (carriers reject bundling marketing into other consent):
-//   - contact: required; permission to reply to THIS request by phone/text/email.
-//   - marketing: optional, standalone; recurring promotional texts, self-contained
-//     with its own STOP/HELP/frequency/rate disclosures.
-const QUOTE_CONSENT_VERSION = "2026-07-22";
+// Twilio 10DLC marketing campaigns reject any flow that collects SMS consent
+// bundled with, or alongside, non-marketing consent. So SMS consent appears
+// EXACTLY ONCE on this form: the standalone, optional, marketing-only checkbox.
+//   - contact: required; phone + email ONLY. No SMS here, nothing to combine with.
+//   - marketing SMS: optional, standalone; the only text-message consent on the
+//     page, self-contained with sender name + STOP/HELP/frequency/rate disclosures.
+const QUOTE_CONSENT_VERSION = "2026-07-23";
 const QUOTE_CONTACT_CONSENT_TEXT =
-  "I agree that Top of Class Marketing may contact me about this request by phone call, " +
-  "text message, and email at the number and address I provided.";
+  "I agree that Top of Class Marketing may contact me about this request by phone call " +
+  "and email at the number and address I provided.";
 const QUOTE_MARKETING_CONSENT_TEXT =
-  "I agree to receive recurring marketing and promotional text messages from Top of Class " +
-  "Marketing at the mobile number I provided. Consent is not a condition of any purchase. " +
-  "Message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP " +
-  "for help. Privacy Policy and Terms apply.";
+  "I agree to receive recurring automated marketing text messages (promotions, offers, tips) " +
+  "from Top of Class Marketing at the mobile number I provided. Consent is not a condition of " +
+  "any purchase. Message frequency varies. Message and data rates may apply. Reply STOP to " +
+  "unsubscribe, HELP for help. Privacy Policy and Terms apply.";
+
+// Reusable marketing-consent proof block for any form that offers the optional
+// SMS opt-in (quote, report card, landing-page lead forms). Returns [] when not
+// opted in, so nothing is recorded unless the box was actually checked.
+function marketingConsentLines(d, request) {
+  const truthy = (v) => v === true || v === "true" || v === "on" || v === "1";
+  const opted = truthy(d.consent_marketing);
+  const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+  const ua = request.headers.get("User-Agent") || "unknown";
+  const ref = clean(d._page, 300) || request.headers.get("Referer") || "unknown";
+  const nowISO = new Date().toISOString();
+  return [
+    "",
+    "───────────── MARKETING SMS CONSENT ─────────────",
+    `Marketing text opt-in: ${opted ? "YES" : "NO"} (optional, standalone checkbox)`,
+    opted ? `OK to send recurring marketing texts to the number above.`
+          : `DO NOT send marketing texts to this number.`,
+    `Timestamp (UTC): ${nowISO}`,
+    `IP address: ${ip}`,
+    `User agent: ${ua}`,
+    `Page: ${ref}`,
+    `Consent version: ${QUOTE_CONSENT_VERSION}`,
+    `Text shown: ${QUOTE_MARKETING_CONSENT_TEXT}`,
+  ];
+}
 
 async function handleQuote(request, env, ctx) {
   if (request.method !== "POST") return json({ ok: false, error: "Method not allowed" }, 405);
@@ -1431,7 +1460,7 @@ async function handleQuote(request, env, ctx) {
       `Consent version: ${QUOTE_CONSENT_VERSION}`,
       "",
       `[1] Contact consent: YES (required)`,
-      `    Channels: phone call, text, email — about this request`,
+      `    Channels: phone call, email — about this request (NO SMS)`,
       `    Text shown: ${QUOTE_CONTACT_CONSENT_TEXT}`,
       "",
       `[2] Marketing SMS consent: ${marketingConsent ? "YES" : "NO"} (optional, separate)`,

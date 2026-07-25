@@ -7,12 +7,15 @@
       var btn = form.querySelector("button[type=submit]");
       var f = new FormData(form);
       var trade = f.get("trade") || "";
+      var mktgBox = form.querySelector("[name=consent_marketing]");
       var payload = {
         name: f.get("name") || "",
         business: f.get("business") || "",
         phone: f.get("phone") || "",
         email: f.get("email") || "",
         message: "Report card request" + (trade ? " · Trade: " + trade : ""),
+        consent_marketing: mktgBox ? mktgBox.checked : false,
+        _page: location.href,
         _source: form.dataset.source || "toc-site",
         _gotcha: f.get("_gotcha") || ""
       };
