@@ -1,4 +1,4 @@
-# Top of Class Marketing: Master Voice Prompt
+# Hey Aaron! Marketing: Master Voice Prompt
 
 The locked voice for aaron.chat: the website, the emailed report cards, social posts, cold outreach, and anything else that goes out under this brand. Paste Block A verbatim into any generation prompt. Blocks B and C stop it drifting.
 
@@ -70,7 +70,7 @@ Every number below is real and checkable. **Nothing outside this list may be sta
 
 ### The business
 
-- Brand: **Top of Class Marketing**. Not "Hey Aaron! Marketing." That name is retired.
+- Brand: **Hey Aaron! Marketing**. The header wordmark/logo is **aaron.chat**. Any earlier report-card-era business name is retired; use only "Hey Aaron! Marketing" (or the "aaron.chat" wordmark in the header).
 - Founder: **Aaron Phillips**, Livingston, Texas. Phone **713-384-8985**. Email **hello@aaron.chat**.
 - Credentials, all verifiable: Chief Business Officer at cPanel (2013–2017), CMO at Monarx (2023–2025), co-founder and CMO of Consent Resolve (his own company, **not** a client), 20+ years in marketing.
 

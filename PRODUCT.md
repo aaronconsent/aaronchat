@@ -16,7 +16,7 @@ The job he's trying to get done is not "buy marketing." It is "figure out why th
 
 ## Product Purpose
 
-Top of Class Marketing is a one-man, AI-run marketing department for home-service contractors. The site's job is to convert a cold local contractor into a graded lead: get him to look up his own shop, confront his grade and his rank against local rivals, and hand over an email for the full report card and action plan. Everything downstream — the plans, the outreach, the build — depends on that one conversion.
+Hey Aaron! Marketing is a one-man, AI-run marketing department for home-service contractors. The site's job is to convert a cold local contractor into a graded lead: get him to look up his own shop, confront his grade and his rank against local rivals, and hand over an email for the full report card and action plan. Everything downstream — the plans, the outreach, the build — depends on that one conversion.
 
 Success is a completed report-card lookup with contact details attached, and secondarily a booked call.
 

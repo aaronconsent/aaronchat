@@ -16,7 +16,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "style-guide")
 CSS = os.path.join(ROOT, "brand/style.css")
 VOICE = os.path.join(ROOT, ".docs/voice.md")
-VER = "33"
+VER = "34"
 
 PAGES = [
     ("", "Style guide", "The locked system: voice, color, type, components, motion, and the rules that don't bend."),
@@ -145,7 +145,7 @@ def page(slug, title, desc, body):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>document.documentElement.classList.add('js')</script>
-<title>{esc(title)} · Top of Class Style Guide</title>
+<title>{esc(title)} · Hey Aaron! Style Guide</title>
 <meta name="description" content="{esc(desc)}">
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="/brand/style.css?v={VER}">
@@ -154,7 +154,7 @@ def page(slug, title, desc, body):
 <body class="sg-page">
 <header class="site-head">
   <div class="wrap">
-    <a class="logo" href="/"><span class="mark">A+</span> Top of Class Marketing</a>
+    <a class="logo" href="/"><span class="mark">A+</span> aaron.chat</a>
     <nav class="site-nav"><a href="/style-guide/">Style guide</a><a class="cta" href="/">Back to site</a></nav>
   </div>
 </header>
@@ -174,7 +174,7 @@ def page(slug, title, desc, body):
 
 <footer class="site-foot">
   <div class="wrap cols">
-    <div><span class="hand">Top of Class Marketing</span><p>Internal reference. Not indexed.</p></div>
+    <div><span class="hand">Hey Aaron! Marketing</span><p>Internal reference. Not indexed.</p></div>
     <div><p><a href="/style-guide/">Style guide index</a> · <a href="/">aaron.chat</a></p></div>
   </div>
 </footer>

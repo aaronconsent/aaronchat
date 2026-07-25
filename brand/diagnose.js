@@ -1,4 +1,4 @@
-/* Top of Class Marketing — report-card diagnose flow (the key conversion).
+/* Hey Aaron! Marketing — report-card diagnose flow (the key conversion).
    4 steps: look up the shop (with live autocomplete) → show its FULL report card
    inline (no leaving the site) → book Aaron → offer a free Claude-built preview. */
 (function () {

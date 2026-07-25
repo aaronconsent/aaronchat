@@ -21,7 +21,7 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
 
 HEADER = """<header class="site-head">
   <div class="wrap">
-    <a class="logo" href="/"><span class="mark">A+</span> Top of Class Marketing</a>
+    <a class="logo" href="/"><span class="mark">A+</span> aaron.chat</a>
     <nav class="site-nav">
       <a href="/services/">Services</a>
       <a href="/work/">Work</a>
@@ -37,7 +37,7 @@ HEADER = """<header class="site-head">
 FOOTER = """<footer class="site-foot">
   <div class="wrap cols">
     <div>
-      <span class="hand">Top of Class Marketing</span>
+      <span class="hand">Hey Aaron! Marketing</span>
       <p>Aaron Phillips · Livingston, Texas</p>
       <p><a href="tel:+17133848985">713-384-8985</a> · <a href="mailto:hello@aaron.chat">hello@aaron.chat</a></p>
     </div>
@@ -48,9 +48,9 @@ FOOTER = """<footer class="site-foot">
     </div>
   </div>
 </footer>
-<script src="/brand/nav.js?v=33" defer></script>
-<script src="/brand/chat.js?v=33" defer></script>
-<script src="/brand/lead.js?v=33" defer></script>"""
+<script src="/brand/nav.js?v=34" defer></script>
+<script src="/brand/chat.js?v=34" defer></script>
+<script src="/brand/lead.js?v=34" defer></script>"""
 
 
 def page_head(title, desc, path):
@@ -69,7 +69,7 @@ def page_head(title, desc, path):
 <meta property="og:url" content="https://aaron.chat{path}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/style.css?v=33">
+<link rel="stylesheet" href="/brand/style.css?v=34">
 {PIXEL}
 </head>
 <body>
@@ -303,7 +303,7 @@ def render_service(s):
         n = SVC_BY_SLUG[ORDER[i + 1]]
         next_link = f'<a href="/services/{n["slug"]}/">{n["name"]} →</a>'
 
-    title = f'{s["name"].replace("&amp;", "&")} — Top of Class Marketing'
+    title = f'{s["name"].replace("&amp;", "&")} — Hey Aaron! Marketing'
     desc = s["tag"].replace('&ldquo;', '"').replace('&rdquo;', '"')
     # dedicated persona shot if we have one, else rotate the fallback pool
     if s["slug"] in SVC_IMAGES:
@@ -312,7 +312,7 @@ def render_service(s):
                    f'style="object-position:center" loading="eager">')
     else:
         img, pos = HERO_IMAGES[i % len(HERO_IMAGES)]
-        img_tag = (f'<img src="{img}" alt="Aaron, Top of Class Marketing" width="1000" height="1250" '
+        img_tag = (f'<img src="{img}" alt="Aaron, Hey Aaron! Marketing" width="1000" height="1250" '
                    f'style="object-position:{pos}% center" loading="eager">')
     return f"""{page_head(title, desc, f'/services/{s["slug"]}/')}
 
@@ -469,7 +469,7 @@ def render_hub():
       </div>
     </div>"""
 
-    title = "Services — Top of Class Marketing"
+    title = "Services — Hey Aaron! Marketing"
     desc = ("Everything a Lake Livingston contractor needs to win — website, local SEO, reviews, "
             "Google profile, social, ads, and reels. One team, one bill, one report card.")
     return f"""{page_head(title, desc, '/services/')}

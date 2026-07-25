@@ -1,4 +1,4 @@
-/* Top of Class Marketing — site chrome enhancements.
+/* Hey Aaron! Marketing — site chrome enhancements.
    Sticky-header state, accessible mobile menu, mobile sticky call bar,
    and fire-once scroll reveals. Pure vanilla, progressive: the page works
    fully without it. */

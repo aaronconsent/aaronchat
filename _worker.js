@@ -1189,7 +1189,7 @@ function reportEmailText(hit) {
   }
   L.push("");
   L.push("Want Aaron to knock these out for you? Reply to this email or call/text 713-384-8985.");
-  L.push("— Top of Class Marketing · aaron.chat");
+  L.push("— Hey Aaron! Marketing · aaron.chat");
   return L.join("\n");
 }
 
@@ -1364,13 +1364,13 @@ async function handleDiagnose(request, env, ctx) {
 //   - contact: required; phone + email ONLY. No SMS here, nothing to combine with.
 //   - marketing SMS: optional, standalone; the only text-message consent on the
 //     page, self-contained with sender name + STOP/HELP/frequency/rate disclosures.
-const QUOTE_CONSENT_VERSION = "2026-07-23";
+const QUOTE_CONSENT_VERSION = "2026-07-24";
 const QUOTE_CONTACT_CONSENT_TEXT =
-  "I agree that Top of Class Marketing may contact me about this request by phone call " +
+  "I agree that Hey Aaron! Marketing may contact me about this request by phone call " +
   "and email at the number and address I provided.";
 const QUOTE_MARKETING_CONSENT_TEXT =
   "I agree to receive recurring automated marketing text messages (promotions, offers, tips) " +
-  "from Top of Class Marketing at the mobile number I provided. Consent is not a condition of " +
+  "from Hey Aaron! Marketing at the mobile number I provided. Consent is not a condition of " +
   "any purchase. Message frequency varies. Message and data rates may apply. Reply STOP to " +
   "unsubscribe, HELP for help. Privacy Policy and Terms apply.";
 
@@ -1476,7 +1476,7 @@ async function handleQuote(request, env, ctx) {
       method: "POST",
       headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        from: env.CONTACT_FROM || "Top of Class Marketing <forms@aaron.chat>",
+        from: env.CONTACT_FROM || "Hey Aaron! Marketing <forms@aaron.chat>",
         to: [env.CONTACT_TO || "hello@aaron.chat"],
         reply_to: email,
         subject: `New quote request: ${name}${trade ? " (" + trade + ")" : ""}${marketingConsent ? " [mktg opt-in]" : ""}`,

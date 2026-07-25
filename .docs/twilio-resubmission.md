@@ -36,14 +36,14 @@ its full disclosure.
 The **marketing** opt-in is its own checkbox, unchecked by default, and reads:
 
 > **Optional. Text messages only.** I agree to receive **recurring automated marketing text messages**
-> (promotions, offers, tips) from Top of Class Marketing at the mobile number I provided. Consent is not
+> (promotions, offers, tips) from Hey Aaron! Marketing at the mobile number I provided. Consent is not
 > a condition of any purchase. Message frequency varies. Message and data rates may apply. Reply
 > **STOP** to unsubscribe, **HELP** for help. See our Privacy Policy and Terms.
 
 The **required** contact checkbox (quote form only) is separate and covers **phone and email only** —
 it does not mention SMS, so nothing is combined:
 
-> **Required.** I agree that Top of Class Marketing may contact me about this request by phone call and
+> **Required.** I agree that Hey Aaron! Marketing may contact me about this request by phone call and
 > email at the number and address I provided.
 
 ## 4. Opt-out language
@@ -60,7 +60,7 @@ sections both document STOP/HELP and that opt-in data is never shared.
 > web forms (primary: https://aaron.chat/quote/). This marketing SMS consent is collected separately
 > from any other consent: a separate required checkbox covers phone and email contact only and never
 > mentions SMS, so marketing consent is never bundled with informational or transactional consent. The
-> marketing checkbox states the sender name (Top of Class Marketing), that messages are recurring
+> marketing checkbox states the sender name (Hey Aaron! Marketing), that messages are recurring
 > automated marketing messages, that consent is not a condition of purchase, that message frequency
 > varies, that message and data rates may apply, and includes "Reply STOP to unsubscribe, HELP for
 > help," with links to our Privacy Policy and Terms. Consent applies only to this sender and this
@@ -69,9 +69,9 @@ sections both document STOP/HELP and that opt-in data is never shared.
 
 ## Sample messages (match these to your campaign's sample-message field)
 
-- Marketing: "Top of Class Marketing: New this month — free website audit for Lake Livingston HVAC
+- Marketing: "Hey Aaron! Marketing: New this month — free website audit for Lake Livingston HVAC
   shops. Reply STOP to opt out, HELP for help."
-- Marketing: "Top of Class Marketing: Your competitors added 12 reviews last month. Want the game plan?
+- Marketing: "Hey Aaron! Marketing: Your competitors added 12 reviews last month. Want the game plan?
   Reply STOP to opt out."
 
 ## Notes

@@ -12,7 +12,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BIZ = os.path.join(ROOT, "stats-lakelivingston/docs/biz")
 OUT = os.path.join(ROOT, "report-card")
 RANKS = os.path.join(ROOT, "data/ranks.json")
-VER = "33"
+VER = "34"
 
 
 def slugify(s):
@@ -68,7 +68,7 @@ def parse_biz(slug):
 
 HEADER = """<header class="site-head">
   <div class="wrap">
-    <a class="logo" href="/"><span class="mark">A+</span> Top of Class Marketing</a>
+    <a class="logo" href="/"><span class="mark">A+</span> aaron.chat</a>
     <nav class="site-nav">
       <a href="/services/">Services</a>
       <a href="/work/">Work</a>
@@ -84,7 +84,7 @@ HEADER = """<header class="site-head">
 FOOTER = f"""<footer class="site-foot">
   <div class="wrap cols">
     <div>
-      <span class="hand">Top of Class Marketing</span>
+      <span class="hand">Hey Aaron! Marketing</span>
       <p>Aaron Phillips · Livingston, Texas</p>
       <p><a href="tel:+17133848985">713-384-8985</a> · <a href="mailto:hello@aaron.chat">hello@aaron.chat</a></p>
     </div>
@@ -131,7 +131,7 @@ def render_page(slug, label, shops):
     total = len(shops)
     tl = label[:1].upper() + label[1:]
     rows = "\n      ".join(render_row(s, total) for s in shops)
-    title = f"{tl} around Lake Livingston, graded — Top of Class Marketing"
+    title = f"{tl} around Lake Livingston, graded — Hey Aaron! Marketing"
     desc = f"All {total} {label} around Lake Livingston, ranked this week by the six things that decide who gets the call."
     return f"""<!doctype html>
 <html lang="en">

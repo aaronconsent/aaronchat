@@ -22,7 +22,7 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
 
 HEADER = """<header class="site-head">
   <div class="wrap">
-    <a class="logo" href="/"><span class="mark">A+</span> Top of Class Marketing</a>
+    <a class="logo" href="/"><span class="mark">A+</span> aaron.chat</a>
     <nav class="site-nav">
       <a href="/services/">Services</a>
       <a href="/work/">Work</a>
@@ -38,7 +38,7 @@ HEADER = """<header class="site-head">
 FOOTER = """<footer class="site-foot">
   <div class="wrap cols">
     <div>
-      <span class="hand">Top of Class Marketing</span>
+      <span class="hand">Hey Aaron! Marketing</span>
       <p>Aaron Phillips · Livingston, Texas</p>
       <p><a href="tel:+17133848985">713-384-8985</a> · <a href="mailto:hello@aaron.chat">hello@aaron.chat</a></p>
     </div>
@@ -49,9 +49,9 @@ FOOTER = """<footer class="site-foot">
     </div>
   </div>
 </footer>
-<script src="/brand/nav.js?v=33" defer></script>
-<script src="/brand/chat.js?v=33" defer></script>
-<script src="/brand/lead.js?v=33" defer></script>"""
+<script src="/brand/nav.js?v=34" defer></script>
+<script src="/brand/chat.js?v=34" defer></script>
+<script src="/brand/lead.js?v=34" defer></script>"""
 
 
 def page_head(title, desc, path):
@@ -70,7 +70,7 @@ def page_head(title, desc, path):
 <meta property="og:url" content="https://aaron.chat{path}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/style.css?v=33">
+<link rel="stylesheet" href="/brand/style.css?v=34">
 {PIXEL}
 </head>
 <body>
@@ -271,7 +271,7 @@ def card(p):
 
 
 def render_index():
-    title = "Our Work — Websites, Brands &amp; AI Builds | Top of Class Marketing"
+    title = "Our Work — Websites, Brands &amp; AI Builds | Hey Aaron! Marketing"
     desc = ("Real, live sites and brands we designed and built — Consent Resolve, Deuces Wild Poker, "
             "Booked Job, B&R Productions, Lakeside Ink & Threadz, Polk County Golf Carts, Midwest CNC and more.")
     cards = "\n".join(card(PROJ_BY_SLUG[s]) for s in ORDER)
@@ -330,7 +330,7 @@ def render_case(p):
         nx = PROJ_BY_SLUG[ORDER[i + 1]]
         next_link = f'<a href="/work/{nx["slug"]}/">{nx["name"]} &rarr;</a>'
     name_plain = p["name"].replace("&amp;", "&")
-    title = f'{name_plain} — Case Study | Top of Class Marketing'
+    title = f'{name_plain} — Case Study | Hey Aaron! Marketing'
     desc = p["blurb"].replace("&mdash;", "—").replace("&rsquo;", "'")[:155]
     work = "\n".join(f"        <li>{w}</li>" for w in p["work"])
     tags = "\n".join(f'        <span class="tag">{t}</span>' for t in p["stack"])

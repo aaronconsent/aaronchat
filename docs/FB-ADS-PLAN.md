@@ -1,4 +1,4 @@
-# Facebook Ads plan — Top of Class Marketing (2026-07)
+# Facebook Ads plan — Hey Aaron! Marketing (2026-07)
 
 The site is ads-ready: Meta Pixel base code is on every page (activate by replacing
 `PASTE_PIXEL_ID` in each page head — or give Claude the Pixel ID and it's a one-commit
