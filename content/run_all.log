@@ -1590,3 +1590,11 @@
 2026-07-26T13:08:52  bluesky[audience]: no unposted items
 2026-07-26T13:08:52  mastodon[credibility]: gated. window:blocked(weekend_skip)
 2026-07-26T13:08:52  mastodon[audience]: no unposted items
+2026-07-26T15:15:22  linkedin[credibility]: gated. window:blocked(weekend_skip)
+2026-07-26T15:15:22  linkedin[audience]: gated. window:blocked(weekend_skip)
+2026-07-26T15:15:22  x[credibility]: gated. window:blocked(weekend_skip)
+2026-07-26T15:15:22  x[audience]: gated. window:blocked(outside_windows hour=15)
+2026-07-26T15:15:22  bluesky[credibility]: gated. window:blocked(weekend_skip)
+2026-07-26T15:15:22  bluesky[audience]: gated. window:blocked(outside_windows hour=15)
+2026-07-26T15:15:22  mastodon[credibility]: gated. window:blocked(weekend_skip)
+2026-07-26T15:15:22  mastodon[audience]: gated. window:blocked(outside_windows hour=15)
