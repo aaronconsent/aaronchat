@@ -2118,3 +2118,11 @@
 2026-08-02T12:10:35  bluesky[audience]: no unposted items
 2026-08-02T12:10:35  mastodon[credibility]: gated. window:blocked(weekend_skip)
 2026-08-02T12:10:35  mastodon[audience]: no unposted items
+2026-08-02T14:23:10  linkedin[credibility]: gated. window:blocked(weekend_skip)
+2026-08-02T14:23:10  linkedin[audience]: gated. window:blocked(weekend_skip)
+2026-08-02T14:23:10  x[credibility]: gated. window:blocked(weekend_skip)
+2026-08-02T14:23:10  x[audience]: gated. window:blocked(outside_windows hour=14)
+2026-08-02T14:23:10  bluesky[credibility]: gated. window:blocked(weekend_skip)
+2026-08-02T14:23:10  bluesky[audience]: gated. window:blocked(outside_windows hour=14)
+2026-08-02T14:23:10  mastodon[credibility]: gated. window:blocked(weekend_skip)
+2026-08-02T14:23:10  mastodon[audience]: gated. window:blocked(outside_windows hour=14)
