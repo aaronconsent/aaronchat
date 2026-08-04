@@ -2278,3 +2278,11 @@
 2026-08-04T16:21:54  bluesky[audience]: gated. window:blocked(outside_windows hour=16)
 2026-08-04T16:21:54  mastodon[credibility]: gated. window:ok(window 9-17) | cap:ok(cap_room today=0 cap=1) | spacing:blocked(spacing_too_close 29.5h < 36h)
 2026-08-04T16:21:54  mastodon[audience]: gated. window:blocked(outside_windows hour=16)
+2026-08-04T18:13:12  linkedin[credibility]: gated. window:blocked(outside_windows hour=18)
+2026-08-04T18:13:12  linkedin[audience]: gated. window:blocked(outside_windows hour=18)
+2026-08-04T18:13:12  x[credibility]: gated. window:blocked(outside_windows hour=18)
+2026-08-04T18:13:12  x[audience]: no unposted items
+2026-08-04T18:13:12  bluesky[credibility]: gated. window:blocked(outside_windows hour=18)
+2026-08-04T18:13:12  bluesky[audience]: no unposted items
+2026-08-04T18:13:12  mastodon[credibility]: gated. window:blocked(outside_windows hour=18)
+2026-08-04T18:13:12  mastodon[audience]: no unposted items
