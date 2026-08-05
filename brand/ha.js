@@ -177,55 +177,62 @@
     var sec = d.querySelector("[data-funnel]"); if (!sec) return;
     var phone = sec.querySelector('[data-feed="phone"]');
     var inbox = sec.querySelector('[data-feed="inbox"]');
-    var ticker = sec.querySelector('[data-feed="money"]');
     var elIn = sec.querySelector("[data-money-in]");
     var elOut = sec.querySelector("[data-money-out]");
     var elJobs = sec.querySelector("[data-jobs]");
-    var bar = sec.querySelector(".fm-bar i");
+    var elRoi = sec.querySelector("[data-roi]");
+    var chart = sec.querySelector("[data-chart]");
     function fmt(n) { return "$" + Math.round(n).toLocaleString("en-US"); }
     function ico(id) { return '<svg><use href="#' + id + '"/></svg>'; }
 
-    // one "month" of events — loops forever. in: revenue, in0: deposit (already counted), out/ha: cost.
+    // one "month" of events — loops forever. All action shows on the phone or in the inbox.
+    // money:{k,amt} drives the dashboard stats only. in = revenue, out/ha = cost.
     var C = [
       { s: "phone", ic: "sms", a: "“Can you look at my AC today?”", b: "Livingston · just now" },
-      { s: "inbox", a: "New contact form", b: "“Need an AC install quote”", t: "now" },
+      { s: "inbox", kind: "lead", a: "New contact form", b: "“Need an AC install quote”", t: "now" },
       { s: "phone", ic: "mail", a: "Missed call → auto-text sent", b: "Onalaska · 2m" },
-      { s: "money", k: "out", label: "Google Ads", amt: 600, ic: "i-target" },
-      { s: "inbox", a: "Google Ads lead", b: "Roof estimate request", t: "2m" },
+      { s: "inbox", kind: "ad", money: { k: "out", amt: 600 }, a: "Google Ads · receipt", b: "Campaign: AC installs", t: "now" },
+      { s: "inbox", kind: "lead", a: "Google Ads lead", b: "Roof estimate request", t: "2m" },
       { s: "phone", booked: 1, ic: "ok", a: "Booked: panel upgrade", b: "Tue · 8:30 AM" },
-      { s: "money", k: "in", label: "Invoice #1042 paid", amt: 5800, ic: "i-trend" },
-      { s: "money", k: "in0", label: "Bank deposit cleared", amt: 5800, ic: "i-check" },
-      { s: "inbox", a: "Facebook lead form", b: "Kitchen remodel", t: "5m" },
+      { s: "inbox", kind: "paid", money: { k: "in", amt: 5800 }, a: "Invoice #1042 paid", b: "+$5,800 · deposited today", t: "now" },
+      { s: "inbox", kind: "lead", a: "Facebook lead form", b: "Kitchen remodel", t: "5m" },
       { s: "phone", ic: "sms", a: "“Need a plumber ASAP”", b: "Huntsville · text" },
-      { s: "inbox", booked: 1, a: "Booked: kitchen remodel estimate", b: "Sat · 9:00 AM", t: "✓" },
-      { s: "money", k: "out", label: "Facebook Ads", amt: 400, ic: "i-target" },
-      { s: "inbox", a: "New contact form", b: "“Gutters + fascia quote”", t: "8m" },
+      { s: "phone", booked: 1, ic: "ok", a: "Booked: kitchen remodel estimate", b: "Sat · 9:00 AM" },
+      { s: "inbox", kind: "ad", money: { k: "out", amt: 400 }, a: "Facebook Ads · receipt", b: "Campaign: remodels", t: "6m" },
+      { s: "inbox", kind: "lead", a: "New contact form", b: "“Gutters + fascia quote”", t: "8m" },
       { s: "phone", booked: 1, ic: "ok", a: "Booked: roof estimate", b: "Thu · 11:00 AM" },
-      { s: "money", k: "in", label: "Invoice #1043 paid", amt: 6800, ic: "i-trend" },
-      { s: "money", k: "in0", label: "Bank deposit cleared", amt: 6800, ic: "i-check" },
-      { s: "inbox", booked: 1, a: "Booked: panel + EV charger", b: "Mon · 8:00 AM", t: "✓" },
-      { s: "money", k: "ha", label: "Hey Aaron! · Website & Growth", amt: 500 }
+      { s: "inbox", kind: "paid", money: { k: "in", amt: 6800 }, a: "Invoice #1043 paid", b: "+$6,800 · deposited today", t: "now" },
+      { s: "phone", booked: 1, ic: "ok", a: "Booked: panel + EV charger", b: "Mon · 8:00 AM" },
+      { s: "inbox", kind: "bill", money: { k: "ha", amt: 500 }, a: "Hey Aaron! · Website & Growth", b: "Your monthly bill · −$500", t: "1st" }
     ];
 
-    var moneyIn = 0, moneyOut = 0, jobs = 0, idx = 0;
+    var moneyIn = 0, moneyOut = 0, jobs = 0, idx = 0, tweens = {};
 
-    function tween(el, from, to, dur) {
-      var start = null;
+    // count-up that survives rapid re-fires (cancels the prior tween on the same element)
+    function tween(el, key, from, to, dur, isInt) {
+      var id = {}, begin = null;
+      tweens[key] = id;
       function step(ts) {
-        if (start === null) start = ts;
-        var p = Math.min(1, (ts - start) / dur), e = 1 - Math.pow(1 - p, 3);
-        el.textContent = (el === elJobs) ? Math.round(from + (to - from) * e) : fmt(from + (to - from) * e);
-        if (p < 1) requestAnimationFrame(step);
+        if (tweens[key] !== id) return;
+        if (begin === null) begin = ts;
+        var p = Math.min(1, (ts - begin) / dur), e = 1 - Math.pow(1 - p, 4), v = from + (to - from) * e;
+        el.textContent = isInt ? Math.round(v) : fmt(v);
+        if (p < 1) requestAnimationFrame(step); else tweens[key] = null;
       }
       requestAnimationFrame(step);
     }
-    function flash(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+    function flash(el, cls) { if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+    function setRoi() {
+      var r = moneyOut > 0 ? moneyIn / moneyOut : 0;
+      elRoi.textContent = "$" + (r >= 10 ? Math.round(r) : r.toFixed(1)) + " : $1";
+    }
 
+    // fixed-height feeds: max rows constant, so the boxes never resize as items stream.
+    var MAX = 5;
     function trim(feed) {
-      while (feed.children.length > 4) {
+      if (feed.children.length > MAX) {
         var first = feed.firstElementChild; first.classList.add("out");
-        (function (n) { setTimeout(function () { if (n.parentNode) n.parentNode.removeChild(n); }, 420); })(first);
-        break;
+        (function (n) { setTimeout(function () { if (n.parentNode) n.parentNode.removeChild(n); }, 380); })(first);
       }
     }
     function pushPhone(ev) {
@@ -236,55 +243,58 @@
     }
     function pushInbox(ev) {
       var li = d.createElement("li");
-      li.className = "ib-row enter" + (ev.booked ? " booked" : "");
-      li.innerHTML = '<span class="ib-unread"></span><div class="ib-em"><b>' + ev.a + (ev.booked ? " ✓" : "") + '</b><span>' + ev.b + '</span></div><span class="ib-time">' + (ev.t || "now") + '</span>';
+      li.className = "ib-row enter" + (ev.kind ? " " + ev.kind : "") + (ev.booked ? " booked" : "");
+      var badge = ev.kind === "paid" ? '<span class="ib-tag paid">PAID</span>'
+        : ev.kind === "bill" ? '<span class="ib-tag bill">BILL</span>'
+        : ev.kind === "ad" ? '<span class="ib-tag ad">ADS</span>' : '<span class="ib-unread"></span>';
+      li.innerHTML = badge + '<div class="ib-em"><b>' + ev.a + (ev.booked ? " ✓" : "") + '</b><span>' + ev.b + '</span></div><span class="ib-time">' + (ev.t || "now") + '</span>';
       inbox.appendChild(li); trim(inbox);
     }
-    function setTicker(ev) {
-      var dir = ev.k === "in" ? "in" : ev.k === "in0" ? "in" : "out";
-      var sign = (ev.k === "in") ? "+" : (ev.k === "out" || ev.k === "ha") ? "−" : "";
-      var icon = ev.k === "ha" ? '<span class="mt-ha">HA</span>' : ico(ev.ic || "i-trend");
-      ticker.innerHTML = '<span class="mt-ic ' + dir + (ev.k === "ha" ? " ha" : "") + '">' + icon + '</span>' +
-        '<b>' + ev.label + '</b><span class="mt-amt ' + dir + '">' + sign + fmt(ev.amt) + '</span>';
-      flash(ticker, "hit");
+    function bookJob() { var j = jobs; jobs++; tween(elJobs, "jobs", j, jobs, 550, true); flash(elJobs, "pop"); }
+    function pushBar(amt) {
+      if (!chart) return;
+      var b = d.createElement("span");
+      b.className = "fbar"; b.style.setProperty("--h", Math.max(14, Math.min(100, Math.round(amt / 70))) + "%");
+      chart.appendChild(b);
+      if (chart.children.length > 16) chart.removeChild(chart.firstElementChild);
+      void b.offsetWidth; b.classList.add("grow");
     }
 
     function tick() {
       var ev = C[idx % C.length]; idx++;
-      if (ev.s === "phone") { pushPhone(ev); if (ev.booked) { var j = jobs; jobs++; tween(elJobs, j, jobs, 500); flash(elJobs.parentNode, "pop"); } }
-      else if (ev.s === "inbox") { pushInbox(ev); if (ev.booked) { var j2 = jobs; jobs++; tween(elJobs, j2, jobs, 500); flash(elJobs.parentNode, "pop"); } }
-      else if (ev.s === "money") {
-        setTicker(ev);
-        if (ev.k === "in") { var a = moneyIn; moneyIn += ev.amt; tween(elIn, a, moneyIn, 800); flash(elIn, "flash-in"); }
-        else if (ev.k === "out" || ev.k === "ha") { var b = moneyOut; moneyOut += ev.amt; tween(elOut, b, moneyOut, 700); flash(elOut, "flash-out"); }
-        var pct = Math.min(90, 10 + (moneyIn / 14000) * 80);
-        if (bar) bar.style.width = pct + "%";
+      if (ev.s === "phone") pushPhone(ev); else pushInbox(ev);
+      if (ev.booked) bookJob();
+      if (ev.money) {
+        if (ev.money.k === "in") {
+          var a = moneyIn; moneyIn += ev.money.amt; tween(elIn, "in", a, moneyIn, 900);
+          flash(elIn, "flash-in"); flash(sec.querySelector(".fstat.in"), "hit"); pushBar(ev.money.amt);
+        } else {
+          var b = moneyOut; moneyOut += ev.money.amt; tween(elOut, "out", b, moneyOut, 800); flash(elOut, "flash-out");
+        }
+        setRoi();
       }
       // end of a month → brief reset, then keep rolling
       if (idx % C.length === 0) {
         setTimeout(function () {
-          moneyIn = 0; moneyOut = 0; jobs = 0;
+          moneyIn = 0; moneyOut = 0; jobs = 0; tweens = {};
           elIn.textContent = fmt(0); elOut.textContent = fmt(0); elJobs.textContent = "0";
-          if (bar) bar.style.width = "10%";
-          ticker.innerHTML = '<span class="mt-ic in">' + ico("i-trend") + '</span><b>New month — the machine keeps running</b>';
-          flash(ticker, "hit");
-          while (phone.children.length > 1) phone.removeChild(phone.firstElementChild);
-          while (inbox.children.length > 1) inbox.removeChild(inbox.firstElementChild);
-        }, 1600);
+          elRoi.textContent = "$0 : $1";
+          if (chart) chart.innerHTML = "";
+          flash(sec.querySelector(".fdash"), "newmonth");
+        }, 900);
       }
     }
 
     // reduced motion / no observer: show a static, representative frame — no loop.
     if (reduce || !("IntersectionObserver" in w)) {
       elIn && (elIn.textContent = fmt(12600)); elOut && (elOut.textContent = fmt(1500));
-      elJobs && (elJobs.textContent = "7"); bar && (bar.style.width = "82%");
-      if (ticker) ticker.innerHTML = '<span class="mt-ic in">' + ico("i-trend") + '</span><b>Invoice #1043 paid</b><span class="mt-amt in">+$6,800</span>';
+      elJobs && (elJobs.textContent = "7"); elRoi && (elRoi.textContent = "$8 : $1");
       sec.classList.add("playing");
       return;
     }
 
     var timer = null;
-    function start() { if (timer) return; sec.classList.add("playing"); tick(); timer = w.setInterval(tick, 2400); }
+    function start() { if (timer) return; sec.classList.add("playing"); tick(); timer = w.setInterval(tick, 1150); }
     function stop() { if (timer) { w.clearInterval(timer); timer = null; } }
     // in view now? (rect test — reliable even where IO callbacks are throttled)
     function inView() {
