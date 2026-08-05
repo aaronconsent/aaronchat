@@ -175,9 +175,11 @@ def render(t):
               '"areaServed":[{"@type":"City","name":"Livingston"},{"@type":"City","name":"Onalaska"},{"@type":"City","name":"Coldspring"},{"@type":"City","name":"Huntsville"},{"@type":"State","name":"Texas"}],'
               '"founder":{"@type":"Person","name":"Aaron Phillips","jobTitle":"Founder — 20+ years in marketing"}}')
     faq_schema = ('{"@context":"https://schema.org","@type":"FAQPage","mainEntity":['
-                  '{"@type":"Question","name":"What does it cost?","acceptedAnswer":{"@type":"Answer","text":"Website & Growth is $500/mo, Social Media is $500/mo, and paid ads are 15% of your ad spend with a $2,000/mo minimum ad budget. Run one, run all three. No setup fees, no contracts, month to month."}},'
+                  '{"@type":"Question","name":"Who owns my website and leads if we part ways?","acceptedAnswer":{"@type":"Answer","text":"You do, from day one. The website, domain, ad accounts, Google profile, and customer list are all in your name. Fire me and you keep every bit of it. I never hold anything hostage."}},'
+                  f'{{"@type":"Question","name":"Is my market exclusive?","acceptedAnswer":{{"@type":"Answer","text":"Yes. I take one {esc(t["one"])} per area, so I am never working for you and your competitor at the same time, and I never resell leads."}}}},'
                   f'{{"@type":"Question","name":{esc_json(t["faqq"])},"acceptedAnswer":{{"@type":"Answer","text":{esc_json(t["faqa"])}}}}},'
-                  '{"@type":"Question","name":"Who does the work, you or a team?","acceptedAnswer":{"@type":"Answer","text":"Me. Aaron. You call, I answer. You get the person who ran marketing for cPanel and Monarx, not a rep reading a script."}}]}')
+                  '{"@type":"Question","name":"Is there a contract?","acceptedAnswer":{"@type":"Answer","text":"No lock-in. Month to month, no setup fee and no cancellation fee. If I do not earn it this month, fire me and keep everything I built."}},'
+                  '{"@type":"Question","name":"What does it cost?","acceptedAnswer":{"@type":"Answer","text":"Website & Growth is $500/mo, Social Media is $500/mo, and paid ads are 15% of your ad spend with a $2,000/mo minimum ad budget. Month to month, no setup fees, no contracts."}}]}')
     return f'''<!doctype html>
 <html lang="en">
 <head>
@@ -210,11 +212,13 @@ def render(t):
       <span class="pill"><span class="dot pulse"></span>Marketing for {esc(t['trade'])}</span>
       <h1>More booked jobs for <span class="swap" data-dtr="trade">{esc(t['word'])}</span> in
         <span class="swap" data-dtr="region">East Texas</span>. Not more "leads."</h1>
-      <p class="hero-sub">I'm Aaron. I spent 20 years running marketing for tech companies you've heard of.
-        Now I point it at your {esc(t['one'])}: a site that works, top of Google, and ads that book real jobs.</p>
+      <p class="hero-sub">I'm Aaron, and I get {esc(t['word'])} in East Texas booked jobs, real work on the
+        calendar, not clicks you paid for. You own everything I build. It's month to month. And I only take one
+        {esc(t['one'])} per area, so your competitor can't hire me.</p>
       <div class="hero-cta">
-        <a class="btn btn-call btn-lg" href="tel:+17133848985" data-cta-location="hero">{PHONE}Call me: 713-384-8985</a>
-        <span class="hero-note"><svg><use href="#i-check"/></svg>You get Aaron, not a sales rep</span>
+        <a class="btn btn-call btn-lg" href="tel:+17133848985" data-cta-location="hero">{PHONE}Call Aaron &mdash; he actually answers</a>
+        <!-- [AARON: CONFIRM] 92% answer-rate stat, from your own outreach email. -->
+        <span class="hero-note"><svg><use href="#i-check"/></svg>My phone's on and I answer it more than 92% of the time.</span>
       </div>
       <p class="hero-avail" data-avail><span class="live"></span><span data-avail-text>Give me a call.</span></p>
     </div>
@@ -261,12 +265,16 @@ def render(t):
 </section>
 
 <section class="sec sec-white">
-  <div class="wrap reveal" style="max-width:760px;margin-inline:auto;text-align:center">
-    <span class="caps">Straight talk</span>
-    <h2 style="font-size:var(--d-lg);margin:10px 0 14px">No fake reviews. No made-up numbers.</h2>
-    <p class="lede">You will not find a wall of five-star testimonials or a &ldquo;300% growth!&rdquo; banner here,
-    because I do not invent things. I am newer to marketing <em>for the trades</em> than I am to marketing itself,
-    so I earn it the honest way: month to month, and you fire me the second the phone stops ringing.</p>
+  <div class="wrap">
+    <div class="reveal" style="max-width:660px;margin-inline:auto;background:var(--primary-tint);border:1px solid var(--line-soft);border-radius:var(--r-lg);padding:24px 26px">
+      <b style="display:block;margin-bottom:6px">Run the math on those junk leads:</b>
+      <p style="color:var(--ink-variant)">$80 a lead. Five {esc(t['word'])} all buying the same one. Maybe one in ten
+      turns into a real job. That's <strong style="color:var(--ink)">$800 out of your pocket for one booked job</strong>
+      &mdash; if you even win the footrace to voicemail. Nobody selling you leads does that math out loud. I just did.</p>
+    </div>
+    <p class="lede center reveal" style="max-width:640px;margin:26px auto 0">I'm not for every shop, and I'll tell you
+    straight if we're not a fit. <a href="/not-a-fit/">Here's who I'm not for.</a> Want the money and the terms up
+    front? <a href="/pricing/">What it costs</a> &middot; <a href="/compare/">me vs. the big agencies</a>.</p>
   </div>
 </section>
 
@@ -327,25 +335,32 @@ def render(t):
   <div class="wrap">
     <div class="sec-head center reveal"><h2>Straight answers</h2><p class="lede">No fluff. Just how this works.</p></div>
     <div class="faq reveal">
-      <details><summary>What does it cost?<svg class="chev"><use href="#i-chev"/></svg></summary>
-        <div class="a">Simple month-to-month plans, no setup fees and no contracts. Call and I'll tell you exactly
-        what your {esc(t['one'])} needs and what it runs. <a href="/pricing/">See the plans &rarr;</a></div></details>
+      <details><summary>Who owns my website and leads if we part ways?<svg class="chev"><use href="#i-chev"/></svg></summary>
+        <div class="a">You do, from day one. The website, the domain, the ad accounts, your Google profile, your customer
+        list, all in your name. Fire me and you walk out with every bit of it. I never hold anything hostage.</div></details>
+      <details><summary>Is my market exclusive?<svg class="chev"><use href="#i-chev"/></svg></summary>
+        <div class="a">Yes. I take one {esc(t['one'])} per area, so I'm never working for you and your competitor at the
+        same time. And I don't resell leads to anybody, every call is yours.</div></details>
       <details><summary>{esc(t['faqq'])}<svg class="chev"><use href="#i-chev"/></svg></summary>
         <div class="a">{esc(t['faqa'])}</div></details>
-      <details><summary>How fast can we get going?<svg class="chev"><use href="#i-chev"/></svg></summary>
-        <div class="a">A new site and a cleaned-up Google profile usually go live in a few days, because I build it, not a queue of account managers.</div></details>
-      <details><summary>What if it doesn't work?<svg class="chev"><use href="#i-chev"/></svg></summary>
-        <div class="a">It's month to month, so you fire me. No contract traps you. I'd rather earn next month than lock you into twelve.</div></details>
-      <details><summary>Who does the work, you or a team?<svg class="chev"><use href="#i-chev"/></svg></summary>
-        <div class="a">Me. Aaron. You call, I answer. You get the guy who ran marketing for cPanel and Monarx, not a script. I keep a cap on clients so you actually get my attention.</div></details>
+      <details><summary>Is there a contract?<svg class="chev"><use href="#i-chev"/></svg></summary>
+        <div class="a">No lock-in. Month to month, no setup fee, no cancellation fee. If I don't earn it this month,
+        fire me and keep everything I built.</div></details>
+      <details><summary>Who does the work, you or an offshore team?<svg class="chev"><use href="#i-chev"/></svg></summary>
+        <div class="a">Me. Aaron. You call, I answer. You get the guy who ran marketing for cPanel and Monarx, not a
+        script. I keep a cap on shops so you actually get my attention.</div></details>
+      <details><summary>What does it cost?<svg class="chev"><use href="#i-chev"/></svg></summary>
+        <div class="a">$500/mo for Website &amp; Growth, $500/mo for Social, ads at 15% of spend. Month to month, no
+        setup fees. Call and I'll tell you exactly what your {esc(t['one'])} needs. <a href="/pricing/">See the plans &rarr;</a></div></details>
     </div>
   </div>
 </section>
 
 <section class="sec final">
   <div class="wrap reveal">
-    <h2>Let's make the {esc(t['one'])} across town uncomfortable.</h2>
-    <p class="lede">One call, ten minutes. I'll tell you straight what's costing you jobs and whether I can fix it.</p>
+    <h2>One {esc(t['one'])} per area. Right now, that spot's open.</h2>
+    <p class="lede">Once one of your competitors takes it, I can't work with you, that's the deal. One call, ten
+    minutes, and I'll tell you straight whether I can fix what's costing you jobs.</p>
     <a class="btn btn-call btn-lg" href="tel:+17133848985" data-cta-location="final">{PHONE}Call Aaron: 713-384-8985</a>
     <p class="hero-avail" data-avail style="justify-content:center;margin-top:16px"><span class="live"></span><span data-avail-text></span></p>
   </div>

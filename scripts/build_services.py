@@ -129,7 +129,8 @@ def render_service(x, i):
 <div class="wrap">{nav}</div>
 </section>
 <section class="sec final"><div class="wrap reveal"><h2>Want this handled?</h2>
-<p class="lede">One call, ten minutes. I'll tell you straight if it's worth doing for your shop.</p>
+<p class="lede">One call, ten minutes. I'll tell you straight if it's worth doing for your shop, or if it isn't.
+Whatever I build is yours, in your name, and it's month to month, so fire me any time and keep it.</p>
 <a class="btn btn-call btn-lg" href="tel:+17133848985" data-cta-location="service-final">{PHONE}Call Aaron: 713-384-8985</a></div></section>
 </main>{TAIL}</body></html>'''
 

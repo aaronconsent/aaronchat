@@ -101,7 +101,8 @@ def render_case(p):
   </div>
 </div></section>
 <section class="sec final"><div class="wrap reveal"><h2>Let's build yours.</h2>
-<p class="lede">One call, ten minutes. I'll tell you exactly what I'd do for your shop.</p>
+<p class="lede">One call, ten minutes. I'll tell you exactly what I'd do for your shop. And like these, it's built in
+your name, yours to keep, month to month.</p>
 <a class="btn btn-call btn-lg" href="tel:+17133848985" data-cta-location="case-final">{PHONE}Call Aaron: 713-384-8985</a></div></section>
 </main>{TAIL}</body></html>'''
 
