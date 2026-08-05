@@ -514,6 +514,17 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
   line-height: 1.1; margin: 6px 0 2px; letter-spacing: -0.01em; }
 .price-note span { display: block; font-size: 0.82rem; font-weight: 500; color: var(--ink-variant); margin-top: 3px; }
 
+/* comparison table (compare page) */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.compare { width: 100%; border-collapse: collapse; font-size: 0.95rem; min-width: 640px; }
+.compare th, .compare td { padding: 14px 14px; text-align: left; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+.compare thead th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink-variant); }
+.compare thead th.me { color: var(--primary-container); }
+.compare tbody th { font-weight: 600; color: var(--ink); }
+.compare td.me { background: var(--primary-tint); font-weight: 600; }
+.compare td .yes { color: var(--good); font-weight: 700; }
+.compare td .no { color: var(--ink-variant); }
+
 /* homepage at-a-glance price strip */
 .pricestrip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 940px; margin: 30px auto 0; }
 .pricestrip .ps { background: var(--white); border: 1px solid var(--line-soft); border-top: 3px solid var(--primary-container);

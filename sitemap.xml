@@ -3,6 +3,7 @@
   <url><loc>https://aaron.chat/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://aaron.chat/about/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/appliance-repair-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aaron.chat/compare/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/concrete-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/electrician-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/fence-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
@@ -10,14 +11,17 @@
   <url><loc>https://aaron.chat/gutter-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/hvac-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/lawn-care-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aaron.chat/not-a-fit/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/painter-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/pest-control-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/plumber-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/pool-service-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/pressure-washing-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/pricing/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://aaron.chat/questions/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/quote/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/remodeler-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aaron.chat/results/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/roofer-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/septic-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/services/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>

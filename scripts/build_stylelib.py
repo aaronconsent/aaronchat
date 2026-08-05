@@ -11,7 +11,7 @@ Run: python3 scripts/build_stylelib.py
 import os, re, html as H
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VER = "105"
+VER = "106"
 
 IDX = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
 LOGO = re.search(r'(<svg class="ha-logo".*?</svg>)', IDX, re.S).group(1)
@@ -130,7 +130,7 @@ def p_hub():
   navy or dark.</p>
   {logos}
   <p class="sg-cap" style="text-align:left;margin-top:18px">Production logo = the inline <code>&lt;svg class="ha-logo"&gt;</code> (fill: currentColor, so it
-  inherits text color). Generative source stored at <a href="/brand/logo/hey-aaron-wordmark.html">/brand/logo/hey-aaron-wordmark.html</a>.</p>
+  inherits text color). Generative source stored at <a href="/brand/logo/hey-aaron-wordmark">/brand/logo/hey-aaron-wordmark</a>.</p>
   <div class="sg-code">{WORDMARK_NOTE}</div>
 </div></section>
 
