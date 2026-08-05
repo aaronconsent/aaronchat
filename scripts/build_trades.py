@@ -165,14 +165,15 @@ def sec_services():
 
 
 def render(t):
-    title = f"Marketing for {t['label']} — Hey Aaron! | Livingston, TX"
+    title = f"Marketing for {t['label']} — Hey Aaron! | Coldspring, TX"
     desc = f"I'm Aaron. I book jobs for {t['label'].lower()}, not just 'leads.' A site that works, top of Google, and ads that pay for themselves. Call and I answer: 713-384-8985."
     url = f"https://aaron.chat/{t['slug']}/"
     schema = ('{"@context":"https://schema.org","@type":"ProfessionalService",'
               f'"name":"Hey Aaron! Marketing for {esc(t["label"])}","url":"{url}",'
               f'"description":"Marketing for {esc(t["label"]).lower()}: websites, local SEO, Google Business Profile, and ads that book jobs.",'
               '"telephone":"+1-713-384-8985","email":"hello@aaron.chat","priceRange":"$$",'
-              '"areaServed":[{"@type":"City","name":"Livingston"},{"@type":"City","name":"Onalaska"},{"@type":"City","name":"Coldspring"},{"@type":"City","name":"Huntsville"},{"@type":"State","name":"Texas"}],'
+              '"address":{"@type":"PostalAddress","streetAddress":"50 Harbour Lane","addressLocality":"Coldspring","addressRegion":"TX","postalCode":"77331","addressCountry":"US"},'
+              '"areaServed":[{"@type":"City","name":"Coldspring"},{"@type":"City","name":"Livingston"},{"@type":"City","name":"Onalaska"},{"@type":"City","name":"Huntsville"},{"@type":"State","name":"Texas"}],'
               '"founder":{"@type":"Person","name":"Aaron Phillips","jobTitle":"Founder — 20+ years in marketing"}}')
     faq_schema = ('{"@context":"https://schema.org","@type":"FAQPage","mainEntity":['
                   '{"@type":"Question","name":"Who owns my website and leads if we part ways?","acceptedAnswer":{"@type":"Answer","text":"You do, from day one. The website, domain, ad accounts, Google profile, and customer list are all in your name. Fire me and you keep every bit of it. I never hold anything hostage."}},'
@@ -217,8 +218,7 @@ def render(t):
         {esc(t['one'])} per area, so your competitor can't hire me.</p>
       <div class="hero-cta">
         <a class="btn btn-call btn-lg" href="tel:+17133848985" data-cta-location="hero">{PHONE}Call Aaron &mdash; he actually answers</a>
-        <!-- [AARON: CONFIRM] 92% answer-rate stat, from your own outreach email. -->
-        <span class="hero-note"><svg><use href="#i-check"/></svg>My phone's on and I answer it more than 92% of the time.</span>
+        <span class="hero-note"><svg><use href="#i-check"/></svg>You call, I answer. No sales rep, no queue.</span>
       </div>
       <p class="hero-avail" data-avail><span class="live"></span><span data-avail-text>Give me a call.</span></p>
     </div>

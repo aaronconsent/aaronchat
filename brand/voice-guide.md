@@ -76,7 +76,7 @@ Profanity is a **highlighter, not a filler**. It marks the sentences that matter
 
 ## 5. Signature moves
 
-1. **The oddly-specific stat** — *"my phone is always on and I answer more than 92% of the time."* Precise numbers where round ones are expected. It's credibility with a wink: 92% is more believable than 100% and funnier than "usually." Use one per page where a claim needs teeth.
+1. **The oddly-specific stat** — precise numbers where round ones are expected. Credibility with a wink: a real, specific number ("answered in 12 seconds," "three towns, not the whole county") is more believable than 100% and funnier than "usually." Use one per page where a claim needs teeth. **(RETIRED: the "92% answer rate" example is killed — Aaron 2026-08. Keep the technique; only ever use a number Aaron will stand behind.)**
 2. **Napkin math out loud** — walk the reader through the money right in the prose: *"50 leads at $2–4k per quote = $100,000 spent before they saw their first piece of work."* Aaron doesn't say "that's expensive," he shows the arithmetic and lets the reader gasp. This is his single best persuasion move — use it on junk-lead costs, agency contract math, and cost-per-booked-job.
 3. **Admit what you can't do / haven't cracked** — *"I still have not cracked the code on B&R"... "I probably won't be able to turn out a fully interactive website, but I can get them headed in the right direction."* He volunteers his limits and unsolved problems, even when it kills his own deal (he once told a client there was no easy win after 20–30 hours of research). This is the deepest trust move in the voice — the website should do it too.
 4. **The receipts move**: follow every claim with the verifiable thing. *"Don't take my word for it — here's the March task list from a real client."*
@@ -151,6 +151,6 @@ Guide tuned against five raw samples: a client wrap-up email, a post-poker outre
 ## 9. Remaining red-pen items for Aaron
 
 - [ ] The three real pricing numbers for the pricing passage
-- [ ] Confirm the 92% answer-rate stat is one you want on the website (it's from your own outreach email — great if you'll stand behind it)
+- [x] ~~Confirm the 92% answer-rate stat~~ — KILLED by Aaron 2026-08. Not used anywhere on the site.
 - [ ] Sections 6–7: kill any line you'd never say; the samples got me close but you're the tiebreaker
 - [ ] Profanity dial after reading in context: the samples suggest even 2–3 per page may be one too many — your call

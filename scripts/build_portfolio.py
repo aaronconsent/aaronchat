@@ -22,7 +22,7 @@ LOGO = re.search(r'(<svg class="ha-logo".*?</svg>)', IDX, re.S).group(1)
 FOOTER = IDX[IDX.index('<footer class="site-foot">'):IDX.index('</footer>') + len('</footer>')]
 SPRITE = IDX[IDX.index('<!-- icon sprite -->'):IDX.index('</defs></svg>') + len('</defs></svg>')]
 PHONE = '<svg><use href="#i-phone"/></svg>'
-BIZ = '<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Hey Aaron! Marketing","url":"https://aaron.chat/","telephone":"+1-713-384-8985","email":"hello@aaron.chat","priceRange":"$$","areaServed":{"@type":"State","name":"Texas"},"address":{"@type":"PostalAddress","addressLocality":"Livingston","addressRegion":"TX","addressCountry":"US"},"founder":{"@type":"Person","name":"Aaron Phillips"}}</script>'
+BIZ = '<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Hey Aaron! Marketing","url":"https://aaron.chat/","telephone":"+1-713-384-8985","email":"hello@aaron.chat","priceRange":"$$","areaServed":{"@type":"State","name":"Texas"},"address":{"@type":"PostalAddress","streetAddress":"50 Harbour Lane","addressLocality":"Coldspring","addressRegion":"TX","postalCode":"77331","addressCountry":"US"},"founder":{"@type":"Person","name":"Aaron Phillips"}}</script>'
 
 HEADER = f'''<header class="site-head"><div class="wrap">
 <a href="/" aria-label="Hey Aaron! home">{LOGO}</a>

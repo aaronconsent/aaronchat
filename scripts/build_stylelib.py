@@ -217,7 +217,7 @@ def p_library():
   <a class="head-call" href="#0">{use('i-phone')}713-384-8985</a>
   <button class="nav-toggle" aria-label="Menu">{use('i-menu')}</button></div></header></div>'''
     footer_demo = f'''<footer class="site-foot" style="border-radius:10px;overflow:clip"><div class="wrap" style="padding-block:28px">
-  <div class="brandcol">{LOGO}<p style="margin-top:6px">Marketing that books jobs for contractors. Owner-operated in Livingston, TX.</p>
+  <div class="brandcol">{LOGO}<p style="margin-top:6px">Marketing that books jobs for contractors. Owner-operated in Coldspring, TX.</p>
   <p style="margin-top:10px"><a href="#0" style="display:inline">713-384-8985</a> &middot; <a href="#0" style="display:inline">hello@aaron.chat</a></p></div>
   <div><h4>What I do</h4><a href="#0">Websites</a><a href="#0">Local SEO</a><a href="#0">Paid ads</a><a class="seeall" href="#0">All services &rarr;</a></div>
   <div><h4>Who I help</h4><a href="#0">HVAC</a><a href="#0">Plumbers</a><a href="#0">Roofers</a><a class="seeall" href="#0">All trades &rarr;</a></div>
@@ -491,7 +491,7 @@ def p_voice():
         f'<tr><td>{a}</td><td class="me">{b}</td></tr>' for a, b in lex)
 
     moves = [
-        ("The oddly-specific stat", "Precise where round is expected: &ldquo;I answer more than 92% of the time.&rdquo; Credibility with a wink. One per page."),
+        ("The oddly-specific stat", "Precise where round is expected: &ldquo;answered in 12 seconds,&rdquo; &ldquo;three towns, not the whole county.&rdquo; A real, specific number beats &ldquo;usually.&rdquo; Only ever use one you'll stand behind."),
         ("Napkin math out loud", "Walk the money right in the prose: &ldquo;$80 a lead, 5 contractors, 1 in 10 books = $800 a job.&rdquo; Show the arithmetic, let them gasp. His single best move."),
         ("Admit what you can't do", "Volunteer your limits, even when it kills the deal. Deepest trust move in the voice. The site should do it too."),
         ("The receipts", "Follow every claim with the verifiable thing. &ldquo;Don't take my word for it &mdash; here's the real task list.&rdquo;"),

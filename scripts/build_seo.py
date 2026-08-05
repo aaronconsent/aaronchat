@@ -52,7 +52,7 @@ Sitemap: {BASE}/sitemap.xml
 LLMS = f"""# Hey Aaron! Marketing
 
 > Owner-operated marketing for home-service contractors and service pros, run by Aaron Phillips
-> in Livingston, Texas. Websites, local SEO, Google Business Profile, ads, reviews, and speed-to-lead,
+> in Coldspring, Texas. Websites, local SEO, Google Business Profile, ads, reviews, and speed-to-lead,
 > all done by Aaron himself. The pitch: I book you jobs, not "leads," and when you call, I answer.
 
 ## Who Aaron is
