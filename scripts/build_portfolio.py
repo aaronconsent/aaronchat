@@ -9,7 +9,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 from _projects_data import PROJECTS  # noqa: E402
 
-VER = "101"
+VER = "102"
 IDX = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
 LOGO = re.search(r'(<svg class="ha-logo".*?</svg>)', IDX, re.S).group(1)
 FOOTER = IDX[IDX.index('<footer class="site-foot">'):IDX.index('</footer>') + len('</footer>')]

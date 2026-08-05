@@ -8,7 +8,7 @@ Run:  python3 scripts/build_trades.py
 import os, re, html as H
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VER = "101"
+VER = "102"
 LOGO = open("/tmp/ha_logo.svg").read() if os.path.exists("/tmp/ha_logo.svg") else ""
 if not LOGO:  # fall back to extracting from the homepage
     idx = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
@@ -275,7 +275,7 @@ def render(t):
 </section>
 
 <section class="sec sec-low">
-  <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,48px);align-items:start">
+  <div class="wrap duo">
     <div class="reveal">
       <span class="caps">30 seconds, 3 taps</span>
       <h2 style="font-size:var(--d-lg);margin:10px 0 14px">Not ready to call? Start here.</h2>
