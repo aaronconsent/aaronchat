@@ -115,7 +115,9 @@ p { margin: 0; text-wrap: pretty; }
 .pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 13px; border-radius: var(--r-full);
   background: var(--secondary-container); color: var(--on-secondary-container);
   font-size: var(--caps); font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
-.pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary-container); }
+.pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--tertiary-bright); }
+/* deliberate accent for a keyword in a headline (large text — clears 3:1) */
+.hl { color: var(--tertiary-bright); }
 .pulse { animation: pulse 2s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
 @media (prefers-reduced-motion: reduce) { .pulse { animation: none; } }
@@ -129,11 +131,12 @@ p { margin: 0; text-wrap: pretty; }
 .site-nav a { color: rgba(255,255,255,.86); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
 .site-nav a:hover { color: #fff; }
 .head-call { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--primary-container);
-  font-weight: 700; font-size: 0.9rem; padding: 10px 18px; border-radius: var(--r-sm); text-decoration: none;
+  font-weight: 700; font-size: 0.9rem; padding: 11px 18px; min-height: 44px; border-radius: var(--r-sm); text-decoration: none;
   box-shadow: var(--sh-sm); }
 .head-call:hover { background: #eef3fb; }
 .head-call svg { width: 17px; height: 17px; }
-.nav-toggle { display: none; background: none; border: 0; color: #fff; padding: 6px; cursor: pointer; }
+.nav-toggle { display: none; background: none; border: 0; color: #fff; padding: 9px; min-width: 44px; min-height: 44px;
+  align-items: center; justify-content: center; cursor: pointer; }
 .nav-toggle svg { width: 26px; height: 26px; }
 @media (max-width: 860px) {
   .site-nav, .head-call { display: none; }
@@ -184,7 +187,10 @@ p { margin: 0; text-wrap: pretty; }
 
 @media (max-width: 860px) {
   .hero .wrap { grid-template-columns: 1fr; }
-  .hero-media { order: -1; }
+  /* lead with the words + the Call button, not an empty photo box */
+  .hero-media { order: 1; margin-top: 6px; }
+  /* the "20 yrs" chip flows below the photo instead of overlapping its caption */
+  .float-card { position: static; margin: 12px auto 0; width: max-content; max-width: 100%; }
 }
 
 /* --------------------------------------------------- image placeholders */

@@ -8,7 +8,7 @@ Run:  python3 scripts/build_trades.py
 import os, re, html as H
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VER = "109"
+VER = "110"
 LOGO = open("/tmp/ha_logo.svg").read() if os.path.exists("/tmp/ha_logo.svg") else ""
 if not LOGO:  # fall back to extracting from the homepage
     idx = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
@@ -287,45 +287,20 @@ def render(t):
 </section>
 
 <section class="sec sec-low">
-  <div class="wrap duo">
-    <div class="reveal">
-      <span class="caps">30 seconds, 3 taps</span>
-      <h2 style="font-size:var(--d-lg);margin:10px 0 14px">Not ready to call? Start here.</h2>
-      <p class="lede" style="margin-bottom:22px">Three quick taps and I'll call you back with something useful, not a pitch.</p>
-      <div class="quiz" data-quiz>
-        <div class="quiz-prog"><i class="on"></i><i></i><i></i></div>
-        <div class="quiz-step on" data-q="trade"><h3>What's your trade?</h3><div class="quiz-grid">
-          <button class="quiz-opt" type="button">{esc(t['trade'].title())}</button>
-          <button class="quiz-opt" type="button">HVAC</button>
-          <button class="quiz-opt" type="button">Plumbing</button>
-          <button class="quiz-opt" type="button">Roofing</button>
-          <button class="quiz-opt" type="button">Remodel / GC</button>
-          <button class="quiz-opt" type="button">Something else</button></div></div>
-        <div class="quiz-step" data-q="need"><h3>What do you need most?</h3><div class="quiz-grid">
-          <button class="quiz-opt" type="button">More calls</button>
-          <button class="quiz-opt" type="button">A better website</button>
-          <button class="quiz-opt" type="button">Show up on Google</button>
-          <button class="quiz-opt" type="button">All of it, honestly</button></div></div>
-        <div class="quiz-step" data-q="phone"><h3>Where do I call you?</h3>
-          <div class="quiz-field"><label for="qp">Your mobile</label>
-          <input id="qp" data-q-phone type="tel" inputmode="tel" placeholder="(936) 555-0100" autocomplete="tel"></div>
-          <button class="btn btn-call btn-block" type="button" data-q-submit style="margin-top:14px">{PHONE}Get my callback</button>
-          <p class="quiz-err" role="alert"></p>
-          <a class="quiz-skip" href="tel:+17133848985" data-cta-location="quiz-skip">or just call now &rarr;</a></div>
-        <div class="quiz-step quiz-done" data-q="done"><span class="big"><svg width="30" height="30"><use href="#i-check"/></svg></span>
-          <h3>Got it.</h3><p class="lede">Aaron will call you back shortly. Rather not wait? Call 713-384-8985.</p></div>
-      </div>
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <h2>Not ready to call? Let me call you.</h2>
+      <p class="lede">Drop your number and my system rings you back in about 28 seconds, while you're still thinking
+      about it. It's the exact speed-to-lead tool I'll put on <em>your</em> site, so go ahead &mdash; the page is the demo.</p>
     </div>
-    <div class="reveal" data-callback>
+    <div class="reveal" data-callback style="max-width:500px;margin-inline:auto">
       <div class="cbw">
-        <h3>Call me in 28 seconds.</h3>
-        <span class="demo-note"><svg width="14" height="14"><use href="#i-bolt"/></svg>This is speed-to-lead. I'll put it on your site too.</span>
-        <p style="margin-bottom:18px">Drop your number. My system calls you almost instantly, while you're still
-        thinking about it. That's the tool that turns a visitor into a booked job.</p>
+        <span class="demo-note"><svg width="14" height="14"><use href="#i-bolt"/></svg>Live demo &mdash; try it</span>
         <form class="cbw-form"><input name="phone" type="tel" inputmode="tel" placeholder="Your mobile number" autocomplete="tel" aria-label="Your mobile number" required>
           <button class="btn btn-white" type="submit">{PHONE}Call me now</button></form>
         <p class="status" role="status" aria-live="polite"></p>
-        <p class="fine">No spam, no list. Just a call from Aaron about your {esc(t['one'])}.</p>
+        <p class="fine">No spam, no list. Just a call from Aaron about your {esc(t['one'])}. Or skip it and
+        <a href="tel:+17133848985" style="color:#ffd8a8">call 713-384-8985</a>.</p>
       </div>
     </div>
   </div>
