@@ -28,7 +28,7 @@ PROJECTS = [
     ),
     dict(
         slug="consent-resolve", name="Consent Resolve", url="https://consentresolve.com",
-        cat="Co-founder &middot; SaaS", tag="SaaS &amp; Web", shot="consentresolve.jpg",
+        cat="Co-founder &middot; SaaS", tag="SaaS &middot; my own company", shot="consentresolve.jpg",
         role="Co-founder &amp; CMO",
         blurb="The privacy-first visitor-ID platform I co-founded for home-service contractors &mdash; identify site visitors by name and email, only with consent, at a flat $7 a lead. I lead marketing and built the site.",
         brief="Consent Resolve is my company &mdash; I co-founded it and run marketing as CMO. It had to sell a genuinely new, compliance-first idea (warm-inbound visitor identification) while staying on the right side of TCPA, CIPA and the Texas TDPSA. Trustworthy, never creepy.",
@@ -143,7 +143,7 @@ PROJECTS = [
     ),
     dict(
         slug="monarx", name="Monarx", url="https://monarx.com",
-        cat="CMO &middot; Marketing &amp; Web", tag="Marketing &amp; Web", shot="monarx.jpg",
+        cat="CMO &middot; Marketing &amp; Web", tag="SaaS &middot; where I was CMO", shot="monarx.jpg",
         role="CMO &middot; 2 years",
         blurb="An anti-malware platform for web hosts that turns malicious activity into high-converting leads &mdash; where I was CMO for two years, owning marketing and the website.",
         brief="Monarx&rsquo;s anti-malware technology detects and prevents more threats than other tools, and turns that activity into a stream of qualified leads for hosting providers. As CMO for two years, I owned go-to-market and the company&rsquo;s web presence.",

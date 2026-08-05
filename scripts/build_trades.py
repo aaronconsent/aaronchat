@@ -8,7 +8,7 @@ Run:  python3 scripts/build_trades.py
 import os, re, html as H
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VER = "102"
+VER = "103"
 LOGO = open("/tmp/ha_logo.svg").read() if os.path.exists("/tmp/ha_logo.svg") else ""
 if not LOGO:  # fall back to extracting from the homepage
     idx = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
@@ -267,6 +267,16 @@ def render(t):
 </section>
 
 <section class="sec sec-white">
+  <div class="wrap reveal" style="max-width:760px;margin-inline:auto;text-align:center">
+    <span class="caps">Straight talk</span>
+    <h2 style="font-size:var(--d-lg);margin:10px 0 14px">No fake reviews. No made-up numbers.</h2>
+    <p class="lede">You will not find a wall of five-star testimonials or a &ldquo;300% growth!&rdquo; banner here,
+    because I do not invent things. I am newer to marketing <em>for the trades</em> than I am to marketing itself,
+    so I earn it the honest way: month to month, and you fire me the second the phone stops ringing.</p>
+  </div>
+</section>
+
+<section class="sec sec-white">
   <div class="wrap">
     <div class="sec-head center reveal"><h2>What I do for {esc(t['label'].lower())}</h2>
       <p class="lede">Everything that gets you found and gets you called. And I run every one of these right here on this page. The site is the demo.</p></div>
@@ -333,7 +343,7 @@ def render(t):
       <details><summary>What if it doesn't work?<svg class="chev"><use href="#i-chev"/></svg></summary>
         <div class="a">It's month to month, so you fire me. No contract traps you. I'd rather earn next month than lock you into twelve.</div></details>
       <details><summary>Who does the work, you or a team?<svg class="chev"><use href="#i-chev"/></svg></summary>
-        <div class="a">Me. Aaron. You call, I answer. You get the guy who ran marketing for cPanel and Monarx, not a script.</div></details>
+        <div class="a">Me. Aaron. You call, I answer. You get the guy who ran marketing for cPanel and Monarx, not a script. I keep a cap on clients so you actually get my attention.</div></details>
     </div>
   </div>
 </section>

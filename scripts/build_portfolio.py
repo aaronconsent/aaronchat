@@ -9,7 +9,14 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 from _projects_data import PROJECTS  # noqa: E402
 
-VER = "102"
+# Persona review (Big Tom): lead the portfolio with client/trade work, not Aaron's own
+# companies. Trade-relevant + local client work first; own/former companies last.
+LEAD_ORDER = ["g4-electric","br-productions","midwest-cnc","polk-county-golf-carts",
+              "lakeside-ink-threadz","deuces-wild-poker","first-byte","booked-job",
+              "dosey-doe","jurassic-quest","consent-resolve","monarx"]
+PROJECTS = sorted(PROJECTS, key=lambda p: LEAD_ORDER.index(p["slug"]) if p["slug"] in LEAD_ORDER else 99)
+
+VER = "103"
 IDX = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
 LOGO = re.search(r'(<svg class="ha-logo".*?</svg>)', IDX, re.S).group(1)
 FOOTER = IDX[IDX.index('<footer class="site-foot">'):IDX.index('</footer>') + len('</footer>')]
