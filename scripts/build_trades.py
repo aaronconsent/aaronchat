@@ -8,7 +8,7 @@ Run:  python3 scripts/build_trades.py
 import os, re, html as H
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VER = "108"
+VER = "109"
 LOGO = open("/tmp/ha_logo.svg").read() if os.path.exists("/tmp/ha_logo.svg") else ""
 if not LOGO:  # fall back to extracting from the homepage
     idx = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
