@@ -11,6 +11,7 @@ LOGO = re.search(r'(<svg class="ha-logo".*?</svg>)', IDX, re.S).group(1)
 FOOTER = IDX[IDX.index('<footer class="site-foot">'):IDX.index('</footer>') + len('</footer>')]
 SPRITE = IDX[IDX.index('<!-- icon sprite -->'):IDX.index('</defs></svg>') + len('</defs></svg>')]
 PHONE = '<svg><use href="#i-phone"/></svg>'
+BIZ = '<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfessionalService","name":"Hey Aaron! Marketing","url":"https://aaron.chat/","telephone":"+1-713-384-8985","email":"hello@aaron.chat","priceRange":"$$","areaServed":{"@type":"State","name":"Texas"},"address":{"@type":"PostalAddress","addressLocality":"Livingston","addressRegion":"TX","addressCountry":"US"},"founder":{"@type":"Person","name":"Aaron Phillips"}}</script>'
 
 HEADER = f'''<header class="site-head"><div class="wrap">
 <a href="/" aria-label="Hey Aaron! home">{LOGO}</a>
@@ -95,7 +96,7 @@ def head(title, desc, path):
 <meta name="theme-color" content="#074588"><link rel="canonical" href="https://aaron.chat{path}">
 <meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(desc)}">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/ha.css?v={VER}"></head><body>
+<link rel="stylesheet" href="/brand/ha.css?v={VER}">{BIZ}</head><body>
 <a class="skip" href="#main">Skip to content</a>{SPRITE}{HEADER}<main id="main">'''
 
 
