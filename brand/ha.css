@@ -240,12 +240,17 @@ p { margin: 0; text-wrap: pretty; }
   letter-spacing: 0.04em; text-transform: uppercase; color: var(--tertiary); }
 
 /* proof rows (honest, specific) */
-.proof { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 18px; }
-.proof .p { background: var(--white); border: 1px solid var(--line-soft); border-radius: var(--r);
-  padding: 22px 24px; box-shadow: var(--sh-sm); }
-.proof .p b { display: block; font-size: clamp(1.9rem, 4vw, 2.5rem); line-height: 1; color: var(--primary-container);
-  letter-spacing: -0.02em; }
-.proof .p span { display: block; margin-top: 8px; color: var(--ink-variant); font-size: 0.92rem; }
+/* "name the villain" blocks — the cons, marked with a red x (distinct from the navy service cards) */
+.proof { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 18px; }
+.proof .p { position: relative; background: var(--white); border: 1px solid var(--line-soft);
+  border-radius: var(--r-lg); padding: 26px 26px 28px; box-shadow: var(--sh-sm); }
+.proof .p::before { content: ""; display: block; width: 34px; height: 34px; margin-bottom: 16px;
+  background: var(--danger);
+  -webkit-mask: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='15' y1='9' x2='9' y2='15'/%3E%3Cline x1='9' y1='9' x2='15' y2='15'/%3E%3C/svg%3E");
+  mask: no-repeat center / contain url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cline x1='15' y1='9' x2='9' y2='15'/%3E%3Cline x1='9' y1='9' x2='15' y2='15'/%3E%3C/svg%3E"); }
+.proof .p b { display: block; font-size: 1.2rem; font-weight: 700; line-height: 1.25; color: var(--ink);
+  letter-spacing: -0.01em; }
+.proof .p span { display: block; margin-top: 9px; color: var(--ink-variant); font-size: 0.96rem; line-height: 1.55; }
 
 /* work strip */
 .worklist { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; }
