@@ -369,3 +369,84 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
   overflow: hidden; border: 1px solid var(--line-soft); box-shadow: var(--sh-lg); background: var(--surface-high); }
 .split-media .frame .imgslot { height: 100%; aspect-ratio: auto; }
 @media (max-width: 860px) { .split { grid-template-columns: 1fr; } .split-media { order: -1; } .split-media .frame { max-height: 420px; } }
+
+/* =================================================== interior pages */
+.page-hero { background: var(--primary-container); color: #fff; padding-block: clamp(38px, 6vw, 72px); }
+.page-hero h1 { color: #fff; font-size: var(--d-lg); margin-bottom: 12px; }
+.page-hero p { color: rgba(255,255,255,.86); max-width: 56ch; font-size: var(--body-lg); }
+.page-hero .caps { color: #9fc0ff; margin-bottom: 10px; display: block; }
+
+/* prose / legal */
+.prose { max-width: 760px; }
+.prose h2 { font-size: var(--h-md); margin: var(--gut) 0 0.4em; scroll-margin-top: 84px; }
+.prose h2:first-child { margin-top: 0; }
+.prose h3 { font-size: 1.08rem; margin: 22px 0 0.3em; }
+.prose p, .prose li { max-width: 68ch; margin: 0 0 0.9em; }
+.prose ul, .prose dl { margin: 0 0 1em; padding-left: 1.15em; }
+.prose li { margin-bottom: 0.5em; }
+.prose dt { font-weight: 700; color: var(--ink); margin-top: 0.7em; }
+.prose dd { margin: 0; color: var(--ink-variant); }
+.prose .updated { font-size: 0.75rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--ink-variant); margin-bottom: var(--gut); }
+.prose .toc { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0;
+  margin-bottom: var(--gut); display: flex; flex-wrap: wrap; gap: 6px 20px; }
+.prose .toc a { font-size: 0.9rem; }
+.prose .callout { background: var(--info-bg); border: 1px solid var(--line); border-left: 4px solid var(--primary-container);
+  border-radius: 0 var(--r) var(--r) 0; padding: 18px 20px; margin: 14px 0 20px; }
+.prose .callout p:last-child { margin-bottom: 0; }
+.prose .callout strong { color: var(--primary-container); }
+.prose table { border-collapse: collapse; width: auto; margin: 0 0 1em; }
+.prose th, .prose td { border: 1px solid var(--line); padding: 8px 14px; text-align: left; }
+.prose th { background: var(--surface-low); font-size: 0.85rem; }
+
+/* quote / contact form (navy) — keeps the compliant consent markup */
+.qform { background: var(--white); border: 1px solid var(--line-soft); border-radius: var(--r-lg);
+  box-shadow: var(--sh-md); padding: clamp(22px, 3vw, 32px); }
+.qf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.qf-field { margin-bottom: 14px; }
+.qf-field label { display: block; font-weight: 700; font-size: 0.85rem; color: var(--ink); margin-bottom: 5px; }
+.qf-field .req { color: var(--danger); }
+.qf-field .qf-opt, .qf-opt { font-weight: 400; color: var(--ink-variant); font-size: 0.82rem; }
+.qform input, .qform select, .qform textarea { width: 100%; font: inherit; font-size: 16px; padding: 12px 14px;
+  border: 1.5px solid var(--line); border-radius: var(--r-sm); background: #fff; color: var(--ink); }
+.qform textarea { resize: vertical; }
+.qform input:focus-visible, .qform select:focus-visible, .qform textarea:focus-visible {
+  outline: none; border-color: var(--primary-container); box-shadow: 0 0 0 3px rgba(7,69,136,.16); }
+.qf-consent { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: start; margin: 6px 0 4px;
+  padding: 14px 16px; background: var(--surface-low); border: 1px solid var(--line); border-radius: var(--r-sm); }
+.qf-consent + .qf-consent { margin-top: 10px; }
+.qf-consent--optional { background: transparent; border-style: dashed; }
+.qf-consent input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--primary-container); flex: none; }
+.qf-consent-text { font-size: 0.82rem; line-height: 1.5; color: var(--ink-variant); }
+.qf-consent-text strong { color: var(--ink); }
+.qf-consent:focus-within { border-color: var(--primary-container); box-shadow: 0 0 0 3px rgba(7,69,136,.12); }
+.qf-submit { width: 100%; margin-top: 16px; }
+.qf-fine { font-size: 0.78rem; color: var(--ink-variant); margin-top: 12px; text-align: center; }
+.qform .form-status { margin-top: 12px; font-size: 0.92rem; font-weight: 700; }
+.qform .form-status.ok { color: var(--good); }
+.qform .form-status.err { color: var(--danger); }
+@media (max-width: 480px) { .qf-row { grid-template-columns: 1fr; gap: 0; } }
+
+/* pricing tiers */
+.tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; align-items: start; }
+.tier { background: var(--white); border: 1px solid var(--line-soft); border-radius: var(--r-lg); padding: 28px 26px;
+  box-shadow: var(--sh-sm); display: flex; flex-direction: column; position: relative; }
+.tier.pop { border: 2px solid var(--primary-container); box-shadow: var(--sh-md); }
+.tier .badge { position: absolute; top: -12px; left: 26px; background: var(--primary-container); color: #fff;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 4px 12px; border-radius: var(--r-full); }
+.tier .name { font-size: 0.8rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--tertiary); }
+.tier .price { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.02em; margin: 6px 0 2px; }
+.tier .price span { font-size: 1rem; font-weight: 500; color: var(--ink-variant); }
+.tier .sub { color: var(--ink-variant); margin-bottom: 16px; }
+.tier ul { list-style: none; padding: 0; margin: 0 0 22px; display: grid; gap: 10px; }
+.tier li { display: grid; grid-template-columns: 20px 1fr; gap: 9px; font-size: 0.92rem; align-items: start; }
+.tier li svg { width: 18px; height: 18px; color: var(--good); margin-top: 2px; }
+.tier .btn { margin-top: auto; }
+
+/* quote page layout */
+.quote-grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(28px, 5vw, 56px); align-items: start; }
+.quote-points { list-style: none; padding: 0; margin: var(--gut) 0; }
+.quote-points li { position: relative; padding-left: 26px; margin-bottom: 10px; }
+.quote-points li::before { content: "\2713"; position: absolute; left: 0; color: var(--good); font-weight: 700; }
+.quote-call { font-size: 0.94rem; color: var(--ink-variant); }
+@media (max-width: 820px) { .quote-grid { grid-template-columns: 1fr; } }
