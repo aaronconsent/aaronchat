@@ -545,6 +545,70 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 .compare td .yes { color: var(--good); font-weight: 700; }
 .compare td .no { color: var(--ink-variant); }
 
+/* ===================== funnel showpiece — the post-hero animation ======== */
+.funnel-sec { background: radial-gradient(120% 80% at 50% -10%, var(--primary-tint) 0%, var(--surface) 55%); }
+.funnel { display: grid; grid-template-columns: 0.82fr 1fr; gap: clamp(24px, 4vw, 52px); align-items: center; }
+@media (max-width: 820px) { .funnel { grid-template-columns: 1fr; gap: 34px; max-width: 440px; margin-inline: auto; } }
+
+/* the phone lighting up */
+.funnel-device { position: relative; justify-self: center; }
+.fd-frame { position: relative; z-index: 1; width: min(300px, 80vw); border-radius: 40px; padding: 12px;
+  background: linear-gradient(160deg, #2a2f3a, #14161b);
+  box-shadow: 0 30px 60px -20px rgba(7,25,50,.5), inset 0 0 0 1px rgba(255,255,255,.05); }
+.fd-notch { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 92px; height: 20px;
+  background: #0c0e12; border-radius: 0 0 14px 14px; z-index: 3; }
+.fd-screen { background: linear-gradient(180deg, #0e1723, #0b1017); border-radius: 30px; padding: 42px 14px 18px;
+  min-height: 430px; overflow: hidden; }
+.fd-head { display: flex; align-items: center; gap: 8px; color: #cfe0ff; font-size: .74rem; font-weight: 700;
+  letter-spacing: .05em; text-transform: uppercase; padding: 4px 8px 14px; }
+.fd-head .fd-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--good); }
+.fd-leads { list-style: none; display: grid; gap: 9px; padding: 0; margin: 0; }
+.fd-lead { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: center;
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.09); border-radius: 14px; padding: 10px 12px; }
+.fd-lead b { display: block; color: #fff; font-size: .82rem; font-weight: 600; line-height: 1.25; }
+.fd-lead span { color: rgba(207,224,255,.62); font-size: .68rem; }
+.fd-ic { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; flex: none; }
+.fd-ic svg { width: 17px; height: 17px; }
+.fd-ic.sms { background: rgba(59,130,246,.2); color: #7cb0ff; }
+.fd-ic.mail { background: rgba(180,97,12,.22); color: #f2a255; }
+.fd-ic.ok { background: rgba(31,107,35,.24); color: #86e492; }
+.fd-lead.booked { background: rgba(31,107,35,.15); border-color: rgba(31,107,35,.4); }
+.fd-glow { position: absolute; left: 0; right: 0; top: 8%; height: 62%; z-index: 0; opacity: .28;
+  background: radial-gradient(closest-side, rgba(7,69,136,.5), transparent 72%); filter: blur(26px); }
+/* animation enhances an already-visible default (leads are visible without JS) */
+[data-funnel].playing .fd-lead { animation: fd-in .55s cubic-bezier(.22,1,.36,1) both; animation-delay: calc(var(--i, 0) * .3s); }
+[data-funnel].playing .fd-head .fd-dot { animation: fd-pulse 1.9s ease-out infinite; }
+[data-funnel].playing .fd-glow { animation: fd-glow 3.6s ease-in-out infinite; }
+@keyframes fd-in { from { opacity: 0; transform: translateY(14px) scale(.96); } to { opacity: 1; transform: none; } }
+@keyframes fd-pulse { 0% { box-shadow: 0 0 0 0 rgba(31,107,35,.6); } 70% { box-shadow: 0 0 0 9px rgba(31,107,35,0); } 100% { box-shadow: 0 0 0 0 rgba(31,107,35,0); } }
+@keyframes fd-glow { 0%,100% { opacity: .22; } 50% { opacity: .58; } }
+
+/* the scoreboard / TurboTax-style counter */
+.funnel-score { background: linear-gradient(150deg, var(--primary-container) 0%, var(--primary) 100%); color: #fff;
+  border-radius: var(--r-xl); padding: clamp(24px, 3.5vw, 40px); box-shadow: var(--sh-lg); position: relative; overflow: hidden; }
+.funnel-score::before { content: ""; position: absolute; inset: -30% -10% auto auto; width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(126,224,138,.18), transparent 70%); pointer-events: none; }
+.funnel-score > * { position: relative; z-index: 1; }
+.fs-eyebrow { color: #ffd8a8; font-size: .74rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.fs-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,.12); }
+.fs-row:first-of-type { margin-top: 16px; }
+.fs-label { font-weight: 600; } .fs-label small { display: block; font-weight: 500; font-size: .7rem; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .06em; margin-top: 2px; }
+.fs-num { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 1.55rem; letter-spacing: -.01em; }
+.fs-row.out .fs-num { color: rgba(255,255,255,.78); }
+.fs-num.big { font-size: clamp(2.3rem, 1.6rem + 2.6vw, 3.1rem); color: #86e492; font-weight: 800; line-height: 1; }
+.fs-bar { height: 8px; border-radius: 99px; background: rgba(255,255,255,.12); margin: 20px 0 16px; overflow: hidden; }
+.fs-bar i { display: block; height: 100%; width: 12%; border-radius: 99px; background: linear-gradient(90deg, #4fbf63, #b4f0bf); transition: width 1.7s cubic-bezier(.22,1,.36,1); }
+[data-funnel].playing .fs-bar i { width: 88%; }
+.fs-foot { display: flex; gap: 26px; flex-wrap: wrap; }
+.fs-stat b { display: block; font-size: 1.4rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.fs-stat span { font-size: .76rem; color: rgba(255,255,255,.68); }
+.fs-sample { display: block; margin-top: 18px; font-size: .72rem; color: rgba(255,255,255,.55); font-style: italic; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-funnel].playing .fd-lead, [data-funnel].playing .fd-head .fd-dot, [data-funnel].playing .fd-glow { animation: none; }
+  .fs-bar i { transition: none; width: 88%; }
+}
+
 /* highlighted "protections in writing" band — exclusivity + guarantee (offer section) */
 .pledge { background: linear-gradient(135deg, var(--primary-container) 0%, var(--primary) 100%); color: #fff;
   border-radius: var(--r-xl); padding: clamp(26px, 4vw, 40px); margin: 34px auto 0; max-width: 900px;

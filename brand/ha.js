@@ -171,4 +171,35 @@
     });
     d.addEventListener("keydown", function (e) { if (e.key === "Escape") modal.hidden = true; });
   })();
+
+  /* -------- funnel showpiece: count-up + play trigger ---------------------------- */
+  (function funnel() {
+    var sec = d.querySelector("[data-funnel]"); if (!sec) return;
+    function fmt(n, prefix) { return (prefix || "") + Math.round(n).toLocaleString("en-US"); }
+    var played = false;
+    function play() {
+      if (played) return; played = true;
+      sec.classList.add("playing");           // triggers CSS entrances + bar fill
+      if (reduce) return;                      // reduced motion: leave final numbers as-is
+      sec.querySelectorAll("[data-count-to]").forEach(function (el) {
+        var to = parseFloat(el.getAttribute("data-count-to"));
+        var prefix = el.getAttribute("data-prefix") || "";
+        var dur = 1650, start = null;
+        el.textContent = fmt(0, prefix);
+        function step(ts) {
+          if (start === null) start = ts;
+          var p = Math.min(1, (ts - start) / dur);
+          var eased = 1 - Math.pow(1 - p, 3);  // ease-out cubic
+          el.textContent = fmt(to * eased, prefix);
+          if (p < 1) requestAnimationFrame(step); else el.textContent = fmt(to, prefix);
+        }
+        requestAnimationFrame(step);
+      });
+    }
+    if (reduce || !("IntersectionObserver" in w)) { play(); return; }
+    var io2 = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { play(); io2.disconnect(); } });
+    }, { threshold: 0.35 });
+    io2.observe(sec);
+  })();
 })();
