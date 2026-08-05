@@ -82,7 +82,7 @@ def render_case(p):
     metric = ""
     if p.get("metric_n"):
         metric = f'<div class="case-metric"><b>{p["metric_n"]}</b><span>{esc_txt(p["metric_l"])}</span></div>'
-    return f'''{head(esc(p["name"]) + " — work by Hey Aaron! Marketing", esc_txt(p["blurb"])[:150], f"/work/{p['slug']}/")}
+    return f'''{head(H.unescape(p["name"]) + " — work by Hey Aaron! Marketing", H.unescape(esc_txt(p["blurb"]))[:150], f"/work/{p['slug']}/")}
 <div class="page-hero"><div class="wrap"><a class="caps" href="/work/" style="text-decoration:none">&larr; All work</a>
 <h1>{p["name"]}</h1><p>{p["blurb"]}</p></div></div>
 <section class="sec"><div class="wrap split">

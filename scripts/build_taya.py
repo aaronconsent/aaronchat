@@ -85,8 +85,9 @@ def p_not_a_fit():
          "There are $99 site builders, and if that's the budget, use one. A site that actually books jobs, loads fast, "
          "and ranks takes real work. I'm not the cheapest, and I won't pretend to be."),
         ("You won't answer your phone.",
-         "All the marketing in the world dies at a voicemail. If you can't answer or call back fast, that's the first "
-         "leak to plug, before you spend a dime with me. Fix that, then let's talk."),
+         "All the marketing in the world dies at a voicemail. I can make the phone ring all day and it won't matter "
+         "worth a damn if nobody picks up. If you can't answer or call back fast, that's the first leak to plug, "
+         "before you spend a dime with me."),
         ("You want me to guarantee jobs I can't control.",
          "I control the marketing. I don't control whether you pick up, show up, or close the sale. So I won't promise "
          "“30 jobs a month, guaranteed.” Anybody who does is lying to you, and you already know it."),

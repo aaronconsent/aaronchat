@@ -28,6 +28,7 @@ def use(icon):
 
 NAVITEMS = [("/style-guide/", "Overview"),
             ("/style-guide/library/", "Components"),
+            ("/style-guide/voice/", "Voice"),
             ("/style-guide/icp/", "ICP")]
 
 
@@ -474,10 +475,136 @@ def p_icp():
                  "The Hey Aaron! ideal customer profile: buyer persona, message match, and the 17 trades.", body)
 
 
+def p_voice():
+    lex = [
+        ("conversions, lead flow, pipeline", "booked jobs, the phone ringing, work on the calendar"),
+        ("holistic, omnichannel, synergy, leverage", "(banned &mdash; rewrite the sentence)"),
+        ("digital solutions, deliverables", "the work, what I actually did, your website / your ads"),
+        ("utilize", "use"),
+        ("best-in-class, cutting-edge, innovative", "(show the result, don't claim the adjective)"),
+        ("reach out", "call me, text me"),
+        ("our team", "I / me (it's Aaron; name a contractor if one helps)"),
+        ("SEO, PPC, LSA (unexplained)", "showing up on Google, the ads &mdash; plain words first, acronym after"),
+        ("clients", "contractors, or the trade by name (roofers, HVAC guys)"),
+    ]
+    lex_rows = "".join(
+        f'<tr><td>{a}</td><td class="me">{b}</td></tr>' for a, b in lex)
+
+    moves = [
+        ("The oddly-specific stat", "Precise where round is expected: &ldquo;I answer more than 92% of the time.&rdquo; Credibility with a wink. One per page."),
+        ("Napkin math out loud", "Walk the money right in the prose: &ldquo;$80 a lead, 5 contractors, 1 in 10 books = $800 a job.&rdquo; Show the arithmetic, let them gasp. His single best move."),
+        ("Admit what you can't do", "Volunteer your limits, even when it kills the deal. Deepest trust move in the voice. The site should do it too."),
+        ("The receipts", "Follow every claim with the verifiable thing. &ldquo;Don't take my word for it &mdash; here's the real task list.&rdquo;"),
+        ("Name the uncomfortable thing first", "Open with the objection they're already thinking. &ldquo;You've been burned before. Probably twice.&rdquo;"),
+        ("The anti-pitch", "Tell them when NOT to hire you, what the big guys do better, what it costs. Transparency IS the sales strategy."),
+        ("Poker is a place, not a metaphor", "Aaron networks at the poker table; he doesn't talk in card metaphors. Reference the table as community, drop the wordplay."),
+        ("Job-site respect", "Talk about their work like the skilled work it is. The villain is always the marketing industry, never the contractor."),
+    ]
+    move_cards = "".join(
+        f'<div class="card"><h3>{t}</h3><p>{b}</p></div>' for t, b in moves)
+
+    ba = [
+        ("&ldquo;We deliver comprehensive digital marketing solutions tailored to your needs.&rdquo;",
+         "&ldquo;I get roofers and HVAC companies booked jobs. That's it. That's the whole company.&rdquo;"),
+        ("&ldquo;Our proven process ensures maximum ROI through data-driven optimization.&rdquo;",
+         "&ldquo;Every month you get a list of exactly what I did and what it made you. If the math doesn't work, fire me.&rdquo;"),
+        ("&ldquo;Contact us today to schedule a free consultation!&rdquo;",
+         "&ldquo;Call me. I answer my own phone &mdash; which, if you've dealt with a big agency, might be the strangest thing on this website.&rdquo;"),
+    ]
+    ba_rows = "".join(
+        f'<tr><td>{t}</td><td class="me">{a}</td></tr>' for t, a in ba)
+
+    body = f'''
+<main>
+<section class="sg-hero"><div class="sg-wrap">
+  <span class="kick">Voice &amp; tone &mdash; locked</span>
+  <h1>How Hey Aaron! talks.</h1>
+  <p>Aaron. One guy, 20+ years in marketing, talking to another owner-operator with a truck, a crew, and a phone
+  that isn't ringing enough. Not an agency &ldquo;we.&rdquo; The straight talk you'd give a buddy at the poker table
+  who asked &ldquo;should I hire this marketing company?&rdquo; &mdash; the answer with no commission riding on it.</p>
+  <div class="sg-demo" style="margin-top:22px"><div class="pad" style="border-left:3px solid var(--primary-container)">
+    <b>This guide is the source of truth.</b> If new copy drifts from it, the move is: fix the copy, or update this
+    page on purpose &mdash; never quietly let the voice slide. Full guide lives in the repo at
+    <code>brand/voice-guide.md</code>.</div></div>
+</div></section>
+
+<section class="sg-sec"><div class="sg-wrap">
+  <h2>Say this, not that</h2>
+  <p class="lead">The lexicon. Left column is banned; rewrite to the right.</p>
+  <div class="table-scroll"><table class="compare"><thead><tr><th>Never say</th><th class="me">Say instead</th></tr></thead>
+  <tbody>{lex_rows}</tbody></table></div>
+  <p class="lead" style="margin-top:14px"><b>Numbers:</b> round when talking (&ldquo;fifteen hundred bucks&rdquo;),
+  exact when promising (&ldquo;$1,500/mo&rdquo;). <b>Contractions:</b> always. A sentence without them reads like a lawyer wrote it.</p>
+</div></section>
+
+<section class="sg-sec"><div class="sg-wrap">
+  <h2>Profanity &mdash; a highlighter, not a filler</h2>
+  <p class="lead">Aaron's natural baseline is <b>zero</b>. Used right, one &ldquo;damn&rdquo; does more than three
+  exclamation points, on the villain, the stakes, or the hard truth. Never as seasoning in a neutral sentence.
+  Register is PG-13 (<em>damn, hell, ass, crap, BS, sucks</em>); one notch stronger is rationed to load-bearing only.</p>
+  <div class="split2" style="margin-top:10px"><div>
+    <div class="card" style="border-top:3px solid var(--good)"><h3 style="font-size:1rem">Where it's allowed</h3>
+    <p>Body copy on pages that aren't primarily paid-ad landers. Max 2&ndash;3 per page; zero is common and fine.
+    On the point that carries the argument, never the setup.</p></div>
+  </div><div>
+    <div class="card" style="border-top:3px solid var(--danger)"><h3 style="font-size:1rem">Hard no-fly zones (never)</h3>
+    <p>Meta titles &amp; descriptions, anything Google/Meta crawls for ad approval, the guarantee, pricing &amp;
+    legal terms, schema/JSON-LD, email subject lines, and anything a client's own customer sees. <b>The website is
+    ad-crawled &mdash; keep it near-zero.</b></p></div>
+  </div></div>
+</div></section>
+
+<section class="sg-sec"><div class="sg-wrap">
+  <h2>Cadence &amp; mechanics</h2>
+  <ul class="svc-get" style="max-width:760px">
+    <li>{use('i-check')}<span>Short sentences. Then a shorter one. Then one long one that stacks up three things they already agree with before the point lands.</span></li>
+    <li>{use('i-check')}<span>Questions open sections. Statements close them. One-sentence paragraphs for the knockout line.</span></li>
+    <li>{use('i-check')}<span>Dashes over semicolons &mdash; semicolons are banned. Sentence fragments allowed for punch.</span></li>
+    <li>{use('i-check')}<span>6th-grade reading level. If a roofer would squint at a word, swap it. Second person dominant; &ldquo;I&rdquo; for Aaron; &ldquo;we&rdquo; only when it means Aaron + the reader.</span></li>
+    <li>{use('i-check')}<span>Ellipses (&ldquo;....&rdquo;) and the &ldquo;=&rdquo; punchline live in email &amp; social, not website headers. &ldquo;Howdy&rdquo; and rotating warm sign-offs are real.</span></li>
+  </ul>
+</div></section>
+
+<section class="sg-sec"><div class="sg-wrap">
+  <h2>Signature moves</h2>
+  <p class="lead">The moves that make it sound like Aaron and nobody else.</p>
+  <div class="cards">{move_cards}</div>
+</div></section>
+
+<section class="sg-sec"><div class="sg-wrap">
+  <h2>Before / after</h2>
+  <div class="table-scroll"><table class="compare"><thead><tr><th>Templated</th><th class="me">Aaron</th></tr></thead>
+  <tbody>{ba_rows}</tbody></table></div>
+</div></section>
+
+<section class="sg-sec"><div class="sg-wrap">
+  <h2>Sample passages</h2>
+  <p class="lead">The voice, in place. Hold new copy against these.</p>
+  <div class="contentblock" style="max-width:760px">
+    <h4>Hero</h4>
+    <p style="border-left:3px solid var(--line);padding-left:14px;color:var(--ink)">Tired of paying for junk leads
+    that don't answer the phone? I'm Aaron. I get East Texas contractors booked jobs &mdash; real ones, on your
+    calendar &mdash; and everything I build belongs to you. Month-to-month. One contractor per market.</p>
+    <h4>Villain (napkin math)</h4>
+    <p style="border-left:3px solid var(--line);padding-left:14px;color:var(--ink)">That $80 &ldquo;exclusive&rdquo;
+    lead got sold to four other roofers before your phone buzzed. $80 a lead, 5 contractors, 1 in 10 books =
+    you're paying $800 a booked job for a footrace to voicemail. That's not marketing. That's a coin toss you paid for.</p>
+    <h4>When NOT to hire me</h4>
+    <p style="border-left:3px solid var(--line);padding-left:14px;color:var(--ink)">Don't hire me if you need 50
+    leads by Friday, anyone promising that is lying. Don't hire me if nobody answers the phone, because I can make
+    it ring all day and it won't matter worth a damn if it goes to voicemail. Still here? Good.</p>
+  </div>
+</div></section>
+</main>'''
+    return shell("/style-guide/voice/", "Voice & Tone — Hey Aaron! Marketing",
+                 "The locked Hey Aaron! voice: lexicon, profanity rules, cadence, signature moves, and sample passages.", body)
+
+
 def main():
     out = {
         "style-guide": p_hub(),
         "style-guide/library": p_library(),
+        "style-guide/voice": p_voice(),
         "style-guide/icp": p_icp(),
     }
     for path, html in out.items():
