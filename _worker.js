@@ -1292,6 +1292,53 @@ async function sendEmail(env, { subject, text, reply_to, to }) {
   return res.ok;
 }
 
+// Quiz qualifier (rule 7) + callback widget (rule 2) from the Hey Aaron! homepage.
+// Both are call-first: capture a number + tracking ids, email Aaron so he can call.
+async function handleLead(request, env, ctx) {
+  if (request.method !== "POST") return json({ ok: false, error: "Method not allowed" }, 405);
+  try {
+    const d = await request.json().catch(() => ({}));
+    if (clean(d._gotcha, 100)) return json({ ok: true });
+    const type = clean(d._type, 40) || "lead";
+    const phone = clean(d.phone, 50);
+    const trade = clean(d.trade, 80);
+    const need = clean(d.need, 120);
+    if ((phone.replace(/\D/g, "") || "").length < 10) {
+      return json({ ok: false, error: "Please enter a valid phone number." }, 400);
+    }
+    const t = d.track && typeof d.track === "object" ? d.track : {};
+    const trackLines = Object.keys(t).length
+      ? Object.keys(t).map((k) => `  ${k}: ${clean(t[k], 200)}`).join("\n")
+      : "  (none)";
+    const nowISO = new Date().toISOString();
+    const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+    const lines = [
+      `NEW ${type.toUpperCase()} — call this number back`,
+      "",
+      `Phone: ${phone}`,
+      trade ? `Trade: ${trade}` : null,
+      need ? `Needs: ${need}` : null,
+      "",
+      `Source: ${type === "callback" ? "callback widget (speed-to-lead)" : "3-tap quiz"}`,
+      `Time (UTC): ${nowISO}`,
+      `IP: ${ip}`,
+      "Attribution:",
+      trackLines,
+    ].filter((l) => l !== null);
+
+    if (!env.RESEND_API_KEY) return json({ ok: false, error: "Not configured yet." }, 500);
+    const bg = sendEmail(env, {
+      subject: `📞 ${type === "callback" ? "Callback" : "Quiz lead"}: ${phone}${trade ? " · " + trade : ""}`,
+      text: lines.join("\n"),
+    }).catch((e) => console.log("lead email error", e && e.message));
+    if (ctx && ctx.waitUntil) ctx.waitUntil(bg); else await bg;
+    return json({ ok: true });
+  } catch (e) {
+    console.log("lead error", e && e.message);
+    return json({ ok: false, error: "Something went wrong. Call 713-384-8985." }, 500);
+  }
+}
+
 async function handleDiagnose(request, env, ctx) {
   if (request.method !== "POST") return json({ ok: false, error: "Method not allowed" }, 405);
   try {
@@ -1497,6 +1544,7 @@ export default {
     const url = new URL(request.url);
 
     // Existing routes
+    if (url.pathname === "/api/lead") return handleLead(request, env, ctx);
     if (url.pathname === "/api/contact") return handleContact(request, env);
     if (url.pathname === "/api/quote") return handleQuote(request, env, ctx);
     if (url.pathname === "/api/order") return handleOrder(request, env);
