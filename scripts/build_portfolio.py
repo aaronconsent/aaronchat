@@ -16,7 +16,7 @@ LEAD_ORDER = ["g4-electric","br-productions","midwest-cnc","polk-county-golf-car
               "dosey-doe","jurassic-quest","consent-resolve","monarx"]
 PROJECTS = sorted(PROJECTS, key=lambda p: LEAD_ORDER.index(p["slug"]) if p["slug"] in LEAD_ORDER else 99)
 
-VER = "106"
+VER = "107"
 IDX = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
 LOGO = re.search(r'(<svg class="ha-logo".*?</svg>)', IDX, re.S).group(1)
 FOOTER = IDX[IDX.index('<footer class="site-foot">'):IDX.index('</footer>') + len('</footer>')]
