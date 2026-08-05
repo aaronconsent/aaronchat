@@ -2334,3 +2334,11 @@
 2026-08-05T12:50:08  bluesky[audience]: no unposted items
 2026-08-05T12:50:08  mastodon[credibility]: gated. window:ok(window 9-17) | cap:blocked(cap_hit today=1 cap=1)
 2026-08-05T12:50:08  mastodon[audience]: no unposted items
+2026-08-05T14:48:43  linkedin[credibility]: FAILED id=cdf15fd94d55 backend=buffer detail=Buffer HTTP 401: {"errors":[{"message":"Access token is not valid","extensions":{"code":"UNAUTHENTICATED"}}]}
+2026-08-05T14:48:43  linkedin[audience]: gated. window:blocked(outside_windows hour=14)
+2026-08-05T14:48:43  x[credibility]: FAILED id=befc44b9ea08 backend=buffer detail=Buffer HTTP 401: {"errors":[{"message":"Access token is not valid","extensions":{"code":"UNAUTHENTICATED"}}]}
+2026-08-05T14:48:43  x[audience]: gated. window:blocked(outside_windows hour=14)
+2026-08-05T14:48:45  bluesky[credibility]: FAILED id=0f223d3374d2 backend=own_app detail=createRecord failed: post text 320 chars; Bluesky max is 300
+2026-08-05T14:48:45  bluesky[audience]: gated. window:blocked(outside_windows hour=14)
+2026-08-05T14:48:45  mastodon[credibility]: gated. window:ok(window 9-17) | cap:blocked(cap_hit today=1 cap=1)
+2026-08-05T14:48:45  mastodon[audience]: gated. window:blocked(outside_windows hour=14)
