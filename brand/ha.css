@@ -545,8 +545,14 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 .compare td .yes { color: var(--good); font-weight: 700; }
 .compare td .no { color: var(--ink-variant); }
 
-/* ===================== funnel showpiece — the post-hero animation ======== */
-.funnel-sec { background: radial-gradient(120% 80% at 50% -12%, var(--primary-tint) 0%, var(--surface) 55%); }
+/* ===================== funnel showpiece — cinematic live feed ============= */
+.funnel-sec { position: relative; overflow: hidden; color: #fff;
+  background: radial-gradient(90% 75% at 50% 0%, #12233f 0%, #0a1322 72%); }
+.funnel-sec::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(130% 90% at 50% 42%, transparent 42%, rgba(0,0,0,.42) 100%); }
+.funnel-sec .wrap { position: relative; z-index: 1; }
+.funnel-sec .sec-head h2 { color: #fff; }
+.funnel-sec .sec-head .lede { color: rgba(255,255,255,.74); }
 .funnel3 { display: grid; grid-template-columns: 1fr 0.84fr 1fr; gap: clamp(14px, 2.4vw, 30px); align-items: center; }
 @media (max-width: 900px) { .funnel3 { grid-template-columns: 1fr; max-width: 400px; margin-inline: auto; gap: 26px; } }
 .funnel-device, .funnel-inbox { position: relative; justify-self: center; width: 100%; max-width: 300px; }
@@ -625,6 +631,56 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
   [data-funnel].playing .fd-lead, [data-funnel].playing .ib-row,
   [data-funnel].playing .fd-head .fd-dot, [data-funnel].playing .fd-glow { animation: none; }
   .fm-bar i { transition: none; width: 88%; }
+}
+
+/* live-feed additions (cinematic) */
+.funnel-mid { border: 1px solid rgba(255,255,255,.09); }
+.fd-frame { box-shadow: 0 26px 60px -20px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.06), 0 0 0 1px rgba(255,255,255,.04); }
+.ib-win { box-shadow: 0 26px 60px -20px rgba(0,0,0,.55); }
+.fd-glow { opacity: .4; }
+
+.fm-live { display: inline-flex; align-items: center; gap: 7px; align-self: center; font-size: .66rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: #ffd8a8; }
+.fm-live .ld { width: 8px; height: 8px; border-radius: 50%; background: #ff5b5b; }
+[data-funnel].playing .fm-live .ld { animation: fm-live 1.6s ease-out infinite; }
+@keyframes fm-live { 0% { box-shadow: 0 0 0 0 rgba(255,91,91,.6); } 70% { box-shadow: 0 0 0 7px rgba(255,91,91,0); } 100% { box-shadow: 0 0 0 0 rgba(255,91,91,0); } }
+.fm-in { margin-top: 12px; }
+.fm-outrow { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-top: 3px; }
+.fm-outrow span { font-size: .66rem; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: .04em; }
+.fm-outrow b { font-size: 1.05rem; font-weight: 700; color: rgba(255,255,255,.82); font-variant-numeric: tabular-nums; }
+[data-money-in].flash-in { animation: fm-flashin .7s ease-out; }
+@keyframes fm-flashin { 0% { transform: scale(1); } 30% { transform: scale(1.06); text-shadow: 0 0 22px rgba(134,228,146,.7); } 100% { transform: scale(1); } }
+[data-money-out].flash-out { animation: fm-flashout .6s ease-out; }
+@keyframes fm-flashout { 0%,100% { color: rgba(255,255,255,.82); } 40% { color: #ffd8a8; } }
+.fm-stats div.pop b { animation: fm-pop .5s var(--ease); }
+@keyframes fm-pop { 0% { transform: scale(1); } 45% { transform: scale(1.22); color: #86e492; } 100% { transform: scale(1); } }
+
+/* money ticker (invoices paid, deposits, the Hey Aaron! bill) */
+.fm-ticker { display: flex; align-items: center; gap: 9px; margin: 6px 0 14px; padding: 9px 11px; border-radius: 12px;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.1); min-height: 46px; text-align: left; }
+.fm-ticker b { flex: 1; color: #fff; font-size: .78rem; font-weight: 600; line-height: 1.2; }
+.fm-ticker .mt-ic { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; flex: none; }
+.fm-ticker .mt-ic svg { width: 15px; height: 15px; }
+.mt-ic.in { background: rgba(31,107,35,.3); color: #86e492; }
+.mt-ic.out { background: rgba(180,97,12,.28); color: #f2a255; }
+.mt-ic.ha { background: #fff; }
+.mt-ha { font-size: .62rem; font-weight: 800; color: var(--primary-container); letter-spacing: -.02em; }
+.mt-amt { font-weight: 800; font-size: .92rem; font-variant-numeric: tabular-nums; flex: none; }
+.mt-amt.in { color: #86e492; } .mt-amt.out { color: #ffb98a; }
+.fm-ticker.hit { animation: fm-hit .55s var(--ease); }
+@keyframes fm-hit { 0% { transform: scale(.97); background: rgba(255,255,255,.2); } 100% { transform: scale(1); background: rgba(255,255,255,.08); } }
+
+/* feed item entrances / exits */
+.fd-lead, .ib-row { max-height: 130px; }
+.fd-lead.enter, .ib-row.enter { animation: feed-in .5s cubic-bezier(.22,1,.36,1) both; }
+@keyframes feed-in { from { opacity: 0; transform: translateY(10px) scale(.97); } to { opacity: 1; transform: none; } }
+.fd-lead.out, .ib-row.out { animation: feed-out .42s ease forwards; overflow: hidden; }
+@keyframes feed-out { to { opacity: 0; transform: translateY(-8px) scale(.97); max-height: 0; margin: 0; padding-top: 0; padding-bottom: 0; border-width: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-funnel].playing .fm-live .ld { animation: none; }
+  .fd-lead.enter, .ib-row.enter, .fd-lead.out, .ib-row.out, .fm-ticker.hit,
+  [data-money-in].flash-in, [data-money-out].flash-out, .fm-stats div.pop b { animation: none; }
 }
 
 /* highlighted "protections in writing" band — exclusivity + guarantee (offer section) */

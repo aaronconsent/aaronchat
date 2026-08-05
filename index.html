@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://aaron.chat/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/ha.css?v=114">
+<link rel="stylesheet" href="/brand/ha.css?v=116">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://aaron.chat/#business",
 "name":"Hey Aaron! Marketing","alternateName":"aaron.chat","url":"https://aaron.chat/",
@@ -116,46 +116,44 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
       matters: money in versus money out.</p>
     </div>
     <div class="funnel3">
-      <!-- phone: texts &amp; calls -->
+      <!-- phone: texts &amp; calls (live feed) -->
       <div class="funnel-device reveal">
         <div class="fd-glow"></div>
         <div class="fd-frame">
           <div class="fd-notch"></div>
           <div class="fd-screen">
             <div class="fd-head"><span class="fd-dot"></span>Texts &amp; calls</div>
-            <ul class="fd-leads">
-              <li class="fd-lead" style="--i:0"><span class="fd-ic sms"><svg><use href="#i-msg"/></svg></span><div><b>&ldquo;Can you look at my AC today?&rdquo;</b><span>Livingston &middot; just now</span></div></li>
-              <li class="fd-lead" style="--i:1"><span class="fd-ic mail"><svg><use href="#i-phone"/></svg></span><div><b>Missed call &rarr; auto-text sent</b><span>Onalaska &middot; 2 min ago</span></div></li>
-              <li class="fd-lead" style="--i:2"><span class="fd-ic sms"><svg><use href="#i-msg"/></svg></span><div><b>&ldquo;Need a plumber ASAP&rdquo;</b><span>Huntsville &middot; text</span></div></li>
-              <li class="fd-lead booked" style="--i:3"><span class="fd-ic ok"><svg><use href="#i-check"/></svg></span><div><b>Booked: panel upgrade</b><span>Tuesday, 8:30 AM</span></div></li>
+            <ul class="fd-leads" data-feed="phone" aria-hidden="true">
+              <li class="fd-lead"><span class="fd-ic sms"><svg><use href="#i-msg"/></svg></span><div><b>&ldquo;Can you look at my AC today?&rdquo;</b><span>Livingston &middot; just now</span></div></li>
+              <li class="fd-lead"><span class="fd-ic mail"><svg><use href="#i-phone"/></svg></span><div><b>Missed call &rarr; auto-text sent</b><span>Onalaska &middot; 2 min ago</span></div></li>
             </ul>
           </div>
         </div>
       </div>
-      <!-- center: the money -->
+      <!-- center: the money, live -->
       <div class="funnel-mid reveal">
         <span class="fm-arrow l"><svg><use href="#i-chev"/></svg></span>
         <span class="fm-arrow r"><svg><use href="#i-chev"/></svg></span>
-        <span class="fm-eyebrow">The only math that matters</span>
-        <div class="fm-out"><span>Ad spend &middot; out</span><b data-count-to="1500" data-prefix="$">$1,500</b></div>
-        <div class="fm-flow"><svg><use href="#i-chev"/></svg></div>
-        <div class="fm-in"><span>New business &middot; in</span><b data-count-to="12600" data-prefix="$">$12,600</b></div>
+        <span class="fm-live"><span class="ld"></span>Live</span>
+        <div class="fm-in"><span>Money in</span><b data-money-in>$0</b></div>
         <div class="fm-bar"><i></i></div>
+        <div class="fm-outrow"><span>Money out &middot; ads + my bill</span><b data-money-out>$0</b></div>
+        <div class="fm-ticker" data-feed="money" aria-hidden="true">
+          <span class="mt-ic in"><svg><use href="#i-trend"/></svg></span><b>Invoice #1042 paid</b><span class="mt-amt in">+$5,800</span>
+        </div>
         <div class="fm-stats">
-          <div><b data-count-to="7">7</b><span>jobs booked</span></div>
+          <div><b data-jobs>0</b><span>jobs booked</span></div>
           <div><b>$8&nbsp;:&nbsp;$1</b><span>per ad dollar</span></div>
         </div>
         <span class="fm-sample">Sample month &mdash; an illustration, not a client result.</span>
       </div>
-      <!-- inbox: emails -->
+      <!-- inbox: emails + money (live feed) -->
       <div class="funnel-inbox reveal">
         <div class="ib-win">
-          <div class="ib-bar"><span class="ib-dots"><i></i><i></i><i></i></span><b>Inbox</b><span class="ib-badge">4 new</span></div>
-          <ul class="ib-list">
-            <li class="ib-row" style="--i:0"><span class="ib-unread"></span><div class="ib-em"><b>New contact form</b><span>&ldquo;Need an AC install quote&rdquo;</span></div><span class="ib-time">now</span></li>
-            <li class="ib-row" style="--i:1"><span class="ib-unread"></span><div class="ib-em"><b>Google Ads lead</b><span>Roof estimate request</span></div><span class="ib-time">5m</span></li>
-            <li class="ib-row" style="--i:2"><span class="ib-unread"></span><div class="ib-em"><b>Facebook lead form</b><span>Kitchen remodel</span></div><span class="ib-time">11m</span></li>
-            <li class="ib-row booked" style="--i:3"><span class="ib-unread"></span><div class="ib-em"><b>Estimate confirmed &check;</b><span>&ldquo;See you Saturday, 9am&rdquo;</span></div><span class="ib-time">read</span></li>
+          <div class="ib-bar"><span class="ib-dots"><i></i><i></i><i></i></span><b>Inbox</b><span class="ib-badge">live</span></div>
+          <ul class="ib-list" data-feed="inbox" aria-hidden="true">
+            <li class="ib-row"><span class="ib-unread"></span><div class="ib-em"><b>New contact form</b><span>&ldquo;Need an AC install quote&rdquo;</span></div><span class="ib-time">now</span></li>
+            <li class="ib-row"><span class="ib-unread"></span><div class="ib-em"><b>Google Ads lead</b><span>Roof estimate request</span></div><span class="ib-time">5m</span></li>
           </ul>
         </div>
       </div>
@@ -653,6 +651,6 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
   </div>
 </div>
 
-<script src="/brand/ha.js?v=114" defer></script>
+<script src="/brand/ha.js?v=116" defer></script>
 </body>
 </html>

@@ -15,7 +15,7 @@ Run: python3 scripts/build_taya.py
 import os, re, html as H
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VER = "114"
+VER = "115"
 
 IDX = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
 SPRITE = IDX[IDX.index('<!-- icon sprite -->'):IDX.index('</defs></svg>') + len('</defs></svg>')]
