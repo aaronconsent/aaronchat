@@ -8,7 +8,7 @@ Run:  python3 scripts/build_trades.py
 import os, re, html as H
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VER = "104"
+VER = "105"
 LOGO = open("/tmp/ha_logo.svg").read() if os.path.exists("/tmp/ha_logo.svg") else ""
 if not LOGO:  # fall back to extracting from the homepage
     idx = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
@@ -26,12 +26,7 @@ def esc(s): return H.escape(str(s or ""))
 HEADER = f'''<header class="site-head">
   <div class="wrap">
     <a href="/" aria-label="Hey Aaron! home">{LOGO}</a>
-    <nav class="site-nav" aria-label="Main">
-      <a href="/work/">Real work</a>
-      <a href="/pricing/">Pricing</a>
-      <a href="/about/">About</a>
-      <a href="/quote/">Get a quote</a>
-    </nav>
+    <nav class="site-nav" aria-label="Main"><a href="/services/">What I do</a><a href="/trades/">Who I help</a><a href="/work/">Real work</a><a href="/pricing/">Pricing</a><a href="/about/">About</a></nav>
     <a class="head-call" href="tel:+17133848985" data-cta-location="header">{PHONE}713-384-8985</a>
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><svg><use href="#i-menu"/></svg></button>
   </div>
@@ -181,7 +176,7 @@ def render(t):
               '"areaServed":[{"@type":"City","name":"Livingston"},{"@type":"City","name":"Onalaska"},{"@type":"City","name":"Coldspring"},{"@type":"City","name":"Huntsville"},{"@type":"State","name":"Texas"}],'
               '"founder":{"@type":"Person","name":"Aaron Phillips","jobTitle":"Founder — 20+ years in marketing"}}')
     faq_schema = ('{"@context":"https://schema.org","@type":"FAQPage","mainEntity":['
-                  '{"@type":"Question","name":"What does it cost?","acceptedAnswer":{"@type":"Answer","text":"Simple month-to-month plans, no setup fees and no contracts. Call and I\'ll tell you exactly what your shop needs and what it runs."}},'
+                  '{"@type":"Question","name":"What does it cost?","acceptedAnswer":{"@type":"Answer","text":"Website & Growth is $500/mo, Social Media is $500/mo, and paid ads are 15% of your ad spend with a $2,000/mo minimum ad budget. Run one, run all three. No setup fees, no contracts, month to month."}},'
                   f'{{"@type":"Question","name":{esc_json(t["faqq"])},"acceptedAnswer":{{"@type":"Answer","text":{esc_json(t["faqa"])}}}}},'
                   '{"@type":"Question","name":"Who does the work, you or a team?","acceptedAnswer":{"@type":"Answer","text":"Me. Aaron. You call, I answer. You get the person who ran marketing for cPanel and Monarx, not a rep reading a script."}}]}')
     return f'''<!doctype html>
@@ -368,6 +363,68 @@ def esc_json(s):
     return json.dumps(str(s))
 
 
+def render_index():
+    title = "Trades I help — contractor marketing by trade | Hey Aaron!"
+    desc = "Marketing built for your specific trade: HVAC, plumbing, electrical, roofing, remodeling and 12 more. Pick your trade and see how I book you jobs. Call 713-384-8985."
+    url = "https://aaron.chat/trades/"
+    items = "\n".join(
+        f'      <a href="/{t["slug"]}/"><svg><use href="#i-check"/></svg>{esc(t["label"])}</a>'
+        for t in TRADES)
+    ld = ('{"@context":"https://schema.org","@type":"CollectionPage",'
+          f'"name":"Trades I help","url":"{url}",'
+          '"about":"Contractor and home-service marketing organized by trade."}')
+    return f'''<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{esc(title)}</title>
+<meta name="description" content="{esc(desc)}">
+<meta name="theme-color" content="#074588">
+<link rel="canonical" href="{url}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Trades I help — Hey Aaron! Marketing">
+<meta property="og:description" content="Marketing built for your specific trade. Pick yours and see how I book you jobs.">
+<meta property="og:url" content="{url}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/brand/ha.css?v={VER}">
+<script type="application/ld+json">{ld}</script>
+{PIXEL}
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+{SPRITE}
+{HEADER}
+<main id="main">
+<div class="page-hero">
+  <div class="wrap">
+    <span class="caps">Who I help</span>
+    <h1>Marketing built for your trade.</h1>
+    <p>The way an HVAC shop wins a job isn't how a plumber or a roofer wins theirs. Pick your trade and see
+    marketing aimed at exactly how <em>your</em> phone rings &mdash; not generic "small business" advice.</p>
+  </div>
+</div>
+<section class="sec">
+  <div class="wrap">
+    <div class="tradegrid reveal">
+{items}
+    </div>
+    <p class="lede center" style="margin-top:26px;max-width:56ch;margin-inline:auto">Don't see your exact trade?
+    <a href="tel:+17133848985">Call me at 713-384-8985</a> &mdash; if you run service trucks in East Texas, I can help.</p>
+    <div class="center" style="margin-top:24px">
+      <a class="btn btn-call btn-lg" href="tel:+17133848985" data-cta-location="trades-hub">{PHONE}Call Aaron: 713-384-8985</a>
+    </div>
+  </div>
+</section>
+</main>
+{FOOTER}
+{TAIL}
+</body>
+</html>
+'''
+
+
 def main():
     n = 0
     for t in TRADES:
@@ -375,7 +432,10 @@ def main():
         os.makedirs(d, exist_ok=True)
         open(os.path.join(d, "index.html"), "w", encoding="utf-8").write(render(t))
         n += 1
-    print(f"wrote {n} ICP trade landing pages")
+    hub = os.path.join(ROOT, "trades")
+    os.makedirs(hub, exist_ok=True)
+    open(os.path.join(hub, "index.html"), "w", encoding="utf-8").write(render_index())
+    print(f"wrote {n} ICP trade landing pages + /trades/ hub")
 
 
 if __name__ == "__main__":

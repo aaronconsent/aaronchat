@@ -350,14 +350,27 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 .guarantee svg { width: 20px; height: 20px; }
 
 .site-foot { background: var(--dark); color: rgba(255,255,255,.72); }
-.site-foot .wrap { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 32px; padding-block: 48px; }
+.site-foot .wrap { display: grid; grid-template-columns: 1.5fr 1fr 1.4fr 1fr; gap: 32px; padding-block: 48px; }
 .site-foot .ha-logo { color: #fff; height: 22px; margin-bottom: 14px; }
 .site-foot h4 { color: #fff; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; }
-.site-foot a { color: rgba(255,255,255,.72); text-decoration: none; display: block; padding: 4px 0; }
+.site-foot a { color: rgba(255,255,255,.72); text-decoration: none; display: block; padding: 4px 0; font-size: 0.9rem; }
 .site-foot a:hover { color: #fff; }
+.site-foot .foot-2up { column-count: 2; column-gap: 22px; }
+.site-foot .foot-2up a { break-inside: avoid; }
+.site-foot .seeall { color: #fff; font-weight: 700; margin-top: 6px; }
 .site-foot .legal { grid-column: 1 / -1; border-top: 1px solid rgba(255,255,255,.14); padding-top: 20px;
   font-size: 0.82rem; display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; }
-@media (max-width: 700px) { .site-foot .wrap { grid-template-columns: 1fr 1fr; } .site-foot .brandcol { grid-column: 1 / -1; } }
+@media (max-width: 940px) { .site-foot .wrap { grid-template-columns: 1fr 1fr; } .site-foot .brandcol { grid-column: 1 / -1; } }
+@media (max-width: 560px) { .site-foot .wrap { grid-template-columns: 1fr; } .site-foot .foot-2up { column-count: 2; } }
+
+/* homepage "trades I serve" grid + trades hub */
+.tradegrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; margin-top: 8px; }
+.tradegrid a { display: flex; align-items: center; gap: 10px; padding: 13px 16px; background: var(--white);
+  border: 1px solid var(--line-soft); border-radius: var(--r-md); color: var(--ink); font-weight: 600;
+  font-size: 0.95rem; text-decoration: none; transition: border-color .15s, transform .15s, box-shadow .15s; }
+.tradegrid a svg { width: 16px; height: 16px; color: var(--primary-container); flex: none; }
+@media (hover: hover) and (pointer: fine) { .tradegrid a:hover { border-color: var(--primary-container);
+  transform: translateY(-2px); box-shadow: var(--sh-sm); } }
 
 /* -------------------------------------------------- exit-intent modal */
 .ha-modal { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 20px;

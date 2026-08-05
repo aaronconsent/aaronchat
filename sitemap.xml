@@ -34,6 +34,7 @@
   <url><loc>https://aaron.chat/services/social-media/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/services/website/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/thank-you/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://aaron.chat/trades/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/tree-service-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/work/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/work/booked-job/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>

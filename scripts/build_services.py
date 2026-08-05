@@ -5,7 +5,7 @@ De-themed off the retired report-card system. Run: python3 scripts/build_service
 import os, re, html as H
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VER = "104"
+VER = "105"
 IDX = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
 LOGO = re.search(r'(<svg class="ha-logo".*?</svg>)', IDX, re.S).group(1)
 FOOTER = IDX[IDX.index('<footer class="site-foot">'):IDX.index('</footer>') + len('</footer>')]
@@ -15,7 +15,7 @@ BIZ = '<script type="application/ld+json">{"@context":"https://schema.org","@typ
 
 HEADER = f'''<header class="site-head"><div class="wrap">
 <a href="/" aria-label="Hey Aaron! home">{LOGO}</a>
-<nav class="site-nav" aria-label="Main"><a href="/work/">Real work</a><a href="/pricing/">Pricing</a><a href="/about/">About</a><a href="/quote/">Get a quote</a></nav>
+<nav class="site-nav" aria-label="Main"><a href="/services/">What I do</a><a href="/trades/">Who I help</a><a href="/work/">Real work</a><a href="/pricing/">Pricing</a><a href="/about/">About</a></nav>
 <a class="head-call" href="tel:+17133848985" data-cta-location="header">{PHONE}713-384-8985</a>
 <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><svg><use href="#i-menu"/></svg></button>
 </div></header>'''
