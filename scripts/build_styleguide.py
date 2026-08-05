@@ -179,7 +179,6 @@ def page(slug, title, desc, body):
   </div>
 </footer>
 <script src="/brand/nav.js?v={VER}" defer></script>
-<script src="/brand/chat.js?v={VER}" defer></script>
 </body>
 </html>
 """

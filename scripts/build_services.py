@@ -22,8 +22,7 @@ HEADER = f'''<header class="site-head"><div class="wrap">
 
 TAIL = f'''<a class="floatcall" href="tel:+17133848985" data-cta-location="float">{PHONE}Call Aaron &mdash; I answer</a>
 {FOOTER}
-<script src="/brand/ha.js?v={VER}" defer></script>
-<script src="/brand/chat.js?v={VER}" defer></script>'''
+<script src="/brand/ha.js?v={VER}" defer></script>'''
 
 CATS = [
     ("Get found", "They can't hire you if they can't find you."),

@@ -46,8 +46,7 @@ TAIL = f'''<div class="callbar">
     <a class="btn btn-white btn-block" href="tel:+17133848985" data-cta-location="exit">{PHONE}Call Aaron: 713-384-8985</a>
   </div>
 </div>
-<script src="/brand/ha.js?v={VER}" defer></script>
-<script src="/brand/chat.js?v={VER}" defer></script>'''
+<script src="/brand/ha.js?v={VER}" defer></script>'''
 
 PIXEL = '''<!-- Meta Pixel -->
 <script>
