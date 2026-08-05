@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hey Aaron!</title>
+<style>
+  :root{
+    --ink:#000000;
+    --paper:#f6f5f1;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--paper);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .wordmark{width:min(92vw,760px);padding:24px}
+  .wordmark svg{width:100%;height:auto;display:block;overflow:visible}
+</style>
+</head>
+<body>
+
+<h1 class="wordmark" aria-label="Hey Aaron!">
+  <svg id="wm" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true"></svg>
+</h1>
+
+<script>
+  const NS = "http://www.w3.org/2000/svg";
+
+  /* ---------- letterforms in the logo's exact language ----------
+     measured from the shield: stroke 22, letter body 74, counter 30,
+     2:1 angled terminals descending toward each letter's center.
+     fully vector, including the shield-curve AA pair.           */
+  const T = 22, W = 74, H = 100, CUT = 11;
+  const LETTERS = {
+    H: { w: W, rects: [[0,39,W,T]],
+         polys: [[[0,0],[T,0],[T,H],[0,H-CUT]],
+                 [[W-T,0],[W,0],[W,H-CUT],[W-T,H]]] },
+    E: { w: W, rects: [[0,0,T,H]],
+         polys: [[[0,0],[W-CUT,0],[W,T],[0,T]],
+                 [[0,39],[W-10-CUT,39],[W-10,61],[0,61]],
+                 [[0,H-T],[W-CUT,H-T],[W,H],[0,H]]] },
+    Y: { w: W, rects: [[0,0,T,55],[W-T,0,T,55],[0,33,W,T]],
+         polys: [[[26,55],[48,55],[48,H-CUT],[37,H],[26,H-CUT]]] },
+    /* the AA pair: shield halves at letter scale — half-size counters,
+       inner legs chamfered at the baseline, curves raised proportionally */
+    AA: { w: 162,
+      rects: [[0,0,74,T],[0,48,74,T],[88,0,74,T],[88,48,74,T]],
+      polys: [[[52,0],[74,0],[74,100],[52,89]],
+              [[88,0],[110,0],[110,89],[88,100]]],
+      paths: ["M0 0 L0 84 Q0 126 72 126 L61 104 Q22 104 22 80 L22 0 Z",
+              "M162 0 L162 84 Q162 126 90 126 L101 104 Q140 104 140 80 L140 0 Z"] },
+    R: { w: W, rects: [[0,0,W,T],[W-T,0,T,64],[0,42,W,T]],
+         polys: [[[0,0],[T,0],[T,H],[0,H-CUT]],
+                 [[37,64],[61,64],[W,H],[50,H]]] },
+    O: { w: W, paths: [`M0 0 H${W} V${H} H0 Z M${T} ${T} H${W-T} V${H-T} H${T} Z`] },
+    N: { w: W, polys: [[[0,0],[T,0],[T,H],[0,H-CUT]],
+                       [[W-T,0],[W,0],[W,H-CUT],[W-T,H]],
+                       [[T,0],[W-T,66],[W-T,H],[T,34]]] },
+    "!": { w: 26, polys: [[[2,0],[24,0],[24,62],[2,62-CUT]],
+                          [[2,80],[24,80],[24,H],[2,H-CUT]]] },
+    " ": { w: 26 }
+  };
+
+  function buildWordmark(chars){
+    const svg = document.getElementById("wm");
+    const GAP = 13;
+    let x = 0;
+
+    chars.forEach(ch => {
+      const def = LETTERS[ch];
+      if (ch === " "){ x += def.w; return; }
+      const g = document.createElementNS(NS, "g");
+      g.setAttribute("transform", `translate(${x} 0)`);
+      (def.rects || []).forEach(([rx,ry,rw,rh]) => {
+        const r = document.createElementNS(NS, "rect");
+        r.setAttribute("x",rx); r.setAttribute("y",ry);
+        r.setAttribute("width",rw); r.setAttribute("height",rh);
+        r.setAttribute("fill","var(--ink)");
+        g.appendChild(r);
+      });
+      (def.polys || []).forEach(pts => {
+        const p = document.createElementNS(NS, "polygon");
+        p.setAttribute("points", pts.map(pt => pt.join(",")).join(" "));
+        p.setAttribute("fill","var(--ink)");
+        g.appendChild(p);
+      });
+      (def.paths || []).forEach(d => {
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("d", d);
+        p.setAttribute("fill","var(--ink)");
+        p.setAttribute("fill-rule","evenodd");
+        g.appendChild(p);
+      });
+      svg.appendChild(g);
+      x += def.w + GAP;
+    });
+
+    svg.setAttribute("viewBox", `0 -6 ${x - GAP} 140`);
+  }
+
+  buildWordmark(["H","E","Y"," ","AA","R","O","N","!"]);
+</script>
+</body>
+</html>

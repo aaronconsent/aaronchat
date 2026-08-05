@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Component library — Hey Aaron! Marketing</title>
+<meta name="description" content="37 on-brand, reusable components for building Hey Aaron! pages.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#23252b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/brand/ha.css?v=105">
+<link rel="stylesheet" href="/brand/sg.css?v=105">
+</head>
+<body>
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
+<symbol id="i-msg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.9 9.9 0 0 1-4.3-1L3 20l1.3-4.1A8.4 8.4 0 1 1 21 11.5z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-trend" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 6-6 4 4 8-8"/><path d="M17 7h4v4"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></symbol>
+<symbol id="i-web" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18z"/></symbol>
+<symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></symbol>
+</defs></svg>
+<header class="sg-top">
+  <span class="brand"><svg class="ha-logo" viewBox="0 -6 749 140" fill="currentColor" role="img" aria-label="Hey Aaron!"><g transform="translate(0 0)"><rect x="0" y="39" width="74" height="22"/><polygon points="0,0 22,0 22,100 0,89"/><polygon points="52,0 74,0 74,89 52,100"/></g><g transform="translate(87 0)"><rect x="0" y="0" width="22" height="100"/><polygon points="0,0 63,0 74,22 0,22"/><polygon points="0,39 53,39 64,61 0,61"/><polygon points="0,78 63,78 74,100 0,100"/></g><g transform="translate(174 0)"><rect x="0" y="0" width="22" height="55"/><rect x="52" y="0" width="22" height="55"/><rect x="0" y="33" width="74" height="22"/><polygon points="26,55 48,55 48,89 37,100 26,89"/></g><g transform="translate(287 0)"><rect x="0" y="0" width="74" height="22"/><rect x="0" y="48" width="74" height="22"/><rect x="88" y="0" width="74" height="22"/><rect x="88" y="48" width="74" height="22"/><polygon points="52,0 74,0 74,100 52,89"/><polygon points="88,0 110,0 110,89 88,100"/><path d="M0 0 L0 84 Q0 126 72 126 L61 104 Q22 104 22 80 L22 0 Z" fill-rule="evenodd"/><path d="M162 0 L162 84 Q162 126 90 126 L101 104 Q140 104 140 80 L140 0 Z" fill-rule="evenodd"/></g><g transform="translate(462 0)"><rect x="0" y="0" width="74" height="22"/><rect x="52" y="0" width="22" height="64"/><rect x="0" y="42" width="74" height="22"/><polygon points="0,0 22,0 22,100 0,89"/><polygon points="37,64 61,64 74,100 50,100"/></g><g transform="translate(549 0)"><path d="M0 0 H74 V100 H0 Z M22 22 H52 V78 H22 Z" fill-rule="evenodd"/></g><g transform="translate(636 0)"><polygon points="0,0 22,0 22,100 0,89"/><polygon points="52,0 74,0 74,89 52,100"/><polygon points="22,0 52,66 52,100 22,34"/></g><g transform="translate(723 0)"><polygon points="2,0 24,0 24,62 2,51"/><polygon points="2,80 24,80 24,100 2,89"/></g></svg><span class="tag">Style guide</span></span>
+  <nav><a href="/style-guide/">Overview</a><a href="/style-guide/library/" class="on">Components</a><a href="/style-guide/icp/">ICP</a><a href="/">Back to site &rarr;</a></nav>
+</header>
+
+<main>
+<section class="sg-hero"><div class="sg-wrap">
+  <span class="kick">Component library</span>
+  <h1>37 building blocks, on brand.</h1>
+  <p>Every section below is a live, on-brand component built from the production <code>ha.css</code> + <code>sg.css</code>.
+  Copy the pattern to assemble a new page fast. Anything with a placeholder or integrity note stays honest &mdash;
+  no fake reviews, stats, or awards ship to a live page.</p>
+  <div class="sg-toc" style="columns:2;margin-top:24px"><div style="break-inside:avoid;margin-bottom:14px"><b style="display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-variant);margin-bottom:4px">Bars &amp; overlays</b><a href="#notification-bar">Notification bar</a><a href="#promotion-bar">Promotion bar</a><a href="#cookie">Cookie</a><a href="#popup">Popup</a></div><div style="break-inside:avoid;margin-bottom:14px"><b style="display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-variant);margin-bottom:4px">Navigation</b><a href="#header">Header</a><a href="#footer">Footer</a></div><div style="break-inside:avoid;margin-bottom:14px"><b style="display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-variant);margin-bottom:4px">Hero &amp; top of page</b><a href="#hero">Hero</a><a href="#problem">Problem</a><a href="#solution">Solution</a><a href="#how-it-works">How it works</a><a href="#feature">Feature grid</a><a href="#content">Content</a></div><div style="break-inside:avoid;margin-bottom:14px"><b style="display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-variant);margin-bottom:4px">Proof &amp; trust</b><a href="#logo-cloud">Logo cloud</a><a href="#stats">Stats</a><a href="#testimonial">Testimonial</a><a href="#case-studies">Case studies</a><a href="#competitors">Competitors</a><a href="#before-after">Before / after</a><a href="#awards">Awards</a><a href="#partners">Partners</a></div><div style="break-inside:avoid;margin-bottom:14px"><b style="display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-variant);margin-bottom:4px">Info &amp; context</b><a href="#audience">Audience</a><a href="#timeline">Timeline</a><a href="#team">Team</a><a href="#integrations">Integrations</a><a href="#maps">Maps</a><a href="#blog">Blog</a><a href="#api">API</a></div><div style="break-inside:avoid;margin-bottom:14px"><b style="display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-variant);margin-bottom:4px">Conversion</b><a href="#cta">CTA</a><a href="#pricing">Pricing</a><a href="#products">Products</a><a href="#demo">Demo</a><a href="#faq">FAQ</a><a href="#newsletter">Newsletter</a><a href="#lead-magnet">Lead magnet</a><a href="#signup">Signup</a><a href="#login">Login</a><a href="#contact">Contact</a></div></div>
+</div></section>
+<section class="sg-sec"><div class="sg-wrap"><h2>Bars &amp; overlays</h2><div class="sg-item" id="notification-bar">
+  <div class="sg-h"><h3>Notification bar</h3><span class="sg-ref">Notification Bar</span></div>
+  <p class="sg-when">Thin, quiet, informational. <b>Use for</b> hours, weather/seasonal notices, or a soft status line. Never for hard offers.</p>
+  <div class="sg-demo tight"><div class="pad"><div class="notifbar"><svg><use href="#i-bolt"/></svg>Storm season is here &mdash; I answer calls 7 days a week. <a href="tel:+17133848985">713-384-8985</a></div></div></div>
+</div><div class="sg-item" id="promotion-bar">
+  <div class="sg-h"><h3>Promotion bar</h3><span class="sg-ref">Promotion Bar</span></div>
+  <p class="sg-when">Louder and dismissible. <b>Use for</b> a real, time-boxed offer only &mdash; honest urgency, never a fake countdown.</p>
+  <div class="sg-demo tight"><div class="pad"><div class="promobar">Booked solid? I keep a cap on clients. A couple of spots open this month. <a class="btn" href="tel:+17133848985">Grab one</a><button class="x" aria-label="Dismiss">&times;</button></div></div></div>
+</div><div class="sg-item" id="cookie">
+  <div class="sg-h"><h3>Cookie consent</h3><span class="sg-ref">Cookie</span></div>
+  <p class="sg-when">Privacy-first. <b>Use for</b> consent when analytics/pixels load. Default to the least-intrusive choice.</p>
+  <div class="sg-demo"><div class="pad"><div class="cookiebar"><p>This site uses a couple of cookies to see what&rsquo;s working. Your call. <a href="/privacy-policy/">Privacy</a>.</p><div class="row"><a class="btn btn-call" href="#0">Accept</a><a class="btn btn-ghost" href="#0">Only essentials</a></div></div></div></div>
+</div><div class="sg-item" id="popup">
+  <div class="sg-h"><h3>Popup / modal</h3><span class="sg-ref">Popup</span></div>
+  <p class="sg-when">One honest question on exit, once per session. <b>Use for</b> a last-chance nudge &mdash; the production version is the exit-intent modal.</p>
+  <div class="sg-demo"><div class="pad"><div style="position:relative;max-width:440px;margin-inline:auto"><div class="ha-modal-card" style="position:static"><button class="ha-modal-x" aria-label="Close" style="position:absolute">&times;</button><h3>Before you go &mdash; one honest question.</h3><p>Is the phone ringing like it used to? If not, that&rsquo;s a ten-minute call to fix. No pitch, no contract.</p><a class="btn btn-call btn-block" href="tel:+17133848985"><svg><use href="#i-phone"/></svg>Call Aaron: 713-384-8985</a></div></div></div></div>
+</div></div></section><section class="sg-sec"><div class="sg-wrap"><h2>Navigation</h2><div class="sg-item" id="header">
+  <div class="sg-h"><h3>Header / nav</h3><span class="sg-ref">Header</span></div>
+  <p class="sg-when">Sticky top bar, phone always visible, mobile hamburger. <b>Use on</b> every page.</p>
+  <div class="sg-demo tight"><div class="pad"><div style="border-radius:10px;overflow:clip"><header class="site-head" style="position:static">
+  <div class="wrap"><a href="#0" aria-label="Hey Aaron! home"><svg class="ha-logo" viewBox="0 -6 749 140" fill="currentColor" role="img" aria-label="Hey Aaron!"><g transform="translate(0 0)"><rect x="0" y="39" width="74" height="22"/><polygon points="0,0 22,0 22,100 0,89"/><polygon points="52,0 74,0 74,89 52,100"/></g><g transform="translate(87 0)"><rect x="0" y="0" width="22" height="100"/><polygon points="0,0 63,0 74,22 0,22"/><polygon points="0,39 53,39 64,61 0,61"/><polygon points="0,78 63,78 74,100 0,100"/></g><g transform="translate(174 0)"><rect x="0" y="0" width="22" height="55"/><rect x="52" y="0" width="22" height="55"/><rect x="0" y="33" width="74" height="22"/><polygon points="26,55 48,55 48,89 37,100 26,89"/></g><g transform="translate(287 0)"><rect x="0" y="0" width="74" height="22"/><rect x="0" y="48" width="74" height="22"/><rect x="88" y="0" width="74" height="22"/><rect x="88" y="48" width="74" height="22"/><polygon points="52,0 74,0 74,100 52,89"/><polygon points="88,0 110,0 110,89 88,100"/><path d="M0 0 L0 84 Q0 126 72 126 L61 104 Q22 104 22 80 L22 0 Z" fill-rule="evenodd"/><path d="M162 0 L162 84 Q162 126 90 126 L101 104 Q140 104 140 80 L140 0 Z" fill-rule="evenodd"/></g><g transform="translate(462 0)"><rect x="0" y="0" width="74" height="22"/><rect x="52" y="0" width="22" height="64"/><rect x="0" y="42" width="74" height="22"/><polygon points="0,0 22,0 22,100 0,89"/><polygon points="37,64 61,64 74,100 50,100"/></g><g transform="translate(549 0)"><path d="M0 0 H74 V100 H0 Z M22 22 H52 V78 H22 Z" fill-rule="evenodd"/></g><g transform="translate(636 0)"><polygon points="0,0 22,0 22,100 0,89"/><polygon points="52,0 74,0 74,89 52,100"/><polygon points="22,0 52,66 52,100 22,34"/></g><g transform="translate(723 0)"><polygon points="2,0 24,0 24,62 2,51"/><polygon points="2,80 24,80 24,100 2,89"/></g></svg></a>
+  <nav class="site-nav" aria-label="Main"><a href="#0">What I do</a><a href="#0">Who I help</a><a href="#0">Real work</a><a href="#0">Pricing</a><a href="#0">About</a></nav>
+  <a class="head-call" href="#0"><svg><use href="#i-phone"/></svg>713-384-8985</a>
+  <button class="nav-toggle" aria-label="Menu"><svg><use href="#i-menu"/></svg></button></div></header></div></div></div>
+</div><div class="sg-item" id="footer">
+  <div class="sg-h"><h3>Footer</h3><span class="sg-ref">Footer</span></div>
+  <p class="sg-when">4-column directory: services, trades, company + fine print. <b>Use on</b> every page &mdash; big for discoverability and SEO.</p>
+  <div class="sg-demo tight"><div class="pad"><footer class="site-foot" style="border-radius:10px;overflow:clip"><div class="wrap" style="padding-block:28px">
+  <div class="brandcol"><svg class="ha-logo" viewBox="0 -6 749 140" fill="currentColor" role="img" aria-label="Hey Aaron!"><g transform="translate(0 0)"><rect x="0" y="39" width="74" height="22"/><polygon points="0,0 22,0 22,100 0,89"/><polygon points="52,0 74,0 74,89 52,100"/></g><g transform="translate(87 0)"><rect x="0" y="0" width="22" height="100"/><polygon points="0,0 63,0 74,22 0,22"/><polygon points="0,39 53,39 64,61 0,61"/><polygon points="0,78 63,78 74,100 0,100"/></g><g transform="translate(174 0)"><rect x="0" y="0" width="22" height="55"/><rect x="52" y="0" width="22" height="55"/><rect x="0" y="33" width="74" height="22"/><polygon points="26,55 48,55 48,89 37,100 26,89"/></g><g transform="translate(287 0)"><rect x="0" y="0" width="74" height="22"/><rect x="0" y="48" width="74" height="22"/><rect x="88" y="0" width="74" height="22"/><rect x="88" y="48" width="74" height="22"/><polygon points="52,0 74,0 74,100 52,89"/><polygon points="88,0 110,0 110,89 88,100"/><path d="M0 0 L0 84 Q0 126 72 126 L61 104 Q22 104 22 80 L22 0 Z" fill-rule="evenodd"/><path d="M162 0 L162 84 Q162 126 90 126 L101 104 Q140 104 140 80 L140 0 Z" fill-rule="evenodd"/></g><g transform="translate(462 0)"><rect x="0" y="0" width="74" height="22"/><rect x="52" y="0" width="22" height="64"/><rect x="0" y="42" width="74" height="22"/><polygon points="0,0 22,0 22,100 0,89"/><polygon points="37,64 61,64 74,100 50,100"/></g><g transform="translate(549 0)"><path d="M0 0 H74 V100 H0 Z M22 22 H52 V78 H22 Z" fill-rule="evenodd"/></g><g transform="translate(636 0)"><polygon points="0,0 22,0 22,100 0,89"/><polygon points="52,0 74,0 74,89 52,100"/><polygon points="22,0 52,66 52,100 22,34"/></g><g transform="translate(723 0)"><polygon points="2,0 24,0 24,62 2,51"/><polygon points="2,80 24,80 24,100 2,89"/></g></svg><p style="margin-top:6px">Marketing that books jobs for contractors. Owner-operated in Livingston, TX.</p>
+  <p style="margin-top:10px"><a href="#0" style="display:inline">713-384-8985</a> &middot; <a href="#0" style="display:inline">hello@aaron.chat</a></p></div>
+  <div><h4>What I do</h4><a href="#0">Websites</a><a href="#0">Local SEO</a><a href="#0">Paid ads</a><a class="seeall" href="#0">All services &rarr;</a></div>
+  <div><h4>Who I help</h4><a href="#0">HVAC</a><a href="#0">Plumbers</a><a href="#0">Roofers</a><a class="seeall" href="#0">All trades &rarr;</a></div>
+  <div><h4>Company</h4><a href="#0">Real work</a><a href="#0">Pricing</a><a href="#0">About</a></div>
+</div></footer></div></div>
+</div></div></section><section class="sg-sec"><div class="sg-wrap"><h2>Hero &amp; top of page</h2><div class="sg-item" id="hero">
+  <div class="sg-h"><h3>Hero</h3><span class="sg-ref">Hero</span></div>
+  <p class="sg-when">The thesis. Headline promise + the one action (call) + a founder-real visual. <b>Use as</b> the opening of any landing page.</p>
+  <div class="sg-demo tight"><div class="pad"><section class="hero grid-bg" style="border-radius:10px"><div class="wrap" style="padding:20px">
+  <div><span class="pill"><span class="dot pulse"></span>Marketing for the trades</span>
+  <h1 style="font-size:clamp(1.8rem,1.2rem+2vw,2.6rem)">More booked jobs for <span style="color:var(--primary-container)">contractors</span>. Not more "leads."</h1>
+  <p class="hero-sub">I&rsquo;m Aaron. 20 years of real marketing, now pointed at your shop.</p>
+  <div class="hero-cta"><a class="btn btn-call btn-lg" href="#0"><svg><use href="#i-phone"/></svg>Call me: 713-384-8985</a>
+  <span class="hero-note"><svg><use href="#i-check"/></svg>You get Aaron, not a sales rep</span></div></div>
+  <div class="hero-media"><div class="frame"><div class="imgslot imgslot--wide" style="height:180px"><span class="lbl">Founder photo drops in here</span></div></div></div>
+</div></section></div></div>
+</div><div class="sg-item" id="problem">
+  <div class="sg-h"><h3>Problem</h3><span class="sg-ref">Problem</span></div>
+  <p class="sg-when">Name the pain in the customer&rsquo;s words before the pitch. <b>Use right after</b> the hero to earn the read.</p>
+  <div class="sg-demo"><div class="pad"><div class="sec-head center"><h2 style="font-size:1.6rem">You do great work. So why is the phone quiet?</h2><p class="lede">When someone&rsquo;s AC quits at 11pm, they call the first shop that looks legit on Google. If that&rsquo;s not you, it&rsquo;s the shop across town &mdash; and it&rsquo;s a marketing problem, not a skill problem.</p></div></div></div>
+</div><div class="sg-item" id="solution">
+  <div class="sg-h"><h3>Solution</h3><span class="sg-ref">Solution</span></div>
+  <p class="sg-when">Show the fix as a simple, believable path. <b>Use to</b> answer the problem you just named.</p>
+  <div class="sg-demo"><div class="pad"><div class="split2"><div><span class="caps" style="color:var(--tertiary)">The fix</span><h3 style="font-size:1.5rem;margin:6px 0">Be the obvious choice when they search.</h3><ul><li><svg><use href="#i-check"/></svg><span>A site that loads fast and turns clicks into calls</span></li><li><svg><use href="#i-check"/></svg><span>Top of the local map when they search near you</span></li><li><svg><use href="#i-check"/></svg><span>Every dollar tracked to a booked job</span></li></ul></div><div class="art"></div></div></div></div>
+</div><div class="sg-item" id="how-it-works">
+  <div class="sg-h"><h3>How it works</h3><span class="sg-ref">How It Works</span></div>
+  <p class="sg-when">Three plain steps, no jargon. <b>Use to</b> de-risk starting.</p>
+  <div class="sg-demo"><div class="pad"><div class="steps"><div class="step"><span class="n">1</span><div><h3>Call me</h3><p>Tell me your trade and where the phone&rsquo;s quiet. Ten minutes.</p></div></div><div class="step"><span class="n">2</span><div><h3>I build it</h3><p>Site, Google, ads, tracking &mdash; usually live in days.</p></div></div><div class="step"><span class="n">3</span><div><h3>Your phone rings</h3><p>We watch booked jobs, not clicks. Month to month.</p></div></div></div></div></div>
+</div><div class="sg-item" id="feature">
+  <div class="sg-h"><h3>Feature grid</h3><span class="sg-ref">Feature</span></div>
+  <p class="sg-when">Scannable capability cards with an icon + demo tag. <b>Use to</b> lay out what you do.</p>
+  <div class="sg-demo"><div class="pad"><div class="cards"><div class="card"><span class="ic"><svg><use href="#i-web"/></svg></span><h3>A site that books jobs</h3><p>Fast, clean, built to turn a click into a call.</p><span class="demo-tag">You&rsquo;re on one now</span></div>
+             <div class="card"><span class="ic"><svg><use href="#i-search"/></svg></span><h3>Show up on Google</h3><p>Local SEO + your Google profile done right.</p><span class="demo-tag">Ask where you rank</span></div>
+             <div class="card"><span class="ic"><svg><use href="#i-target"/></svg></span><h3>Ads that pay for themselves</h3><p>Aimed at people who need you now.</p><span class="demo-tag">Tracked, not guessed</span></div></div></div></div>
+</div><div class="sg-item" id="content">
+  <div class="sg-h"><h3>Content / rich text</h3><span class="sg-ref">Content</span></div>
+  <p class="sg-when">Long-form prose for case studies, guides, legal. <b>Use for</b> anything read top to bottom.</p>
+  <div class="sg-demo"><div class="pad"><div class="contentblock"><h3>Why I do this</h3><p>I spent 20 years running marketing at the top of the tech world. Then I moved to Livingston and got tired of watching good contractors lose to worse ones online.</p><h4>What that means for you</h4><p>Same firepower I used for companies you&rsquo;ve heard of, pointed at your trucks &mdash; in plain English, month to month.</p></div></div></div>
+</div></div></section><section class="sg-sec"><div class="sg-wrap"><h2>Proof &amp; trust</h2><div class="sg-item" id="logo-cloud">
+  <div class="sg-h"><h3>Logo cloud</h3><span class="sg-ref">Logo Cloud</span></div>
+  <p class="sg-when">Borrowed credibility as a quiet row. <b>Use</b> real logos only &mdash; here, where Aaron&rsquo;s experience comes from.</p>
+  <div class="sg-demo"><div class="pad"><div class="logocloud"><div class="lbl">Where I learned this</div><div class="row"><b>cPanel</b><b>Monarx</b><b>Consent Resolve</b><b>Rocket</b><b>Help.com</b></div></div></div></div>
+</div><div class="sg-item" id="stats">
+  <div class="sg-h"><h3>Stats</h3><span class="sg-ref">Stats</span></div>
+  <p class="sg-when">Big honest numbers. <b>Use</b> only true figures &mdash; never invent a growth stat.</p>
+  <div class="sg-demo"><div class="pad"><div class="statstrip"><div class="stat"><div class="n">20 yrs</div><div class="l">doing marketing for a living</div></div><div class="stat"><div class="n">7+</div><div class="l">real sites shipped</div></div><div class="stat"><div class="n">1</div><div class="l">person you call &mdash; me</div></div><div class="stat"><div class="n">$0</div><div class="l">setup fees, ever</div></div></div></div></div>
+</div><div class="sg-item" id="testimonial">
+  <div class="sg-h"><h3>Testimonial</h3><span class="sg-ref">Testimonial</span></div>
+  <p class="sg-when">Social proof in the customer&rsquo;s voice. <b>Integrity rule:</b> no testimonial ships until it&rsquo;s a real client&rsquo;s real words &mdash; the block below is a labeled placeholder.</p>
+  <div class="sg-demo"><div class="pad"><div class="quotecard"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><blockquote>&ldquo;[Real client quote goes here once we have one &mdash; their words, their name, their trade.]&rdquo;</blockquote><div class="who"><span class="av"></span><div><b>Client name</b><br><span style="color:var(--ink-variant);font-size:.85rem">Trade &middot; Town, TX</span></div></div><div class="ph-note">Placeholder &mdash; never ship a fabricated testimonial.</div></div></div></div>
+</div><div class="sg-item" id="case-studies">
+  <div class="sg-h"><h3>Case studies</h3><span class="sg-ref">Case studies</span></div>
+  <p class="sg-when">Real, clickable work. <b>Use to</b> prove it&rsquo;s live, not fan fiction.</p>
+  <div class="sg-demo"><div class="pad"><div class="worklist"><a class="workcard" href="#0"><div class="shot"><div class="imgslot" style="height:150px"></div></div><div class="meta"><div class="t">G4 Electric</div><div class="s">Electrician &middot; a trade like yours</div></div></a>
+             <a class="workcard" href="#0"><div class="shot"><div class="imgslot" style="height:150px"></div></div><div class="meta"><div class="t">Polk County Golf Carts</div><div class="s">Local retail &middot; Livingston, TX</div></div></a></div></div></div>
+</div><div class="sg-item" id="competitors">
+  <div class="sg-h"><h3>Competitors / comparison</h3><span class="sg-ref">Competitors</span></div>
+  <p class="sg-when">Honest side-by-side. <b>Use to</b> frame the choice without trashing anyone.</p>
+  <div class="sg-demo"><div class="pad"><div style="overflow-x:auto"><table class="compare"><thead><tr><th>&nbsp;</th><th class="me">Hey Aaron!</th><th>Typical agency</th><th>DIY</th></tr></thead><tbody>
+             <tr><td>You reach a person</td><td class="me"><span class="yes">Always Aaron</span></td><td><span class="no">Account manager</span></td><td><span class="no">You are it</span></td></tr>
+             <tr><td>Contract</td><td class="me"><span class="yes">Month to month</span></td><td><span class="no">6&ndash;12 months</span></td><td>&mdash;</td></tr>
+             <tr><td>Tracks booked jobs</td><td class="me"><span class="yes">Yes</span></td><td><span class="no">Clicks</span></td><td><span class="no">No</span></td></tr>
+             </tbody></table></div></div></div>
+</div><div class="sg-item" id="before-after">
+  <div class="sg-h"><h3>Before / after</h3><span class="sg-ref">Before After</span></div>
+  <p class="sg-when">The trade&rsquo;s superpower &mdash; visual proof. <b>Use for</b> concrete, painting, pressure washing, remodels.</p>
+  <div class="sg-demo"><div class="pad"><div class="bagrid"><div class="bacard"><div class="img"><span class="badge">Before</span></div></div><div class="bacard after"><div class="img"><span class="badge">After</span></div></div></div></div></div>
+</div><div class="sg-item" id="awards">
+  <div class="sg-h"><h3>Awards / recognition</h3><span class="sg-ref">Awards</span></div>
+  <p class="sg-when">Badges of trust. <b>Use</b> real credentials only &mdash; placeholders shown until earned.</p>
+  <div class="sg-demo"><div class="pad"><div class="awards"><div class="awardcard"><span class="ic"><svg><use href="#i-shield"/></svg></span><b>Licensed &amp; local</b><span>Livingston, TX</span></div><div class="awardcard"><span class="ic"><svg><use href="#i-trend"/></svg></span><b>[Award]</b><span>when earned</span></div><div class="awardcard"><span class="ic"><svg><use href="#i-check"/></svg></span><b>[Badge]</b><span>real only</span></div></div></div></div>
+</div><div class="sg-item" id="partners">
+  <div class="sg-h"><h3>Partners</h3><span class="sg-ref">Partners</span></div>
+  <p class="sg-when">Who you build on. <b>Use for</b> platform partners (Google, Meta) once formalized.</p>
+  <div class="sg-demo"><div class="pad"><div class="logocloud"><div class="lbl">Built on platforms you already trust</div><div class="row"><b>Google</b><b>Meta</b><b>Cloudflare</b><b>Resend</b></div></div></div></div>
+</div></div></section><section class="sg-sec"><div class="sg-wrap"><h2>Info &amp; context</h2><div class="sg-item" id="audience">
+  <div class="sg-h"><h3>Audience / who it&amp;rsquo;s for</h3><span class="sg-ref">Audience</span></div>
+  <p class="sg-when">Qualify fast &mdash; who this is and isn&rsquo;t for. <b>Use to</b> attract the right shop and repel the wrong fit.</p>
+  <div class="sg-demo"><div class="pad"><div class="audiencegrid"><div class="audcard is"><h4><svg><use href="#i-check"/></svg>Built for you if&hellip;</h4><ul><li><svg><use href="#i-check"/></svg><span>You run 1&ndash;15 service trucks</span></li><li><svg><use href="#i-check"/></svg><span>You&rsquo;re the owner, and the phone matters</span></li><li><svg><use href="#i-check"/></svg><span>You&rsquo;d rather book jobs than chase clicks</span></li></ul></div>
+             <div class="audcard not"><h4><svg><use href="#i-check"/></svg>Probably not if&hellip;</h4><ul><li><svg><use href="#i-check"/></svg><span>You want the cheapest possible logo</span></li><li><svg><use href="#i-check"/></svg><span>You need a national brand campaign</span></li><li><svg><use href="#i-check"/></svg><span>You want a 12-month lock-in</span></li></ul></div></div></div></div>
+</div><div class="sg-item" id="timeline">
+  <div class="sg-h"><h3>Timeline</h3><span class="sg-ref">Timeline</span></div>
+  <p class="sg-when">A sequence that carries real order &mdash; history or onboarding. <b>Use for</b> the founder story or the first 30 days.</p>
+  <div class="sg-demo"><div class="pad"><div class="timeline"><div class="ev"><div class="yr">Day 1</div><h4>We talk</h4><p>Ten-minute call. Your trade, your gaps.</p></div><div class="ev"><div class="yr">Day 2&ndash;5</div><h4>I build</h4><p>Site + Google profile go live.</p></div><div class="ev"><div class="yr">Week 2</div><h4>The phone rings</h4><p>Ads and tracking switched on.</p></div></div></div></div>
+</div><div class="sg-item" id="team">
+  <div class="sg-h"><h3>Team</h3><span class="sg-ref">Team</span></div>
+  <p class="sg-when">Who&rsquo;s behind it. <b>Honest here:</b> it&rsquo;s one guy &mdash; that&rsquo;s the pitch.</p>
+  <div class="sg-demo"><div class="pad"><div class="teamgrid" style="max-width:280px"><div class="teamcard"><div class="ph"></div><h4>Aaron Phillips</h4><div class="role">Founder &amp; the whole team</div><p>Ex-CBO cPanel, ex-CMO Monarx. You call, I answer.</p></div></div></div></div>
+</div><div class="sg-item" id="integrations">
+  <div class="sg-h"><h3>Integrations</h3><span class="sg-ref">Integrations</span></div>
+  <p class="sg-when">The tools you wire together for the client. <b>Use to</b> show the stack without jargon.</p>
+  <div class="sg-demo"><div class="pad"><div class="intgrid"><div class="intcard"><span class="dot">G</span>Google Business</div><div class="intcard"><span class="dot">Ads</span>Google Ads</div><div class="intcard"><span class="dot">f</span>Facebook</div><div class="intcard"><span class="dot">@</span>Email / Resend</div><div class="intcard"><span class="dot">SMS</span>Text follow-up</div><div class="intcard"><span class="dot">&#9733;</span>Reviews</div></div></div></div>
+</div><div class="sg-item" id="maps">
+  <div class="sg-h"><h3>Maps / service area</h3><span class="sg-ref">Maps</span></div>
+  <p class="sg-when">Ground the business in place. <b>Use to</b> show the service radius for local SEO.</p>
+  <div class="sg-demo"><div class="pad"><div class="maptile"><div class="canvas"><span class="pin"></span></div><div class="side"><h4>Serving East Texas</h4><p style="color:var(--ink-variant);font-size:.9rem">Livingston and the Lake Livingston area.</p><div class="areas"><span>Livingston</span><span>Onalaska</span><span>Coldspring</span><span>Huntsville</span><span>Trinity</span></div></div></div></div></div>
+</div><div class="sg-item" id="blog">
+  <div class="sg-h"><h3>Blog</h3><span class="sg-ref">Blog</span></div>
+  <p class="sg-when">Content that ranks and answers. <b>Use for</b> the auto-blog and guides.</p>
+  <div class="sg-demo"><div class="pad"><div class="bloggrid"><article class="blogcard"><div class="thumb"></div><div class="b"><span class="cat">HVAC</span><h4>Why your AC leads dry up in October</h4><p>And the three things that keep the calls coming in the shoulder season.</p><div class="meta">5 min read</div></div></article>
+             <article class="blogcard"><div class="thumb"></div><div class="b"><span class="cat">Local SEO</span><h4>The Google Business trick most contractors miss</h4><p>A fifteen-minute fix that moves you up the map.</p><div class="meta">4 min read</div></div></article></div></div></div>
+</div><div class="sg-item" id="api">
+  <div class="sg-h"><h3>API / technical block</h3><span class="sg-ref">API</span></div>
+  <p class="sg-when">For a technical audience. <b>Use sparingly</b> &mdash; most contractors don&rsquo;t need this; keep it for tooling or partner pages.</p>
+  <div class="sg-demo"><div class="pad"><div class="apiblock"><div class="copy"><h4>Leads, wired straight to you</h4><p>Every form and callback posts to a single endpoint and emails you instantly &mdash; no dashboard to babysit.</p></div><div class="sg-code" style="margin:0"><span class="k">POST</span> /api/lead
+<span class="s">{ "phone": "&hellip;", "trade": "&hellip;" }</span>
+<span class="c">// &rarr; emails Aaron in seconds</span></div></div></div></div>
+</div></div></section><section class="sg-sec"><div class="sg-wrap"><h2>Conversion</h2><div class="sg-item" id="cta">
+  <div class="sg-h"><h3>Call to action</h3><span class="sg-ref">Call To Action</span></div>
+  <p class="sg-when">The recurring ask. Always a call, with the risk-reversal line. <b>Use to</b> close every section.</p>
+  <div class="sg-demo"><div class="pad"><div class="sec-head center"><h2 style="font-size:1.5rem">Ready when you are.</h2><p class="lede">Ten minutes, no pitch, no contract.</p><div style="margin-top:16px"><a class="btn btn-call btn-lg" href="#0"><svg><use href="#i-phone"/></svg>Call Aaron: 713-384-8985</a></div><div class="guarantee" style="margin-top:14px"><svg><use href="#i-shield"/></svg>If I&rsquo;m not booking you jobs, fire me.</div></div></div></div>
+</div><div class="sg-item" id="pricing">
+  <div class="sg-h"><h3>Pricing</h3><span class="sg-ref">Pricing</span></div>
+  <p class="sg-when">Straight prices, modular. <b>Use to</b> kill the &ldquo;call for pricing&rdquo; friction.</p>
+  <div class="sg-demo"><div class="pad"><div class="tiers"><div class="tier pop"><span class="badge">Start here</span><span class="name">Website &amp; Growth</span><div class="price">$500<span>/mo</span></div><p class="sub">The foundation.</p><ul><li><svg><use href="#i-check"/></svg><span>Fast managed website</span></li><li><svg><use href="#i-check"/></svg><span>Local SEO + AEO</span></li><li><svg><use href="#i-check"/></svg><span>Blog, outreach, newsletter</span></li></ul><a class="btn btn-call btn-block" href="#0">Call to start</a></div>
+             <div class="tier"><span class="name">Social Media</span><div class="price">$500<span>/mo</span></div><p class="sub">7 networks, handled.</p><ul><li><svg><use href="#i-check"/></svg><span>500&ndash;700 posts/mo</span></li><li><svg><use href="#i-check"/></svg><span>3 reels a day</span></li><li><svg><use href="#i-check"/></svg><span>100% automated</span></li></ul><a class="btn btn-call btn-block" href="#0">Call to start</a></div>
+             <div class="tier"><span class="name">Paid Ads</span><div class="price">15%<span>of spend</span></div><p class="sub">Scale when ready.</p><ul><li><svg><use href="#i-check"/></svg><span>Google + Facebook</span></li><li><svg><use href="#i-check"/></svg><span>$2,000/mo min budget</span></li><li><svg><use href="#i-check"/></svg><span>Tracked to jobs</span></li></ul><a class="btn btn-call btn-block" href="#0">Call to start</a></div></div></div></div>
+</div><div class="sg-item" id="products">
+  <div class="sg-h"><h3>Products / packages</h3><span class="sg-ref">Products</span></div>
+  <p class="sg-when">For a service business, &ldquo;products&rdquo; = productized services. <b>Use to</b> present add-ons.</p>
+  <div class="sg-demo"><div class="pad"><div class="cards"><div class="card"><span class="ic"><svg><use href="#i-image"/></svg></span><h3>Reel package</h3><p>Short vertical video that stops the scroll, made monthly.</p></div>
+             <div class="card"><span class="ic"><svg><use href="#i-trend"/></svg></span><h3>Review engine</h3><p>Automatic review requests after every job.</p></div>
+             <div class="card"><span class="ic"><svg><use href="#i-search"/></svg></span><h3>AEO tune-up</h3><p>Get quoted by AI answer engines, not just Google.</p></div></div></div></div>
+</div><div class="sg-item" id="demo">
+  <div class="sg-h"><h3>Demo</h3><span class="sg-ref">Demo</span></div>
+  <p class="sg-when">&ldquo;The site is the demo.&rdquo; A framed product shot. <b>Use to</b> show, not tell.</p>
+  <div class="sg-demo"><div class="pad"><div class="frame" style="max-width:520px;margin-inline:auto"><div class="imgslot imgslot--wide" style="height:240px"><span class="tag">Live product screenshot</span><span class="lbl">A site I built, shown right here</span></div></div></div></div>
+</div><div class="sg-item" id="faq">
+  <div class="sg-h"><h3>FAQ</h3><span class="sg-ref">FAQ</span></div>
+  <p class="sg-when">Objections, answered plainly, with FAQ schema. <b>Use near</b> the bottom of every page.</p>
+  <div class="sg-demo"><div class="pad"><div class="faq"><details open><summary>What does it cost?<svg class="chev"><use href="#i-chev"/></svg></summary><div class="a">$500/mo for Website &amp; Growth, $500/mo for Social, ads at 15% of spend. Month to month.</div></details><details><summary>Who does the work?<svg class="chev"><use href="#i-chev"/></svg></summary><div class="a">Me. Aaron. You call, I answer.</div></details></div></div></div>
+</div><div class="sg-item" id="newsletter">
+  <div class="sg-h"><h3>Newsletter</h3><span class="sg-ref">Newsletter</span></div>
+  <p class="sg-when">Owned audience. <b>Use to</b> capture emails for the monthly send.</p>
+  <div class="sg-demo"><div class="pad"><div class="newsletter"><h3>The monthly your customers actually read</h3><p>One useful email a month for East Texas contractors. No spam, unsubscribe anytime.</p><form class="inlineform" onsubmit="return false"><input type="email" placeholder="you@yourshop.com" aria-label="Email"><button class="btn btn-white" type="submit">Sign me up</button><span class="note">We never share your email.</span></form></div></div></div>
+</div><div class="sg-item" id="lead-magnet">
+  <div class="sg-h"><h3>Lead magnet</h3><span class="sg-ref">Leadmagnet</span></div>
+  <p class="sg-when">A useful free thing in exchange for an email. <b>Use to</b> warm up people not ready to call.</p>
+  <div class="sg-demo"><div class="pad"><div class="leadmag"><div class="cover"><b>The 7-Point Contractor Website Checklist</b></div><div><span class="caps" style="color:var(--tertiary)">Free download</span><h3 style="font-size:1.4rem;margin:6px 0 8px">Is your site costing you jobs?</h3><p style="color:var(--ink-variant);margin-bottom:14px">Seven things I check on every contractor site. Grab the checklist, no call required.</p><form class="inlineform" style="margin:0" onsubmit="return false"><input type="email" placeholder="you@yourshop.com" aria-label="Email"><button class="btn btn-call" type="submit">Send it</button></form></div></div></div></div>
+</div><div class="sg-item" id="signup">
+  <div class="sg-h"><h3>Signup</h3><span class="sg-ref">Signup</span></div>
+  <p class="sg-when">Account creation. <b>Note:</b> Aaron is call-first, so this is for a future client portal, not the main funnel.</p>
+  <div class="sg-demo"><div class="pad"><div class="authcard"><h3>Create your client login</h3><p class="sub">See your site, leads, and reports in one place.</p><div class="field"><label>Name</label><input placeholder="Your name"></div><div class="field"><label>Email</label><input type="email" placeholder="you@yourshop.com"></div><div class="field"><label>Password</label><input type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"></div><button class="btn btn-call btn-block">Create account</button><p class="alt">Already have one? <a href="#0" style="color:var(--tertiary);font-weight:600">Log in</a></p></div></div></div>
+</div><div class="sg-item" id="login">
+  <div class="sg-h"><h3>Login</h3><span class="sg-ref">Login</span></div>
+  <p class="sg-when">Return access for the client portal. <b>Use for</b> the same future portal as signup.</p>
+  <div class="sg-demo"><div class="pad"><div class="authcard"><h3>Welcome back</h3><p class="sub">Log in to your dashboard.</p><div class="field"><label>Email</label><input type="email" placeholder="you@yourshop.com"></div><div class="field"><label>Password</label><input type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"></div><button class="btn btn-call btn-block">Log in</button><p class="alt"><a href="#0" style="color:var(--tertiary);font-weight:600">Forgot password?</a></p></div></div></div>
+</div><div class="sg-item" id="contact">
+  <div class="sg-h"><h3>Contact</h3><span class="sg-ref">Contact</span></div>
+  <p class="sg-when">Every way to reach a human. <b>Use to</b> put the phone first, form second.</p>
+  <div class="sg-demo"><div class="pad"><div class="contactgrid"><div><div class="chan"><span class="ic"><svg><use href="#i-phone"/></svg></span><div><b>Call or text</b><span>713-384-8985 &mdash; you get Aaron</span></div></div>
+             <div class="chan"><span class="ic"><svg><use href="#i-msg"/></svg></span><div><b>Email</b><span>hello@aaron.chat</span></div></div>
+             <div class="chan"><span class="ic"><svg><use href="#i-web"/></svg></span><div><b>Where</b><span>Livingston, TX &middot; serving East Texas</span></div></div></div>
+             <div><div class="field"><label>Name</label><input placeholder="Your name"></div><div class="field"><label>Phone</label><input placeholder="(000) 000-0000"></div><div class="field"><label>What&rsquo;s up?</label><input placeholder="Phone&rsquo;s been quiet&hellip;"></div><button class="btn btn-call btn-block">Send it to Aaron</button></div></div></div></div>
+</div></div></section>
+</main>
+<footer class="sg-sec" style="text-align:center">
+  <div class="sg-wrap"><p class="sg-cap">Hey Aaron! Marketing &middot; internal style guide &middot; built on ha.css v105
+  &middot; components use production classes from <code>ha.css</code> + <code>sg.css</code>.</p></div>
+</footer>
+<script src="/brand/ha.js?v=105" defer></script>
+</body>
+</html>

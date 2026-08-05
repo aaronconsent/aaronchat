@@ -3,55 +3,110 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>document.documentElement.classList.add('js')</script>
-<title>Style guide · Hey Aaron! Style Guide</title>
-<meta name="description" content="The locked system: voice, color, type, components, motion, and the rules that don&#x27;t bend.">
+<title>Style guide — Hey Aaron! Marketing</title>
+<meta name="description" content="Brand, components, and ICP for the Hey Aaron! Marketing site.">
 <meta name="robots" content="noindex, nofollow">
-<link rel="stylesheet" href="/brand/style.css?v=34">
-<link rel="stylesheet" href="/brand/styleguide.css?v=34">
+<meta name="theme-color" content="#23252b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/brand/ha.css?v=105">
+<link rel="stylesheet" href="/brand/sg.css?v=105">
 </head>
-<body class="sg-page">
-<header class="site-head">
-  <div class="wrap">
-    <a class="logo" href="/"><span class="mark">A+</span> aaron.chat</a>
-    <nav class="site-nav"><a href="/style-guide/">Style guide</a><a class="cta" href="/">Back to site</a></nav>
-  </div>
+<body>
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></symbol>
+<symbol id="i-msg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.9 9.9 0 0 1-4.3-1L3 20l1.3-4.1A8.4 8.4 0 1 1 21 11.5z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-trend" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 6-6 4 4 8-8"/><path d="M17 7h4v4"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/></symbol>
+<symbol id="i-web" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18z"/></symbol>
+<symbol id="i-image" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></symbol>
+</defs></svg>
+<header class="sg-top">
+  <span class="brand"><svg class="ha-logo" viewBox="0 -6 749 140" fill="currentColor" role="img" aria-label="Hey Aaron!"><g transform="translate(0 0)"><rect x="0" y="39" width="74" height="22"/><polygon points="0,0 22,0 22,100 0,89"/><polygon points="52,0 74,0 74,89 52,100"/></g><g transform="translate(87 0)"><rect x="0" y="0" width="22" height="100"/><polygon points="0,0 63,0 74,22 0,22"/><polygon points="0,39 53,39 64,61 0,61"/><polygon points="0,78 63,78 74,100 0,100"/></g><g transform="translate(174 0)"><rect x="0" y="0" width="22" height="55"/><rect x="52" y="0" width="22" height="55"/><rect x="0" y="33" width="74" height="22"/><polygon points="26,55 48,55 48,89 37,100 26,89"/></g><g transform="translate(287 0)"><rect x="0" y="0" width="74" height="22"/><rect x="0" y="48" width="74" height="22"/><rect x="88" y="0" width="74" height="22"/><rect x="88" y="48" width="74" height="22"/><polygon points="52,0 74,0 74,100 52,89"/><polygon points="88,0 110,0 110,89 88,100"/><path d="M0 0 L0 84 Q0 126 72 126 L61 104 Q22 104 22 80 L22 0 Z" fill-rule="evenodd"/><path d="M162 0 L162 84 Q162 126 90 126 L101 104 Q140 104 140 80 L140 0 Z" fill-rule="evenodd"/></g><g transform="translate(462 0)"><rect x="0" y="0" width="74" height="22"/><rect x="52" y="0" width="22" height="64"/><rect x="0" y="42" width="74" height="22"/><polygon points="0,0 22,0 22,100 0,89"/><polygon points="37,64 61,64 74,100 50,100"/></g><g transform="translate(549 0)"><path d="M0 0 H74 V100 H0 Z M22 22 H52 V78 H22 Z" fill-rule="evenodd"/></g><g transform="translate(636 0)"><polygon points="0,0 22,0 22,100 0,89"/><polygon points="52,0 74,0 74,89 52,100"/><polygon points="22,0 52,66 52,100 22,34"/></g><g transform="translate(723 0)"><polygon points="2,0 24,0 24,62 2,51"/><polygon points="2,80 24,80 24,100 2,89"/></g></svg><span class="tag">Style guide</span></span>
+  <nav><a href="/style-guide/" class="on">Overview</a><a href="/style-guide/library/">Components</a><a href="/style-guide/icp/">ICP</a><a href="/">Back to site &rarr;</a></nav>
 </header>
 
-<div class="sg-head">
-  <div class="wrap">
-    
-    <h1>Style guide</h1>
-    <p class="sg-desc">The locked system: voice, color, type, components, motion, and the rules that don&#x27;t bend.</p>
-    <nav class="sg-nav"><a href="/style-guide/" class="on">Style guide</a><a href="/style-guide/voice/">Voice</a><a href="/style-guide/directives/">Directives</a><a href="/style-guide/color/">Color</a><a href="/style-guide/typography/">Typography</a><a href="/style-guide/components/">Components</a><a href="/style-guide/motion/">Motion</a></nav>
+<main>
+<section class="sg-hero"><div class="sg-wrap">
+  <span class="kick">Hey Aaron! Marketing</span>
+  <h1>The style guide.</h1>
+  <p>One source of truth for how the site looks, sounds, and gets built: the brand, a live component
+  library, and who we build it all for. Everything here runs on the same <code>ha.css</code> the live site uses.</p>
+  <div class="hero-cta" style="margin-top:20px">
+    <a class="btn btn-call" href="/style-guide/library/">Open the component library</a>
+    <a class="btn btn-ghost" href="/style-guide/icp/">See the ICP</a>
   </div>
-</div>
+</div></section>
 
-<main class="wrap sg-main">
+<section class="sg-sec"><div class="sg-wrap">
+  <h2>Logo</h2>
+  <p class="lead">The wordmark is a custom geometric build in the brand's own letterform language. Keep clear space
+  equal to the bar height; never recolor mid-letter, stretch, or add effects. Use the reversed (white) version on
+  navy or dark.</p>
+  <div class="sg-logo-row">
+      <div><div class="sg-logo-cell on-light"><svg class="ha-logo" viewBox="0 -6 749 140" fill="currentColor" role="img" aria-label="Hey Aaron!"><g transform="translate(0 0)"><rect x="0" y="39" width="74" height="22"/><polygon points="0,0 22,0 22,100 0,89"/><polygon points="52,0 74,0 74,89 52,100"/></g><g transform="translate(87 0)"><rect x="0" y="0" width="22" height="100"/><polygon points="0,0 63,0 74,22 0,22"/><polygon points="0,39 53,39 64,61 0,61"/><polygon points="0,78 63,78 74,100 0,100"/></g><g transform="translate(174 0)"><rect x="0" y="0" width="22" height="55"/><rect x="52" y="0" width="22" height="55"/><rect x="0" y="33" width="74" height="22"/><polygon points="26,55 48,55 48,89 37,100 26,89"/></g><g transform="translate(287 0)"><rect x="0" y="0" width="74" height="22"/><rect x="0" y="48" width="74" height="22"/><rect x="88" y="0" width="74" height="22"/><rect x="88" y="48" width="74" height="22"/><polygon points="52,0 74,0 74,100 52,89"/><polygon points="88,0 110,0 110,89 88,100"/><path d="M0 0 L0 84 Q0 126 72 126 L61 104 Q22 104 22 80 L22 0 Z" fill-rule="evenodd"/><path d="M162 0 L162 84 Q162 126 90 126 L101 104 Q140 104 140 80 L140 0 Z" fill-rule="evenodd"/></g><g transform="translate(462 0)"><rect x="0" y="0" width="74" height="22"/><rect x="52" y="0" width="22" height="64"/><rect x="0" y="42" width="74" height="22"/><polygon points="0,0 22,0 22,100 0,89"/><polygon points="37,64 61,64 74,100 50,100"/></g><g transform="translate(549 0)"><path d="M0 0 H74 V100 H0 Z M22 22 H52 V78 H22 Z" fill-rule="evenodd"/></g><g transform="translate(636 0)"><polygon points="0,0 22,0 22,100 0,89"/><polygon points="52,0 74,0 74,89 52,100"/><polygon points="22,0 52,66 52,100 22,34"/></g><g transform="translate(723 0)"><polygon points="2,0 24,0 24,62 2,51"/><polygon points="2,80 24,80 24,100 2,89"/></g></svg></div><div class="sg-cap">Navy on light &mdash; default</div></div>
+      <div><div class="sg-logo-cell on-navy"><svg class="ha-logo" viewBox="0 -6 749 140" fill="currentColor" role="img" aria-label="Hey Aaron!"><g transform="translate(0 0)"><rect x="0" y="39" width="74" height="22"/><polygon points="0,0 22,0 22,100 0,89"/><polygon points="52,0 74,0 74,89 52,100"/></g><g transform="translate(87 0)"><rect x="0" y="0" width="22" height="100"/><polygon points="0,0 63,0 74,22 0,22"/><polygon points="0,39 53,39 64,61 0,61"/><polygon points="0,78 63,78 74,100 0,100"/></g><g transform="translate(174 0)"><rect x="0" y="0" width="22" height="55"/><rect x="52" y="0" width="22" height="55"/><rect x="0" y="33" width="74" height="22"/><polygon points="26,55 48,55 48,89 37,100 26,89"/></g><g transform="translate(287 0)"><rect x="0" y="0" width="74" height="22"/><rect x="0" y="48" width="74" height="22"/><rect x="88" y="0" width="74" height="22"/><rect x="88" y="48" width="74" height="22"/><polygon points="52,0 74,0 74,100 52,89"/><polygon points="88,0 110,0 110,89 88,100"/><path d="M0 0 L0 84 Q0 126 72 126 L61 104 Q22 104 22 80 L22 0 Z" fill-rule="evenodd"/><path d="M162 0 L162 84 Q162 126 90 126 L101 104 Q140 104 140 80 L140 0 Z" fill-rule="evenodd"/></g><g transform="translate(462 0)"><rect x="0" y="0" width="74" height="22"/><rect x="52" y="0" width="22" height="64"/><rect x="0" y="42" width="74" height="22"/><polygon points="0,0 22,0 22,100 0,89"/><polygon points="37,64 61,64 74,100 50,100"/></g><g transform="translate(549 0)"><path d="M0 0 H74 V100 H0 Z M22 22 H52 V78 H22 Z" fill-rule="evenodd"/></g><g transform="translate(636 0)"><polygon points="0,0 22,0 22,100 0,89"/><polygon points="52,0 74,0 74,89 52,100"/><polygon points="22,0 52,66 52,100 22,34"/></g><g transform="translate(723 0)"><polygon points="2,0 24,0 24,62 2,51"/><polygon points="2,80 24,80 24,100 2,89"/></g></svg></div><div class="sg-cap">Reversed on primary-container</div></div>
+      <div><div class="sg-logo-cell on-dark"><svg class="ha-logo" viewBox="0 -6 749 140" fill="currentColor" role="img" aria-label="Hey Aaron!"><g transform="translate(0 0)"><rect x="0" y="39" width="74" height="22"/><polygon points="0,0 22,0 22,100 0,89"/><polygon points="52,0 74,0 74,89 52,100"/></g><g transform="translate(87 0)"><rect x="0" y="0" width="22" height="100"/><polygon points="0,0 63,0 74,22 0,22"/><polygon points="0,39 53,39 64,61 0,61"/><polygon points="0,78 63,78 74,100 0,100"/></g><g transform="translate(174 0)"><rect x="0" y="0" width="22" height="55"/><rect x="52" y="0" width="22" height="55"/><rect x="0" y="33" width="74" height="22"/><polygon points="26,55 48,55 48,89 37,100 26,89"/></g><g transform="translate(287 0)"><rect x="0" y="0" width="74" height="22"/><rect x="0" y="48" width="74" height="22"/><rect x="88" y="0" width="74" height="22"/><rect x="88" y="48" width="74" height="22"/><polygon points="52,0 74,0 74,100 52,89"/><polygon points="88,0 110,0 110,89 88,100"/><path d="M0 0 L0 84 Q0 126 72 126 L61 104 Q22 104 22 80 L22 0 Z" fill-rule="evenodd"/><path d="M162 0 L162 84 Q162 126 90 126 L101 104 Q140 104 140 80 L140 0 Z" fill-rule="evenodd"/></g><g transform="translate(462 0)"><rect x="0" y="0" width="74" height="22"/><rect x="52" y="0" width="22" height="64"/><rect x="0" y="42" width="74" height="22"/><polygon points="0,0 22,0 22,100 0,89"/><polygon points="37,64 61,64 74,100 50,100"/></g><g transform="translate(549 0)"><path d="M0 0 H74 V100 H0 Z M22 22 H52 V78 H22 Z" fill-rule="evenodd"/></g><g transform="translate(636 0)"><polygon points="0,0 22,0 22,100 0,89"/><polygon points="52,0 74,0 74,89 52,100"/><polygon points="22,0 52,66 52,100 22,34"/></g><g transform="translate(723 0)"><polygon points="2,0 24,0 24,62 2,51"/><polygon points="2,80 24,80 24,100 2,89"/></g></svg></div><div class="sg-cap">Reversed on dark (footer)</div></div>
+      <div><div class="sg-logo-cell on-accent"><svg class="ha-logo" viewBox="0 -6 749 140" fill="currentColor" role="img" aria-label="Hey Aaron!"><g transform="translate(0 0)"><rect x="0" y="39" width="74" height="22"/><polygon points="0,0 22,0 22,100 0,89"/><polygon points="52,0 74,0 74,89 52,100"/></g><g transform="translate(87 0)"><rect x="0" y="0" width="22" height="100"/><polygon points="0,0 63,0 74,22 0,22"/><polygon points="0,39 53,39 64,61 0,61"/><polygon points="0,78 63,78 74,100 0,100"/></g><g transform="translate(174 0)"><rect x="0" y="0" width="22" height="55"/><rect x="52" y="0" width="22" height="55"/><rect x="0" y="33" width="74" height="22"/><polygon points="26,55 48,55 48,89 37,100 26,89"/></g><g transform="translate(287 0)"><rect x="0" y="0" width="74" height="22"/><rect x="0" y="48" width="74" height="22"/><rect x="88" y="0" width="74" height="22"/><rect x="88" y="48" width="74" height="22"/><polygon points="52,0 74,0 74,100 52,89"/><polygon points="88,0 110,0 110,89 88,100"/><path d="M0 0 L0 84 Q0 126 72 126 L61 104 Q22 104 22 80 L22 0 Z" fill-rule="evenodd"/><path d="M162 0 L162 84 Q162 126 90 126 L101 104 Q140 104 140 80 L140 0 Z" fill-rule="evenodd"/></g><g transform="translate(462 0)"><rect x="0" y="0" width="74" height="22"/><rect x="52" y="0" width="22" height="64"/><rect x="0" y="42" width="74" height="22"/><polygon points="0,0 22,0 22,100 0,89"/><polygon points="37,64 61,64 74,100 50,100"/></g><g transform="translate(549 0)"><path d="M0 0 H74 V100 H0 Z M22 22 H52 V78 H22 Z" fill-rule="evenodd"/></g><g transform="translate(636 0)"><polygon points="0,0 22,0 22,100 0,89"/><polygon points="52,0 74,0 74,89 52,100"/><polygon points="22,0 52,66 52,100 22,34"/></g><g transform="translate(723 0)"><polygon points="2,0 24,0 24,62 2,51"/><polygon points="2,80 24,80 24,100 2,89"/></g></svg></div><div class="sg-cap">On accent wash</div></div>
+    </div>
+  <p class="sg-cap" style="text-align:left;margin-top:18px">Production logo = the inline <code>&lt;svg class="ha-logo"&gt;</code> (fill: currentColor, so it
+  inherits text color). Generative source stored at <a href="/brand/logo/hey-aaron-wordmark.html">/brand/logo/hey-aaron-wordmark.html</a>.</p>
+  <div class="sg-code"><span class="c">// letterforms in the logo's exact language: stroke 22, body 74, counter 30,</span>
+<span class="c">// 2:1 angled terminals, vector shield-curve AA pair. Full generative source:</span>
+buildWordmark([<span class="s">"H","E","Y"," ","AA","R","O","N","!"</span>]);</div>
+</div></section>
 
-<section class="sg-sec">
-  <p class="sg-lede">This is the system aaron.chat is built from. It exists so every page, email and post
-  sounds like the same company and looks like the same company. When something here conflicts with what's
-  on a page, this wins and the page is the bug.</p>
-  <div class="sg-grid"><a class="sg-card" href="/style-guide/voice/"><h3>Voice</h3><p>Who we&#x27;re talking to, how we sound, the banned list, and the canonical facts.</p><span class="sg-go">Open &rarr;</span></a><a class="sg-card" href="/style-guide/directives/"><h3>Directives</h3><p>The non-negotiables. Read these before writing a line of copy or code.</p><span class="sg-go">Open &rarr;</span></a><a class="sg-card" href="/style-guide/color/"><h3>Color</h3><p>Every token, its job, and its measured contrast.</p><span class="sg-go">Open &rarr;</span></a><a class="sg-card" href="/style-guide/typography/"><h3>Typography</h3><p>Four families, one job each, and the fluid scale.</p><span class="sg-go">Open &rarr;</span></a><a class="sg-card" href="/style-guide/components/"><h3>Components</h3><p>The built vocabulary. Reuse before inventing.</p><span class="sg-go">Open &rarr;</span></a><a class="sg-card" href="/style-guide/motion/"><h3>Motion</h3><p>Easing tokens, the duration budget, and the rules that keep it honest.</p><span class="sg-go">Open &rarr;</span></a></div>
-</section>
-<section class="sg-sec">
-  <h2>How to use it</h2>
-  <p>Writing copy: open <a href="/style-guide/voice/">Voice</a>, paste Block A into the prompt, add Block C
-  whenever the copy states a fact. Building a page: check <a href="/style-guide/components/">Components</a>
-  before inventing anything, and hold the <a href="/style-guide/directives/">Directives</a>.</p>
-  <p>Source files, for agents and editors: <code>.docs/voice.md</code> (voice), <code>DESIGN.md</code>
-  (visual system), <code>PRODUCT.md</code> (strategy). This site renders them; it does not replace them.</p>
-</section>
+<section class="sg-sec"><div class="sg-wrap">
+  <h2>Color</h2>
+  <p class="lead">The Stitch palette, exact. Deep navy carries the brand; burnt orange is the accent, used sparingly
+  for links, stars, and rules. All text pairings are checked to WCAG AA.</p>
+  <div class="sg-swatches"><div class="sg-swatch"><div class="chip" style="background:#002f62"></div><div class="meta"><b>Primary</b><span>#002f62</span><span>--primary</span></div></div><div class="sg-swatch"><div class="chip" style="background:#074588"></div><div class="meta"><b>Primary container</b><span>#074588</span><span>--primary-container</span></div></div><div class="sg-swatch"><div class="chip" style="background:#7a4a12"></div><div class="meta"><b>Tertiary (accent)</b><span>#7a4a12</span><span>--tertiary</span></div></div><div class="sg-swatch"><div class="chip" style="background:#b4610c"></div><div class="meta"><b>Accent bright</b><span>#b4610c</span><span>--tertiary-bright</span></div></div><div class="sg-swatch"><div class="chip" style="background:#16181c"></div><div class="meta"><b>Ink</b><span>#16181c</span><span>--ink</span></div></div><div class="sg-swatch"><div class="chip" style="background:#3b414b"></div><div class="meta"><b>Ink variant</b><span>#3b414b</span><span>--ink-variant</span></div></div><div class="sg-swatch"><div class="chip" style="background:#f9f9fe"></div><div class="meta"><b>Surface</b><span>#f9f9fe</span><span>--surface</span></div></div><div class="sg-swatch"><div class="chip" style="background:#f3f3f9"></div><div class="meta"><b>Surface low</b><span>#f3f3f9</span><span>--surface-low</span></div></div><div class="sg-swatch"><div class="chip" style="background:#23252b"></div><div class="meta"><b>Dark (footer)</b><span>#23252b</span><span>--dark</span></div></div><div class="sg-swatch"><div class="chip" style="background:#1f6b23"></div><div class="meta"><b>Good</b><span>#1f6b23</span><span>--good</span></div></div><div class="sg-swatch"><div class="chip" style="background:#12508f"></div><div class="meta"><b>Info</b><span>#12508f</span><span>--info</span></div></div><div class="sg-swatch"><div class="chip" style="background:#ba1a1a"></div><div class="meta"><b>Danger</b><span>#ba1a1a</span><span>--danger</span></div></div></div>
+</div></section>
 
+<section class="sg-sec"><div class="sg-wrap">
+  <h2>Typography</h2>
+  <p class="lead">Inter, everywhere. Tight tracking and heavy weights for authority; generous line-height for body.</p>
+  
+      <div class="sg-type-row"><span class="lbl">Display XL &middot; hero</span><span style="font-size:var(--d-xl);font-weight:700;letter-spacing:-.02em;line-height:1.05">More booked jobs.</span></div>
+      <div class="sg-type-row"><span class="lbl">Display LG &middot; section h2</span><span style="font-size:var(--d-lg);font-weight:700;letter-spacing:-.02em">What I actually do</span></div>
+      <div class="sg-type-row"><span class="lbl">Headline MD &middot; h3</span><span style="font-size:var(--h-md);font-weight:600">A site that books jobs</span></div>
+      <div class="sg-type-row"><span class="lbl">Body LG &middot; lede</span><span style="font-size:var(--body-lg);color:var(--ink-variant)">Marketing that gets your phone ringing, in plain English.</span></div>
+      <div class="sg-type-row"><span class="lbl">Caps label</span><span class="caps" style="color:var(--tertiary)">Marketing for the trades</span></div>
+</div></section>
+
+<section class="sg-sec"><div class="sg-wrap">
+  <h2>Buttons &amp; links</h2>
+  <p class="lead">Primary action is always a call. Ghost for secondary, white for dark backgrounds.</p>
+  <div class="sg-demo"><div class="pad" style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+    <a class="btn btn-call" href="#0"><svg><use href="#i-phone"/></svg>Call me: 713-384-8985</a>
+    <a class="btn btn-ghost" href="#0">More about me</a>
+    <span style="background:var(--dark);padding:14px;border-radius:8px"><a class="btn btn-white" href="#0"><svg><use href="#i-phone"/></svg>Call Aaron</a></span>
+    <a href="#0" style="color:var(--tertiary);font-weight:600">A text link</a>
+  </div></div>
+</div></section>
+
+<section class="sg-sec"><div class="sg-wrap">
+  <h2>What&rsquo;s next in here</h2>
+  <p class="lead">Sections growing over time.</p>
+  <div class="sg-swatches">
+    <div class="sg-swatch"><div class="chip" style="background:var(--primary-container);display:grid;place-items:center;color:#fff;font-weight:700">Done</div><div class="meta"><b><a href="/style-guide/library/">Component library</a></b><span>37 on-brand blocks</span></div></div>
+    <div class="sg-swatch"><div class="chip" style="background:var(--primary-container);display:grid;place-items:center;color:#fff;font-weight:700">Done</div><div class="meta"><b><a href="/style-guide/icp/">ICP details</a></b><span>persona + 17 trades</span></div></div>
+    <div class="sg-swatch"><div class="chip" style="background:var(--surface-high);display:grid;place-items:center;color:var(--ink-variant);font-weight:700">Soon</div><div class="meta"><b>Voice &amp; tone</b><span>your call, when ready</span></div></div>
+    <div class="sg-swatch"><div class="chip" style="background:var(--surface-high);display:grid;place-items:center;color:var(--ink-variant);font-weight:700">Soon</div><div class="meta"><b>Motion</b><span>timings + easing</span></div></div>
+  </div>
+</div></section>
 </main>
-
-<footer class="site-foot">
-  <div class="wrap cols">
-    <div><span class="hand">Hey Aaron! Marketing</span><p>Internal reference. Not indexed.</p></div>
-    <div><p><a href="/style-guide/">Style guide index</a> · <a href="/">aaron.chat</a></p></div>
-  </div>
+<footer class="sg-sec" style="text-align:center">
+  <div class="sg-wrap"><p class="sg-cap">Hey Aaron! Marketing &middot; internal style guide &middot; built on ha.css v105
+  &middot; components use production classes from <code>ha.css</code> + <code>sg.css</code>.</p></div>
 </footer>
-<script src="/brand/nav.js?v=34" defer></script>
+<script src="/brand/ha.js?v=105" defer></script>
 </body>
 </html>
