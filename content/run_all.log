@@ -2326,3 +2326,11 @@
 2026-08-05T10:22:54  bluesky[audience]: gated. window:blocked(outside_windows hour=10)
 2026-08-05T10:22:55  mastodon[credibility]: POSTED id=0eee0abb86f9 via own_app (posted @heyaaron → https://mastodon.social/@heyaaron/117043585036860027)
 2026-08-05T10:22:55  mastodon[audience]: gated. window:blocked(outside_windows hour=10)
+2026-08-05T12:50:06  linkedin[credibility]: FAILED id=cdf15fd94d55 backend=buffer detail=Buffer HTTP 401: {"errors":[{"message":"Access token is not valid","extensions":{"code":"UNAUTHENTICATED"}}]}
+2026-08-05T12:50:06  linkedin[audience]: no unposted items
+2026-08-05T12:50:06  x[credibility]: FAILED id=befc44b9ea08 backend=buffer detail=Buffer HTTP 401: {"errors":[{"message":"Access token is not valid","extensions":{"code":"UNAUTHENTICATED"}}]}
+2026-08-05T12:50:06  x[audience]: no unposted items
+2026-08-05T12:50:08  bluesky[credibility]: FAILED id=0f223d3374d2 backend=own_app detail=createRecord failed: post text 320 chars; Bluesky max is 300
+2026-08-05T12:50:08  bluesky[audience]: no unposted items
+2026-08-05T12:50:08  mastodon[credibility]: gated. window:ok(window 9-17) | cap:blocked(cap_hit today=1 cap=1)
+2026-08-05T12:50:08  mastodon[audience]: no unposted items
