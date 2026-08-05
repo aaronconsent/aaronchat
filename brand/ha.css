@@ -500,3 +500,13 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 .price-note { font-family: var(--f); font-size: 1.3rem; font-weight: 700; color: var(--primary-container);
   line-height: 1.1; margin: 6px 0 2px; letter-spacing: -0.01em; }
 .price-note span { display: block; font-size: 0.82rem; font-weight: 500; color: var(--ink-variant); margin-top: 3px; }
+
+/* homepage at-a-glance price strip */
+.pricestrip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 940px; margin: 30px auto 0; }
+.pricestrip .ps { background: var(--white); border: 1px solid var(--line-soft); border-top: 3px solid var(--primary-container);
+  border-radius: var(--r-lg); padding: 22px 20px; text-align: center; display: grid; gap: 4px; align-content: start; }
+.pricestrip .ps-name { font-size: 0.78rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--tertiary); }
+.pricestrip .ps-price { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); line-height: 1.05; }
+.pricestrip .ps-price small { font-size: 0.9rem; font-weight: 500; color: var(--ink-variant); margin-left: 3px; }
+.pricestrip .ps-sub { font-size: 0.85rem; color: var(--ink-variant); margin-top: 2px; }
+@media (max-width: 720px) { .pricestrip { grid-template-columns: 1fr; max-width: 420px; } }
