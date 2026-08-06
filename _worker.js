@@ -1620,7 +1620,7 @@ async function lcLiveFactor(bench, state, env) {
     const auth = "Basic " + btoa(`${env.DATAFORSEO_LOGIN}:${env.DATAFORSEO_PASSWORD}`);
     const body = [
       { keywords: bench.kw, location_name: `${state},United States`, language_code: "en", search_partners: false },
-      { keywords: bench.kw, location_name: "United States", language_code: "en", search_partners: false }
+      { keywords: bench.kw, location_code: 2840, language_code: "en", search_partners: false } // 2840 = United States
     ];
     const res = await fetch("https://api.dataforseo.com/v3/keywords_data/google_ads/search_volume/live", {
       method: "POST", headers: { Authorization: auth, "Content-Type": "application/json" }, body: JSON.stringify(body)
