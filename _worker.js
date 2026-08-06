@@ -1652,7 +1652,7 @@ async function handleLeadCost(request, env, ctx) {
   const state = lcZipState(zip);
   if (!state || state === "Armed Forces") return json({ ok: false, error: "That ZIP isn't a US service area I can price." }, 400);
 
-  const cacheKey = `leadcost:v3:${tradeKey}:${state}`;
+  const cacheKey = `leadcost:v4:${tradeKey}:${state}`;
   if (env.SETUP_KV && url.searchParams.get("debug") !== "1") {
     const hit = await env.SETUP_KV.get(cacheKey);
     if (hit) {
@@ -1675,18 +1675,18 @@ async function handleLeadCost(request, env, ctx) {
   const payload = {
     ok: true, zip, trade: tradeKey, tradeLabel: bench.label, market: state, live, as_of: "2025",
     channels: [
-      { key: "google_ads", label: "Google Ads", cpl: adsCpl, live, unit: "per booked lead",
+      { key: "google_ads", label: "Google Ads", cpl: adsCpl, live, unit: "per lead",
         note: live ? "Published search cost-per-lead, adjusted to your market by live local ad costs." : "National published cost-per-lead benchmark." },
       { key: "google_lsa", label: "Google LSA", cpl: lsaCpl, live: false, unit: "per lead",
         note: live ? "Industry pay-per-lead benchmark, scaled to your market." : "Industry pay-per-lead benchmark." },
       { key: "facebook", label: "Facebook Ads", cpl: fbCpl, live: false, unit: "per lead",
         note: live ? "Industry benchmark, scaled to your market." : "Industry benchmark cost per lead." },
-      { key: "organic", label: "Organic (my lane)", cpl: 0, live: false, unit: "no per-lead fee", best: true,
-        note: "You pay for the work once, not per lead — and you own every lead that comes in." }
+      { key: "organic", label: "Organic (my lane)", cpl: 7, live: false, unit: "per lead", best: true,
+        note: "What I pay to identify an anonymous visitor on your site and turn them into a lead you own — through ConsentResolve. A fraction of renting one." }
     ],
     _debug: url.searchParams.get("debug") === "1" ? (mf && mf.dbg) : undefined,
     sources: LC_SOURCES,
-    methodology: "The paid channels start from published industry cost-per-lead benchmarks (LocaliQ / SearchLight, 2025-26)" + (live ? ", then adjusted for your market using live local search-ad costs from Google Keyword Planner data." : ".") + " Organic leads carry no per-lead ad fee. Figures are illustrations of market rates, not a guarantee of your results."
+    methodology: "The paid channels start from published industry cost-per-lead benchmarks (LocaliQ / SearchLight, 2025-26)" + (live ? ", then adjusted for your market using live local search-ad costs from Google Keyword Planner data." : ".") + " Organic is what I pay to resolve an anonymous website visitor into a lead you own via ConsentResolve — no ad auction. Figures are illustrations of market rates, not a guarantee of your results."
   };
 
   // Cache successful results. Skip when creds exist but the live call failed
