@@ -1539,6 +1539,138 @@ async function handleQuote(request, env, ctx) {
   }
 }
 
+
+// ── /api/lead-cost — "what should a lead cost?" calculator ────────────────────
+// Google Ads = LIVE local CPC (DataForSEO) ÷ trade close rate. LSA + Facebook =
+// published industry benchmarks, scaled to the local market. Organic = no
+// per-lead fee. All numbers carry a source + date; nothing is invented.
+//
+// Optional secrets (Cloudflare > Settings > Variables, Production):
+//   DATAFORSEO_LOGIN, DATAFORSEO_PASSWORD  — enables live local Google Ads CPC.
+// Without them the endpoint returns the national LocalIQ benchmark (live:false).
+
+// LocalIQ Home-Services Search Ads Benchmarks 2025 (cpc = avg CPC, cvr = close
+// rate as a fraction, adsCpl = published CPL). LSA from SearchLight 2026; blended
+// $53 where no trade-specific figure exists. fb = LocalIQ Facebook 2025 (Home &
+// Home Improvement $41.26 CPL). kw = seed keywords for the live CPC lookup.
+const LC_BENCH = {
+  hvac:        { label: "HVAC",              cpc: 9.68,  cvr: 0.0656, adsCpl: 128, lsa: 51,  fb: 41, kw: ["hvac repair", "ac repair", "air conditioning repair"] },
+  plumbing:    { label: "Plumbing",          cpc: 10.49, cvr: 0.0763, adsCpl: 129, lsa: 57,  fb: 41, kw: ["plumber", "emergency plumber", "plumbing repair"] },
+  electrical:  { label: "Electrical",        cpc: 12.18, cvr: 0.0908, adsCpl: 94,  lsa: 39,  fb: 41, kw: ["electrician", "electrical repair", "emergency electrician"] },
+  roofing:     { label: "Roofing & gutters", cpc: 10.70, cvr: 0.0370, adsCpl: 228, lsa: 162, fb: 41, kw: ["roof repair", "roofing company", "roof replacement"] },
+  landscaping: { label: "Lawn & landscaping",cpc: 8.76,  cvr: 0.0642, adsCpl: 118, lsa: 53,  fb: 41, kw: ["landscaping", "lawn care service", "landscaper"] },
+  painting:    { label: "Painting",          cpc: 13.74, cvr: 0.1080, adsCpl: 138, lsa: 53,  fb: 41, kw: ["house painter", "painting company", "interior painting"] },
+  handyman:    { label: "Handyman",          cpc: 7.10,  cvr: 0.1345, adsCpl: 54,  lsa: 53,  fb: 41, kw: ["handyman", "handyman services", "home repair"] },
+  cleaning:    { label: "House cleaning",    cpc: 8.50,  cvr: 0.1765, adsCpl: 47,  lsa: 53,  fb: 41, kw: ["house cleaning service", "maid service", "cleaning company"] },
+  pool:        { label: "Pool service",      cpc: 5.81,  cvr: 0.1089, adsCpl: 45,  lsa: 53,  fb: 41, kw: ["pool service", "pool cleaning", "pool repair"] },
+  garage:      { label: "Garage door",       cpc: 5.75,  cvr: 0.0566, adsCpl: 81,  lsa: 53,  fb: 41, kw: ["garage door repair", "garage door service", "garage door installation"] },
+  windows:     { label: "Windows & doors",   cpc: 8.76,  cvr: 0.0441, adsCpl: 200, lsa: 53,  fb: 41, kw: ["window replacement", "door installation", "window company"] },
+  general:     { label: "General contractor",cpc: 5.31,  cvr: 0.0261, adsCpl: 166, lsa: 53,  fb: 41, kw: ["general contractor", "home remodeling", "contractor near me"] }
+};
+
+// ZIP3 range → US state (for DataForSEO location + the "your market" label).
+const LC_ZIP_STATES = [
+  [5,5,"Vermont"],[6,9,"Connecticut"],[10,27,"Massachusetts"],[28,29,"Rhode Island"],[30,38,"New Hampshire"],[39,49,"Maine"],
+  [50,54,"Vermont"],[55,59,"Massachusetts"],[60,69,"Connecticut"],[70,89,"New Jersey"],[90,99,"Armed Forces"],
+  [100,149,"New York"],[150,196,"Pennsylvania"],[197,199,"Delaware"],[200,205,"District of Columbia"],[206,219,"Maryland"],
+  [220,246,"Virginia"],[247,268,"West Virginia"],[270,289,"North Carolina"],[290,299,"South Carolina"],[300,319,"Georgia"],
+  [320,349,"Florida"],[350,369,"Alabama"],[370,385,"Tennessee"],[386,397,"Mississippi"],[398,399,"Georgia"],
+  [400,427,"Kentucky"],[430,459,"Ohio"],[460,479,"Indiana"],[480,499,"Michigan"],[500,528,"Iowa"],[530,549,"Wisconsin"],
+  [550,567,"Minnesota"],[570,577,"South Dakota"],[580,588,"North Dakota"],[590,599,"Montana"],[600,629,"Illinois"],
+  [630,658,"Missouri"],[660,679,"Kansas"],[680,693,"Nebraska"],[700,714,"Louisiana"],[716,729,"Arkansas"],[730,749,"Oklahoma"],
+  [750,799,"Texas"],[800,816,"Colorado"],[820,831,"Wyoming"],[832,838,"Idaho"],[840,847,"Utah"],[850,865,"Arizona"],
+  [870,884,"New Mexico"],[889,898,"Nevada"],[900,961,"California"],[967,968,"Hawaii"],[970,979,"Oregon"],[980,994,"Washington"],[995,999,"Alaska"]
+];
+function lcZipState(zip) {
+  const z3 = parseInt(String(zip).slice(0, 3), 10);
+  if (!Number.isFinite(z3)) return null;
+  for (const [lo, hi, st] of LC_ZIP_STATES) if (z3 >= lo && z3 <= hi) return st;
+  return null;
+}
+
+const LC_SOURCES = [
+  { label: "Google Ads CPC & close rate — LocaliQ Home Services Search Benchmarks 2025", url: "https://localiq.com/blog/home-services-search-advertising-benchmarks/" },
+  { label: "Google LSA cost per lead — SearchLight Digital 2026", url: "https://searchlightdigital.io/google-local-service-ads-cost-per-lead/" },
+  { label: "Facebook cost per lead — LocaliQ Facebook Ad Benchmarks 2025", url: "https://localiq.com/blog/facebook-advertising-benchmarks/" }
+];
+
+async function lcLiveCpc(bench, state, env) {
+  if (!env.DATAFORSEO_LOGIN || !env.DATAFORSEO_PASSWORD) return null;
+  try {
+    const auth = "Basic " + btoa(`${env.DATAFORSEO_LOGIN}:${env.DATAFORSEO_PASSWORD}`);
+    const body = [{ keywords: bench.kw, location_name: `${state},United States`, language_code: "en", search_partners: false }];
+    const res = await fetch("https://api.dataforseo.com/v3/keywords_data/google_ads/search_volume/live", {
+      method: "POST", headers: { Authorization: auth, "Content-Type": "application/json" }, body: JSON.stringify(body)
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    const rows = data && data.tasks && data.tasks[0] && data.tasks[0].result;
+    if (!Array.isArray(rows)) return null;
+    let wSum = 0, wVol = 0, flat = 0, flatN = 0;
+    for (const r of rows) {
+      const cpc = r && typeof r.cpc === "number" ? r.cpc : null;
+      if (cpc == null || cpc <= 0) continue;
+      const vol = r && typeof r.search_volume === "number" ? r.search_volume : 0;
+      if (vol > 0) { wSum += cpc * vol; wVol += vol; }
+      flat += cpc; flatN++;
+    }
+    if (wVol > 0) return wSum / wVol;
+    if (flatN > 0) return flat / flatN;
+    return null;
+  } catch (_e) { return null; }
+}
+
+async function handleLeadCost(request, env, ctx) {
+  const url = new URL(request.url);
+  const zip = clean(url.searchParams.get("zip"), 5).replace(/\D/g, "");
+  const tradeKey = clean(url.searchParams.get("trade"), 40).toLowerCase();
+  const bench = LC_BENCH[tradeKey];
+  if (!/^\d{5}$/.test(zip)) return json({ ok: false, error: "Enter a 5-digit ZIP code." }, 400);
+  if (!bench) return json({ ok: false, error: "Pick a trade from the list." }, 400);
+  const state = lcZipState(zip);
+  if (!state || state === "Armed Forces") return json({ ok: false, error: "That ZIP isn't a US service area I can price." }, 400);
+
+  const cacheKey = `leadcost:v1:${tradeKey}:${state}`;
+  if (env.SETUP_KV) {
+    const hit = await env.SETUP_KV.get(cacheKey);
+    if (hit) {
+      const cached = JSON.parse(hit);
+      cached.zip = zip; // echo caller's ZIP; the priced market is state-level
+      return json(cached);
+    }
+  }
+
+  const liveCpc = await lcLiveCpc(bench, state, env);
+  const live = liveCpc != null;
+  // market factor: how this market's search CPC compares to the national trade avg
+  let factor = 1;
+  if (live) factor = Math.max(0.6, Math.min(1.6, liveCpc / bench.cpc));
+  const round5 = (n) => Math.max(1, Math.round(n / 5) * 5);
+
+  const adsCpl = live ? round5(liveCpc / bench.cvr) : bench.adsCpl;
+  const lsaCpl = round5(bench.lsa * factor);
+  const fbCpl = round5(bench.fb * factor);
+
+  const payload = {
+    ok: true, zip, trade: tradeKey, tradeLabel: bench.label, market: state, live, as_of: "2025",
+    channels: [
+      { key: "google_ads", label: "Google Ads", cpl: adsCpl, live, unit: "per booked lead",
+        note: live ? "Live local cost-per-click for your market ÷ this trade's close rate." : "National benchmark cost-per-click ÷ this trade's close rate." },
+      { key: "google_lsa", label: "Google LSA", cpl: lsaCpl, live: false, unit: "per lead",
+        note: live ? "Industry pay-per-lead benchmark, scaled to your market." : "Industry pay-per-lead benchmark." },
+      { key: "facebook", label: "Facebook Ads", cpl: fbCpl, live: false, unit: "per lead",
+        note: live ? "Industry benchmark, scaled to your market." : "Industry benchmark cost per lead." },
+      { key: "organic", label: "Organic (my lane)", cpl: 0, live: false, unit: "no per-lead fee", best: true,
+        note: "You pay for the work once, not per lead — and you own every lead that comes in." }
+    ],
+    sources: LC_SOURCES,
+    methodology: "Google Ads is your market's real cost-per-click divided by this trade's average booking rate. Google LSA and Facebook are published industry cost-per-lead benchmarks" + (live ? ", scaled to your market by local ad costs." : ".") + " Organic leads carry no per-lead ad fee. Figures are illustrations of market rates, not a guarantee."
+  };
+
+  if (env.SETUP_KV) ctx.waitUntil(env.SETUP_KV.put(cacheKey, JSON.stringify(payload), { expirationTtl: 604800 }));
+  return json(payload);
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -1546,6 +1678,7 @@ export default {
     // Existing routes
     if (url.pathname === "/api/lead") return handleLead(request, env, ctx);
     if (url.pathname === "/api/contact") return handleContact(request, env);
+    if (url.pathname === "/api/lead-cost") return handleLeadCost(request, env, ctx);
     if (url.pathname === "/api/quote") return handleQuote(request, env, ctx);
     if (url.pathname === "/api/order") return handleOrder(request, env);
     if (url.pathname === "/api/lookup") return handleLookup(request, env);

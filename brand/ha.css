@@ -622,6 +622,55 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
   .lock.buzz, .lock-note.enter, .lock-note.out, .lock-live b.pop { animation: none; }
 }
 
+/* ============ lead-cost calculator (what should a lead cost?) ============ */
+.lcalc { max-width: 940px; margin: 6px auto 0; }
+.lcalc-form { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; justify-content: center; }
+.lc-field { display: flex; flex-direction: column; gap: 6px; text-align: left; }
+.lc-field label { font-size: .74rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-variant); }
+.lc-field input, .lc-field select { height: 52px; border: 1px solid var(--line); border-radius: var(--r); background: var(--white);
+  font: inherit; font-size: 1rem; color: var(--ink); padding: 0 14px; min-width: 150px; }
+.lc-field input { width: 130px; letter-spacing: .06em; }
+.lc-field select { min-width: 210px; cursor: pointer; }
+.lc-field input:focus-visible, .lc-field select:focus-visible { outline: 2px solid var(--tertiary-bright); outline-offset: 2px; border-color: var(--tertiary-bright); }
+.lcalc-form .btn { height: 52px; }
+.lcalc-form .btn.loading { opacity: .7; pointer-events: none; }
+.lc-status { text-align: center; margin: 14px 0 0; font-size: .92rem; font-weight: 600; color: var(--tertiary); }
+
+.lc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 26px; }
+@media (max-width: 780px) { .lc-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 420px) { .lc-grid { grid-template-columns: 1fr; } }
+.lc-card { position: relative; display: flex; flex-direction: column; gap: 4px; background: var(--white);
+  border: 1px solid var(--line-soft); border-radius: var(--r-lg); padding: 20px 18px 18px; box-shadow: var(--sh-sm); }
+.lc-tag { position: absolute; top: 14px; right: 14px; font-size: .58rem; font-weight: 800; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--ink-variant); background: var(--surface); border: 1px solid var(--line-soft);
+  border-radius: 99px; padding: 3px 8px; }
+.lc-tag.live { color: var(--good); background: var(--good-bg); border-color: rgba(31,107,35,.2); display: inline-flex; align-items: center; gap: 5px; }
+.lc-tag.live .ld { width: 6px; height: 6px; border-radius: 50%; background: var(--good); }
+[data-funnel] .lc-tag.live .ld, .lc-card .lc-tag.live .ld { animation: lp-live 1.6s ease-out infinite; }
+.lc-tag.win { color: #fff; background: var(--tertiary-bright); border-color: transparent; }
+.lc-ch { font-size: .82rem; font-weight: 700; color: var(--ink-variant); margin-top: 4px; }
+.lc-cpl { font-size: clamp(1.9rem, 1.4rem + 1.8vw, 2.6rem); font-weight: 800; color: var(--ink); line-height: 1.02; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.lc-unit { font-size: .72rem; font-weight: 600; color: var(--ink-variant); }
+.lc-desc { font-size: .74rem; color: var(--ink-variant); line-height: 1.35; margin-top: 8px; }
+.lc-card.best { background: linear-gradient(158deg, var(--primary-container) 0%, var(--primary) 100%); border-color: transparent; box-shadow: var(--sh-md); }
+.lc-card.best .lc-ch { color: rgba(255,255,255,.82); }
+.lc-card.best .lc-cpl { color: #fff; }
+.lc-card.best .lc-unit { color: #ffd8a8; font-weight: 700; }
+.lc-card.best .lc-desc { color: rgba(255,255,255,.86); }
+
+.lc-foot { margin-top: 18px; text-align: center; }
+.lc-market { display: block; font-size: .8rem; font-weight: 600; color: var(--ink-variant); font-variant-numeric: tabular-nums; }
+.lc-method { max-width: 640px; margin: 10px auto 0; text-align: left; }
+.lc-method summary { cursor: pointer; font-size: .82rem; font-weight: 600; color: var(--tertiary); text-align: center; }
+.lc-sources { display: flex; flex-direction: column; gap: 6px; margin: 12px 0 8px; }
+.lc-sources a { font-size: .78rem; color: var(--ink-variant); text-decoration: underline; text-underline-offset: 2px; }
+.lc-sources a:hover { color: var(--tertiary); }
+.lc-note { font-size: .78rem; color: var(--ink-variant); line-height: 1.45; }
+
+.lc-kick { max-width: 700px; margin: 30px auto 0; text-align: center; }
+.lc-kick p { font-size: var(--body-lg); color: var(--ink); margin-bottom: 18px; }
+.lc-kick strong { color: var(--ink); }
+
 /* highlighted "protections in writing" band — exclusivity + guarantee (offer section) */
 .pledge { background: linear-gradient(135deg, var(--primary-container) 0%, var(--primary) 100%); color: #fff;
   border-radius: var(--r-xl); padding: clamp(26px, 4vw, 40px); margin: 34px auto 0; max-width: 900px;

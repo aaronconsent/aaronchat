@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://aaron.chat/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/ha.css?v=120">
+<link rel="stylesheet" href="/brand/ha.css?v=121">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://aaron.chat/#business",
 "name":"Hey Aaron! Marketing","alternateName":"aaron.chat","url":"https://aaron.chat/",
@@ -155,23 +155,57 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
   </div>
 </div>
 
-<!-- ============================================= PROBLEM (StoryBrand) -->
-<section class="sec sec-low">
+<!-- ============================================= LEAD-COST CALCULATOR -->
+<section class="sec sec-low" id="lead-cost">
   <div class="wrap">
     <div class="sec-head center reveal">
-      <h2>You've been burned before. I know exactly by what.</h2>
-      <p class="lede">You didn't get bad results because you're bad at your job. You got them because the game is
-      rigged against small shops. Here's the stuff that's been costing you.</p>
+      <h2>What should a lead actually cost you?</h2>
+      <p class="lede">Punch in your ZIP and your trade. I'll show you what each channel really charges to put one
+      lead in your hand &mdash; with the receipts. Then look at the last one.</p>
     </div>
-    <div class="proof reveal">
-      <div class="p"><b>The shared-lead scam</b><span>That "exclusive" lead got sold to four other guys too. You're all calling one homeowner who already booked somebody. You paid for the call. He booked the job.</span></div>
-      <div class="p"><b>Your website, held hostage</b><span>Try to leave your agency and your site, your domain, your reviews, your rankings, they keep all of it. Years of work gone the day you stop paying. That's not a vendor. That's a landlord.</span></div>
-      <div class="p"><b>The 12-month trap</b><span>Locked in for a year, then handed a report full of "impressions" and "engagement." None of that put a truck in a driveway. You need booked jobs, not a vocabulary lesson.</span></div>
+    <div class="lcalc reveal" data-lcalc>
+      <form class="lcalc-form">
+        <div class="lc-field">
+          <label for="lc-zip">Your ZIP</label>
+          <input id="lc-zip" name="zip" type="text" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="77331" data-lc-zip>
+        </div>
+        <div class="lc-field">
+          <label for="lc-trade">Your trade</label>
+          <select id="lc-trade" name="trade" data-lc-trade>
+            <option value="hvac">HVAC</option>
+            <option value="plumbing">Plumbing</option>
+            <option value="electrical">Electrical</option>
+            <option value="roofing">Roofing &amp; gutters</option>
+            <option value="landscaping">Lawn &amp; landscaping</option>
+            <option value="painting">Painting</option>
+            <option value="handyman">Handyman</option>
+            <option value="cleaning">House cleaning</option>
+            <option value="pool">Pool service</option>
+            <option value="garage">Garage door</option>
+            <option value="windows">Windows &amp; doors</option>
+            <option value="general">General contractor</option>
+          </select>
+        </div>
+        <button class="btn btn-primary btn-lg" type="submit" data-lc-go>Show me the numbers</button>
+      </form>
+      <p class="lc-status" data-lc-status hidden></p>
+      <div class="lc-grid" data-lc-results aria-live="polite">
+        <!-- cards injected by ha.js; a national sample is shown until you run yours -->
+      </div>
+      <div class="lc-foot">
+        <span class="lc-market" data-lc-market></span>
+        <details class="lc-method">
+          <summary>Where these numbers come from</summary>
+          <div class="lc-sources" data-lc-sources></div>
+          <p class="lc-note" data-lc-methodology></p>
+        </details>
+      </div>
     </div>
-    <div class="reveal" style="max-width:640px;margin:28px auto 0;background:var(--primary-tint);border:1px solid var(--line-soft);border-radius:var(--r-lg);padding:22px 24px">
-      <b style="display:block;margin-bottom:6px">Run the math on those junk leads:</b>
-      <p style="color:var(--ink-variant)">$80 a lead. Five contractors all buying the same one. Maybe one in ten turns into a job. That's
-      <strong style="color:var(--ink)">$800 out of your pocket for one booked job</strong> &mdash; and that's if you're the one who wins the footrace to voicemail. Nobody selling you leads does that math out loud. I just did.</p>
+    <div class="lc-kick reveal">
+      <p>See the pattern? Every one of those first three is you <strong>renting</strong> a lead &mdash; pay for this
+      one, then pay again for the next, forever. <strong>Organic is the opposite.</strong> I build you an asset that
+      brings the leads in with no per-lead fee, and you own it. That's the whole job.</p>
+      <a class="btn btn-call btn-lg" href="tel:+17133848985" data-cta-location="lead-cost"><svg><use href="#i-phone"/></svg>Call Aaron &mdash; stop renting leads</a>
     </div>
   </div>
 </section>
@@ -634,6 +668,6 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
   </div>
 </div>
 
-<script src="/brand/ha.js?v=120" defer></script>
+<script src="/brand/ha.js?v=121" defer></script>
 </body>
 </html>

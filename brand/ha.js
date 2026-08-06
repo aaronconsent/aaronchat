@@ -254,4 +254,86 @@
     w.addEventListener("resize", poke, { passive: true });
     requestAnimationFrame(function () { requestAnimationFrame(poke); });
   })();
+
+  /* -------- lead-cost calculator ---------------------------------------------- */
+  (function leadcost() {
+    var root = d.querySelector("[data-lcalc]"); if (!root) return;
+    var form = root.querySelector("form");
+    var zipEl = root.querySelector("[data-lc-zip]");
+    var tradeEl = root.querySelector("[data-lc-trade]");
+    var goEl = root.querySelector("[data-lc-go]");
+    var statusEl = root.querySelector("[data-lc-status]");
+    var grid = root.querySelector("[data-lc-results]");
+    var marketEl = root.querySelector("[data-lc-market]");
+    var srcEl = root.querySelector("[data-lc-sources]");
+    var methEl = root.querySelector("[data-lc-methodology]");
+    function money(n) { return "$" + Math.round(n).toLocaleString("en-US"); }
+
+    // national sample shown before the visitor runs their own (no API call on load)
+    var SAMPLE = {
+      tradeLabel: "HVAC", market: "national average", live: false, as_of: "2025",
+      channels: [
+        { key: "google_ads", label: "Google Ads", cpl: 128, unit: "per booked lead", note: "National benchmark cost-per-click ÷ this trade's close rate." },
+        { key: "google_lsa", label: "Google LSA", cpl: 51, unit: "per lead", note: "Industry pay-per-lead benchmark." },
+        { key: "facebook", label: "Facebook Ads", cpl: 41, unit: "per lead", note: "Industry benchmark cost per lead." },
+        { key: "organic", label: "Organic (my lane)", cpl: 0, unit: "no per-lead fee", best: true, note: "You pay for the work once, not per lead — and you own every lead." }
+      ],
+      sources: [
+        { label: "Google Ads — LocaliQ Home Services Search Benchmarks 2025", url: "https://localiq.com/blog/home-services-search-advertising-benchmarks/" },
+        { label: "Google LSA — SearchLight Digital 2026", url: "https://searchlightdigital.io/google-local-service-ads-cost-per-lead/" },
+        { label: "Facebook — LocaliQ Facebook Ad Benchmarks 2025", url: "https://localiq.com/blog/facebook-advertising-benchmarks/" }
+      ],
+      methodology: "Example figures for HVAC, national average. Enter your ZIP and trade to localize."
+    };
+
+    function tween(el, to) {
+      if (reduce) { el.textContent = money(to); return; }
+      var begin = null, dur = 750;
+      function step(ts) { if (begin === null) begin = ts; var p = Math.min(1, (ts - begin) / dur), e = 1 - Math.pow(1 - p, 4);
+        el.textContent = money(to * e); if (p < 1) requestAnimationFrame(step); }
+      requestAnimationFrame(step);
+    }
+
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+    function render(data) {
+      grid.innerHTML = "";
+      data.channels.forEach(function (c) {
+        var card = d.createElement("div");
+        card.className = "lc-card" + (c.best ? " best" : "");
+        var tag = c.best ? '<span class="lc-tag win">You own it</span>'
+          : c.live ? '<span class="lc-tag live"><span class="ld"></span>Live</span>'
+          : '<span class="lc-tag">Benchmark</span>';
+        var big = c.cpl === 0 ? '<b class="lc-cpl">$0</b>' : '<b class="lc-cpl" data-to="' + c.cpl + '">$0</b>';
+        card.innerHTML = tag + '<span class="lc-ch">' + esc(c.label) + '</span>' + big +
+          '<span class="lc-unit">' + esc(c.unit) + '</span><span class="lc-desc">' + esc(c.note) + '</span>';
+        grid.appendChild(card);
+      });
+      grid.querySelectorAll("[data-to]").forEach(function (el) { tween(el, parseInt(el.getAttribute("data-to"), 10)); });
+      marketEl.textContent = data.live ? ("Live · " + data.tradeLabel + " · " + data.market + " · " + data.as_of)
+        : (data.market ? (data.tradeLabel + " · " + data.market + " · " + data.as_of) : "");
+      srcEl.innerHTML = (data.sources || []).map(function (s) { return '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.label) + '</a>'; }).join("");
+      methEl.textContent = data.methodology || "";
+    }
+
+    render(SAMPLE);
+
+    function setStatus(msg, on) { if (!statusEl) return; statusEl.hidden = !on; statusEl.textContent = msg || ""; }
+
+    form.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var zip = (zipEl.value || "").replace(/\D/g, "").slice(0, 5);
+      var trade = tradeEl.value;
+      if (zip.length !== 5) { setStatus("Enter a 5-digit ZIP.", true); zipEl.focus(); return; }
+      setStatus("Pulling your market's numbers…", true); goEl.disabled = true; goEl.classList.add("loading");
+      fetch("/api/lead-cost?zip=" + encodeURIComponent(zip) + "&trade=" + encodeURIComponent(trade))
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          goEl.disabled = false; goEl.classList.remove("loading");
+          if (!data || !data.ok) { setStatus((data && data.error) || "Couldn't pull that one — try again.", true); return; }
+          setStatus("", false); render(data);
+        })
+        .catch(function () { goEl.disabled = false; goEl.classList.remove("loading"); setStatus("Network hiccup — give it another go.", true); });
+    });
+  })();
 })();
