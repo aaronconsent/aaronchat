@@ -297,21 +297,23 @@
 
     function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
+    var board = root.querySelector("[data-lc-board]");
     function render(data) {
       grid.innerHTML = "";
+      if (board) board.classList.toggle("idle", !!data.placeholder);
       data.channels.forEach(function (c) {
         var na = c.na || c.cpl == null;
-        var card = d.createElement("div");
-        card.className = "lc-card" + (na ? " na" : "");
-        var big = na ? '<b class="lc-cpl">N/A</b>'
-          : (c.cpl === 0 ? '<b class="lc-cpl">$0</b>' : '<b class="lc-cpl" data-to="' + c.cpl + '">$0</b>');
-        card.innerHTML = '<span class="lc-ch">' + esc(c.label) + '</span>' + big +
-          '<span class="lc-unit">' + esc(c.unit) + '</span>';
-        grid.appendChild(card);
+        var li = d.createElement("li");
+        li.className = "lc-row" + (c.key === "organic" ? " org" : "") + (na ? " na" : "");
+        var num = na ? '<b class="lc-row-cpl na">N/A</b>'
+          : (c.cpl === 0 ? '<b class="lc-row-cpl">$0</b>' : '<b class="lc-row-cpl" data-to="' + c.cpl + '">$0</b>');
+        li.innerHTML = '<span class="lc-row-ch">' + esc(c.label) + '</span>' + num;
+        grid.appendChild(li);
       });
       grid.querySelectorAll("[data-to]").forEach(function (el) { tween(el, parseInt(el.getAttribute("data-to"), 10)); });
-      marketEl.textContent = data.live ? ("Live · " + data.tradeLabel + " · " + data.market + " · " + data.as_of)
-        : (data.market ? (data.tradeLabel + " · " + data.market + " · " + data.as_of) : "");
+      marketEl.textContent = data.placeholder ? "Enter your ZIP & trade"
+        : (data.live ? ("Live · " + data.tradeLabel + " · " + data.market)
+        : (data.market ? (data.tradeLabel + " · " + data.market) : ""));
       // disclosure: this trade's per-channel tier + the primary sources + link to the full method
       var tierline = data.placeholder ? "" : data.channels.filter(function (c) { return c.key !== "organic"; }).map(function (c) {
         return esc(c.label) + " — " + (c.na ? "N/A" : (TIERWORD[c.tier] || "benchmark")) + (c.source ? " (" + esc(c.source) + ")" : "");

@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://aaron.chat/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/ha.css?v=128">
+<link rel="stylesheet" href="/brand/ha.css?v=129">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://aaron.chat/#business",
 "name":"Hey Aaron! Marketing","alternateName":"aaron.chat","url":"https://aaron.chat/",
@@ -158,18 +158,16 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
 <!-- ============================================= LEAD-COST CALCULATOR -->
 <section class="sec sec-low" id="lead-cost">
   <div class="wrap">
-    <div class="lcalc lcalc-2col reveal" data-lcalc>
-      <!-- LEFT: heading, a photo of Aaron pointing at the form, and the form -->
+    <div class="lcalc reveal" data-lcalc>
+      <h2 class="lc-h2">How Much Does a Lead Cost?</h2>
+      <div class="lcalc-2col">
+      <!-- LEFT: photo of Aaron + the form -->
       <div class="lcalc-left">
-        <h2 class="lc-h2">How Much Does a Lead Cost?</h2>
-        <div class="frame lc-frame">
-          <div class="imgslot imgslot--photo" data-slot="lead-cost-point">
-            <span class="tag">A real photo of Aaron drops in here soon</span>
-            <span class="lbl">Aaron pointing at the form</span>
-            <span class="cue">Aaron, half-grin, pointing down/right at the ZIP + trade form &mdash; see .docs/heyaaron-image-prompts.md</span>
-          </div>
+        <div class="lc-photo">
+          <img src="/brand/media/ha/hero.jpg" width="1400" height="933" loading="lazy" decoding="async"
+            alt="Aaron Phillips at his desk, mid-call, ready to run your numbers">
         </div>
-        <form class="lcalc-form">
+        <form class="lcalc-form" novalidate>
           <div class="lc-field">
             <label for="lc-zip">Your ZIP</label>
             <input id="lc-zip" name="zip" type="text" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="77331" data-lc-zip>
@@ -200,22 +198,26 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
             </select>
           </div>
           <button class="btn btn-primary btn-lg btn-block" type="submit" data-lc-go>Show me the numbers</button>
+          <p class="lc-status" data-lc-status hidden></p>
         </form>
-        <p class="lc-status" data-lc-status hidden></p>
       </div>
-      <!-- RIGHT: the results -->
+      <!-- RIGHT: the rate board -->
       <div class="lcalc-right">
-        <div class="lc-grid" data-lc-results aria-live="polite">
-          <!-- cards injected by ha.js; all zeroed until you run yours -->
-        </div>
-        <div class="lc-foot">
-          <span class="lc-market" data-lc-market></span>
+        <div class="lc-board idle" data-lc-board>
+          <div class="lc-board-head">
+            <span class="lc-board-title">What one lead costs</span>
+            <span class="lc-market" data-lc-market>Enter your ZIP &amp; trade</span>
+          </div>
+          <ul class="lc-rows" data-lc-results aria-live="polite">
+            <!-- rows injected by ha.js; zeroed until a lookup runs -->
+          </ul>
           <details class="lc-method">
             <summary>Where these numbers come from</summary>
             <div class="lc-sources" data-lc-sources></div>
             <p class="lc-note" data-lc-methodology></p>
           </details>
         </div>
+      </div>
       </div>
     </div>
     <div class="lc-kick reveal">
@@ -683,6 +685,6 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
   </div>
 </div>
 
-<script src="/brand/ha.js?v=128" defer></script>
+<script src="/brand/ha.js?v=129" defer></script>
 </body>
 </html>
