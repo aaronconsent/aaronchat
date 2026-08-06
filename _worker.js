@@ -1594,29 +1594,51 @@ const LC_SOURCES = [
   { label: "Facebook cost per lead — LocaliQ Facebook Ad Benchmarks 2025", url: "https://localiq.com/blog/facebook-advertising-benchmarks/" }
 ];
 
-async function lcLiveCpc(bench, state, env) {
+function lcAvgCpc(rows) {
+  if (!Array.isArray(rows)) return null;
+  let wSum = 0, wVol = 0, flat = 0, flatN = 0;
+  for (const r of rows) {
+    const cpc = r && typeof r.cpc === "number" ? r.cpc : null;
+    if (cpc == null || cpc <= 0) continue;
+    const vol = r && typeof r.search_volume === "number" ? r.search_volume : 0;
+    if (vol > 0) { wSum += cpc * vol; wVol += vol; }
+    flat += cpc; flatN++;
+  }
+  if (wVol > 0) return wSum / wVol;
+  if (flatN > 0) return flat / flatN;
+  return null;
+}
+
+// Returns the market's cost multiplier vs. the national average, computed from
+// DataForSEO CPC for the SAME keywords at state vs. US level (apples-to-apples,
+// so Keyword-Planner's absolute inflation cancels out). Applied to the trusted
+// LocaliQ published CPL. null when unavailable → national benchmark.
+async function lcLiveFactor(bench, state, env) {
   if (!env.DATAFORSEO_LOGIN || !env.DATAFORSEO_PASSWORD) return null;
   try {
     const auth = "Basic " + btoa(`${env.DATAFORSEO_LOGIN}:${env.DATAFORSEO_PASSWORD}`);
-    const body = [{ keywords: bench.kw, location_name: `${state},United States`, language_code: "en", search_partners: false }];
+    const body = [
+      { keywords: bench.kw, location_name: `${state},United States`, language_code: "en", search_partners: false },
+      { keywords: bench.kw, location_name: "United States", language_code: "en", search_partners: false }
+    ];
     const res = await fetch("https://api.dataforseo.com/v3/keywords_data/google_ads/search_volume/live", {
       method: "POST", headers: { Authorization: auth, "Content-Type": "application/json" }, body: JSON.stringify(body)
     });
     if (!res.ok) return null;
     const data = await res.json();
-    const rows = data && data.tasks && data.tasks[0] && data.tasks[0].result;
-    if (!Array.isArray(rows)) return null;
-    let wSum = 0, wVol = 0, flat = 0, flatN = 0;
-    for (const r of rows) {
-      const cpc = r && typeof r.cpc === "number" ? r.cpc : null;
-      if (cpc == null || cpc <= 0) continue;
-      const vol = r && typeof r.search_volume === "number" ? r.search_volume : 0;
-      if (vol > 0) { wSum += cpc * vol; wVol += vol; }
-      flat += cpc; flatN++;
+    const tasks = data && data.tasks;
+    if (!Array.isArray(tasks) || tasks.length < 2) return null;
+    // match tasks back to state / US by the location echoed in the task data
+    let stateRows = null, usRows = null;
+    for (const t of tasks) {
+      const loc = t && t.data && t.data.location_name;
+      if (loc === "United States") usRows = t.result;
+      else stateRows = t.result;
     }
-    if (wVol > 0) return wSum / wVol;
-    if (flatN > 0) return flat / flatN;
-    return null;
+    const stateCpc = lcAvgCpc(stateRows), usCpc = lcAvgCpc(usRows);
+    if (!stateCpc || !usCpc) return null;
+    const factor = Math.max(0.7, Math.min(1.5, stateCpc / usCpc));
+    return { factor, stateCpc, usCpc };
   } catch (_e) { return null; }
 }
 
@@ -1630,8 +1652,8 @@ async function handleLeadCost(request, env, ctx) {
   const state = lcZipState(zip);
   if (!state || state === "Armed Forces") return json({ ok: false, error: "That ZIP isn't a US service area I can price." }, 400);
 
-  const cacheKey = `leadcost:v1:${tradeKey}:${state}`;
-  if (env.SETUP_KV) {
+  const cacheKey = `leadcost:v2:${tradeKey}:${state}`;
+  if (env.SETUP_KV && url.searchParams.get("debug") !== "1") {
     const hit = await env.SETUP_KV.get(cacheKey);
     if (hit) {
       const cached = JSON.parse(hit);
@@ -1640,14 +1662,13 @@ async function handleLeadCost(request, env, ctx) {
     }
   }
 
-  const liveCpc = await lcLiveCpc(bench, state, env);
-  const live = liveCpc != null;
-  // market factor: how this market's search CPC compares to the national trade avg
-  let factor = 1;
-  if (live) factor = Math.max(0.6, Math.min(1.6, liveCpc / bench.cpc));
+  const mf = await lcLiveFactor(bench, state, env);
+  const live = mf != null;
+  const factor = live ? mf.factor : 1;
   const round5 = (n) => Math.max(1, Math.round(n / 5) * 5);
 
-  const adsCpl = live ? round5(liveCpc / bench.cvr) : bench.adsCpl;
+  // Base = LocaliQ / SearchLight published cost-per-lead; local factor from DataForSEO.
+  const adsCpl = round5(bench.adsCpl * factor);
   const lsaCpl = round5(bench.lsa * factor);
   const fbCpl = round5(bench.fb * factor);
 
@@ -1655,7 +1676,7 @@ async function handleLeadCost(request, env, ctx) {
     ok: true, zip, trade: tradeKey, tradeLabel: bench.label, market: state, live, as_of: "2025",
     channels: [
       { key: "google_ads", label: "Google Ads", cpl: adsCpl, live, unit: "per booked lead",
-        note: live ? "Live local cost-per-click for your market ÷ this trade's close rate." : "National benchmark cost-per-click ÷ this trade's close rate." },
+        note: live ? "Published search cost-per-lead, adjusted to your market by live local ad costs." : "National published cost-per-lead benchmark." },
       { key: "google_lsa", label: "Google LSA", cpl: lsaCpl, live: false, unit: "per lead",
         note: live ? "Industry pay-per-lead benchmark, scaled to your market." : "Industry pay-per-lead benchmark." },
       { key: "facebook", label: "Facebook Ads", cpl: fbCpl, live: false, unit: "per lead",
@@ -1663,8 +1684,9 @@ async function handleLeadCost(request, env, ctx) {
       { key: "organic", label: "Organic (my lane)", cpl: 0, live: false, unit: "no per-lead fee", best: true,
         note: "You pay for the work once, not per lead — and you own every lead that comes in." }
     ],
+    _debug: url.searchParams.get("debug") === "1" && live ? { factor: Number(mf.factor.toFixed(3)), stateCpc: Number(mf.stateCpc.toFixed(2)), usCpc: Number(mf.usCpc.toFixed(2)) } : undefined,
     sources: LC_SOURCES,
-    methodology: "Google Ads is your market's real cost-per-click divided by this trade's average booking rate. Google LSA and Facebook are published industry cost-per-lead benchmarks" + (live ? ", scaled to your market by local ad costs." : ".") + " Organic leads carry no per-lead ad fee. Figures are illustrations of market rates, not a guarantee."
+    methodology: "The paid channels start from published industry cost-per-lead benchmarks (LocaliQ / SearchLight, 2025-26)" + (live ? ", then adjusted for your market using live local search-ad costs from Google Keyword Planner data." : ".") + " Organic leads carry no per-lead ad fee. Figures are illustrations of market rates, not a guarantee of your results."
   };
 
   if (env.SETUP_KV) ctx.waitUntil(env.SETUP_KV.put(cacheKey, JSON.stringify(payload), { expirationTtl: 604800 }));

@@ -273,7 +273,7 @@
     var SAMPLE = {
       tradeLabel: "HVAC", market: "national average", live: false, as_of: "2025",
       channels: [
-        { key: "google_ads", label: "Google Ads", cpl: 128, unit: "per booked lead", note: "National benchmark cost-per-click ÷ this trade's close rate." },
+        { key: "google_ads", label: "Google Ads", cpl: 128, unit: "per booked lead", note: "National published cost-per-lead benchmark." },
         { key: "google_lsa", label: "Google LSA", cpl: 51, unit: "per lead", note: "Industry pay-per-lead benchmark." },
         { key: "facebook", label: "Facebook Ads", cpl: 41, unit: "per lead", note: "Industry benchmark cost per lead." },
         { key: "organic", label: "Organic (my lane)", cpl: 0, unit: "no per-lead fee", best: true, note: "You pay for the work once, not per lead — and you own every lead." }
