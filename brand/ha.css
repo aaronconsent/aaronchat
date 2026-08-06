@@ -172,7 +172,8 @@ p { margin: 0; text-wrap: pretty; }
 /* hero media + floating metric */
 .hero-media { position: relative; }
 .hero-media .frame { position: relative; z-index: 1; border-radius: var(--r-lg); overflow: hidden;
-  border: 1px solid var(--line-soft); box-shadow: var(--sh-lg); background: var(--surface-high); aspect-ratio: 4/3; }
+  border: 1px solid var(--line-soft); box-shadow: var(--sh-lg); background: var(--surface-high); aspect-ratio: 3/2; }
+.hero-media .frame img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 32%; }
 .hero-media .kick { position: absolute; inset: -14px auto auto -14px; width: 46%; height: 60%;
   background: linear-gradient(135deg, var(--surface-high), var(--surface)); border-radius: var(--r-lg);
   transform: rotate(-3deg); z-index: 0; }
