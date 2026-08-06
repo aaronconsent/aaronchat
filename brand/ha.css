@@ -640,7 +640,7 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 @media (max-width: 780px) { .lc-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 420px) { .lc-grid { grid-template-columns: 1fr; } }
 .lc-card { position: relative; display: flex; flex-direction: column; gap: 4px; background: var(--white);
-  border: 1px solid var(--line-soft); border-radius: var(--r-lg); padding: 20px 18px 18px; box-shadow: var(--sh-sm); }
+  border: 1px solid var(--line-soft); border-radius: var(--r-lg); padding: 18px; box-shadow: var(--sh-sm); }
 .lc-tag { position: absolute; top: 14px; right: 14px; font-size: .58rem; font-weight: 800; letter-spacing: .04em;
   text-transform: uppercase; color: var(--ink-variant); background: var(--surface); border: 1px solid var(--line-soft);
   border-radius: 99px; padding: 3px 8px; }

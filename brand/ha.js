@@ -301,18 +301,12 @@
       grid.innerHTML = "";
       data.channels.forEach(function (c) {
         var na = c.na || c.cpl == null;
-        var isOrg = c.key === "organic";
         var card = d.createElement("div");
         card.className = "lc-card" + (na ? " na" : "");
-        var tag = isOrg ? ""
-          : na ? '<span class="lc-tag">Not offered</span>'
-          : c.live ? '<span class="lc-tag live"><span class="ld"></span>Live</span>'
-          : '<span class="lc-tag">Benchmark</span>';
         var big = na ? '<b class="lc-cpl">N/A</b>'
           : (c.cpl === 0 ? '<b class="lc-cpl">$0</b>' : '<b class="lc-cpl" data-to="' + c.cpl + '">$0</b>');
-        var tier = (!isOrg && !na && c.tier && TIERWORD[c.tier]) ? '<span class="lc-tierline tier-' + esc(c.tier) + '">' + TIERWORD[c.tier] + '</span>' : "";
-        card.innerHTML = tag + '<span class="lc-ch">' + esc(c.label) + '</span>' + big +
-          '<span class="lc-unit">' + esc(c.unit) + '</span>' + tier;
+        card.innerHTML = '<span class="lc-ch">' + esc(c.label) + '</span>' + big +
+          '<span class="lc-unit">' + esc(c.unit) + '</span>';
         grid.appendChild(card);
       });
       grid.querySelectorAll("[data-to]").forEach(function (el) { tween(el, parseInt(el.getAttribute("data-to"), 10)); });
