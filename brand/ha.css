@@ -671,6 +671,51 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 .lc-kick p { font-size: var(--body-lg); color: var(--ink); margin-bottom: 18px; }
 .lc-kick strong { color: var(--ink); }
 
+/* tier line on each card + N/A treatment */
+.lc-tierline { font-size: .6rem; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; margin-top: 2px; }
+.lc-tierline.tier-firm { color: var(--good); }
+.lc-tierline.tier-directional { color: var(--tertiary); }
+.lc-tierline.tier-proxy { color: var(--ink-variant); }
+.lc-card.na { opacity: .72; }
+.lc-card.na .lc-cpl { color: var(--ink-variant); font-weight: 700; }
+.lc-tiers { font-size: .74rem; color: var(--ink-variant); line-height: 1.5; margin: 0 0 10px; }
+.lc-statslink { display: inline-block; margin-top: 12px; font-size: .82rem; font-weight: 700; color: var(--tertiary); }
+
+/* ============ /stats page ============ */
+.prose { max-width: 760px; margin-inline: auto; }
+.prose h2 { font-size: var(--d-sm, 1.6rem); margin: 40px 0 12px; }
+.prose h3 { font-size: 1.15rem; margin: 24px 0 6px; color: var(--ink); }
+.prose p { color: var(--ink-variant); margin-bottom: 12px; line-height: 1.6; }
+.prose .srclist { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 10px; }
+.prose .srclist li { background: var(--surface); border: 1px solid var(--line-soft); border-radius: var(--r); padding: 12px 14px; font-size: .92rem; color: var(--ink); }
+.prose .srclist span { color: var(--ink-variant); }
+.prose .fineprint { font-size: .82rem; color: var(--ink-variant); font-style: italic; }
+.tiergrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 14px 0; }
+@media (max-width: 560px) { .tiergrid { grid-template-columns: 1fr; } }
+.tierdef { background: var(--surface); border: 1px solid var(--line-soft); border-radius: var(--r); padding: 12px 14px; }
+.tierdef p { margin: 6px 0 0; font-size: .86rem; }
+.tier { display: inline-block; font-size: .62rem; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; border-radius: 5px; padding: 3px 7px; }
+.tier-firm { background: var(--good-bg); color: var(--good); }
+.tier-directional { background: var(--tertiary-container); color: var(--tertiary); }
+.tier-proxy { background: var(--surface-low); color: var(--ink-variant); border: 1px solid var(--line-soft); }
+.tier-na { background: var(--surface-low); color: var(--ink-variant); }
+.caveats { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 10px; }
+.caveats li { color: var(--ink-variant); font-size: .95rem; line-height: 1.55; padding-left: 18px; position: relative; }
+.caveats li::before { content: ""; position: absolute; left: 0; top: 9px; width: 7px; height: 7px; border-radius: 2px; background: var(--tertiary-bright); }
+.caveats b { color: var(--ink); }
+.lctable-wrap { overflow-x: auto; margin: 14px 0; }
+.lctable { width: 100%; border-collapse: collapse; font-size: .9rem; min-width: 640px; }
+.lctable th, .lctable td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+.lctable thead th { font-size: .72rem; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-variant); background: var(--surface-low); }
+.lctable tbody th { font-weight: 700; color: var(--ink); }
+.lctable td { color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 700; }
+.lctable td .tier { display: block; margin-top: 4px; font-weight: 700; }
+.lctable td.na { color: var(--ink-variant); font-weight: 600; }
+.lctable td.org { color: var(--good); }
+.lctable .season { margin-top: 4px; font-size: .72rem; font-weight: 400; color: var(--ink-variant); }
+.lctable .tier { background: none; padding: 2px 0 0; color: var(--ink-variant); font-weight: 600; letter-spacing: 0; text-transform: none; font-size: .68rem; }
+.lctable .tier-firm { color: var(--good); } .lctable .tier-directional { color: var(--tertiary); } .lctable .tier-proxy { color: var(--ink-variant); }
+
 /* highlighted "protections in writing" band — exclusivity + guarantee (offer section) */
 .pledge { background: linear-gradient(135deg, var(--primary-container) 0%, var(--primary) 100%); color: #fff;
   border-radius: var(--r-xl); padding: clamp(26px, 4vw, 40px); margin: 34px auto 0; max-width: 900px;

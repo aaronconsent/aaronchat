@@ -154,3 +154,24 @@ Guide tuned against five raw samples: a client wrap-up email, a post-poker outre
 - [x] ~~Confirm the 92% answer-rate stat~~ — KILLED by Aaron 2026-08. Not used anywhere on the site.
 - [ ] Sections 6–7: kill any line you'd never say; the samples got me close but you're the tiebreaker
 - [ ] Profanity dial after reading in context: the samples suggest even 2–3 per page may be one too many — your call
+
+## 10. Numbers, benchmarks & proof — sources of truth (added 2026-08, from the CPL-calculator methodology)
+
+The lead-cost calculator (`/stats/` explains it in full) set the standard for how we use *any* market number, anywhere — site, email, social, sales calls. **The rule: a number is either sourced or it's an illustration, and we say which.** Never a third option.
+
+**Our canonical benchmark sources (cite these by name + year, link to the primary article):**
+- **Google Ads cost-per-lead** — LocaliQ *Home Services Search Advertising Benchmarks 2025* (3,211 US campaigns, Apr 2024–Mar 2025). This is the primary — pull from the article itself, never a re-citation (re-citations misreport the numbers).
+- **Google LSA cost-per-lead** — SearchLight Digital *LSA CPL by Trade 2026* (888 contractors, 126,650 leads). Firm for HVAC/plumbing/electrical/roofing; blended $53 elsewhere.
+- **Facebook/Meta cost-per-lead** — LocaliQ *Facebook Ad Benchmarks 2025* (Home & Home Improvement, $41 CPL).
+- **Local variation** — DataForSEO Google Ads Search Volume (Keyword Planner CPC), used **only as a state-vs-national ratio**, never as an absolute price (Keyword-Planner CPC runs 3–5× real). ZIP resolves to **state**, not literal ZIP — say so.
+- **Organic** — **$7/lead** = our real cost to resolve an anonymous visitor via ConsentResolve. A cost we pay, not a benchmark.
+
+**Data-integrity rules (these are hard, same family as "No fake reviews. No made-up numbers."):**
+1. **Every figure carries a named, dated source — or an explicit "N/A."** If a channel doesn't cover a trade (e.g. Google LSA doesn't run solar), the card says *"N/A — not available for this trade,"* never a guessed number.
+2. **Tier every number** so the reader knows how solid it is: **firm** (audited dataset, n>500), **directional** (agency-published), **proxy** (borrowed from an adjacent trade — and we name which). Proxies are defined up front, never invented mid-claim.
+3. **Two independent sources per channel** where possible; re-citations of one study count as one.
+4. **Sanity bounds** — Google Ads CPL $40–$350, LSA $15–$200, Facebook $10–$120. A number outside gets a second source before it ships.
+5. **Match the vintage** — don't blend a 2023 figure with a 2026 one without saying so.
+6. **Show the math out loud** (this is already a signature move) — but label illustrations as illustrations ("a sample month, not a guarantee").
+
+**Conflict flagged & resolved:** Section 5's signature move *"the oddly-specific stat (92%)"* now has a guardrail. Oddly-specific numbers are great voice **only when they're real and sourced.** The 92% stat itself was invented-for-flavor and Aaron killed it (§9). Going forward: keep the oddly-specific *texture* ("$6.72M of spend across 126,650 leads"), but pull it from a real source — never manufacture precision to sound credible. Specificity earns trust only if it survives a click to the source.

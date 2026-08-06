@@ -1553,20 +1553,30 @@ async function handleQuote(request, env, ctx) {
 // rate as a fraction, adsCpl = published CPL). LSA from SearchLight 2026; blended
 // $53 where no trade-specific figure exists. fb = LocalIQ Facebook 2025 (Home &
 // Home Improvement $41.26 CPL). kw = seed keywords for the live CPC lookup.
+// <LC_BENCH>
 const LC_BENCH = {
-  hvac:        { label: "HVAC",              cpc: 9.68,  cvr: 0.0656, adsCpl: 128, lsa: 51,  fb: 41, kw: ["hvac repair", "ac repair", "air conditioning repair"] },
-  plumbing:    { label: "Plumbing",          cpc: 10.49, cvr: 0.0763, adsCpl: 129, lsa: 57,  fb: 41, kw: ["plumber", "emergency plumber", "plumbing repair"] },
-  electrical:  { label: "Electrical",        cpc: 12.18, cvr: 0.0908, adsCpl: 94,  lsa: 39,  fb: 41, kw: ["electrician", "electrical repair", "emergency electrician"] },
-  roofing:     { label: "Roofing & gutters", cpc: 10.70, cvr: 0.0370, adsCpl: 228, lsa: 162, fb: 41, kw: ["roof repair", "roofing company", "roof replacement"] },
-  landscaping: { label: "Lawn & landscaping",cpc: 8.76,  cvr: 0.0642, adsCpl: 118, lsa: 53,  fb: 41, kw: ["landscaping", "lawn care service", "landscaper"] },
-  painting:    { label: "Painting",          cpc: 13.74, cvr: 0.1080, adsCpl: 138, lsa: 53,  fb: 41, kw: ["house painter", "painting company", "interior painting"] },
-  handyman:    { label: "Handyman",          cpc: 7.10,  cvr: 0.1345, adsCpl: 54,  lsa: 53,  fb: 41, kw: ["handyman", "handyman services", "home repair"] },
-  cleaning:    { label: "House cleaning",    cpc: 8.50,  cvr: 0.1765, adsCpl: 47,  lsa: 53,  fb: 41, kw: ["house cleaning service", "maid service", "cleaning company"] },
-  pool:        { label: "Pool service",      cpc: 5.81,  cvr: 0.1089, adsCpl: 45,  lsa: 53,  fb: 41, kw: ["pool service", "pool cleaning", "pool repair"] },
-  garage:      { label: "Garage door",       cpc: 5.75,  cvr: 0.0566, adsCpl: 81,  lsa: 53,  fb: 41, kw: ["garage door repair", "garage door service", "garage door installation"] },
-  windows:     { label: "Windows & doors",   cpc: 8.76,  cvr: 0.0441, adsCpl: 200, lsa: 53,  fb: 41, kw: ["window replacement", "door installation", "window company"] },
-  general:     { label: "General contractor",cpc: 5.31,  cvr: 0.0261, adsCpl: 166, lsa: 53,  fb: 41, kw: ["general contractor", "home remodeling", "contractor near me"] }
+  hvac: { label: "HVAC", ads: [128, "firm", "LocaliQ 2025"], lsa: [51, "firm", "SearchLight 2026"], fb: [41, "directional", "LocaliQ FB 2025"], kw: ["hvac repair near me", "ac repair", "air conditioning installation", "furnace repair", "hvac company near me", "emergency ac repair", "heating and cooling contractors", "ac replacement quote", "hvac installation estimate", "best hvac company", "heat pump installation", "24 hour hvac service"] },
+  plumbing: { label: "Plumbing", ads: [129, "firm", "LocaliQ 2025"], lsa: [57, "firm", "SearchLight 2026"], fb: [41, "directional", "LocaliQ FB 2025"], kw: ["plumber near me", "emergency plumber", "plumbing repair", "drain cleaning near me", "water heater installation", "plumbing company near me", "24 hour plumber", "local plumbers", "plumbing contractors", "leak repair", "plumber quote", "sewer line repair"] },
+  electrical: { label: "Electrical", ads: [94, "firm", "LocaliQ 2025"], lsa: [39, "firm", "SearchLight 2026"], fb: [41, "directional", "LocaliQ FB 2025"], kw: ["electrician near me", "emergency electrician", "electrical repair", "panel upgrade cost", "electrical contractors near me", "local electricians", "ev charger installation", "electrical company near me", "24 hour electrician", "wiring repair", "electrician quote", "generator installation"] },
+  roofing: { label: "Roofing", ads: [228, "firm", "LocaliQ 2025"], lsa: [162, "directional", "SearchLight 2026"], fb: [41, "directional", "LocaliQ FB 2025"], kw: ["roof replacement", "roofing company near me", "roof repair", "emergency roof repair", "roofing contractors", "roof replacement estimate", "roof replacement quote", "best roofing company", "metal roof installation", "hail damage roof repair", "gutter installation", "local roofers"] },
+  windows: { label: "Windows & doors", ads: [200, "firm", "LocaliQ 2025 (Doors & Windows)"], lsa: [78, "directional", "Premium-trade estimate; above blended $53"], fb: [41, "directional", "LocaliQ FB 2025"], kw: ["window replacement near me", "replacement windows cost", "door installation", "window company near me", "new windows quote", "window installation estimate", "energy efficient windows", "patio door installation", "window replacement contractors", "best window company", "entry door replacement", "local window installers"] },
+  garage: { label: "Garage door", ads: [81, "firm", "LocaliQ 2025 (Garages)"], lsa: [53, "proxy", "Blended LSA avg $53 (not broken out)"], fb: [41, "directional", "LocaliQ FB 2025"], kw: ["garage door repair near me", "garage door installation", "garage door spring repair", "garage door company near me", "emergency garage door repair", "new garage door cost", "garage door opener installation", "garage door replacement quote", "local garage door repair", "best garage door company", "garage door contractors", "24 hour garage door repair"] },
+  pest: { label: "Pest control", ads: [91, "directional", "WordStream/LocaliQ 2025"], lsa: [28, "directional", "Home Service Direct 2026"], fb: [40, "directional", "Meta home-services 2026"], kw: ["pest control near me", "pest control company", "exterminator near me", "termite treatment", "bed bug exterminator", "rodent removal", "emergency pest control", "pest control quote", "pest control estimate", "best pest control company"] },
+  landscaping: { label: "Lawn & landscaping", ads: [118, "firm", "LocaliQ 2025 (Landscaping)"], lsa: [39, "directional", "Media Captain 2025"], fb: [42, "directional", "Meta home-services 2026"], kw: ["landscaping near me", "landscaping company", "lawn care service", "landscape design", "landscaping contractors", "yard maintenance service", "commercial landscaping", "landscaping quote", "landscaping estimate", "best landscaping company"] },
+  painting: { label: "Painting", ads: [138, "firm", "LocaliQ 2025"], lsa: [40, "directional", "Media Captain 2025"], fb: [50, "directional", "Painting Meta stats 2026"], kw: ["house painter near me", "painting company", "interior painting", "exterior painting", "cabinet painting", "commercial painting", "painting contractors", "painting quote", "painting estimate", "best painting company"] },
+  remodeling: { label: "Remodeling / general contractor", ads: [166, "firm", "LocaliQ 2025 (General Construction)"], lsa: [53, "directional", "Home Service Direct 2026 (limited markets)"], fb: [55, "directional", "Home-improvement Meta 2025"], kw: ["home remodeling near me", "remodeling company", "general contractor near me", "kitchen remodeling", "bathroom remodeling", "home renovation contractors", "home addition contractor", "remodeling quote", "remodeling estimate", "best remodeling contractor"] },
+  roofing_gutters: { label: "Gutters", ads: [228, "proxy", "Roofing proxy · LocaliQ 2025"], lsa: [162, "proxy", "Roofing proxy · Media Captain 2026"], fb: [41, "directional", "LocaliQ FB 2025"], kw: ["gutter installation near me", "gutter repair company", "seamless gutters installation", "gutter guards installation", "gutter cleaning service", "gutter replacement cost", "gutter contractors", "gutter installation quote", "gutter estimate", "emergency gutter repair"] },
+  siding: { label: "Siding", ads: [166, "proxy", "Remodeling proxy · LocaliQ 2025"], lsa: [70, "directional", "LSA siding category 2026"], fb: [41, "directional", "LocaliQ FB 2025"], kw: ["siding installation near me", "siding replacement company", "vinyl siding installation", "fiber cement siding contractors", "siding repair service", "siding replacement cost", "best siding company", "siding contractors", "siding installation quote", "siding estimate"] },
+  flooring: { label: "Flooring", ads: [141, "proxy", "Remodeling ×0.85 · LocaliQ 2025"], lsa: [53, "directional", "LSA flooring category 2026"], fb: [41, "directional", "LocaliQ FB 2025"], kw: ["flooring installation near me", "flooring company", "hardwood floor installation", "laminate flooring installation", "tile flooring contractors", "floor installation cost", "best flooring company", "flooring contractors", "flooring installation quote", "flooring estimate"] },
+  solar: { label: "Solar", ads: [150, "directional", "Solar agency data 2026"], lsa: [null, "na", "Not an eligible Google LSA category"], fb: [60, "directional", "Solar Meta stats 2026"], kw: ["solar panel installation", "solar company near me", "residential solar installers", "solar panels cost", "solar installation quote", "solar energy company", "solar panel companies near me", "commercial solar installation", "solar estimate", "best solar company"] },
+  fencing: { label: "Fencing", ads: [83, "proxy", "Landscaping ×0.7 · LocaliQ 2025"], lsa: [71, "directional", "Media Captain 2025 (Fencing Pro)"], fb: [48, "directional", "Home-improvement Meta 2025"], kw: ["fence installation near me", "fencing company", "fence contractors", "wood fence installation", "vinyl fence installation", "chain link fence company", "fence repair near me", "fence installation quote", "fencing estimate", "best fence company"] },
+  tree: { label: "Tree service", ads: [120, "directional", "Green-industry data 2025"], lsa: [40, "directional", "LSA tree category 2026"], fb: [55, "directional", "Green-industry Meta 2025"], kw: ["tree service near me", "tree removal company", "emergency tree removal", "tree trimming service", "stump grinding service", "tree removal cost", "best tree service company", "tree service contractors", "tree removal quote", "tree service estimate"] },
+  concrete: { label: "Concrete / paving", ads: [166, "directional", "BaaDigi contractor data 2026"], lsa: [null, "na", "LSA not consistently available"], fb: [45, "directional", "LocaliQ FB 2025"], kw: ["concrete contractors near me", "concrete driveway installation", "concrete patio company", "paving contractors near me", "asphalt paving company", "concrete driveway cost", "stamped concrete installation", "concrete repair service", "concrete contractors quote", "driveway paving estimate"] },
+  handyman: { label: "Handyman", ads: [54, "firm", "LocaliQ 2025"], lsa: [34, "directional", "Media Captain 2025"], fb: [41, "directional", "LocaliQ FB 2025"], kw: ["handyman near me", "handyman services", "home repair service", "handyman company", "drywall repair service", "furniture assembly service", "handyman contractors", "handyman quote", "handyman estimate", "emergency handyman"] },
+  cleaning: { label: "House cleaning", ads: [47, "firm", "LocaliQ 2025 (Cleaning/Maid)"], lsa: [50, "directional", "LSA cleaning category 2026"], fb: [35, "directional", "Meta, cleaning-intent 2025"], kw: ["house cleaning near me", "house cleaning service", "maid service near me", "deep cleaning service", "move out cleaning service", "house cleaning cost", "best house cleaning company", "cleaning service company", "house cleaning quote", "recurring house cleaning"] },
+  pool: { label: "Pool service", ads: [45, "firm", "LocaliQ 2025 (Pools & Spas)"], lsa: [50, "directional", "LSA pool category 2026"], fb: [41, "directional", "LocaliQ FB 2025"], kw: ["pool service near me", "pool cleaning service", "weekly pool maintenance", "pool repair company", "pool equipment repair service", "pool cleaning cost", "best pool service company", "pool service contractors", "pool service quote", "pool opening service"] }
 };
+// </LC_BENCH>
 
 // ZIP3 range → US state (for DataForSEO location + the "your market" label).
 const LC_ZIP_STATES = [
@@ -1652,7 +1662,7 @@ async function handleLeadCost(request, env, ctx) {
   const state = lcZipState(zip);
   if (!state || state === "Armed Forces") return json({ ok: false, error: "That ZIP isn't a US service area I can price." }, 400);
 
-  const cacheKey = `leadcost:v4:${tradeKey}:${state}`;
+  const cacheKey = `leadcost:v5:${tradeKey}:${state}`;
   if (env.SETUP_KV && url.searchParams.get("debug") !== "1") {
     const hit = await env.SETUP_KV.get(cacheKey);
     if (hit) {
@@ -1666,24 +1676,31 @@ async function handleLeadCost(request, env, ctx) {
   const live = mf && mf.factor != null;
   const factor = live ? mf.factor : 1;
   const round5 = (n) => Math.max(1, Math.round(n / 5) * 5);
-
-  // Base = LocaliQ / SearchLight published cost-per-lead; local factor from DataForSEO.
-  const adsCpl = round5(bench.adsCpl * factor);
-  const lsaCpl = round5(bench.lsa * factor);
-  const fbCpl = round5(bench.fb * factor);
+  const BOUNDS = { ads: [40, 350], lsa: [15, 200], fb: [10, 120] };
+  // scale a published benchmark [value, tier, src] by the market factor, clamp to sanity bounds; null → N/A
+  function scale(ch, key) {
+    if (!ch || ch[0] == null) return null;
+    var b = BOUNDS[key];
+    return Math.min(b[1], Math.max(b[0], round5(ch[0] * factor)));
+  }
+  const adsCpl = scale(bench.ads, "ads");
+  const lsaCpl = scale(bench.lsa, "lsa");
+  const fbCpl = scale(bench.fb, "fb");
+  const tierNote = (t) => (t === "firm" ? "firm benchmark" : t === "proxy" ? "proxy (adjacent trade)" : t === "na" ? "not available" : "directional estimate");
 
   const payload = {
     ok: true, zip, trade: tradeKey, tradeLabel: bench.label, market: state, live, as_of: "2025",
     channels: [
-      { key: "google_ads", label: "Google Ads", cpl: adsCpl, live, unit: "per lead",
+      { key: "google_ads", label: "Google Ads", cpl: adsCpl, live, unit: "per lead", tier: bench.ads[1], source: bench.ads[2],
         note: live ? "Published search cost-per-lead, adjusted to your market by live local ad costs." : "National published cost-per-lead benchmark." },
-      { key: "google_lsa", label: "Google LSA", cpl: lsaCpl, live: false, unit: "per lead",
-        note: live ? "Industry pay-per-lead benchmark, scaled to your market." : "Industry pay-per-lead benchmark." },
-      { key: "facebook", label: "Facebook Ads", cpl: fbCpl, live: false, unit: "per lead",
+      { key: "google_lsa", label: "Google LSA", cpl: lsaCpl, na: lsaCpl == null, live: false, unit: "per lead", tier: bench.lsa[1], source: bench.lsa[2],
+        note: lsaCpl == null ? "Google LSA isn't available for this trade." : (live ? "Industry pay-per-lead benchmark, scaled to your market." : "Industry pay-per-lead benchmark.") },
+      { key: "facebook", label: "Facebook Ads", cpl: fbCpl, live: false, unit: "per lead", tier: bench.fb[1], source: bench.fb[2],
         note: live ? "Industry benchmark, scaled to your market." : "Industry benchmark cost per lead." },
-      { key: "organic", label: "Organic (my lane)", cpl: 7, live: false, unit: "per lead", best: true,
+      { key: "organic", label: "Organic (my lane)", cpl: 7, live: false, unit: "per lead", best: true, tier: "flat",
         note: "What I pay to identify an anonymous visitor on your site and turn them into a lead you own — through ConsentResolve. A fraction of renting one." }
     ],
+    statsUrl: "/stats/",
     _debug: url.searchParams.get("debug") === "1" ? (mf && mf.dbg) : undefined,
     sources: LC_SOURCES,
     methodology: "The paid channels start from published industry cost-per-lead benchmarks (LocaliQ / SearchLight, 2025-26)" + (live ? ", then adjusted for your market using live local search-ad costs from Google Keyword Planner data." : ".") + " Organic is what I pay to resolve an anonymous website visitor into a lead you own via ConsentResolve — no ad auction. Figures are illustrations of market rates, not a guarantee of your results."
