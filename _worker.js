@@ -1691,14 +1691,10 @@ async function handleLeadCost(request, env, ctx) {
   const payload = {
     ok: true, zip, trade: tradeKey, tradeLabel: bench.label, market: state, live, as_of: "2025",
     channels: [
-      { key: "google_ads", label: "Google Ads", cpl: adsCpl, live, unit: "per lead", tier: bench.ads[1], source: bench.ads[2],
-        note: live ? "Published search cost-per-lead, adjusted to your market by live local ad costs." : "National published cost-per-lead benchmark." },
-      { key: "google_lsa", label: "Google LSA", cpl: lsaCpl, na: lsaCpl == null, live: false, unit: "per lead", tier: bench.lsa[1], source: bench.lsa[2],
-        note: lsaCpl == null ? "Google LSA isn't available for this trade." : (live ? "Industry pay-per-lead benchmark, scaled to your market." : "Industry pay-per-lead benchmark.") },
-      { key: "facebook", label: "Facebook Ads", cpl: fbCpl, live: false, unit: "per lead", tier: bench.fb[1], source: bench.fb[2],
-        note: live ? "Industry benchmark, scaled to your market." : "Industry benchmark cost per lead." },
-      { key: "organic", label: "Organic (my lane)", cpl: 7, live: false, unit: "per lead", best: true, tier: "flat",
-        note: "What I pay to identify an anonymous visitor on your site and turn them into a lead you own — through ConsentResolve. A fraction of renting one." }
+      { key: "google_ads", label: "Google Ads", cpl: adsCpl, live, unit: "per lead", tier: bench.ads[1], source: bench.ads[2] },
+      { key: "google_lsa", label: "Google LSA", cpl: lsaCpl, na: lsaCpl == null, live: false, unit: "per lead", tier: bench.lsa[1], source: bench.lsa[2] },
+      { key: "facebook", label: "Facebook Ads", cpl: fbCpl, live: false, unit: "per lead", tier: bench.fb[1], source: bench.fb[2] },
+      { key: "organic", label: "Organic", cpl: 7, live: false, unit: "per lead", tier: "flat" }
     ],
     statsUrl: "/stats/",
     _debug: url.searchParams.get("debug") === "1" ? (mf && mf.dbg) : undefined,

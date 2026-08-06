@@ -273,10 +273,10 @@
     var SAMPLE = {
       tradeLabel: "HVAC", market: "national average", live: false, as_of: "2025", statsUrl: "/stats/",
       channels: [
-        { key: "google_ads", label: "Google Ads", cpl: 128, unit: "per lead", tier: "firm", source: "LocaliQ 2025", note: "National published cost-per-lead benchmark." },
-        { key: "google_lsa", label: "Google LSA", cpl: 51, unit: "per lead", tier: "firm", source: "SearchLight 2026", note: "Industry pay-per-lead benchmark." },
-        { key: "facebook", label: "Facebook Ads", cpl: 41, unit: "per lead", tier: "directional", source: "LocaliQ FB 2025", note: "Industry benchmark cost per lead." },
-        { key: "organic", label: "Organic (my lane)", cpl: 7, unit: "per lead", best: true, tier: "flat", note: "What I pay to identify an anonymous visitor and turn them into a lead you own — through ConsentResolve." }
+        { key: "google_ads", label: "Google Ads", cpl: 128, unit: "per lead", tier: "firm", source: "LocaliQ 2025" },
+        { key: "google_lsa", label: "Google LSA", cpl: 51, unit: "per lead", tier: "firm", source: "SearchLight 2026" },
+        { key: "facebook", label: "Facebook Ads", cpl: 41, unit: "per lead", tier: "directional", source: "LocaliQ FB 2025" },
+        { key: "organic", label: "Organic", cpl: 7, unit: "per lead", tier: "flat" }
       ],
       sources: [
         { label: "Google Ads — LocaliQ Home Services Search Benchmarks 2025", url: "https://localiq.com/blog/home-services-search-advertising-benchmarks/" },
@@ -301,18 +301,18 @@
       grid.innerHTML = "";
       data.channels.forEach(function (c) {
         var na = c.na || c.cpl == null;
+        var isOrg = c.key === "organic";
         var card = d.createElement("div");
-        card.className = "lc-card" + (c.best ? " best" : "") + (na ? " na" : "");
-        var tag = c.best ? '<span class="lc-tag win">You own it</span>'
+        card.className = "lc-card" + (na ? " na" : "");
+        var tag = isOrg ? ""
           : na ? '<span class="lc-tag">Not offered</span>'
           : c.live ? '<span class="lc-tag live"><span class="ld"></span>Live</span>'
           : '<span class="lc-tag">Benchmark</span>';
         var big = na ? '<b class="lc-cpl">N/A</b>'
           : (c.cpl === 0 ? '<b class="lc-cpl">$0</b>' : '<b class="lc-cpl" data-to="' + c.cpl + '">$0</b>');
-        var tier = (!c.best && c.tier && TIERWORD[c.tier]) ? '<span class="lc-tierline tier-' + esc(c.tier) + '">' + TIERWORD[c.tier] + '</span>' : "";
+        var tier = (!isOrg && !na && c.tier && TIERWORD[c.tier]) ? '<span class="lc-tierline tier-' + esc(c.tier) + '">' + TIERWORD[c.tier] + '</span>' : "";
         card.innerHTML = tag + '<span class="lc-ch">' + esc(c.label) + '</span>' + big +
-          '<span class="lc-unit">' + esc(c.unit) + '</span>' + tier +
-          '<span class="lc-desc">' + esc(c.note) + '</span>';
+          '<span class="lc-unit">' + esc(c.unit) + '</span>' + tier;
         grid.appendChild(card);
       });
       grid.querySelectorAll("[data-to]").forEach(function (el) { tween(el, parseInt(el.getAttribute("data-to"), 10)); });
