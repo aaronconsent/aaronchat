@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://aaron.chat/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/ha.css?v=127">
+<link rel="stylesheet" href="/brand/ha.css?v=128">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://aaron.chat/#business",
 "name":"Hey Aaron! Marketing","alternateName":"aaron.chat","url":"https://aaron.chat/",
@@ -158,53 +158,64 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
 <!-- ============================================= LEAD-COST CALCULATOR -->
 <section class="sec sec-low" id="lead-cost">
   <div class="wrap">
-    <div class="sec-head center reveal">
-      <h2>How Much Does a Lead Cost?</h2>
-    </div>
-    <div class="lcalc reveal" data-lcalc>
-      <form class="lcalc-form">
-        <div class="lc-field">
-          <label for="lc-zip">Your ZIP</label>
-          <input id="lc-zip" name="zip" type="text" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="77331" data-lc-zip>
+    <div class="lcalc lcalc-2col reveal" data-lcalc>
+      <!-- LEFT: heading, a photo of Aaron pointing at the form, and the form -->
+      <div class="lcalc-left">
+        <h2 class="lc-h2">How Much Does a Lead Cost?</h2>
+        <div class="frame lc-frame">
+          <div class="imgslot imgslot--photo" data-slot="lead-cost-point">
+            <span class="tag">A real photo of Aaron drops in here soon</span>
+            <span class="lbl">Aaron pointing at the form</span>
+            <span class="cue">Aaron, half-grin, pointing down/right at the ZIP + trade form &mdash; see .docs/heyaaron-image-prompts.md</span>
+          </div>
         </div>
-        <div class="lc-field">
-          <label for="lc-trade">Your trade</label>
-          <select id="lc-trade" name="trade" data-lc-trade>
-            <option value="hvac">HVAC</option>
-            <option value="plumbing">Plumbing</option>
-            <option value="electrical">Electrical</option>
-            <option value="roofing">Roofing</option>
-            <option value="roofing_gutters">Gutters</option>
-            <option value="windows">Windows &amp; doors</option>
-            <option value="siding">Siding</option>
-            <option value="garage">Garage door</option>
-            <option value="painting">Painting</option>
-            <option value="remodeling">Remodeling / general contractor</option>
-            <option value="flooring">Flooring</option>
-            <option value="fencing">Fencing</option>
-            <option value="concrete">Concrete / paving</option>
-            <option value="landscaping">Lawn &amp; landscaping</option>
-            <option value="tree">Tree service</option>
-            <option value="pest">Pest control</option>
-            <option value="pool">Pool service</option>
-            <option value="solar">Solar</option>
-            <option value="handyman">Handyman</option>
-            <option value="cleaning">House cleaning</option>
-          </select>
-        </div>
-        <button class="btn btn-primary btn-lg" type="submit" data-lc-go>Show me the numbers</button>
-      </form>
-      <p class="lc-status" data-lc-status hidden></p>
-      <div class="lc-grid" data-lc-results aria-live="polite">
-        <!-- cards injected by ha.js; a national sample is shown until you run yours -->
+        <form class="lcalc-form">
+          <div class="lc-field">
+            <label for="lc-zip">Your ZIP</label>
+            <input id="lc-zip" name="zip" type="text" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="77331" data-lc-zip>
+          </div>
+          <div class="lc-field">
+            <label for="lc-trade">Your trade</label>
+            <select id="lc-trade" name="trade" data-lc-trade>
+              <option value="hvac">HVAC</option>
+              <option value="plumbing">Plumbing</option>
+              <option value="electrical">Electrical</option>
+              <option value="roofing">Roofing</option>
+              <option value="roofing_gutters">Gutters</option>
+              <option value="windows">Windows &amp; doors</option>
+              <option value="siding">Siding</option>
+              <option value="garage">Garage door</option>
+              <option value="painting">Painting</option>
+              <option value="remodeling">Remodeling / general contractor</option>
+              <option value="flooring">Flooring</option>
+              <option value="fencing">Fencing</option>
+              <option value="concrete">Concrete / paving</option>
+              <option value="landscaping">Lawn &amp; landscaping</option>
+              <option value="tree">Tree service</option>
+              <option value="pest">Pest control</option>
+              <option value="pool">Pool service</option>
+              <option value="solar">Solar</option>
+              <option value="handyman">Handyman</option>
+              <option value="cleaning">House cleaning</option>
+            </select>
+          </div>
+          <button class="btn btn-primary btn-lg btn-block" type="submit" data-lc-go>Show me the numbers</button>
+        </form>
+        <p class="lc-status" data-lc-status hidden></p>
       </div>
-      <div class="lc-foot">
-        <span class="lc-market" data-lc-market></span>
-        <details class="lc-method">
-          <summary>Where these numbers come from</summary>
-          <div class="lc-sources" data-lc-sources></div>
-          <p class="lc-note" data-lc-methodology></p>
-        </details>
+      <!-- RIGHT: the results -->
+      <div class="lcalc-right">
+        <div class="lc-grid" data-lc-results aria-live="polite">
+          <!-- cards injected by ha.js; all zeroed until you run yours -->
+        </div>
+        <div class="lc-foot">
+          <span class="lc-market" data-lc-market></span>
+          <details class="lc-method">
+            <summary>Where these numbers come from</summary>
+            <div class="lc-sources" data-lc-sources></div>
+            <p class="lc-note" data-lc-methodology></p>
+          </details>
+        </div>
       </div>
     </div>
     <div class="lc-kick reveal">
@@ -672,6 +683,6 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
   </div>
 </div>
 
-<script src="/brand/ha.js?v=127" defer></script>
+<script src="/brand/ha.js?v=128" defer></script>
 </body>
 </html>

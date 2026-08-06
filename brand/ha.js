@@ -269,21 +269,21 @@
     var methEl = root.querySelector("[data-lc-methodology]");
     function money(n) { return "$" + Math.round(n).toLocaleString("en-US"); }
 
-    // national sample shown before the visitor runs their own (no API call on load)
+    // zeroed placeholder shown before the visitor runs their own (no API call on load)
     var SAMPLE = {
-      tradeLabel: "HVAC", market: "national average", live: false, as_of: "2025", statsUrl: "/stats/",
+      tradeLabel: "", market: "", live: false, as_of: "", statsUrl: "/stats/", placeholder: true,
       channels: [
-        { key: "google_ads", label: "Google Ads", cpl: 128, unit: "per lead", tier: "firm", source: "LocaliQ 2025" },
-        { key: "google_lsa", label: "Google LSA", cpl: 51, unit: "per lead", tier: "firm", source: "SearchLight 2026" },
-        { key: "facebook", label: "Facebook Ads", cpl: 41, unit: "per lead", tier: "directional", source: "LocaliQ FB 2025" },
-        { key: "organic", label: "Organic", cpl: 7, unit: "per lead", tier: "flat" }
+        { key: "google_ads", label: "Google Ads", cpl: 0, unit: "per lead" },
+        { key: "google_lsa", label: "Google LSA", cpl: 0, unit: "per lead" },
+        { key: "facebook", label: "Facebook Ads", cpl: 0, unit: "per lead" },
+        { key: "organic", label: "Organic", cpl: 0, unit: "per lead" }
       ],
       sources: [
         { label: "Google Ads — LocaliQ Home Services Search Benchmarks 2025", url: "https://localiq.com/blog/home-services-search-advertising-benchmarks/" },
         { label: "Google LSA — SearchLight Digital 2026", url: "https://searchlightdigital.io/google-local-service-ads-cost-per-lead/" },
         { label: "Facebook — LocaliQ Facebook Ad Benchmarks 2025", url: "https://localiq.com/blog/facebook-advertising-benchmarks/" }
       ],
-      methodology: "Example figures for HVAC, national average. Enter your ZIP and trade to localize."
+      methodology: "Enter your ZIP and trade to see your market's numbers."
     };
     var TIERWORD = { firm: "Firm benchmark", directional: "Directional estimate", proxy: "Proxy — adjacent trade", na: "Not available", flat: "" };
 
@@ -313,11 +313,11 @@
       marketEl.textContent = data.live ? ("Live · " + data.tradeLabel + " · " + data.market + " · " + data.as_of)
         : (data.market ? (data.tradeLabel + " · " + data.market + " · " + data.as_of) : "");
       // disclosure: this trade's per-channel tier + the primary sources + link to the full method
-      var tierline = data.channels.filter(function (c) { return c.key !== "organic"; }).map(function (c) {
+      var tierline = data.placeholder ? "" : data.channels.filter(function (c) { return c.key !== "organic"; }).map(function (c) {
         return esc(c.label) + " — " + (c.na ? "N/A" : (TIERWORD[c.tier] || "benchmark")) + (c.source ? " (" + esc(c.source) + ")" : "");
       }).join(" · ");
       var links = (data.sources || []).map(function (s) { return '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.label) + '</a>'; }).join("");
-      srcEl.innerHTML = '<p class="lc-tiers">' + tierline + '</p>' + links +
+      srcEl.innerHTML = (tierline ? '<p class="lc-tiers">' + tierline + '</p>' : "") + links +
         '<a class="lc-statslink" href="' + esc(data.statsUrl || "/stats/") + '">Full per-trade table &amp; how I calculate this &rarr;</a>';
       methEl.textContent = data.methodology || "";
     }

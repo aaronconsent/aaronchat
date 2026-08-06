@@ -624,6 +624,14 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 
 /* ============ lead-cost calculator (what should a lead cost?) ============ */
 .lcalc { max-width: 940px; margin: 6px auto 0; }
+/* two-column layout: left = heading + photo + form, right = results */
+.lcalc-2col { max-width: 1040px; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(26px, 4vw, 52px); align-items: start; }
+@media (max-width: 860px) { .lcalc-2col { grid-template-columns: 1fr; max-width: 520px; } }
+.lc-h2 { font-size: var(--sec-h); margin: 0 0 18px; }
+.lc-frame { border-radius: var(--r-lg); overflow: hidden; margin-bottom: 22px; box-shadow: var(--sh-md); }
+.lcalc-2col .lcalc-form { justify-content: flex-start; }
+.lcalc-2col .lc-grid { grid-template-columns: repeat(2, 1fr); margin-top: 0; }
+@media (max-width: 420px) { .lcalc-2col .lc-grid { grid-template-columns: 1fr; } }
 .lcalc-form { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; justify-content: center; }
 .lc-field { display: flex; flex-direction: column; gap: 6px; text-align: left; }
 .lc-field label { font-size: .74rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-variant); }
