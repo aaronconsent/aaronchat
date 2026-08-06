@@ -172,129 +172,70 @@
     d.addEventListener("keydown", function (e) { if (e.key === "Escape") modal.hidden = true; });
   })();
 
-  /* -------- funnel showpiece: continuous cinematic live feed -------------------- */
+  /* -------- "does your phone look like this?" — lock-screen lead feed ----------- */
   (function funnel() {
     var sec = d.querySelector("[data-funnel]"); if (!sec) return;
-    var phone = sec.querySelector('[data-feed="phone"]');
-    var inbox = sec.querySelector('[data-feed="inbox"]');
-    var elIn = sec.querySelector("[data-money-in]");
-    var elOut = sec.querySelector("[data-money-out]");
-    var elJobs = sec.querySelector("[data-jobs]");
-    var elRoi = sec.querySelector("[data-roi]");
-    var chart = sec.querySelector("[data-chart]");
-    function fmt(n) { return "$" + Math.round(n).toLocaleString("en-US"); }
+    var feed = sec.querySelector('[data-feed="phone"]');
+    var elCount = sec.querySelector("[data-count]");
+    var lock = sec.querySelector(".lock");
+    if (!feed) return;
     function ico(id) { return '<svg><use href="#' + id + '"/></svg>'; }
 
-    // one "month" of events — loops forever. All action shows on the phone or in the inbox.
-    // money:{k,amt} drives the dashboard stats only. in = revenue, out/ha = cost.
+    // one "day" of notifications — loops forever. kind sets icon + tint; lead:1 counts toward "new today".
     var C = [
-      { s: "phone", ic: "sms", a: "“Can you look at my AC today?”", b: "Livingston · just now" },
-      { s: "inbox", kind: "lead", a: "New contact form", b: "“Need an AC install quote”", t: "now" },
-      { s: "phone", ic: "mail", a: "Missed call → auto-text sent", b: "Onalaska · 2m" },
-      { s: "inbox", kind: "ad", money: { k: "out", amt: 600 }, a: "Google Ads · receipt", b: "Campaign: AC installs", t: "now" },
-      { s: "inbox", kind: "lead", a: "Google Ads lead", b: "Roof estimate request", t: "2m" },
-      { s: "phone", booked: 1, ic: "ok", a: "Booked: panel upgrade", b: "Tue · 8:30 AM" },
-      { s: "inbox", kind: "paid", money: { k: "in", amt: 5800 }, a: "Invoice #1042 paid", b: "+$5,800 · deposited today", t: "now" },
-      { s: "inbox", kind: "lead", a: "Facebook lead form", b: "Kitchen remodel", t: "5m" },
-      { s: "phone", ic: "sms", a: "“Need a plumber ASAP”", b: "Huntsville · text" },
-      { s: "phone", booked: 1, ic: "ok", a: "Booked: kitchen remodel estimate", b: "Sat · 9:00 AM" },
-      { s: "inbox", kind: "ad", money: { k: "out", amt: 400 }, a: "Facebook Ads · receipt", b: "Campaign: remodels", t: "6m" },
-      { s: "inbox", kind: "lead", a: "New contact form", b: "“Gutters + fascia quote”", t: "8m" },
-      { s: "phone", booked: 1, ic: "ok", a: "Booked: roof estimate", b: "Thu · 11:00 AM" },
-      { s: "inbox", kind: "paid", money: { k: "in", amt: 6800 }, a: "Invoice #1043 paid", b: "+$6,800 · deposited today", t: "now" },
-      { s: "phone", booked: 1, ic: "ok", a: "Booked: panel + EV charger", b: "Mon · 8:00 AM" },
-      { s: "inbox", kind: "bill", money: { k: "ha", amt: 500 }, a: "Hey Aaron! · Website & Growth", b: "Your monthly bill · −$500", t: "1st" }
+      { kind: "text", lead: 1, ic: "i-msg", a: "New customer", b: "“Can you come look at my AC today?”" },
+      { kind: "call", lead: 1, ic: "i-phone", a: "Missed call → auto-text sent", b: "“Thanks for calling! What do you need done?”" },
+      { kind: "book", ic: "i-check", a: "Booked — AC install estimate", b: "Tomorrow · 8:30 AM · Livingston" },
+      { kind: "text", lead: 1, ic: "i-msg", a: "New customer", b: "“How soon could you start on a re-roof?”" },
+      { kind: "call", lead: 1, ic: "i-phone", a: "Missed call → auto-text sent", b: "“Sorry I missed you — text me your address?”" },
+      { kind: "book", ic: "i-check", a: "Booked — panel upgrade", b: "Wed · 9:00 AM · Onalaska" },
+      { kind: "text", lead: 1, ic: "i-msg", a: "New customer", b: "“Do you do weekends? Kitchen’s a mess.”" },
+      { kind: "call", lead: 1, ic: "i-phone", a: "Missed call → auto-text sent", b: "“What’s going on and where are you at?”" },
+      { kind: "book", ic: "i-check", a: "Booked — roof repair", b: "Thu · 11:00 AM · Huntsville" },
+      { kind: "text", lead: 1, ic: "i-msg", a: "New customer", b: "“Neighbor said you fixed theirs — my turn?”" },
+      { kind: "call", lead: 1, ic: "i-phone", a: "Missed call → auto-text sent", b: "“Happy to help — what day works for you?”" },
+      { kind: "book", ic: "i-check", a: "Booked — panel + EV charger", b: "Mon · 8:00 AM · Coldspring" }
     ];
 
-    var moneyIn = 0, moneyOut = 0, jobs = 0, idx = 0, tweens = {};
-
-    // count-up that survives rapid re-fires (cancels the prior tween on the same element)
-    function tween(el, key, from, to, dur, isInt) {
-      var id = {}, begin = null;
-      tweens[key] = id;
-      function step(ts) {
-        if (tweens[key] !== id) return;
-        if (begin === null) begin = ts;
-        var p = Math.min(1, (ts - begin) / dur), e = 1 - Math.pow(1 - p, 4), v = from + (to - from) * e;
-        el.textContent = isInt ? Math.round(v) : fmt(v);
-        if (p < 1) requestAnimationFrame(step); else tweens[key] = null;
-      }
-      requestAnimationFrame(step);
-    }
+    var count = 0, idx = 0;
     function flash(el, cls) { if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
-    function setRoi() {
-      var r = moneyOut > 0 ? moneyIn / moneyOut : 0;
-      elRoi.textContent = "$" + (r >= 10 ? Math.round(r) : r.toFixed(1)) + " : $1";
-    }
 
-    // fixed-height feeds: max rows constant, so the boxes never resize as items stream.
-    var MAX = 5;
-    function trim(feed) {
+    // fixed-height stack: constant max, so the phone never resizes as notifications land.
+    var MAX = 4;
+    function trim() {
       if (feed.children.length > MAX) {
         var first = feed.firstElementChild; first.classList.add("out");
-        (function (n) { setTimeout(function () { if (n.parentNode) n.parentNode.removeChild(n); }, 380); })(first);
+        (function (n) { setTimeout(function () { if (n.parentNode) n.parentNode.removeChild(n); }, 360); })(first);
       }
     }
-    function pushPhone(ev) {
+    function push(ev) {
       var li = d.createElement("li");
-      li.className = "fd-lead enter" + (ev.booked ? " booked" : "");
-      li.innerHTML = '<span class="fd-ic ' + (ev.ic || "sms") + '">' + ico(ev.booked ? "i-check" : ev.ic === "mail" ? "i-phone" : "i-msg") + '</span><div><b>' + ev.a + '</b><span>' + ev.b + '</span></div>';
-      phone.appendChild(li); trim(phone);
-    }
-    function pushInbox(ev) {
-      var li = d.createElement("li");
-      li.className = "ib-row enter" + (ev.kind ? " " + ev.kind : "") + (ev.booked ? " booked" : "");
-      var badge = ev.kind === "paid" ? '<span class="ib-tag paid">PAID</span>'
-        : ev.kind === "bill" ? '<span class="ib-tag bill">BILL</span>'
-        : ev.kind === "ad" ? '<span class="ib-tag ad">ADS</span>' : '<span class="ib-unread"></span>';
-      li.innerHTML = badge + '<div class="ib-em"><b>' + ev.a + (ev.booked ? " ✓" : "") + '</b><span>' + ev.b + '</span></div><span class="ib-time">' + (ev.t || "now") + '</span>';
-      inbox.appendChild(li); trim(inbox);
-    }
-    function bookJob() { var j = jobs; jobs++; tween(elJobs, "jobs", j, jobs, 550, true); flash(elJobs, "pop"); }
-    function pushBar(amt) {
-      if (!chart) return;
-      var b = d.createElement("span");
-      b.className = "fbar"; b.style.setProperty("--h", Math.max(14, Math.min(100, Math.round(amt / 70))) + "%");
-      chart.appendChild(b);
-      if (chart.children.length > 16) chart.removeChild(chart.firstElementChild);
-      void b.offsetWidth; b.classList.add("grow");
+      li.className = "lock-note enter " + ev.kind;
+      li.innerHTML = '<span class="ln-ic ' + ev.kind + '">' + ico(ev.ic) + '</span>' +
+        '<div class="ln-b"><b>' + ev.a + '</b><span>' + ev.b + '</span></div><span class="ln-time">now</span>';
+      feed.appendChild(li); trim();
     }
 
     function tick() {
       var ev = C[idx % C.length]; idx++;
-      if (ev.s === "phone") pushPhone(ev); else pushInbox(ev);
-      if (ev.booked) bookJob();
-      if (ev.money) {
-        if (ev.money.k === "in") {
-          var a = moneyIn; moneyIn += ev.money.amt; tween(elIn, "in", a, moneyIn, 900);
-          flash(elIn, "flash-in"); flash(sec.querySelector(".fstat.in"), "hit"); pushBar(ev.money.amt);
-        } else {
-          var b = moneyOut; moneyOut += ev.money.amt; tween(elOut, "out", b, moneyOut, 800); flash(elOut, "flash-out");
-        }
-        setRoi();
-      }
-      // end of a month → brief reset, then keep rolling
+      push(ev);
+      if (lock) flash(lock, "buzz");
+      if (ev.lead && elCount) { count++; elCount.textContent = count; flash(elCount, "pop"); }
+      // end of a "day" -> quietly reset the counter so it stays believable, keep rolling
       if (idx % C.length === 0) {
-        setTimeout(function () {
-          moneyIn = 0; moneyOut = 0; jobs = 0; tweens = {};
-          elIn.textContent = fmt(0); elOut.textContent = fmt(0); elJobs.textContent = "0";
-          elRoi.textContent = "$0 : $1";
-          if (chart) chart.innerHTML = "";
-          flash(sec.querySelector(".fdash"), "newmonth");
-        }, 900);
+        setTimeout(function () { count = 0; if (elCount) elCount.textContent = "0"; }, 700);
       }
     }
 
     // reduced motion / no observer: show a static, representative frame — no loop.
     if (reduce || !("IntersectionObserver" in w)) {
-      elIn && (elIn.textContent = fmt(12600)); elOut && (elOut.textContent = fmt(1500));
-      elJobs && (elJobs.textContent = "7"); elRoi && (elRoi.textContent = "$8 : $1");
+      if (elCount) elCount.textContent = "9";
       sec.classList.add("playing");
       return;
     }
 
     var timer = null;
-    function start() { if (timer) return; sec.classList.add("playing"); tick(); timer = w.setInterval(tick, 1150); }
+    function start() { if (timer) return; sec.classList.add("playing"); tick(); timer = w.setInterval(tick, 1250); }
     function stop() { if (timer) { w.clearInterval(timer); timer = null; } }
     // in view now? (rect test — reliable even where IO callbacks are throttled)
     function inView() {

@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://aaron.chat/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/ha.css?v=119">
+<link rel="stylesheet" href="/brand/ha.css?v=120">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"ProfessionalService","@id":"https://aaron.chat/#business",
 "name":"Hey Aaron! Marketing","alternateName":"aaron.chat","url":"https://aaron.chat/",
@@ -105,72 +105,41 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
 </section>
 
 <!-- ===================== FUNNEL SHOWPIECE (right under hero) -->
-<section class="sec funnel-sec" data-funnel>
-  <div class="wrap">
-    <div class="sec-head center reveal">
-      <h2>Watch what you're actually paying for.</h2>
-      <p class="lede">Up top, the only numbers that matter: money in versus money out. Below, where it comes from &mdash;
-      texts and calls lighting up your phone, leads and paid invoices landing in your inbox.</p>
+<section class="sec phone-sec" data-funnel>
+  <div class="wrap phone-wrap">
+    <!-- LEFT: the emotional pitch -->
+    <div class="phone-copy reveal">
+      <span class="phone-kick">Your phone, once we flip the switch</span>
+      <h2>Does your phone look like <span class="hl">this</span>?</h2>
+      <p class="lede">It should. When I turn your marketing on, this is an ordinary afternoon &mdash; new texts, missed
+        calls that answer themselves, jobs booking while your hands are full. Every buzz is a real person in your
+        town who wants to hire you.</p>
+      <ul class="phone-points">
+        <li><span class="pi"><svg><use href="#i-check"/></svg></span>A real name and a real job &mdash; not a junk form-fill.</li>
+        <li><span class="pi"><svg><use href="#i-check"/></svg></span>Miss the call? It texts them back before they dial the next guy.</li>
+        <li><span class="pi"><svg><use href="#i-check"/></svg></span>You just glance down and pick what to book.</li>
+      </ul>
+      <a class="btn btn-call btn-lg" href="tel:+17133848985" data-cta-location="phone-demo"><svg><use href="#i-phone"/></svg>Call me &mdash; let's make it buzz</a>
     </div>
-    <div class="funnel-stack">
-      <!-- TOP: analytics dashboard — stats only, these are the only things that animate -->
-      <div class="fdash reveal" data-dash>
-        <div class="fdash-head">
-          <span class="fm-live"><span class="ld"></span>Live</span>
-          <span class="fdash-title">This month &middot; money in vs. money out</span>
-          <span class="fm-sample">Sample month &mdash; an illustration, not a client result.</span>
-        </div>
-        <div class="fdash-grid">
-          <div class="fstat in">
-            <span class="fstat-l">Money in</span>
-            <b data-money-in>$0</b>
-            <span class="fstat-sub">invoices paid &amp; deposited</span>
-          </div>
-          <div class="fstat">
-            <span class="fstat-l">Money out</span>
-            <b data-money-out>$0</b>
-            <span class="fstat-sub">ad spend + my bill</span>
-          </div>
-          <div class="fstat">
-            <span class="fstat-l">Jobs booked</span>
-            <b data-jobs>0</b>
-            <span class="fstat-sub">on the calendar</span>
-          </div>
-          <div class="fstat roi">
-            <span class="fstat-l">Per ad dollar</span>
-            <b data-roi>$0&nbsp;:&nbsp;$1</b>
-            <span class="fstat-sub">return on spend</span>
-          </div>
-        </div>
-        <div class="fdash-chart" data-chart aria-hidden="true"></div>
-      </div>
-      <!-- BOTTOM: the two devices — all the action happens here -->
-      <div class="funnel-devices">
-        <!-- phone: texts &amp; calls (live feed) -->
-        <div class="funnel-device reveal">
-          <div class="fd-glow"></div>
-          <div class="fd-frame">
-            <div class="fd-notch"></div>
-            <div class="fd-screen">
-              <div class="fd-head"><span class="fd-dot"></span>Texts &amp; calls</div>
-              <ul class="fd-leads" data-feed="phone" aria-hidden="true">
-                <li class="fd-lead"><span class="fd-ic sms"><svg><use href="#i-msg"/></svg></span><div><b>&ldquo;Can you look at my AC today?&rdquo;</b><span>Livingston &middot; just now</span></div></li>
-                <li class="fd-lead"><span class="fd-ic mail"><svg><use href="#i-phone"/></svg></span><div><b>Missed call &rarr; auto-text sent</b><span>Onalaska &middot; 2m</span></div></li>
-              </ul>
+    <!-- RIGHT: the phone, lighting up -->
+    <div class="phone-stage reveal">
+      <div class="lock">
+        <div class="lock-glow"></div>
+        <div class="lock-frame">
+          <div class="lock-notch"></div>
+          <div class="lock-screen">
+            <div class="lock-top">
+              <span class="lock-live"><span class="ld"></span><b data-count>0</b>&nbsp;new leads today</span>
             </div>
-          </div>
-        </div>
-        <!-- inbox: leads + money emails (live feed) -->
-        <div class="funnel-inbox reveal">
-          <div class="ib-win">
-            <div class="ib-bar"><span class="ib-dots"><i></i><i></i><i></i></span><b>Inbox</b><span class="ib-badge">live</span></div>
-            <ul class="ib-list" data-feed="inbox" aria-hidden="true">
-              <li class="ib-row"><span class="ib-unread"></span><div class="ib-em"><b>New contact form</b><span>&ldquo;Need an AC install quote&rdquo;</span></div><span class="ib-time">now</span></li>
-              <li class="ib-row"><span class="ib-unread"></span><div class="ib-em"><b>Google Ads lead</b><span>Roof estimate request</span></div><span class="ib-time">5m</span></li>
+            <div class="lock-clock"><span class="lc-time">2:47</span><span class="lc-date">Tuesday &middot; your town</span></div>
+            <ul class="lock-notes" data-feed="phone" aria-hidden="true">
+              <li class="lock-note text"><span class="ln-ic msg"><svg><use href="#i-msg"/></svg></span><div class="ln-b"><b>New customer</b><span>&ldquo;Can you come look at my AC today?&rdquo;</span></div><span class="ln-time">now</span></li>
+              <li class="lock-note call"><span class="ln-ic call"><svg><use href="#i-phone"/></svg></span><div class="ln-b"><b>Missed call &rarr; auto-text sent</b><span>&ldquo;Thanks for calling! What do you need done?&rdquo;</span></div><span class="ln-time">1m</span></li>
             </ul>
           </div>
         </div>
       </div>
+      <span class="phone-sample">A sample of what comes in &mdash; an illustration, not a real customer's texts.</span>
     </div>
   </div>
 </section>
@@ -665,6 +634,6 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
   </div>
 </div>
 
-<script src="/brand/ha.js?v=119" defer></script>
+<script src="/brand/ha.js?v=120" defer></script>
 </body>
 </html>
