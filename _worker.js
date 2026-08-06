@@ -1614,7 +1614,8 @@ function lcAvgCpc(rows) {
 // so Keyword-Planner's absolute inflation cancels out). Applied to the trusted
 // LocaliQ published CPL. null when unavailable → national benchmark.
 async function lcLiveFactor(bench, state, env) {
-  if (!env.DATAFORSEO_LOGIN || !env.DATAFORSEO_PASSWORD) return null;
+  const dbg = { ok: false };
+  if (!env.DATAFORSEO_LOGIN || !env.DATAFORSEO_PASSWORD) { dbg.reason = "no-creds"; return { factor: null, dbg }; }
   try {
     const auth = "Basic " + btoa(`${env.DATAFORSEO_LOGIN}:${env.DATAFORSEO_PASSWORD}`);
     const body = [
@@ -1624,22 +1625,22 @@ async function lcLiveFactor(bench, state, env) {
     const res = await fetch("https://api.dataforseo.com/v3/keywords_data/google_ads/search_volume/live", {
       method: "POST", headers: { Authorization: auth, "Content-Type": "application/json" }, body: JSON.stringify(body)
     });
-    if (!res.ok) return null;
+    dbg.http = res.status;
+    if (!res.ok) { dbg.reason = "http-" + res.status; return { factor: null, dbg }; }
     const data = await res.json();
-    const tasks = data && data.tasks;
-    if (!Array.isArray(tasks) || tasks.length < 2) return null;
-    // match tasks back to state / US by the location echoed in the task data
-    let stateRows = null, usRows = null;
-    for (const t of tasks) {
-      const loc = t && t.data && t.data.location_name;
-      if (loc === "United States") usRows = t.result;
-      else stateRows = t.result;
-    }
+    const tasks = (data && data.tasks) || [];
+    dbg.tasks = tasks.length;
+    dbg.statusCodes = tasks.map((t) => t && t.status_code);
+    // tasks come back in request order: [0] = state, [1] = US
+    const stateRows = tasks[0] && tasks[0].result;
+    const usRows = tasks[1] && tasks[1].result;
     const stateCpc = lcAvgCpc(stateRows), usCpc = lcAvgCpc(usRows);
-    if (!stateCpc || !usCpc) return null;
+    dbg.stateCpc = stateCpc; dbg.usCpc = usCpc;
+    if (!stateCpc || !usCpc) { dbg.reason = "no-cpc"; return { factor: null, dbg }; }
     const factor = Math.max(0.7, Math.min(1.5, stateCpc / usCpc));
-    return { factor, stateCpc, usCpc };
-  } catch (_e) { return null; }
+    dbg.ok = true;
+    return { factor, stateCpc, usCpc, dbg };
+  } catch (e) { dbg.reason = "throw:" + (e && e.message ? e.message : "err"); return { factor: null, dbg }; }
 }
 
 async function handleLeadCost(request, env, ctx) {
@@ -1652,7 +1653,7 @@ async function handleLeadCost(request, env, ctx) {
   const state = lcZipState(zip);
   if (!state || state === "Armed Forces") return json({ ok: false, error: "That ZIP isn't a US service area I can price." }, 400);
 
-  const cacheKey = `leadcost:v2:${tradeKey}:${state}`;
+  const cacheKey = `leadcost:v3:${tradeKey}:${state}`;
   if (env.SETUP_KV && url.searchParams.get("debug") !== "1") {
     const hit = await env.SETUP_KV.get(cacheKey);
     if (hit) {
@@ -1663,7 +1664,7 @@ async function handleLeadCost(request, env, ctx) {
   }
 
   const mf = await lcLiveFactor(bench, state, env);
-  const live = mf != null;
+  const live = mf && mf.factor != null;
   const factor = live ? mf.factor : 1;
   const round5 = (n) => Math.max(1, Math.round(n / 5) * 5);
 
@@ -1684,12 +1685,16 @@ async function handleLeadCost(request, env, ctx) {
       { key: "organic", label: "Organic (my lane)", cpl: 0, live: false, unit: "no per-lead fee", best: true,
         note: "You pay for the work once, not per lead — and you own every lead that comes in." }
     ],
-    _debug: url.searchParams.get("debug") === "1" && live ? { factor: Number(mf.factor.toFixed(3)), stateCpc: Number(mf.stateCpc.toFixed(2)), usCpc: Number(mf.usCpc.toFixed(2)) } : undefined,
+    _debug: url.searchParams.get("debug") === "1" ? (mf && mf.dbg) : undefined,
     sources: LC_SOURCES,
     methodology: "The paid channels start from published industry cost-per-lead benchmarks (LocaliQ / SearchLight, 2025-26)" + (live ? ", then adjusted for your market using live local search-ad costs from Google Keyword Planner data." : ".") + " Organic leads carry no per-lead ad fee. Figures are illustrations of market rates, not a guarantee of your results."
   };
 
-  if (env.SETUP_KV) ctx.waitUntil(env.SETUP_KV.put(cacheKey, JSON.stringify(payload), { expirationTtl: 604800 }));
+  // Cache successful results. Skip when creds exist but the live call failed
+  // (transient), so it retries next time instead of caching a benchmark fallback.
+  const credsPresent = !!(env.DATAFORSEO_LOGIN && env.DATAFORSEO_PASSWORD);
+  const shouldCache = env.SETUP_KV && url.searchParams.get("debug") !== "1" && (live || !credsPresent);
+  if (shouldCache) ctx.waitUntil(env.SETUP_KV.put(cacheKey, JSON.stringify(payload), { expirationTtl: 604800 }));
   return json(payload);
 }
 
