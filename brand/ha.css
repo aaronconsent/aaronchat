@@ -159,7 +159,7 @@ p { margin: 0; text-wrap: pretty; }
 .hero { position: relative; background: var(--white); padding-block: clamp(40px, 7vw, 80px); }
 .hero .wrap { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr .95fr;
   gap: clamp(28px, 5vw, 56px); align-items: center; }
-.hero h1 { font-size: var(--d-xl); margin: 16px 0 18px; }
+.hero h1 { font-size: clamp(1.8rem, 1.05rem + 3.45vw, 2.93rem); margin: 16px 0 18px; }
 .hero h1 .swap { color: var(--primary-container); }
 .hero-sub { font-size: var(--body-lg); color: var(--ink-variant); max-width: 40ch; margin-bottom: 26px; }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
