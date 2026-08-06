@@ -1631,6 +1631,8 @@ async function lcLiveFactor(bench, state, env) {
     const tasks = (data && data.tasks) || [];
     dbg.tasks = tasks.length;
     dbg.statusCodes = tasks.map((t) => t && t.status_code);
+    dbg.messages = tasks.map((t) => t && t.status_message);
+    dbg.resultCounts = tasks.map((t) => (t && Array.isArray(t.result)) ? t.result.length : null);
     // tasks come back in request order: [0] = state, [1] = US
     const stateRows = tasks[0] && tasks[0].result;
     const usRows = tasks[1] && tasks[1].result;
