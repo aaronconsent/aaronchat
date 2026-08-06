@@ -98,8 +98,8 @@ p { margin: 0; text-wrap: pretty; }
   transition: transform .16s var(--ease), box-shadow .16s var(--ease), background .16s var(--ease);
   line-height: 1; white-space: nowrap; }
 .btn svg { width: 18px; height: 18px; flex: none; }
-.btn-call { background: var(--primary-container); color: #fff; box-shadow: var(--sh-sm); }
-.btn-call:hover { background: var(--primary); box-shadow: 0 6px 18px rgba(7,69,136,.34); }
+.btn-call, .btn-primary { background: var(--primary-container); color: #fff; box-shadow: var(--sh-sm); }
+.btn-call:hover, .btn-primary:hover { background: var(--primary); box-shadow: 0 6px 18px rgba(7,69,136,.34); }
 .btn-lg { padding: 17px 30px; font-size: 1rem; }
 .btn-ghost { background: transparent; border-color: var(--tertiary); color: var(--tertiary); }
 .btn-ghost:hover { background: var(--tertiary-container); }
@@ -108,7 +108,7 @@ p { margin: 0; text-wrap: pretty; }
 .btn-block { width: 100%; }
 .btn[disabled] { opacity: .6; cursor: default; transform: none; }
 @media (hover: hover) and (pointer: fine) {
-  .btn-call:hover, .btn-white:hover { transform: translateY(-2px); }
+  .btn-call:hover, .btn-primary:hover, .btn-white:hover { transform: translateY(-2px); }
   .head-call:hover { transform: translateY(-1px); }
 }
 
