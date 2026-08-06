@@ -1613,35 +1613,32 @@ function lcAvgCpc(rows) {
 // DataForSEO CPC for the SAME keywords at state vs. US level (apples-to-apples,
 // so Keyword-Planner's absolute inflation cancels out). Applied to the trusted
 // LocaliQ published CPL. null when unavailable → national benchmark.
+// One request, one task (the /live endpoint allows only one task per call).
+async function lcCpcFor(location, kw, auth) {
+  const res = await fetch("https://api.dataforseo.com/v3/keywords_data/google_ads/search_volume/live", {
+    method: "POST", headers: { Authorization: auth, "Content-Type": "application/json" },
+    body: JSON.stringify([Object.assign({ keywords: kw, language_code: "en", search_partners: false }, location)])
+  });
+  if (!res.ok) return { cpc: null, http: res.status };
+  const data = await res.json();
+  const t = data && data.tasks && data.tasks[0];
+  return { cpc: lcAvgCpc(t && t.result), code: t && t.status_code, msg: t && t.status_message };
+}
+
 async function lcLiveFactor(bench, state, env) {
   const dbg = { ok: false };
   if (!env.DATAFORSEO_LOGIN || !env.DATAFORSEO_PASSWORD) { dbg.reason = "no-creds"; return { factor: null, dbg }; }
   try {
     const auth = "Basic " + btoa(`${env.DATAFORSEO_LOGIN}:${env.DATAFORSEO_PASSWORD}`);
-    const body = [
-      { keywords: bench.kw, location_name: `${state},United States`, language_code: "en", search_partners: false },
-      { keywords: bench.kw, location_code: 2840, language_code: "en", search_partners: false } // 2840 = United States
-    ];
-    const res = await fetch("https://api.dataforseo.com/v3/keywords_data/google_ads/search_volume/live", {
-      method: "POST", headers: { Authorization: auth, "Content-Type": "application/json" }, body: JSON.stringify(body)
-    });
-    dbg.http = res.status;
-    if (!res.ok) { dbg.reason = "http-" + res.status; return { factor: null, dbg }; }
-    const data = await res.json();
-    const tasks = (data && data.tasks) || [];
-    dbg.tasks = tasks.length;
-    dbg.statusCodes = tasks.map((t) => t && t.status_code);
-    dbg.messages = tasks.map((t) => t && t.status_message);
-    dbg.resultCounts = tasks.map((t) => (t && Array.isArray(t.result)) ? t.result.length : null);
-    // tasks come back in request order: [0] = state, [1] = US
-    const stateRows = tasks[0] && tasks[0].result;
-    const usRows = tasks[1] && tasks[1].result;
-    const stateCpc = lcAvgCpc(stateRows), usCpc = lcAvgCpc(usRows);
-    dbg.stateCpc = stateCpc; dbg.usCpc = usCpc;
-    if (!stateCpc || !usCpc) { dbg.reason = "no-cpc"; return { factor: null, dbg }; }
-    const factor = Math.max(0.7, Math.min(1.5, stateCpc / usCpc));
-    dbg.ok = true;
-    return { factor, stateCpc, usCpc, dbg };
+    const [st, us] = await Promise.all([
+      lcCpcFor({ location_name: `${state},United States` }, bench.kw, auth),
+      lcCpcFor({ location_code: 2840 }, bench.kw, auth) // 2840 = United States
+    ]);
+    dbg.stateCpc = st.cpc; dbg.usCpc = us.cpc; dbg.codes = [st.code, us.code]; dbg.msgs = [st.msg, us.msg];
+    if (!st.cpc || !us.cpc) { dbg.reason = "no-cpc"; return { factor: null, dbg }; }
+    const factor = Math.max(0.7, Math.min(1.5, st.cpc / us.cpc));
+    dbg.ok = true; dbg.factor = Number(factor.toFixed(3));
+    return { factor, stateCpc: st.cpc, usCpc: us.cpc, dbg };
   } catch (e) { dbg.reason = "throw:" + (e && e.message ? e.message : "err"); return { factor: null, dbg }; }
 }
 
