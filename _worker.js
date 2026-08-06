@@ -1662,7 +1662,7 @@ async function handleLeadCost(request, env, ctx) {
   const state = lcZipState(zip);
   if (!state || state === "Armed Forces") return json({ ok: false, error: "That ZIP isn't a US service area I can price." }, 400);
 
-  const cacheKey = `leadcost:v5:${tradeKey}:${state}`;
+  const cacheKey = `leadcost:v6:${tradeKey}:${state}`;
   if (env.SETUP_KV && url.searchParams.get("debug") !== "1") {
     const hit = await env.SETUP_KV.get(cacheKey);
     if (hit) {
