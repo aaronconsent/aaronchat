@@ -2454,3 +2454,11 @@
 2026-08-07T06:53:08  bluesky[audience]: gated. window:blocked(outside_windows hour=6)
 2026-08-07T06:53:08  mastodon[credibility]: gated. window:blocked(outside_windows hour=6)
 2026-08-07T06:53:08  mastodon[audience]: gated. window:blocked(outside_windows hour=6)
+2026-08-07T08:23:33  linkedin[credibility]: FAILED id=cdf15fd94d55 backend=buffer detail=Buffer HTTP 401: {"errors":[{"message":"Access token is not valid","extensions":{"code":"UNAUTHENTICATED"}}]}
+2026-08-07T08:23:33  linkedin[audience]: no unposted items
+2026-08-07T08:23:33  x[credibility]: gated. window:blocked(outside_windows hour=8)
+2026-08-07T08:23:33  x[audience]: no unposted items
+2026-08-07T08:23:33  bluesky[credibility]: gated. window:blocked(outside_windows hour=8)
+2026-08-07T08:23:33  bluesky[audience]: no unposted items
+2026-08-07T08:23:33  mastodon[credibility]: gated. window:blocked(outside_windows hour=8)
+2026-08-07T08:23:33  mastodon[audience]: no unposted items
