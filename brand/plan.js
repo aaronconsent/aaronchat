@@ -50,6 +50,7 @@
     { id: "gbp", label: "Google Business Profile", group: "Website & Growth", kind: "owned", on: false },
     { id: "reviews", label: "Review Autopilot", group: "Website & Growth", kind: "lift", on: false },
     { id: "resolve", label: "Missed-Visitor Leads", group: "Website & Growth", kind: "owned", on: false },
+    { id: "newsletter", label: "Weekly Newsletter", group: "Website & Growth", kind: "owned", on: false },
     { id: "social", label: "Managed Content & Posting", group: "Social Media", kind: "owned", on: false },
     { id: "ads", label: "Google Ads", group: "Paid ads", kind: "paid", on: false },
     { id: "lsa", label: "Google LSA", group: "Paid ads", kind: "paid", on: false },
@@ -123,6 +124,22 @@
     }
     // GBP + social leads ride on top too — they're their own channels, not amplified by the lead lift
     totalLeads += socialLeads + gbpLeads; bookedJobs += socialBooked + gbpBooked;
+
+    // Weekly Newsletter (part of Website & Growth — no extra fee). List starts at 1,000 and grows
+    // each month by the leads that email or get resolved; at ~12 months that compounds. Weekly sends
+    // → opens → clicks → warm inbound leads (repeat/referral), booked at the trade's inbound rate.
+    var nlLeads = 0, nlBooked = 0, nlList = 0;
+    if (on.newsletter) {
+      var monthlyAdds = Math.round(0.6 * totalLeads);        // ~60% of leads give an email / are resolved
+      nlList = 1000 + 12 * monthlyAdds;                      // base 1,000 + ~12 months of growth
+      var sends = nlList * 4;                                // weekly
+      var opens = sends * 0.35;                              // ~35% open rate (home-services email)
+      var clicks = sends * 0.025;                            // ~2.5% click-through of sends
+      nlLeads = clicks * 0.05;                               // ~5% of clickers inquire (warm list)
+      nlBooked = nlLeads * effBook(market.blended || 0.30);  // warm/repeat → books at the trade's inbound rate
+      totalLeads += nlLeads; bookedJobs += nlBooked; eyeballs += Math.round(opens);
+      rows.push({ label: "Weekly Newsletter", leads: nlLeads, spend: 0, eyeballs: Math.round(opens), booked: nlBooked });
+    }
     totalLeads = Math.round(totalLeads);
 
     // budget: ad spend + resolution spend + Aaron's fee (fully transparent)

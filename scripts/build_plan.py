@@ -110,6 +110,10 @@ BODY = f'''
         site, and social. It's the "how often your name shows up" number, not reach.</li>
         <li><b>Missed-Visitor Leads</b> are anonymous site visitors ConsentResolve turns into a named lead at ~$7 &mdash; they book
         low (~1 in 20), but they're cheap and they're yours. They ride on top and don't get amplified by anything.</li>
+        <li><b>Weekly Newsletter</b> starts at a 1,000-person list and grows every month by the leads that email or get resolved,
+        so at ~12 months it compounds. Sent weekly, I model a ~35% open rate and ~2.5% click-through, and a slice of those
+        clicks become warm repeat/referral inquiries that book at your trade's rate. It's already part of Website &amp; Growth
+        &mdash; no extra fee, just more from the list you're already building.</li>
         <li><b>Social media</b> (7 networks, daily posts + reels) adds ~10&ndash;12 inbound leads a month, weighted by how well
         your trade does on social &mdash; visual, before-&-after work (remodels, landscaping, pools) earns more than urgent
         commodity calls. They book at your trade's inbound rate.</li>
