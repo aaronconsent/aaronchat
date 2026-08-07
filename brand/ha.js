@@ -273,10 +273,10 @@
     var SAMPLE = {
       tradeLabel: "", market: "", live: false, as_of: "", statsUrl: "/stats/", placeholder: true,
       channels: [
-        { key: "google_ads", label: "Google Ads", cpl: 0, unit: "per lead" },
-        { key: "google_lsa", label: "Google LSA", cpl: 0, unit: "per lead" },
-        { key: "facebook", label: "Facebook Ads", cpl: 0, unit: "per lead" },
-        { key: "organic", label: "Organic", cpl: 0, unit: "per lead" }
+        { key: "google_ads", label: "Google Ads", cpl: 0, cpbj: 0 },
+        { key: "google_lsa", label: "Google LSA", cpl: 0, cpbj: 0 },
+        { key: "facebook", label: "Facebook Ads", cpl: 0, cpbj: 0 },
+        { key: "organic", label: "Organic", cpl: 0, cpbj: 0 }
       ],
       sources: [
         { label: "Google Ads — LocaliQ Home Services Search Benchmarks 2025", url: "https://localiq.com/blog/home-services-search-advertising-benchmarks/" },
@@ -301,13 +301,17 @@
     function render(data) {
       grid.innerHTML = "";
       if (board) board.classList.toggle("idle", !!data.placeholder);
+      function numCell(cls, val, na) {
+        if (na || val == null) return '<b class="' + cls + ' na">N/A</b>';
+        if (val === 0) return '<b class="' + cls + '">$0</b>';
+        return '<b class="' + cls + '" data-to="' + val + '">$0</b>';
+      }
       data.channels.forEach(function (c) {
         var na = c.na || c.cpl == null;
         var li = d.createElement("li");
         li.className = "lc-row" + (c.key === "organic" ? " org" : "") + (na ? " na" : "");
-        var num = na ? '<b class="lc-row-cpl na">N/A</b>'
-          : (c.cpl === 0 ? '<b class="lc-row-cpl">$0</b>' : '<b class="lc-row-cpl" data-to="' + c.cpl + '">$0</b>');
-        li.innerHTML = '<span class="lc-row-ch">' + esc(c.label) + '</span>' + num;
+        li.innerHTML = '<span class="lc-row-ch">' + esc(c.label) + '</span>' +
+          numCell("lc-row-cpl", c.cpl, na) + numCell("lc-row-cpbj", c.cpbj, na);
         grid.appendChild(li);
       });
       grid.querySelectorAll("[data-to]").forEach(function (el) { tween(el, parseInt(el.getAttribute("data-to"), 10)); });

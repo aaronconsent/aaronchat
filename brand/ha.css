@@ -655,26 +655,39 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 .lc-board::before { content: ""; position: absolute; inset: -45% -25% auto auto; width: 340px; height: 340px;
   background: radial-gradient(circle, rgba(180,97,12,.2), transparent 68%); pointer-events: none; }
 .lc-board > * { position: relative; z-index: 1; }
-.lc-board-head { display: flex; align-items: baseline; justify-content: space-between; gap: 14px;
-  padding-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,.16); }
-.lc-board-title { font-size: .92rem; font-weight: 700; color: rgba(255,255,255,.82); }
-.lc-market { font-size: .74rem; font-weight: 700; color: #ffd8a8; text-align: right; font-variant-numeric: tabular-nums; }
+/* market/live caption */
+.lc-board-caption { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.lc-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ade80; flex: none; opacity: 0; transition: opacity .3s; }
+.lc-board:not(.idle) .lc-dot { opacity: 1; animation: lc-pulse 1.6s ease-out infinite; }
+@keyframes lc-pulse { 0% { box-shadow: 0 0 0 0 rgba(74,222,128,.55); } 70% { box-shadow: 0 0 0 6px rgba(74,222,128,0); } 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); } }
+.lc-market { font-size: .76rem; font-weight: 700; color: #ffd8a8; font-variant-numeric: tabular-nums; }
+.lc-board.idle .lc-market { color: rgba(255,216,168,.7); }
+@media (prefers-reduced-motion: reduce) { .lc-board:not(.idle) .lc-dot { animation: none; } }
+/* column headers */
+.lc-thead { display: flex; align-items: flex-end; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,.16); }
+.lc-th-plat { flex: 1 1 auto; }
+.lc-thead span { font-size: .6rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: rgba(255,255,255,.52); line-height: 1.25; }
+.lc-th-num { flex: 0 0 92px; width: 92px; text-align: right; }
+/* rows: Platform | Cost per lead | Cost per booked job */
 .lc-rows { list-style: none; margin: 0; padding: 0; }
-.lc-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 26px 0;
-  border-bottom: 1px solid rgba(255,255,255,.1); }
+.lc-row { display: flex; align-items: baseline; gap: 12px; padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,.1); }
 .lc-row:has(+ .lc-row.org) { border-bottom: 0; }
-.lc-row-ch { font-size: 1rem; font-weight: 600; color: rgba(255,255,255,.85); }
-.lc-row-cpl { font-size: 1.75rem; font-weight: 800; color: #fff; line-height: 1; letter-spacing: -0.01em;
-  font-variant-numeric: tabular-nums; transition: color .35s var(--ease); }
-.lc-row-cpl.na { font-size: 1rem; font-weight: 700; color: rgba(255,255,255,.5); letter-spacing: .02em; }
+.lc-row-ch { flex: 1 1 auto; min-width: 0; font-size: 1rem; font-weight: 600; color: rgba(255,255,255,.85); }
+.lc-row-cpl, .lc-row-cpbj { flex: 0 0 92px; width: 92px; text-align: right; font-size: 1.4rem; font-weight: 800; color: #fff;
+  line-height: 1; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; transition: color .35s var(--ease); }
+.lc-row-cpl.na, .lc-row-cpbj.na { font-size: .95rem; font-weight: 700; color: rgba(255,255,255,.5); letter-spacing: .02em; }
 .lc-row.na .lc-row-ch { color: rgba(255,255,255,.6); }
-.lc-row.org { margin-top: 4px; padding-top: 20px; border-top: 2px solid rgba(255,216,168,.32); border-bottom: 0; }
+.lc-row.org { margin-top: 4px; padding-top: 18px; border-top: 2px solid rgba(255,216,168,.32); border-bottom: 0; }
 .lc-row.org .lc-row-ch { color: #ffd8a8; font-weight: 700; }
-.lc-row.org .lc-row-cpl { color: #f4a24d; font-size: 2.3rem; }
+.lc-row.org .lc-row-cpl, .lc-row.org .lc-row-cpbj { color: #f4a24d; font-size: 1.6rem; }
 /* idle (zeroed) state = primed meter: numbers dimmed until a lookup runs */
-.lc-board.idle .lc-row-cpl { color: rgba(255,255,255,.32); }
-.lc-board.idle .lc-row.org .lc-row-cpl { color: rgba(244,162,77,.42); }
-.lc-board.idle .lc-market { color: rgba(255,216,168,.68); font-weight: 600; }
+.lc-board.idle .lc-row-cpl, .lc-board.idle .lc-row-cpbj { color: rgba(255,255,255,.3); }
+.lc-board.idle .lc-row.org .lc-row-cpl, .lc-board.idle .lc-row.org .lc-row-cpbj { color: rgba(244,162,77,.4); }
+@media (max-width: 400px) {
+  .lc-th-num, .lc-row-cpl, .lc-row-cpbj { flex-basis: 74px; width: 74px; }
+  .lc-row-cpl, .lc-row-cpbj { font-size: 1.15rem; }
+  .lc-row.org .lc-row-cpl, .lc-row.org .lc-row-cpbj { font-size: 1.3rem; }
+}
 
 .lc-method { margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.12); }
 .lc-method summary { cursor: pointer; font-size: .78rem; font-weight: 600; color: #ffd8a8; list-style: none; }

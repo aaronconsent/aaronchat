@@ -40,7 +40,30 @@
       "value": 7,
       "note": "Cost to resolve an anonymous website visitor into an owned lead via ConsentResolve. A cost we pay, not a market benchmark."
     },
-    "geo_model": "DataForSEO Google Ads Search Volume (Keyword Planner CPC) used only as a state-vs-national ratio (clamped 0.7-1.5), applied to the published benchmark. Never the absolute CPC. ZIP resolves to state."
+    "geo_model": "DataForSEO Google Ads Search Volume (Keyword Planner CPC) used only as a state-vs-national ratio (clamped 0.7-1.5), applied to the published benchmark. Never the absolute CPC. ZIP resolves to state.",
+    "booking_model": "Cost per booked job = cost per lead (geo-adjusted) / booking rate (lead->booked job). Booking rate is per-trade + per-channel and does NOT vary by geography; the geo variation lives entirely in the cost-per-lead. Rates from SearchLight LSA book data (firm for HVAC/plumbing/electrical), Invoca/estatehub/NeverMiss channel benchmarks, and a channel-intent model (LSA~=organic > Google Ads > Facebook). Clamped 0.10-0.70.",
+    "booking_sources": [
+      {
+        "name": "SearchLight Digital LSA book rates 2026 (888 contractors)",
+        "url": "https://searchlightdigital.io/google-local-service-ads-cost-per-lead/"
+      },
+      {
+        "name": "Invoca Home Services Call Conversion Benchmarks 2026",
+        "url": "https://www.invoca.com/reports/the-invoca-call-conversion-benchmarks-report-home-services-2025"
+      },
+      {
+        "name": "estatehub 2026 Lead Conversion Benchmarks (by channel)",
+        "url": "https://www.estatehub.io/articles/2026-benchmarks-lead-conversion-rates-home-services"
+      },
+      {
+        "name": "NeverMiss handyman booking-rate data",
+        "url": "https://nevermisshq.com/blog/handyman-booking-rate-optimization.html"
+      }
+    ],
+    "book_bounds": [
+      0.1,
+      0.7
+    ]
   },
   "trades": [
     {
@@ -77,7 +100,16 @@
         "best hvac company",
         "heat pump installation",
         "24 hour hvac service"
-      ]
+      ],
+      "book": {
+        "lsa": 0.44,
+        "ads": 0.3,
+        "fb": 0.16,
+        "organic": 0.42,
+        "blended": 0.34,
+        "tier": "firm",
+        "src": "SearchLight LSA 2026 (44% book) + Invoca 2026 + channel-intent model"
+      }
     },
     {
       "trade": "plumbing",
@@ -113,7 +145,16 @@
         "leak repair",
         "plumber quote",
         "sewer line repair"
-      ]
+      ],
+      "book": {
+        "lsa": 0.44,
+        "ads": 0.3,
+        "fb": 0.16,
+        "organic": 0.43,
+        "blended": 0.34,
+        "tier": "firm",
+        "src": "SearchLight LSA 2026 (44.5% book) + Invoca 2026"
+      }
     },
     {
       "trade": "electrical",
@@ -149,7 +190,16 @@
         "wiring repair",
         "electrician quote",
         "generator installation"
-      ]
+      ],
+      "book": {
+        "lsa": 0.43,
+        "ads": 0.29,
+        "fb": 0.15,
+        "organic": 0.4,
+        "blended": 0.32,
+        "tier": "firm",
+        "src": "SearchLight LSA 2026 (43.4% book) + Invoca 2026"
+      }
     },
     {
       "trade": "roofing",
@@ -185,7 +235,16 @@
         "hail damage roof repair",
         "gutter installation",
         "local roofers"
-      ]
+      ],
+      "book": {
+        "lsa": 0.38,
+        "ads": 0.26,
+        "fb": 0.14,
+        "organic": 0.36,
+        "blended": 0.3,
+        "tier": "directional",
+        "src": "SearchLight blend + Invoca, discounted for multi-bid"
+      }
     },
     {
       "trade": "windows",
@@ -221,7 +280,16 @@
         "best window company",
         "entry door replacement",
         "local window installers"
-      ]
+      ],
+      "book": {
+        "lsa": 0.34,
+        "ads": 0.24,
+        "fb": 0.12,
+        "organic": 0.33,
+        "blended": 0.26,
+        "tier": "directional",
+        "src": "QuantiMedia + Invoca windows, big-ticket discount"
+      }
     },
     {
       "trade": "garage",
@@ -257,7 +325,16 @@
         "best garage door company",
         "garage door contractors",
         "24 hour garage door repair"
-      ]
+      ],
+      "book": {
+        "lsa": 0.4,
+        "ads": 0.3,
+        "fb": 0.14,
+        "organic": 0.38,
+        "blended": 0.32,
+        "tier": "directional",
+        "src": "Workiz/Elevarus garage-door repair urgency"
+      }
     },
     {
       "trade": "pest",
@@ -291,7 +368,16 @@
         "pest control quote",
         "pest control estimate",
         "best pest control company"
-      ]
+      ],
+      "book": {
+        "lsa": 0.5,
+        "ads": 0.4,
+        "fb": 0.22,
+        "organic": 0.5,
+        "blended": 0.42,
+        "tier": "directional",
+        "src": "SearchLight + QuantiMedia pest PPC (recurring, high book)"
+      }
     },
     {
       "trade": "landscaping",
@@ -325,7 +411,16 @@
         "landscaping quote",
         "landscaping estimate",
         "best landscaping company"
-      ]
+      ],
+      "book": {
+        "lsa": 0.45,
+        "ads": 0.35,
+        "fb": 0.2,
+        "organic": 0.43,
+        "blended": 0.35,
+        "tier": "directional",
+        "src": "SearchLight + Sideways8/Jobber landscaping"
+      }
     },
     {
       "trade": "painting",
@@ -359,7 +454,16 @@
         "painting quote",
         "painting estimate",
         "best painting company"
-      ]
+      ],
+      "book": {
+        "lsa": 0.32,
+        "ads": 0.24,
+        "fb": 0.15,
+        "organic": 0.33,
+        "blended": 0.26,
+        "tier": "directional",
+        "src": "PaintViz/Housecall Pro (est-close ~20%, book higher)"
+      }
     },
     {
       "trade": "remodeling",
@@ -393,7 +497,16 @@
         "remodeling quote",
         "remodeling estimate",
         "best remodeling contractor"
-      ]
+      ],
+      "book": {
+        "lsa": 0.3,
+        "ads": 0.22,
+        "fb": 0.13,
+        "organic": 0.33,
+        "blended": 0.24,
+        "tier": "directional",
+        "src": "BookedCore/Construction Snapshot consult-set rates"
+      }
     },
     {
       "trade": "roofing_gutters",
@@ -427,7 +540,16 @@
         "gutter installation quote",
         "gutter estimate",
         "emergency gutter repair"
-      ]
+      ],
+      "book": {
+        "lsa": 0.38,
+        "ads": 0.28,
+        "fb": 0.18,
+        "organic": 0.35,
+        "blended": 0.28,
+        "tier": "modeled",
+        "src": "Roofing-adjacent proxy + Home Service Direct gutter channels"
+      }
     },
     {
       "trade": "siding",
@@ -461,7 +583,16 @@
         "siding contractors",
         "siding installation quote",
         "siding estimate"
-      ]
+      ],
+      "book": {
+        "lsa": 0.32,
+        "ads": 0.22,
+        "fb": 0.15,
+        "organic": 0.28,
+        "blended": 0.22,
+        "tier": "modeled",
+        "src": "Roofing/remodel-adjacent proxy, big-ticket install discount"
+      }
     },
     {
       "trade": "flooring",
@@ -495,7 +626,16 @@
         "flooring contractors",
         "flooring installation quote",
         "flooring estimate"
-      ]
+      ],
+      "book": {
+        "lsa": 0.33,
+        "ads": 0.24,
+        "fb": 0.16,
+        "organic": 0.3,
+        "blended": 0.24,
+        "tier": "modeled",
+        "src": "Home-improvement/remodel proxy, considered install"
+      }
     },
     {
       "trade": "solar",
@@ -529,7 +669,16 @@
         "commercial solar installation",
         "solar estimate",
         "best solar company"
-      ]
+      ],
+      "book": {
+        "lsa": null,
+        "ads": 0.18,
+        "fb": 0.1,
+        "organic": 0.22,
+        "blended": 0.15,
+        "tier": "directional",
+        "src": "Enervio/LeadGen Economy solar (heavy shopping + financing)"
+      }
     },
     {
       "trade": "fencing",
@@ -563,7 +712,16 @@
         "fence installation quote",
         "fencing estimate",
         "best fence company"
-      ]
+      ],
+      "book": {
+        "lsa": 0.35,
+        "ads": 0.28,
+        "fb": 0.17,
+        "organic": 0.37,
+        "blended": 0.3,
+        "tier": "directional",
+        "src": "Angi 33% + Home Service Direct/Minyona fencing"
+      }
     },
     {
       "trade": "tree",
@@ -597,7 +755,16 @@
         "tree service contractors",
         "tree removal quote",
         "tree service estimate"
-      ]
+      ],
+      "book": {
+        "lsa": 0.42,
+        "ads": 0.3,
+        "fb": 0.2,
+        "organic": 0.45,
+        "blended": 0.35,
+        "tier": "directional",
+        "src": "BaaDigi tree (50-70% inbound close) + DataDrivenTrades LSA"
+      }
     },
     {
       "trade": "concrete",
@@ -631,7 +798,16 @@
         "concrete repair service",
         "concrete contractors quote",
         "driveway paving estimate"
-      ]
+      ],
+      "book": {
+        "lsa": null,
+        "ads": 0.3,
+        "fb": 0.16,
+        "organic": 0.3,
+        "blended": 0.25,
+        "tier": "directional",
+        "src": "Peak Marketing/BaaDigi concrete (book 30-40%, close ~20%)"
+      }
     },
     {
       "trade": "handyman",
@@ -665,7 +841,16 @@
         "handyman quote",
         "handyman estimate",
         "emergency handyman"
-      ]
+      ],
+      "book": {
+        "lsa": 0.48,
+        "ads": 0.33,
+        "fb": 0.15,
+        "organic": 0.5,
+        "blended": 0.42,
+        "tier": "directional",
+        "src": "NeverMiss handyman (referral 60-75% / Google 25-40% / social 10-20%)"
+      }
     },
     {
       "trade": "cleaning",
@@ -699,7 +884,16 @@
         "cleaning service company",
         "house cleaning quote",
         "recurring house cleaning"
-      ]
+      ],
+      "book": {
+        "lsa": 0.45,
+        "ads": 0.32,
+        "fb": 0.18,
+        "organic": 0.42,
+        "blended": 0.38,
+        "tier": "directional",
+        "src": "ZenMaid LSA + ServiceDirect phone-lead close, response-time sensitive"
+      }
     },
     {
       "trade": "pool",
@@ -733,7 +927,16 @@
         "pool service contractors",
         "pool service quote",
         "pool opening service"
-      ]
+      ],
+      "book": {
+        "lsa": 0.4,
+        "ads": 0.28,
+        "fb": 0.16,
+        "organic": 0.35,
+        "blended": 0.3,
+        "tier": "directional",
+        "src": "LeadGen Economy pool maintenance (20-35% conv)"
+      }
     }
   ]
 }

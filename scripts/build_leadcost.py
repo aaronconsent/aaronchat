@@ -38,13 +38,21 @@ def js_channel(c):
     return f'[{v}, {jd(c["tier"])}, {jd(c["src"])}]'
 
 
+def js_book(b):
+    def r(x):
+        return "null" if x is None else str(x)
+    return ("{ lsa: %s, ads: %s, fb: %s, organic: %s, blended: %s }" %
+            (r(b.get("lsa")), r(b.get("ads")), r(b.get("fb")), r(b.get("organic")), r(b.get("blended"))))
+
+
 def build_bench():
     lines = []
     for t in TRADES:
+        book = js_book(t["book"]) if t.get("book") else "{ blended: 0.30 }"
         lines.append(
             f'  {t["trade"]}: {{ label: {jd(t["label"])}, '
             f'ads: {js_channel(t["ads"])}, lsa: {js_channel(t["lsa"])}, fb: {js_channel(t["fb"])}, '
-            f'kw: {jd(t["seeds"])} }},'
+            f'book: {book}, kw: {jd(t["seeds"])} }},'
         )
     body = "\n".join(lines).rstrip(",")
     block = "// <LC_BENCH>\nconst LC_BENCH = {\n" + body + "\n};\n// </LC_BENCH>"
@@ -75,6 +83,16 @@ def channel_cell(c):
             f'&middot; {esc(c["src"])}</span></td>')
 
 
+def book_cell(t):
+    b = t.get("book") or {}
+    br = b.get("blended")
+    if br is None:
+        return '<td class="na">&mdash;</td>'
+    tier = b.get("tier", "directional")
+    return (f'<td>{round(br * 100)}%<span class="tier tier-{tier}">{TIER_LABEL.get(tier, tier)} '
+            f'&middot; {esc(b.get("src", ""))}</span></td>')
+
+
 def trade_rows():
     rows = []
     for t in TRADES:
@@ -82,7 +100,7 @@ def trade_rows():
         rows.append(
             f'<tr><th scope="row">{esc(t["label"])}{season}</th>'
             f'{channel_cell(t["ads"])}{channel_cell(t["lsa"])}{channel_cell(t["fb"])}'
-            f'<td class="org">$7</td></tr>'
+            f'<td class="org">$7</td>{book_cell(t)}</tr>'
         )
     return "\n".join(rows)
 
@@ -93,6 +111,9 @@ def stats_body():
         f'<li><b>{esc(ch[k]["label"])}</b> &mdash; {esc(ch[k]["primary"])} '
         f'(<span>{esc(ch[k]["sample"])}</span>). <a href="{esc(ch[k]["url"])}" target="_blank" rel="noopener">Source &rarr;</a></li>'
         for k in ("ads", "lsa", "fb")
+    ) + "".join(
+        f'<li><b>Booking rate</b> &mdash; {esc(s["name"])}. <a href="{esc(s["url"])}" target="_blank" rel="noopener">Source &rarr;</a></li>'
+        for s in META.get("booking_sources", [])
     )
     tier_defs = "".join(
         f'<div class="tierdef"><span class="tier tier-{k}">{TIER_LABEL[k]}</span><p>{TIER_NOTE[k]}.</p></div>'
@@ -131,6 +152,14 @@ def stats_body():
   <h3>Organic &mdash; the $7 you can own</h3>
   <p>Organic leads carry no per-click auction fee. The only cost is resolving anonymous traffic into named leads, which I do
   through ConsentResolve at about <b>$7 a lead</b> &mdash; and unlike every rented channel, you keep them.</p>
+  <h3>Cost per booked job &mdash; leads that actually become jobs</h3>
+  <p>A lead isn&rsquo;t a job. <b>Cost per booked job = cost per lead &divide; your booking rate</b> (the share of leads that turn
+  into a booked job). Booking rate is driven by <b>trade + channel + how fast you answer</b> &mdash; not by ZIP &mdash; so I source it
+  per trade and per channel, not per market. LSA and inbound calls book highest (high intent); Facebook lead-ads book lowest.
+  The firmest numbers are Google&rsquo;s own LSA book rates (SearchLight&rsquo;s 888-contractor set: HVAC/plumbing/electrical ~43&ndash;44%);
+  Google&nbsp;Ads, Facebook, and organic are modeled from channel-intent benchmarks (Invoca, estatehub, NeverMiss).</p>
+  <p><b>The one geographic caveat:</b> your cost <em>per lead</em> is localized to your market (live), so your cost <em>per booked
+  job</em> moves with it &mdash; but the booking-rate multiplier behind it is a per-trade benchmark, the same in every ZIP.</p>
 
   <h2>My sources</h2>
   <ul class="srclist">{src_items}</ul>
@@ -145,7 +174,7 @@ def stats_body():
   <p>All cost-per-lead figures, national baseline, reviewed {esc(META["reviewed"])}. Your calculator result takes these and
   applies your market&rsquo;s local factor.</p>
   <div class="lctable-wrap"><table class="lctable">
-    <thead><tr><th scope="col">Trade</th><th scope="col">Google Ads</th><th scope="col">Google LSA</th><th scope="col">Facebook</th><th scope="col">Organic</th></tr></thead>
+    <thead><tr><th scope="col">Trade</th><th scope="col">Google Ads</th><th scope="col">Google LSA</th><th scope="col">Facebook</th><th scope="col">Organic</th><th scope="col">Booking rate</th></tr></thead>
     <tbody>
 {trade_rows()}
     </tbody>
