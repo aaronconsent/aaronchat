@@ -1065,31 +1065,54 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 .dash-tour-launch:hover { transform: translateY(-1px); box-shadow: var(--sh-md); }
 .dash-tour-launch svg { width: 17px; height: 17px; }
 .dash.tour-on .dash-tour-launch { visibility: hidden; }
-.dash.tour-on > .dash-note, .dash.tour-on .dash-kpis, .dash.tour-on .dash-cols, .dash.tour-on .dash-cta {
-  opacity: .28; transition: opacity .25s var(--ease); pointer-events: none; }
-.dash.tour-on .dash-chartwrap { position: relative; z-index: 1;
-  box-shadow: 0 0 0 3px var(--tertiary-bright), 0 30px 70px -24px rgba(7,25,50,.5); transition: box-shadow .25s var(--ease); }
-.dash-tour-card { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(12px);
-  width: min(440px, calc(100vw - 28px)); background: var(--white); border: 1px solid var(--line-soft); border-radius: var(--r-xl);
-  box-shadow: 0 30px 70px -12px rgba(7,25,50,.5); padding: 22px 24px; z-index: 300; opacity: 0;
-  transition: opacity .26s var(--ease), transform .26s var(--ease); }
-.dash-tour-card.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* moving spotlight — dims the page and cuts a bright hole around the active element */
+.dash-spot { position: fixed; z-index: 900; top: 0; left: 0; width: 0; height: 0; border-radius: 16px;
+  pointer-events: none; opacity: 0; background: transparent;
+  box-shadow: 0 0 0 100vmax rgba(6,17,38,.74), 0 0 0 2px rgba(255,255,255,.92), 0 0 0 5px rgba(180,97,12,.5), 0 22px 60px -12px rgba(6,17,38,.55);
+  transition: top .5s var(--ease), left .5s var(--ease), width .5s var(--ease), height .5s var(--ease), opacity .3s var(--ease); }
+.dash-spot.show { opacity: 1; }
+.dash-spot[hidden] { display: none; }
+
+.dash-tour-card { position: fixed; z-index: 1000; top: 0; left: 0; width: min(380px, calc(100vw - 28px));
+  background: var(--white); border: 1px solid var(--line-soft); border-radius: var(--r-xl);
+  box-shadow: 0 30px 70px -12px rgba(6,17,38,.55); padding: 20px 22px 18px; opacity: 0;
+  transform: scale(.97); transform-origin: center;
+  transition: opacity .28s var(--ease), transform .28s var(--ease), top .42s var(--ease), left .42s var(--ease); }
+.dash-tour-card.show { opacity: 1; transform: scale(1); }
 .dash-tour-card[hidden] { display: none; }
-.dash-tour-x { position: absolute; top: 10px; right: 14px; border: 0; background: transparent; color: var(--ink-variant);
-  font-size: 1.4rem; line-height: 1; cursor: pointer; }
+.dash-tour-arrow { position: absolute; width: 14px; height: 14px; background: var(--white); border: 1px solid var(--line-soft);
+  transform: rotate(45deg); z-index: -1; }
+.dash-tour-card[data-place="bottom"] .dash-tour-arrow { top: -8px; margin-left: -7px; border-right: 0; border-bottom: 0; }
+.dash-tour-card[data-place="top"] .dash-tour-arrow { bottom: -8px; margin-left: -7px; border-left: 0; border-top: 0; }
+.dash-tour-card[data-place="right"] .dash-tour-arrow { left: -8px; margin-top: -7px; border-right: 0; border-top: 0; }
+.dash-tour-card[data-place="left"] .dash-tour-arrow { right: -8px; margin-top: -7px; border-left: 0; border-bottom: 0; }
+.dash-tour-card[data-place="center"] .dash-tour-arrow { display: none; }
+.dash-tour-x { position: absolute; top: 12px; right: 14px; border: 0; background: transparent; color: var(--ink-variant);
+  font-size: 1.4rem; line-height: 1; cursor: pointer; padding: 0; }
 .dash-tour-x:hover { color: var(--ink); }
-.dash-tour-step { font-size: .66rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--tertiary); margin-bottom: 6px; }
-.dash-tour-card h4 { font-size: 1.15rem; margin-bottom: 6px; color: var(--ink); }
-.dash-tour-card p { font-size: .95rem; line-height: 1.55; color: var(--ink-variant); }
-.dash-tour-card p b { color: var(--ink); }
-.dash-tour-dots { display: flex; gap: 6px; margin: 16px 0; }
-.dash-tour-dots button { width: 8px; height: 8px; border-radius: 50%; border: 0; background: var(--line); cursor: pointer; padding: 0; transition: background .15s var(--ease), width .15s var(--ease); }
-.dash-tour-dots button.on { background: var(--tertiary-bright); width: 20px; border-radius: 4px; }
-.dash-tour-nav { display: flex; justify-content: space-between; gap: 10px; }
-.dash-tour-back { border: 1px solid var(--line); background: var(--white); color: var(--ink-variant); border-radius: var(--r-full); padding: 8px 18px; font: 700 .85rem var(--f); cursor: pointer; }
+.dash-tour-step { font-size: .66rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--tertiary-bright); margin-bottom: 7px; }
+.dash-tour-card h4 { font-size: 1.14rem; line-height: 1.25; margin-bottom: 7px; color: var(--ink); padding-right: 18px; text-wrap: balance; }
+.dash-tour-card p { font-size: .93rem; line-height: 1.55; color: var(--ink-variant); }
+.dash-tour-card p b { color: var(--ink); font-weight: 700; }
+.dash-tour-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
+.dash-tour-dots { display: flex; gap: 6px; flex-wrap: wrap; }
+.dash-tour-dots button { width: 7px; height: 7px; border-radius: 50%; border: 0; background: var(--line); cursor: pointer; padding: 0; transition: background .15s var(--ease), width .15s var(--ease); }
+.dash-tour-dots button.on { background: var(--tertiary-bright); width: 18px; border-radius: 4px; }
+.dash-tour-nav { display: flex; gap: 8px; flex-shrink: 0; }
+.dash-tour-back { border: 1px solid var(--line); background: var(--white); color: var(--ink-variant); border-radius: var(--r-full); padding: 8px 16px; font: 700 .82rem var(--f); cursor: pointer; }
 .dash-tour-back:disabled { opacity: .4; cursor: default; }
-.dash-tour-next { border: 0; background: var(--primary-container); color: #fff; border-radius: var(--r-full); padding: 8px 22px; font: 800 .85rem var(--f); cursor: pointer; }
+.dash-tour-next { border: 0; background: var(--primary-container); color: #fff; border-radius: var(--r-full); padding: 8px 20px; font: 800 .82rem var(--f); cursor: pointer; }
 .dash-tour-next:hover { background: var(--primary); }
+@media (prefers-reduced-motion: reduce) {
+  .dash-spot { transition: opacity .2s linear; }
+  .dash-tour-card { transition: opacity .2s linear; }
+}
+@media (max-width: 560px) {
+  .dash-tour-card { width: calc(100vw - 24px); }
+  .dash-tour-foot { flex-direction: column; align-items: stretch; gap: 14px; }
+  .dash-tour-nav { justify-content: space-between; }
+}
 
 /* two-column: timeline + plan */
 .dash-cols { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2vw, 22px); align-items: start; }

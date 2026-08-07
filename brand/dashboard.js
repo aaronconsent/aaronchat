@@ -199,56 +199,116 @@
     playTimer = setInterval(function () { if (sel >= MONTHS.length - 1) { stopPlay(); return; } setMonth(sel + 1); }, 850);
   }
 
-  // ---------- guided walkthrough (StoryLane-style) ----------
+  // ---------- guided walkthrough: a real moving-spotlight product tour ----------
+  // Each step spotlights a specific element (sel), sets the chart month (mo) and
+  // metric, and the coach card repositions itself beside whatever is highlighted.
   var STEPS = [
-    { mo: 0, title: "Month 1 — We build the foundation", body: "Your custom, self-owned site goes live and local SEO + blogging kick off. It&rsquo;s quiet on purpose. You invest about <b>$500</b> and book nothing yet &mdash; totally normal from a blank slate. <b>Net: &minus;$500.</b>" },
-    { mo: 1, title: "Month 2 — The low point", body: "Another ~<b>$500</b>. The first leads trickle in, but roofing jobs take time to close. Cumulative net dips to <b>&minus;$1,000</b> &mdash; the deepest you ever go. You&rsquo;re investing, not losing." },
-    { mo: 2, title: "Month 3 — Crossover to profit", body: "Social Media goes live, eyeballs jump, and your first jobs close. You cross into the black at <b>+$6,000 net</b> &mdash; and never look back." },
-    { mo: 4, title: "Month 5 — Pour fuel on it", body: "We flip on <b>$2,000/mo Google Ads</b>. Spend steps up to ~$3,300/mo, but the booked work steps up faster &mdash; the return more than covers it." },
-    { mo: 6, title: "Month 7 — Capture what you were missing", body: "Google LSA (a one-time <b>$2,500</b> Google-Guarantee setup + a ~$2,000/mo budget) plus Missed-Visitor Leads. Now even anonymous visitors who never called become leads. Spend climbs to ~$6k/mo, and the return still buries it." },
-    { mo: 8, title: "Month 9 — Compounding, for free", body: "Your newsletter list passes 2,000. Repeat and referral jobs start stacking on top &mdash; no extra ad spend needed." },
-    { mo: 11, title: "Month 12 — The payoff", body: "<b>$472k booked</b> on <b>~$48k spent</b> &mdash; about <b>$28k in ad spend</b>, the rest my fees + tools. That&rsquo;s <b>~$424,000 net</b> and a <b>9.9× return</b>, after everything. That&rsquo;s what year one can look like." }
+    { sel: ".dash-kpi-hero", mo: 11, metric: "in", title: "Start with the scoreboard", body: "Twelve months on one screen: <b>$472k booked</b>, <b>$47.8k spent</b>, and a <b>9.9× return</b> after my fees. Everything below shows exactly how it got here." },
+    { sel: ".dash-kpi.out", mo: 11, title: "Every dollar out &mdash; itemized", body: "No mystery retainer. <b>$28k</b> of this went straight to Google as ad spend; the rest is my fees and tools. You always see the split." },
+    { sel: ".dash-months", mo: 0, metric: "in", title: "You&rsquo;re in the driver&rsquo;s seat", body: "Click any month &mdash; or hit <b>Play</b> &mdash; to watch the business build. I&rsquo;ll walk you through the turning points." },
+    { sel: ".dash-chart", mo: 0, title: "Month 1 &mdash; the foundation", body: "Your custom site goes live; local SEO and blogging kick off. About <b>$500</b> in, nothing booked yet. Quiet on purpose &mdash; this is groundwork." },
+    { sel: ".dash-md-net", mo: 1, title: "Month 2 &mdash; the low point", body: "Cumulative net bottoms out at <b>&minus;$1,000</b>. This is the deepest you ever go. You&rsquo;re investing, not losing." },
+    { sel: ".dash-chart", mo: 2, title: "Month 3 &mdash; crossover to profit", body: "Social Media flips on, eyeballs jump, and the first roofing jobs close. You cross into the black at <b>+$6,000</b> &mdash; and never look back." },
+    { sel: ".dash-chart", mo: 4, title: "Month 5 &mdash; pour on fuel", body: "We turn on <b>$2,000/mo Google Ads</b>. Spend steps up &mdash; but the booked work steps up faster." },
+    { sel: ".dash-chart", mo: 6, title: "Month 7 &mdash; capture the rest", body: "Google LSA plus Missed-Visitor Leads. Now even anonymous visitors who never picked up the phone get captured as leads." },
+    { sel: ".dash-timeline", mo: 11, title: "Every move, on the record", body: "Each play we ran &mdash; logged with what it cost and what it returned. No black boxes, ever." },
+    { sel: ".dash-cta", mo: 11, metric: "in", title: "Month 12 &mdash; the payoff", body: "<b>$472k booked</b> on <b>~$48k spent</b>. That&rsquo;s <b>~$424,000 net</b> and a <b>9.9× return</b>, after everything. Want to see your version?" }
   ];
-  var tourEls = null, tourStep = 0, tourActive = false;
+  var tourEls = null, tourStep = 0, tourActive = false, tourRaf = 0, onTourMove = null;
   function syncMetricBtns() { root.querySelectorAll("[data-metric]").forEach(function (x) { x.classList.toggle("on", x.getAttribute("data-metric") === current); }); }
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+  function stepEl(i) { var s = STEPS[i]; return root.querySelector(s.sel) || d.querySelector(s.sel); }
+
   function buildTourDom() {
     if (tourEls) return tourEls;
+    var spot = d.createElement("div"); spot.className = "dash-spot"; spot.hidden = true; spot.setAttribute("aria-hidden", "true");
     var card = d.createElement("div"); card.className = "dash-tour-card"; card.hidden = true;
-    card.innerHTML = '<button type="button" class="dash-tour-x" aria-label="Close walkthrough">&times;</button>' +
+    card.setAttribute("role", "dialog"); card.setAttribute("aria-label", "Dashboard walkthrough");
+    card.innerHTML = '<span class="dash-tour-arrow" aria-hidden="true"></span>' +
+      '<button type="button" class="dash-tour-x" aria-label="Close walkthrough">&times;</button>' +
       '<div class="dash-tour-step" data-tour-step></div><h4 data-tour-title></h4><p data-tour-body></p>' +
-      '<div class="dash-tour-dots" data-tour-dots></div>' +
+      '<div class="dash-tour-foot"><div class="dash-tour-dots" data-tour-dots></div>' +
       '<div class="dash-tour-nav"><button type="button" class="dash-tour-back" data-tour-back>Back</button>' +
-      '<button type="button" class="dash-tour-next" data-tour-next>Next</button></div>';
-    d.body.appendChild(card);
+      '<button type="button" class="dash-tour-next" data-tour-next>Next</button></div></div>';
+    d.body.appendChild(spot); d.body.appendChild(card);
     card.querySelector(".dash-tour-x").addEventListener("click", endTour);
     card.querySelector("[data-tour-back]").addEventListener("click", function () { if (tourStep > 0) goStep(tourStep - 1); });
     card.querySelector("[data-tour-next]").addEventListener("click", function () { if (tourStep >= STEPS.length - 1) endTour(); else goStep(tourStep + 1); });
     d.addEventListener("keydown", function (e) { if (!tourActive) return; if (e.key === "Escape") endTour(); else if (e.key === "ArrowRight") { if (tourStep < STEPS.length - 1) goStep(tourStep + 1); } else if (e.key === "ArrowLeft") { if (tourStep > 0) goStep(tourStep - 1); } });
-    tourEls = { card: card };
+    tourEls = { spot: spot, card: card };
     return tourEls;
   }
+
+  function positionTour() {
+    if (!tourActive || !tourEls) return;
+    var el = stepEl(tourStep), spot = tourEls.spot, card = tourEls.card;
+    if (!el) { spot.style.opacity = "0"; return; }
+    var r = el.getBoundingClientRect();
+    var pad = (STEPS[tourStep].pad != null) ? STEPS[tourStep].pad : 12;
+    var top = r.top - pad, left = r.left - pad, w = r.width + pad * 2, h = r.height + pad * 2;
+    spot.style.opacity = "1";
+    spot.style.top = top + "px"; spot.style.left = left + "px"; spot.style.width = w + "px"; spot.style.height = h + "px";
+
+    var de = d.documentElement;
+    var vw = de.clientWidth || window.innerWidth, vh = de.clientHeight || window.innerHeight, gap = 16, SAFE = 14;
+    var botSafe = vw <= 860 ? 70 : SAFE;                 // leave room for the sticky call bar
+    var cw = card.offsetWidth, ch = card.offsetHeight;
+    var below = vh - (top + h), above = top, rightSp = vw - (left + w), leftSp = left;
+    var place, cx, cy;
+    if (below >= ch + gap + botSafe) { place = "bottom"; cy = top + h + gap; cx = clamp(left + w / 2 - cw / 2, SAFE, vw - cw - SAFE); }
+    else if (above >= ch + gap + SAFE) { place = "top"; cy = top - gap - ch; cx = clamp(left + w / 2 - cw / 2, SAFE, vw - cw - SAFE); }
+    else if (rightSp >= cw + gap + SAFE) { place = "right"; cx = left + w + gap; cy = clamp(top + h / 2 - ch / 2, SAFE, vh - ch - botSafe); }
+    else if (leftSp >= cw + gap + SAFE) { place = "left"; cx = left - gap - cw; cy = clamp(top + h / 2 - ch / 2, SAFE, vh - ch - botSafe); }
+    else { place = "center"; cx = clamp(left + w / 2 - cw / 2, SAFE, vw - cw - SAFE); cy = clamp(vh - ch - botSafe, SAFE, vh - ch - SAFE); }
+    // final safety net: the card must always stay fully on-screen, even mid-scroll
+    cx = clamp(cx, SAFE, Math.max(SAFE, vw - cw - SAFE));
+    cy = clamp(cy, SAFE, Math.max(SAFE, vh - ch - botSafe));
+    card.setAttribute("data-place", place);
+    card.style.left = cx + "px"; card.style.top = cy + "px";
+
+    // point the arrow at the target's center along the shared edge
+    var arrow = card.querySelector(".dash-tour-arrow");
+    if (place === "top" || place === "bottom") { arrow.style.left = clamp(left + w / 2 - cx, 20, cw - 20) + "px"; arrow.style.top = ""; }
+    else if (place === "left" || place === "right") { arrow.style.top = clamp(top + h / 2 - cy, 20, ch - 20) + "px"; arrow.style.left = ""; }
+  }
+
+  function ensureVisible(el) {
+    var r = el.getBoundingClientRect(), vh = window.innerHeight, c = r.top + r.height / 2;
+    // scroll only when the target sits outside the comfortable middle band
+    if (r.height < vh && (c < vh * 0.26 || c > vh * 0.74)) el.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
+    else if (r.height >= vh && r.top > vh * 0.3) el.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" });
+  }
+
   function goStep(i) {
     tourStep = i; var s = STEPS[i], c = buildTourDom().card;
-    setMonth(s.mo);
+    if (s.metric) { current = s.metric; syncMetricBtns(); }
+    if (typeof s.mo === "number") setMonth(s.mo);
     c.querySelector("[data-tour-step]").textContent = "Step " + (i + 1) + " of " + STEPS.length;
     c.querySelector("[data-tour-title]").innerHTML = s.title;
     c.querySelector("[data-tour-body]").innerHTML = s.body;
     c.querySelector("[data-tour-dots]").innerHTML = STEPS.map(function (_, j) { return '<button type="button" class="' + (j === i ? "on" : "") + '" data-tour-dot="' + j + '" aria-label="Step ' + (j + 1) + '"></button>'; }).join("");
     c.querySelectorAll("[data-tour-dot]").forEach(function (dot) { dot.addEventListener("click", function () { goStep(+dot.getAttribute("data-tour-dot")); }); });
     c.querySelector("[data-tour-back]").disabled = (i === 0);
-    c.querySelector("[data-tour-next]").textContent = (i >= STEPS.length - 1) ? "Done" : "Next →";
+    c.querySelector("[data-tour-next]").innerHTML = (i >= STEPS.length - 1) ? "Finish" : "Next &rarr;";
+    var el = stepEl(i);
+    if (el) { ensureVisible(el); positionTour(); setTimeout(positionTour, reduce ? 0 : 380); }
   }
+
   function startTour() {
-    stopPlay(); current = "in"; syncMetricBtns();
-    var c = buildTourDom().card; tourActive = true; root.classList.add("tour-on");
-    c.hidden = false; setTimeout(function () { c.classList.add("show"); }, 20);
+    stopPlay(); buildTourDom(); tourActive = true; root.classList.add("tour-on"); d.body.classList.add("dash-tour-open");
+    tourEls.spot.hidden = false; tourEls.card.hidden = false;
+    onTourMove = function () { if (tourRaf) return; tourRaf = requestAnimationFrame(function () { tourRaf = 0; positionTour(); }); };
+    window.addEventListener("scroll", onTourMove, true); window.addEventListener("resize", onTourMove);
+    setTimeout(function () { tourEls.spot.classList.add("show"); tourEls.card.classList.add("show"); }, 20);
     goStep(0);
-    var cw = root.querySelector(".dash-chartwrap"); if (cw) cw.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
   }
+
   function endTour() {
-    if (!tourActive) return; tourActive = false; root.classList.remove("tour-on");
-    var c = tourEls && tourEls.card; if (!c) return;
-    c.classList.remove("show"); setTimeout(function () { c.hidden = true; }, 260);
+    if (!tourActive) return; tourActive = false; root.classList.remove("tour-on"); d.body.classList.remove("dash-tour-open");
+    if (onTourMove) { window.removeEventListener("scroll", onTourMove, true); window.removeEventListener("resize", onTourMove); onTourMove = null; }
+    if (!tourEls) return;
+    tourEls.spot.classList.remove("show"); tourEls.card.classList.remove("show");
+    setTimeout(function () { if (!tourActive && tourEls) { tourEls.spot.hidden = true; tourEls.card.hidden = true; } }, 300);
   }
 
   function renderMetrics() {
