@@ -34,6 +34,7 @@ BODY = f'''
         <div><h2>Month by month</h2><p class="dash-sub">Click through all 12 months &mdash; watch the growth, the milestones, and the running totals climb.</p></div>
         <div class="dash-metrics" data-dash-metrics></div>
       </div>
+      <button type="button" class="dash-tour-launch" data-tour-launch><svg><use href="#i-bolt"/></svg>Walk me through the first 12 months</button>
       <div class="dash-months" data-dash-months></div>
       <div class="dash-chart" data-dash-chart></div>
       <div class="dash-monthdetail" data-dash-monthdetail></div>

@@ -12,25 +12,26 @@
   // ---------- sample data: roofing co, month 1 → 12, built from zero ----------
   var TICKET = 8000; // ~average booked job value (roofing repair/replacement blend)
   var MONTHS = [
-    { m: 1,  eyeballs: 1500,  leads: 2,  booked: 0.5, out: 500,  event: "Website & Local SEO went live", detail: "Custom, self-owned site on Cloudflare — indexed, blogging started. The foundation everything else stands on." },
-    { m: 2,  eyeballs: 3500,  leads: 3,  booked: 1.0, out: 500 },
-    { m: 3,  eyeballs: 11000, leads: 5,  booked: 1.5, out: 1000, event: "Turned on Social Media", detail: "7 networks, daily posts + reels. Eyeballs tripled in a single month and the brand started to show up everywhere." },
-    { m: 4,  eyeballs: 15000, leads: 8,  booked: 2.5, out: 1000 },
-    { m: 5,  eyeballs: 28000, leads: 13, booked: 4.0, out: 3300, event: "Started $2,000/mo Google Ads", detail: "Top-of-funnel demand on tap. Leads jumped from 8 to 13, and kept climbing as we tuned it." },
-    { m: 6,  eyeballs: 31000, leads: 17, booked: 5.0, out: 3300 },
-    { m: 7,  eyeballs: 34000, leads: 22, booked: 6.5, out: 6150, event: "Added Google LSA + Missed-Visitor Leads", detail: "$2,500 one-time LSA setup (Google Guarantee). Anonymous site visitors who never called now get captured as leads." },
-    { m: 8,  eyeballs: 36000, leads: 25, booked: 7.5, out: 3650 },
-    { m: 9,  eyeballs: 39000, leads: 28, booked: 8.5, out: 3650, event: "Newsletter list passed 2,000", detail: "The list we grew from every lead started paying off — repeat and referral jobs compounding for free." },
-    { m: 10, eyeballs: 41000, leads: 30, booked: 9.0, out: 3650 },
-    { m: 11, eyeballs: 43000, leads: 32, booked: 9.5, out: 3650 },
-    { m: 12, eyeballs: 45000, leads: 34, booked: 10.0, out: 3650 }
+    { m: 1,  eyeballs: 800,   leads: 1,  booked: 0,   out: 500,  event: "Website & Local SEO went live", detail: "Custom, self-owned site on Cloudflare — indexed, blogging started. It's quiet on purpose: this is the foundation, and you're investing about $500 to build it." },
+    { m: 2,  eyeballs: 2500,  leads: 2,  booked: 0,   out: 500 },
+    { m: 3,  eyeballs: 9000,  leads: 4,  booked: 1,   out: 1000, event: "Social Media on — first jobs close", detail: "7 networks, daily posts + reels. Eyeballs jump, the first roofing jobs close, and you cross into profit for good." },
+    { m: 4,  eyeballs: 13000, leads: 7,  booked: 2,   out: 1000 },
+    { m: 5,  eyeballs: 26000, leads: 12, booked: 3.5, out: 3300, event: "Started $2,000/mo Google Ads", detail: "Top-of-funnel demand on tap. Spend steps up to ~$3,300/mo — and so does the booked work." },
+    { m: 6,  eyeballs: 30000, leads: 16, booked: 4.5, out: 3300 },
+    { m: 7,  eyeballs: 33000, leads: 21, booked: 6,   out: 6150, event: "Added Google LSA + Missed-Visitor Leads", detail: "A one-time $2,500 LSA setup (Google Guarantee). Anonymous site visitors who never called now get captured as leads." },
+    { m: 8,  eyeballs: 35000, leads: 24, booked: 7,   out: 3650 },
+    { m: 9,  eyeballs: 38000, leads: 27, booked: 8,   out: 3650, event: "Newsletter list passed 2,000", detail: "The list we grew from every lead starts paying off — repeat and referral jobs compounding, for free." },
+    { m: 10, eyeballs: 40000, leads: 29, booked: 8.5, out: 3650 },
+    { m: 11, eyeballs: 42000, leads: 31, booked: 9,   out: 3650 },
+    { m: 12, eyeballs: 44000, leads: 33, booked: 9.5, out: 3650 }
   ];
-  MONTHS.forEach(function (x) { x.in = Math.round(x.booked * TICKET); });
+  MONTHS.forEach(function (x) { x.in = Math.round(x.booked * TICKET); x.net = x.in - x.out; });
 
   function sum(k) { return MONTHS.reduce(function (a, x) { return a + x[k]; }, 0); }
   var T = { in: sum("in"), out: sum("out"), booked: sum("booked"), leads: sum("leads"), eyeballs: sum("eyeballs") };
   T.roas = T.in / T.out;
   T.cpbj = T.out / T.booked;
+  T.net = T.in - T.out;
 
   // ---------- formatting ----------
   function money(n) { return "$" + Math.round(n).toLocaleString("en-US"); }
@@ -58,6 +59,7 @@
       { l: "ROAS", v: (Math.round(T.roas * 10) / 10) + "×", s: "return on every dollar, after fees", cls: "roas", tv: T.roas, fmt: function (v) { return (Math.round(v * 10) / 10) + "×"; } }
     ];
     var sub = [
+      { l: "Net gain", tv: T.net, fmt: money, cls: "net" },
       { l: "Booked jobs", tv: T.booked, fmt: num1 },
       { l: "Leads", tv: T.leads, fmt: num },
       { l: "Cost / booked job", tv: T.cpbj, fmt: money },
@@ -77,13 +79,13 @@
 
   // ---------- chart ----------
   var METRICS = [
+    { k: "booked", label: "Booked jobs", fmt: num1, tip: num1 },
     { k: "in", label: "Money in", fmt: moneyK, tip: money },
     { k: "leads", label: "Leads", fmt: num, tip: num },
-    { k: "booked", label: "Booked jobs", fmt: num1, tip: num1 },
     { k: "eyeballs", label: "Eyeballs", fmt: num, tip: num },
     { k: "out", label: "Money out", fmt: moneyK, tip: money }
   ];
-  var current = "in", sel = MONTHS.length - 1, playTimer = null;
+  var current = "booked", sel = MONTHS.length - 1, playTimer = null;
   var W = 840, HT = 340, padL = 58, padR = 20, padT = 20, padB = 40;
   var plotW = W - padL - padR, plotH = HT - padT - padB;
   function xat(i) { return padL + (i / (MONTHS.length - 1)) * plotW; }
@@ -152,16 +154,22 @@
   }
   function syncMonthTabs() { root.querySelectorAll("[data-mo]").forEach(function (b) { b.classList.toggle("on", +b.getAttribute("data-mo") === sel); }); }
 
+  function netFmt(n) { return (n < 0 ? "−$" : "+$") + Math.abs(Math.round(n)).toLocaleString("en-US"); }
   function renderMonthDetail() {
     var x = MONTHS[sel];
     var cin = cumThrough("in", sel), cout = cumThrough("out", sel), cbk = cumThrough("booked", sel), cld = cumThrough("leads", sel), cey = cumThrough("eyeballs", sel);
     var roas = cout ? (Math.round(cin / cout * 10) / 10) : 0;
+    var netCum = cin - cout;
     function rw(l, v) { return '<div class="dash-md-row"><span>' + l + '</span><b>' + v + '</b></div>'; }
     var milestone = x.event
       ? '<div class="dash-md-ev"><svg class="dash-md-flag"><use href="#i-bolt"/></svg><div><b>' + x.event + '</b><p>' + x.detail + '</p></div></div>'
       : '<div class="dash-md-ev muted"><svg class="dash-md-flag"><use href="#i-trend"/></svg><div><b>Steady growth</b><p>Momentum from the pieces already running &mdash; more eyeballs, more leads, more booked work.</p></div></div>';
+    var netStrip = '<div class="dash-md-net ' + (netCum >= 0 ? "gain" : "loss") + '">' +
+      '<div class="dash-md-net-i"><span>Net this month</span><b>' + netFmt(x.net) + '</b></div>' +
+      '<div class="dash-md-net-i main"><span>Net so far &middot; months 1&ndash;' + x.m + '</span><b>' + netFmt(netCum) + '</b>' +
+      '<em>' + (netCum >= 0 ? "in the black" : "still investing") + '</em></div></div>';
     $("[data-dash-monthdetail]").innerHTML =
-      '<div class="dash-md-head"><span class="dash-md-mo">Month ' + x.m + '</span><span class="dash-md-of">of 12</span></div>' + milestone +
+      '<div class="dash-md-head"><span class="dash-md-mo">Month ' + x.m + '</span><span class="dash-md-of">of 12</span></div>' + milestone + netStrip +
       '<div class="dash-md-grid">' +
         '<div class="dash-md-group"><h5>This month</h5>' +
           rw("Money in", money(x.in)) + rw("Money out", money(x.out)) + rw("Leads", num(x.leads)) + rw("Booked jobs", num1(x.booked)) + rw("Eyeballs", num(x.eyeballs)) + '</div>' +
@@ -179,6 +187,58 @@
     var b = $("[data-mo-play]"); if (b) { b.classList.add("on"); b.innerHTML = PAUSE_HTML; }
     if (sel >= MONTHS.length - 1) setMonth(0);
     playTimer = setInterval(function () { if (sel >= MONTHS.length - 1) { stopPlay(); return; } setMonth(sel + 1); }, 850);
+  }
+
+  // ---------- guided walkthrough (StoryLane-style) ----------
+  var STEPS = [
+    { mo: 0, title: "Month 1 — We build the foundation", body: "Your custom, self-owned site goes live and local SEO + blogging kick off. It&rsquo;s quiet on purpose. You invest about <b>$500</b> and book nothing yet &mdash; totally normal from a blank slate. <b>Net: &minus;$500.</b>" },
+    { mo: 1, title: "Month 2 — The low point", body: "Another ~<b>$500</b>. The first leads trickle in, but roofing jobs take time to close. Cumulative net dips to <b>&minus;$1,000</b> &mdash; the deepest you ever go. You&rsquo;re investing, not losing." },
+    { mo: 2, title: "Month 3 — Crossover to profit", body: "Social Media goes live, eyeballs jump, and your first jobs close. You cross into the black at <b>+$6,000 net</b> &mdash; and never look back." },
+    { mo: 4, title: "Month 5 — Pour fuel on it", body: "We flip on <b>$2,000/mo Google Ads</b>. Spend steps up to ~$3,300/mo, but the booked work steps up faster &mdash; the return more than covers it." },
+    { mo: 6, title: "Month 7 — Capture what you were missing", body: "Google LSA (a one-time <b>$2,500</b> Google-Guarantee setup) plus Missed-Visitor Leads. Now even anonymous visitors who never called become leads." },
+    { mo: 8, title: "Month 9 — Compounding, for free", body: "Your newsletter list passes 2,000. Repeat and referral jobs start stacking on top &mdash; no extra ad spend needed." },
+    { mo: 11, title: "Month 12 — The payoff", body: "<b>$472k booked</b> on <b>$34k spent</b>. That&rsquo;s <b>$438,000 net</b> and a <b>13.9× return</b> &mdash; after my fees. That&rsquo;s what year one can look like." }
+  ];
+  var tourEls = null, tourStep = 0, tourActive = false;
+  function syncMetricBtns() { root.querySelectorAll("[data-metric]").forEach(function (x) { x.classList.toggle("on", x.getAttribute("data-metric") === current); }); }
+  function buildTourDom() {
+    if (tourEls) return tourEls;
+    var card = d.createElement("div"); card.className = "dash-tour-card"; card.hidden = true;
+    card.innerHTML = '<button type="button" class="dash-tour-x" aria-label="Close walkthrough">&times;</button>' +
+      '<div class="dash-tour-step" data-tour-step></div><h4 data-tour-title></h4><p data-tour-body></p>' +
+      '<div class="dash-tour-dots" data-tour-dots></div>' +
+      '<div class="dash-tour-nav"><button type="button" class="dash-tour-back" data-tour-back>Back</button>' +
+      '<button type="button" class="dash-tour-next" data-tour-next>Next</button></div>';
+    d.body.appendChild(card);
+    card.querySelector(".dash-tour-x").addEventListener("click", endTour);
+    card.querySelector("[data-tour-back]").addEventListener("click", function () { if (tourStep > 0) goStep(tourStep - 1); });
+    card.querySelector("[data-tour-next]").addEventListener("click", function () { if (tourStep >= STEPS.length - 1) endTour(); else goStep(tourStep + 1); });
+    d.addEventListener("keydown", function (e) { if (!tourActive) return; if (e.key === "Escape") endTour(); else if (e.key === "ArrowRight") { if (tourStep < STEPS.length - 1) goStep(tourStep + 1); } else if (e.key === "ArrowLeft") { if (tourStep > 0) goStep(tourStep - 1); } });
+    tourEls = { card: card };
+    return tourEls;
+  }
+  function goStep(i) {
+    tourStep = i; var s = STEPS[i], c = buildTourDom().card;
+    setMonth(s.mo);
+    c.querySelector("[data-tour-step]").textContent = "Step " + (i + 1) + " of " + STEPS.length;
+    c.querySelector("[data-tour-title]").innerHTML = s.title;
+    c.querySelector("[data-tour-body]").innerHTML = s.body;
+    c.querySelector("[data-tour-dots]").innerHTML = STEPS.map(function (_, j) { return '<button type="button" class="' + (j === i ? "on" : "") + '" data-tour-dot="' + j + '" aria-label="Step ' + (j + 1) + '"></button>'; }).join("");
+    c.querySelectorAll("[data-tour-dot]").forEach(function (dot) { dot.addEventListener("click", function () { goStep(+dot.getAttribute("data-tour-dot")); }); });
+    c.querySelector("[data-tour-back]").disabled = (i === 0);
+    c.querySelector("[data-tour-next]").textContent = (i >= STEPS.length - 1) ? "Done" : "Next →";
+  }
+  function startTour() {
+    stopPlay(); current = "in"; syncMetricBtns();
+    var c = buildTourDom().card; tourActive = true; root.classList.add("tour-on");
+    c.hidden = false; setTimeout(function () { c.classList.add("show"); }, 20);
+    goStep(0);
+    var cw = root.querySelector(".dash-chartwrap"); if (cw) cw.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" });
+  }
+  function endTour() {
+    if (!tourActive) return; tourActive = false; root.classList.remove("tour-on");
+    var c = tourEls && tourEls.card; if (!c) return;
+    c.classList.remove("show"); setTimeout(function () { c.hidden = true; }, 260);
   }
 
   function renderMetrics() {
@@ -241,4 +301,5 @@
   animateInitial();
   renderTimeline();
   renderActions();
+  var tb = $("[data-tour-launch]"); if (tb) tb.addEventListener("click", startTour);
 })();
