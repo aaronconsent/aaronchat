@@ -1,6 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /setup/
-Disallow: /style-guide/
 
 Sitemap: https://aaron.chat/sitemap.xml

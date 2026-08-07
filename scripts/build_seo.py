@@ -8,7 +8,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE = "https://aaron.chat"
 
 # indexable public pages (exclude internal, setup, the separate grading engine, noindex legal)
-EXCLUDE_DIRS = ("style-guide", "setup", "_next", "_external", "pricing-archive",
+EXCLUDE_DIRS = ("style-guide", "setup", "insights", "_next", "_external", "pricing-archive",
                 "stats-lakelivingston", "node_modules", "scripts", ".git", "brand", "data")
 
 
@@ -44,10 +44,11 @@ def sitemap(ps):
 ROBOTS = f"""User-agent: *
 Allow: /
 Disallow: /setup/
-Disallow: /style-guide/
 
 Sitemap: {BASE}/sitemap.xml
 """
+# NOTE: /style-guide/ and /insights/ are kept out of search by their `noindex`
+# meta tags (not robots.txt), so agents/tools can still fetch them directly.
 
 LLMS = f"""# Hey Aaron! Marketing
 
