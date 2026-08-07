@@ -61,6 +61,21 @@
   var state = { budget: 0, on: {} };
   SERVICES.forEach(function (s) { state.on[s.id] = s.on; });
 
+  // "What I do for you" — per-service monthly hours, plain-language tasks, and what I buy on your behalf.
+  var WORK = {
+    website:  { hours: 3, tasks: ["Keep your site fast, secure & online 24/7", "Update content and fix anything that breaks", "Monthly speed, uptime & backup checks"], buys: ["Premium hosting, SSL & CDN"] },
+    localseo: { hours: 5, tasks: ["Optimize every page to rank in your service area", "Build local citations & quality backlinks", "Tune your site to show up in AI answers (ChatGPT, Google AI)"], buys: ["Local citations from BrightLocal", "Rank-tracking tools"] },
+    blogging: { hours: 4, tasks: ["Write 4 search-optimized blog posts a month", "Research what your customers actually search for", "Publish, interlink & get them indexed"], buys: ["AI writing & editing credits"] },
+    gbp:      { hours: 2, tasks: ["Post weekly updates, offers & photos", "Optimize categories, services & hours", "Answer questions and keep it fresh"], buys: [] },
+    reviews:  { hours: 2, tasks: ["Automated review requests after every job", "Respond to every review, good or bad", "Show your best reviews on your site"], buys: ["Review request platform (text & email)"] },
+    resolve:  { hours: 2, tasks: ["Identify anonymous visitors who don't call", "Turn them into named leads you own", "Run your cookie banner & consent ledger"], buys: ["ConsentResolve visitor identification"] },
+    newsletter:{ hours: 2, tasks: ["Write & send a weekly email to your list", "Grow the list from every new lead", "Design, schedule & track opens and clicks"], buys: ["Email sending platform"] },
+    social:   { hours: 6, tasks: ["500–700 posts a month across 7 networks", "3 fresh short videos (reels) every day", "Design graphics, write captions & schedule"], buys: ["AI Credits for Images & Social Media", "Scheduling & design tools"] },
+    ads:      { hours: 3, tasks: ["Build & manage your Google Ads campaigns", "Weekly keyword, bid & budget tuning", "Cut wasted spend, scale what works"], buys: [] },
+    lsa:      { hours: 2, tasks: ["Set up & verify Local Service Ads", "Dispute bad-fit lead charges for you", "Optimize for the Google Guarantee badge"], buys: [] },
+    fb:       { hours: 3, tasks: ["Build & manage Facebook / Instagram ads", "Design scroll-stopping ad creative", "Test audiences & scale the winners"], buys: ["AI Credits for ad creative"] }
+  };
+
   // ---- the model ----
   function compute() {
     var on = state.on, ch = market.ch, adSpend = state.budget;
@@ -187,11 +202,11 @@
   }
 
   function setDash() {
-    ["[data-o-cpbj]", "[data-o-jobs]", "[data-o-leads]", "[data-o-eyeballs]", "[data-o-pay]", "[data-o-getn]"].forEach(function (s) {
+    ["[data-o-cpbj]", "[data-o-jobs]", "[data-o-leads]", "[data-o-eyeballs]", "[data-o-pay]", "[data-o-getn]", "[data-o-hours]"].forEach(function (s) {
       var el = $(s); if (el) { el.textContent = "—"; el.removeAttribute("data-v"); }
     });
     var a = $("[data-o-anchor]"); if (a) a.hidden = true;
-    ["[data-o-pay-rows]", "[data-o-get-rows]"].forEach(function (s) { var el = $(s); if (el) el.innerHTML = ""; });
+    ["[data-o-pay-rows]", "[data-o-get-rows]", "[data-o-work]"].forEach(function (s) { var el = $(s); if (el) el.innerHTML = ""; });
     var cb = $("[data-o-channels]"); if (cb) cb.innerHTML = "";
   }
 
@@ -223,6 +238,20 @@
     var getEl = $("[data-o-get-rows]");
     if (getEl) getEl.innerHTML = getRows.map(function (x) { return feerow(x.label, Math.round(x.leads).toLocaleString("en-US")); }).join("");
     tween($("[data-o-getn]"), r.leads, function (v) { return Math.round(v).toLocaleString("en-US") + " leads"; }, "getn");
+    // "What I do for you" — hours + tasks + what I buy, per enabled service
+    var workBlocks = [], totalHrs = 0;
+    SERVICES.forEach(function (s) {
+      if (!state.on[s.id]) return;
+      var wk = WORK[s.id]; if (!wk) return;
+      totalHrs += wk.hours;
+      workBlocks.push('<div class="pl-work"><div class="pl-work-hd"><span class="pl-work-name">' + s.label +
+        '</span><span class="pl-work-hrs">~' + wk.hours + ' hrs/mo</span></div>' +
+        '<ul class="pl-work-tasks">' + wk.tasks.map(function (t) { return '<li>' + t + '</li>'; }).join("") + '</ul>' +
+        (wk.buys && wk.buys.length ? '<div class="pl-work-buys"><b>I buy for you:</b> ' + wk.buys.join(' &middot; ') + '</div>' : '') +
+        '</div>');
+    });
+    var workEl = $("[data-o-work]"); if (workEl) workEl.innerHTML = workBlocks.join("");
+    tween($("[data-o-hours]"), totalHrs, function (v) { return "~" + Math.round(v) + " hrs/mo"; }, "hours");
     // channel breakdown bars (by eyeballs)
     var maxEye = Math.max.apply(null, r.rows.map(function (x) { return x.eyeballs; }).concat([1]));
     var cb = $("[data-o-channels]");

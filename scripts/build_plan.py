@@ -84,6 +84,11 @@ BODY = f'''
         <div class="plan-fee" data-o-get-rows></div>
       </div>
       <div class="plan-panel">
+        <h3>What I do for you <span data-o-hours>~0 hrs/mo</span></h3>
+        <p class="pl-work-lead">Real hands-on work every month &mdash; plus the tools, credits and citations I buy so you don&rsquo;t have to.</p>
+        <div class="plan-work" data-o-work></div>
+      </div>
+      <div class="plan-panel">
         <h3>Where the eyeballs &amp; leads come from</h3>
         <div class="plan-channels" data-o-channels></div>
       </div>

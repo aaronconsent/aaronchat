@@ -840,6 +840,23 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 .pl-feerow.pl-subrow:last-of-type { border-bottom: 1px solid var(--line-soft); padding-bottom: 10px; }
 .pl-feerow.total { border-bottom: 0; padding-top: 12px; font-size: 1rem; font-weight: 700; color: var(--ink); }
 .pl-feerow.total b { color: var(--primary-container); font-size: 1.15rem; }
+/* "What I do for you" — monthly work + tools bought */
+.pl-work-lead { color: var(--ink-variant); line-height: 1.55; font-size: .95rem; margin: -4px 0 14px; }
+.plan-work { display: flex; flex-direction: column; }
+.pl-work { padding: 15px 0; border-bottom: 1px solid var(--line-soft); }
+.pl-work:first-child { padding-top: 2px; }
+.pl-work:last-child { border-bottom: 0; padding-bottom: 2px; }
+.pl-work-hd { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 7px; }
+.pl-work-name { font-weight: 700; font-size: 1rem; color: var(--ink); }
+.pl-work-hrs { flex: none; font-size: .74rem; font-weight: 800; color: var(--primary-container);
+  background: var(--primary-tint); padding: 3px 10px; border-radius: var(--r-full); white-space: nowrap;
+  font-variant-numeric: tabular-nums; }
+.pl-work-tasks { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+.pl-work-tasks li { font-size: .92rem; color: var(--ink-variant); line-height: 1.45; }
+.pl-work-buys { margin-top: 9px; font-size: .86rem; color: var(--tertiary); background: var(--tertiary-container);
+  padding: 8px 13px; border-radius: var(--r); line-height: 1.45; }
+.pl-work-buys b { color: var(--tertiary); font-weight: 800; }
+
 /* channel breakdown bars */
 .plan-channels { display: flex; flex-direction: column; gap: 12px; }
 .pl-chrow { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 4px 12px; }
