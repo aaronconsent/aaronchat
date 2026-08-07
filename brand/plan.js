@@ -50,7 +50,7 @@
     { id: "gbp", label: "Google Business Profile", group: "Website & Growth", kind: "owned", on: false },
     { id: "reviews", label: "Reviews on autopilot", group: "Website & Growth", kind: "lift", on: false },
     { id: "resolve", label: "Organic leads", group: "Website & Growth", kind: "owned", on: false },
-    { id: "social", label: "Social media — 7 networks, daily", group: "Social", kind: "owned", on: false },
+    { id: "social", label: "Managed Content & Posting", group: "Social Media", kind: "owned", on: false },
     { id: "ads", label: "Google Ads", group: "Paid ads", kind: "paid", on: false },
     { id: "lsa", label: "Google LSA", group: "Paid ads", kind: "paid", on: false },
     { id: "fb", label: "Facebook / Instagram ads", group: "Paid ads", kind: "paid", on: false }
@@ -105,7 +105,7 @@
       socialLeads = market.socialLeads || 11;                  // ~10-12/mo, weighted by this trade's social affinity
       socialBooked = socialLeads * effBook(market.blended || 0.30);  // inbound — books at the trade's blended rate
       eyeballs += socEye;
-      rows.push({ label: "Social media (7 networks)", leads: socialLeads, spend: 0, eyeballs: socEye, booked: socialBooked });
+      rows.push({ label: "Managed Content & Posting", leads: socialLeads, spend: 0, eyeballs: socEye, booked: socialBooked });
     }
 
     // volume lift scales the paid+organic side (more calls in) — applied to leads AND their booked jobs
