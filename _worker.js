@@ -1635,36 +1635,60 @@ async function lcCpcFor(location, kw, auth) {
   return { cpc: lcAvgCpc(t && t.result), code: t && t.status_code, msg: t && t.status_message };
 }
 
-// PROBE: does this DataForSEO account have Maps SERP (and does it return review counts)?
-// Temporary — hit /api/lead-cost?gbpprobe=1&kw=plumber&loc=Houston,Texas,United States
-async function lcGbpProbe(env, kw, loc) {
-  const out = { kw, loc };
-  if (!env.DATAFORSEO_LOGIN || !env.DATAFORSEO_PASSWORD) { out.reason = "no-creds"; return out; }
-  const auth = "Basic " + btoa(`${env.DATAFORSEO_LOGIN}:${env.DATAFORSEO_PASSWORD}`);
+// ZIP -> {lat,lng,city} via Zippopotam (free, no key). null on failure.
+async function lcZipGeo(zip) {
   try {
-    // if loc looks like "lat,lng" (optionally with a zoom), send it as a coordinate
-    const isCoord = /^-?\d+(\.\d+)?,-?\d+(\.\d+)?/.test(loc);
-    const task = isCoord
-      ? { keyword: kw, location_coordinate: loc, language_code: "en", device: "desktop" }
-      : { keyword: kw, location_name: loc, language_code: "en", device: "desktop" };
-    out.geo = isCoord ? "coordinate" : "name";
+    const res = await fetch(`https://api.zippopotam.us/us/${zip}`);
+    if (!res.ok) return null;
+    const d = await res.json();
+    const p = d && d.places && d.places[0];
+    if (!p) return null;
+    return { lat: parseFloat(p.latitude), lng: parseFloat(p.longitude), city: p["place name"] };
+  } catch (e) { return null; }
+}
+
+// Predict Google Business Profile leads/mo for a fully-managed, well-reviewed profile in this
+// market, from the live Maps local pack (competitor count + review bar). null on failure.
+async function lcGbpMarket(bench, zip, auth) {
+  const dbg = {};
+  const geo = await lcZipGeo(zip);
+  if (!geo) { dbg.reason = "no-geo"; return { gbp: null, dbg }; }
+  dbg.city = geo.city;
+  const kw = (bench.kw && bench.kw[0]) || bench.label;
+  try {
     const res = await fetch("https://api.dataforseo.com/v3/serp/google/maps/live/advanced", {
       method: "POST", headers: { Authorization: auth, "Content-Type": "application/json" },
-      body: JSON.stringify([task])
+      body: JSON.stringify([{ keyword: kw, location_coordinate: `${geo.lat},${geo.lng},12z`, language_code: "en", device: "desktop" }])
     });
-    out.http = res.status;
+    if (!res.ok) { dbg.reason = "http:" + res.status; return { gbp: null, dbg }; }
     const data = await res.json();
-    out.status_code = data && data.status_code;
-    out.status_message = data && data.status_message;
     const t = data && data.tasks && data.tasks[0];
-    out.task_code = t && t.status_code; out.task_msg = t && t.status_message; out.cost = data && data.cost;
     const items = t && t.result && t.result[0] && t.result[0].items;
-    out.item_count = items ? items.length : 0;
-    out.sample = (items || []).slice(0, 6).map(function (i) {
-      return { title: i.title, rating: i.rating && i.rating.value, reviews: i.rating && i.rating.votes_count, rank: i.rank_absolute };
-    });
-  } catch (e) { out.reason = "throw:" + (e && e.message ? e.message : "err"); }
-  return out;
+    if (!items || !items.length) { dbg.reason = "no-items"; dbg.code = t && t.status_code; return { gbp: null, dbg }; }
+    const revs = items.slice(0, 20).map(i => (i.rating && i.rating.votes_count) || 0);
+    const nTotal = items.length;
+    const nStrong = revs.filter(r => r >= 25).length;          // competitors with a real review moat
+    const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+    const pool = 6 + 2.4 * Math.sqrt(Math.min(nTotal, 80));    // total local-search leads up for grabs (sublinear demand)
+    const share = clamp(2.6 / Math.max(nStrong, 2), 0.14, 0.9); // share a top-tier managed profile can hold
+    const potential = Math.round(clamp(pool * share, 3, 24));
+    dbg.nTotal = nTotal; dbg.nStrong = nStrong; dbg.pool = Number(pool.toFixed(1)); dbg.share = Number(share.toFixed(2));
+    return { gbp: { potential, competitors: nTotal, strongCompetitors: nStrong, city: geo.city, kw }, dbg };
+  } catch (e) { dbg.reason = "throw:" + (e && e.message ? e.message : "err"); return { gbp: null, dbg }; }
+}
+
+// GBP is per-CITY (not per-state like CPL), so cache it separately by ZIP.
+async function getGbpCached(bench, zip, tradeKey, env, ctx, debug) {
+  const key = `gbp:v1:${tradeKey}:${zip}`;
+  if (env.SETUP_KV && !debug) {
+    const hit = await env.SETUP_KV.get(key);
+    if (hit) return { gbp: JSON.parse(hit), dbg: { cached: true } };
+  }
+  if (!env.DATAFORSEO_LOGIN || !env.DATAFORSEO_PASSWORD) return { gbp: null, dbg: { reason: "no-creds" } };
+  const auth = "Basic " + btoa(`${env.DATAFORSEO_LOGIN}:${env.DATAFORSEO_PASSWORD}`);
+  const r = await lcGbpMarket(bench, zip, auth);
+  if (r.gbp && env.SETUP_KV && !debug) ctx.waitUntil(env.SETUP_KV.put(key, JSON.stringify(r.gbp), { expirationTtl: 604800 }));
+  return r;
 }
 
 async function lcLiveFactor(bench, state, env) {
@@ -1686,11 +1710,7 @@ async function lcLiveFactor(bench, state, env) {
 
 async function handleLeadCost(request, env, ctx) {
   const url = new URL(request.url);
-  if (url.searchParams.get("gbpprobe") === "1") {
-    const kw = url.searchParams.get("kw") || "plumber";
-    const loc = url.searchParams.get("loc") || "Houston,Texas,United States";
-    return json(await lcGbpProbe(env, kw, loc));
-  }
+  const debug = url.searchParams.get("debug") === "1";
   const zip = clean(url.searchParams.get("zip"), 5).replace(/\D/g, "");
   const tradeKey = clean(url.searchParams.get("trade"), 40).toLowerCase();
   const bench = LC_BENCH[tradeKey];
@@ -1699,12 +1719,16 @@ async function handleLeadCost(request, env, ctx) {
   const state = lcZipState(zip);
   if (!state || state === "Armed Forces") return json({ ok: false, error: "That ZIP isn't a US service area I can price." }, 400);
 
+  // GBP local-pack prediction is per-ZIP (city-level), cached separately from the state-level CPL.
+  const gbpRes = await getGbpCached(bench, zip, tradeKey, env, ctx, debug);
+
   const cacheKey = `leadcost:v11:${tradeKey}:${state}`;
-  if (env.SETUP_KV && url.searchParams.get("debug") !== "1") {
+  if (env.SETUP_KV && !debug) {
     const hit = await env.SETUP_KV.get(cacheKey);
     if (hit) {
       const cached = JSON.parse(hit);
-      cached.zip = zip; // echo caller's ZIP; the priced market is state-level
+      cached.zip = zip;        // echo caller's ZIP; the priced market is state-level
+      cached.gbp = gbpRes.gbp;  // GBP is per-ZIP, layered on top
       return json(cached);
     }
   }
@@ -1739,7 +1763,7 @@ async function handleLeadCost(request, env, ctx) {
       { key: "organic", label: "Organic", cpl: 7, cpbj: cpbj(7, "organic"), bookRate: rateFor("organic"), live: false, unit: "per lead", tier: "flat" }
     ],
     statsUrl: "/stats/",
-    _debug: url.searchParams.get("debug") === "1" ? (mf && mf.dbg) : undefined,
+    _debug: debug ? { factor: mf && mf.dbg, gbp: gbpRes && gbpRes.dbg } : undefined,
     sources: LC_SOURCES,
     methodology: "The paid channels start from published industry cost-per-lead benchmarks (LocaliQ / SearchLight, 2025-26)" + (live ? ", then adjusted for your market using live local search-ad costs from Google Keyword Planner data." : ".") + " Cost per booked job = cost per lead ÷ this trade's booking rate (share of leads that become booked jobs) — a per-trade, per-channel benchmark that does not vary by ZIP. Organic is what I pay to resolve an anonymous website visitor into a lead you own via ConsentResolve — no ad auction. Figures are illustrations of market rates, not a guarantee of your results."
   };
@@ -1747,8 +1771,9 @@ async function handleLeadCost(request, env, ctx) {
   // Cache successful results. Skip when creds exist but the live call failed
   // (transient), so it retries next time instead of caching a benchmark fallback.
   const credsPresent = !!(env.DATAFORSEO_LOGIN && env.DATAFORSEO_PASSWORD);
-  const shouldCache = env.SETUP_KV && url.searchParams.get("debug") !== "1" && (live || !credsPresent);
+  const shouldCache = env.SETUP_KV && !debug && (live || !credsPresent);
   if (shouldCache) ctx.waitUntil(env.SETUP_KV.put(cacheKey, JSON.stringify(payload), { expirationTtl: 604800 }));
+  payload.gbp = gbpRes.gbp;  // per-ZIP GBP, layered on after the state-level base is cached
   return json(payload);
 }
 
