@@ -1732,7 +1732,8 @@ async function handleLeadCost(request, env, ctx) {
   if (!state || state === "Armed Forces") return json({ ok: false, error: "That ZIP isn't a US service area I can price." }, 400);
 
   // GBP local-pack prediction is per-ZIP (city-level), cached separately from the state-level CPL.
-  const gbpRes = await getGbpCached(bench, zip, state, tradeKey, env, ctx, debug);
+  // Kick it off now and run it in PARALLEL with the CPL factor call (don't chain them).
+  const gbpP = getGbpCached(bench, zip, state, tradeKey, env, ctx, debug);
 
   const cacheKey = `leadcost:v11:${tradeKey}:${state}`;
   if (env.SETUP_KV && !debug) {
@@ -1740,12 +1741,12 @@ async function handleLeadCost(request, env, ctx) {
     if (hit) {
       const cached = JSON.parse(hit);
       cached.zip = zip;        // echo caller's ZIP; the priced market is state-level
-      cached.gbp = gbpRes.gbp;  // GBP is per-ZIP, layered on top
+      cached.gbp = (await gbpP).gbp;  // GBP is per-ZIP, layered on top
       return json(cached);
     }
   }
 
-  const mf = await lcLiveFactor(bench, state, env);
+  const [gbpRes, mf] = await Promise.all([gbpP, lcLiveFactor(bench, state, env)]);
   const live = mf && mf.factor != null;
   const factor = live ? mf.factor : 1;
   const round5 = (n) => Math.max(1, Math.round(n / 5) * 5);
