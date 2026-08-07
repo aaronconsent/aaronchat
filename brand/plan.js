@@ -46,7 +46,9 @@
 
   // ---- services (toggles) ----
   var SERVICES = [
-    { id: "web", label: "Website & local SEO", group: "Website & Growth", kind: "owned", on: true, locked: true },
+    { id: "website", label: "Website & Hosting", group: "Website & Growth", kind: "owned", on: true, locked: true },
+    { id: "localseo", label: "Local SEO/AEO", group: "Website & Growth", kind: "owned", on: true, locked: true },
+    { id: "blogging", label: "Weekly Blogging", group: "Website & Growth", kind: "owned", on: true, locked: true },
     { id: "gbp", label: "Google Business Profile", group: "Website & Growth", kind: "owned", on: false },
     { id: "reviews", label: "Review Autopilot", group: "Website & Growth", kind: "lift", on: false },
     { id: "resolve", label: "Missed-Visitor Leads", group: "Website & Growth", kind: "owned", on: false },
@@ -62,6 +64,8 @@
   // ---- the model ----
   function compute() {
     var on = state.on, ch = market.ch, adSpend = state.budget;
+    // Website & Hosting / Local SEO/AEO / Weekly Blogging are the (locked-on) website stack
+    var webOn = on.website || on.localseo || on.blogging;
     var paid = [];
     if (on.ads) paid.push({ k: "ads", ck: "google_ads", w: mix.search });
     if (on.lsa) paid.push({ k: "lsa", ck: "google_lsa", w: mix.lsa });
@@ -70,9 +74,9 @@
 
     // lift multipliers depend only on toggles. Quality lifts (reviews, CRO) raise the BOOKING rate;
     // volume lifts (GBP, multichannel) raise LEAD count. Both overlap-discounted + capped.
-    var qualExtra = (on.reviews ? (REVIEWS - 1) : 0) + (on.web ? (CRO - 1) : 0);
+    var qualExtra = (on.reviews ? (REVIEWS - 1) : 0) + (webOn ? (CRO - 1) : 0);
     var bookMult = Math.min(1.6, 1 + 0.45 * qualExtra);
-    var isMulti = (paid.length + (on.web ? 1 : 0) + (on.social ? 1 : 0)) >= 3;
+    var isMulti = (paid.length + (webOn ? 1 : 0) + (on.social ? 1 : 0)) >= 3;
     var volExtra = (isMulti ? MULTI_LIFT : 0);  // GBP is no longer a flat lift — it's a predicted leads channel below
     var leadMult = Math.min(1.35, 1 + 0.40 * volExtra);
     var BOOK_CEIL = 0.60;  // no channel books above 60%, even fully optimized — keeps it honest
@@ -91,7 +95,7 @@
     });
 
     // owned channels
-    if (on.web) { eyeballs += REACH_MON.web; var owl = 6, owb = owl * effBook(market.blended || 0.30); leads += owl; booked += owb; siteVisitors += 250; rows.push({ label: "Website / SEO (organic)", leads: owl, spend: 0, eyeballs: REACH_MON.web, booked: owb }); } // books at THIS trade's inbound rate — tailored per lookup
+    if (webOn) { eyeballs += REACH_MON.web; var owl = 6, owb = owl * effBook(market.blended || 0.30); leads += owl; booked += owb; siteVisitors += 250; rows.push({ label: "Website / SEO (organic)", leads: owl, spend: 0, eyeballs: REACH_MON.web, booked: owb }); } // books at THIS trade's inbound rate — tailored per lookup
     var gbpLeads = 0, gbpBooked = 0;
     if (on.gbp) {
       eyeballs += REACH_MON.gbp;
@@ -115,7 +119,7 @@
 
     // resolved anonymous visitors ride on top: cheap, low-booking, NOT amplified by the lifts
     var resolved = 0, resolvedBooked = 0, resolveCost = 0;
-    if (on.resolve && (on.web || paid.length)) {
+    if (on.resolve && (webOn || paid.length)) {
       resolved = Math.round(0.12 * siteVisitors);           // ~12% of anonymous traffic identified
       resolvedBooked = resolved * 0.05;                     // resolved visitors book low (~1 in 20)
       resolveCost = resolved * 7;                           // real money — $7/resolved visitor
@@ -144,7 +148,7 @@
 
     // budget: ad spend + resolution spend + Aaron's fee (fully transparent)
     var fee = [];
-    var ownedOn = on.web || on.gbp || on.reviews || on.resolve;  // web is locked on, so this is always true
+    var ownedOn = webOn || on.gbp || on.reviews || on.resolve;  // web is locked on, so this is always true
     if (ownedOn) fee.push({ label: "Website & Growth", amt: 500 });
     if (on.social) fee.push({ label: "Social Media", amt: 500 });
     if (paid.length && adSpend > 0) fee.push({ label: "Ad management (15% of ad spend)", amt: Math.round(adSpend * 0.15) });
@@ -207,7 +211,11 @@
     var payRows = [];
     r.fee.forEach(function (f) { payRows.push(feerow(f.label + ' <span class="pl-fee-dest">&rarr; me</span>', money(f.amt))); });
     r.adLines.forEach(function (a) { payRows.push(feerow(a.label + ' <span class="pl-fee-dest">&rarr; ' + a.dest + '</span>', money(a.amt))); });
-    if (r.resolveCost > 0) payRows.push(feerow('Missed-Visitor Leads <b>$7 &times; resolved</b>', money(r.resolveCost)));
+    if (r.resolveCost > 0) {
+      payRows.push(feerow('Missed-Visitor Leads <b>$7 &times; resolved</b> <span class="pl-fee-dest">&rarr; ConsentResolve</span>', money(r.resolveCost)));
+      payRows.push('<div class="pl-feerow pl-subrow"><span>Cookie Consent Banner</span><b>included</b></div>');
+      payRows.push('<div class="pl-feerow pl-subrow"><span>Consent Ledger</span><b>included</b></div>');
+    }
     var payEl = $("[data-o-pay-rows]"); if (payEl) payEl.innerHTML = payRows.join("");
     tween($("[data-o-pay]"), r.totalSpend, money, "pay");
     // "What you get" — leads per source (biggest first)

@@ -831,6 +831,13 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
   padding: 9px 0; border-bottom: 1px solid var(--line-soft); font-size: .92rem; color: var(--ink-variant); }
 .pl-feerow b { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
 .pl-fee-dest { color: var(--ink-variant); font-weight: 600; font-size: .82em; white-space: nowrap; }
+/* bundled sub-items (e.g. ConsentResolve tools included with Missed-Visitor Leads) */
+.pl-feerow.pl-subrow { padding: 6px 0 6px 20px; font-size: .85rem; border-bottom: 0; }
+.pl-feerow.pl-subrow > span { color: var(--ink-variant); position: relative; }
+.pl-feerow.pl-subrow > span::before { content: "\21b3"; position: absolute; left: -15px; color: var(--line); }
+.pl-feerow.pl-subrow > b { color: var(--ink-variant); font-weight: 600; font-size: .82em; letter-spacing: .02em; }
+.pl-feerow:has(+ .pl-subrow) { border-bottom: 0; }
+.pl-feerow.pl-subrow:last-of-type { border-bottom: 1px solid var(--line-soft); padding-bottom: 10px; }
 .pl-feerow.total { border-bottom: 0; padding-top: 12px; font-size: 1rem; font-weight: 700; color: var(--ink); }
 .pl-feerow.total b { color: var(--primary-container); font-size: 1.15rem; }
 /* channel breakdown bars */
