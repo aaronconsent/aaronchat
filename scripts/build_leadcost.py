@@ -203,7 +203,7 @@ def stats_body():
     Turn reviews off and it drops &mdash; you can&rsquo;t stay ranked in Maps without review velocity.</li>
     <li><b>Quality lifts and volume lifts are separate.</b> Reviews and a real website raise your <em>booking rate</em>; GBP
     and multichannel raise your <em>lead count</em>. I never let one masquerade as the other.</li>
-    <li><b>Organic leads ride on top, not through the lifts.</b> Anonymous site traffic that ConsentResolve turns into a
+    <li><b>Missed-Visitor Leads ride on top, not through the lifts.</b> Anonymous site traffic that ConsentResolve turns into a
     named lead (~$7 each) books low (~1 in 20) and doesn&rsquo;t get amplified by anything.</li>
     <li><b>Total eyeballs = impressions served, not people.</b> The same neighbor gets counted across Maps, your site and
     social. It&rsquo;s the &ldquo;how often your name shows up&rdquo; number.</li>

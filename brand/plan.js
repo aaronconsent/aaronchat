@@ -48,8 +48,8 @@
   var SERVICES = [
     { id: "web", label: "Website & local SEO", group: "Website & Growth", kind: "owned", on: true, locked: true },
     { id: "gbp", label: "Google Business Profile", group: "Website & Growth", kind: "owned", on: false },
-    { id: "reviews", label: "Reviews on autopilot", group: "Website & Growth", kind: "lift", on: false },
-    { id: "resolve", label: "Organic leads", group: "Website & Growth", kind: "owned", on: false },
+    { id: "reviews", label: "Review Autopilot", group: "Website & Growth", kind: "lift", on: false },
+    { id: "resolve", label: "Missed-Visitor Leads", group: "Website & Growth", kind: "owned", on: false },
     { id: "social", label: "Managed Content & Posting", group: "Social Media", kind: "owned", on: false },
     { id: "ads", label: "Google Ads", group: "Paid ads", kind: "paid", on: false },
     { id: "lsa", label: "Google LSA", group: "Paid ads", kind: "paid", on: false },
@@ -119,7 +119,7 @@
       resolvedBooked = resolved * 0.05;                     // resolved visitors book low (~1 in 20)
       resolveCost = resolved * 7;                           // real money — $7/resolved visitor
       totalLeads += resolved; bookedJobs += resolvedBooked;
-      rows.push({ label: "Organic leads (resolved visitors)", leads: resolved, spend: resolveCost, eyeballs: 0, booked: resolvedBooked });
+      rows.push({ label: "Missed-Visitor Leads", leads: resolved, spend: resolveCost, eyeballs: 0, booked: resolvedBooked });
     }
     // GBP + social leads ride on top too — they're their own channels, not amplified by the lead lift
     totalLeads += socialLeads + gbpLeads; bookedJobs += socialBooked + gbpBooked;
@@ -193,7 +193,7 @@
     tween($("[data-o-payme]"), r.feeTotal, money, "payme");
     // group 2 — what you buy for yourself (ad spend per channel + resolution) — only what's on
     var selfRows = r.adLines.map(function (a) { return { label: a.label + ' <span class="pl-fee-dest">&rarr; ' + a.dest + '</span>', amt: a.amt }; });
-    if (r.resolveCost > 0) selfRows.push({ label: 'Organic leads <b>$7 &times; resolved</b>', amt: r.resolveCost });
+    if (r.resolveCost > 0) selfRows.push({ label: 'Missed-Visitor Leads <b>$7 &times; resolved</b>', amt: r.resolveCost });
     var selfTotal = selfRows.reduce(function (s, x) { return s + x.amt; }, 0);
     var self = $("[data-o-fee-self]"), selfPanel = $("[data-buyself]");
     if (self) self.innerHTML = selfRows.map(function (x) { return feerow(x.label, x.amt); }).join("");

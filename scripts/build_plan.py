@@ -108,7 +108,7 @@ BODY = f'''
         Turn reviews off and it drops, because you can't hold Maps rank without review velocity.</li>
         <li><b>Total eyeballs = impressions served, not unique people.</b> The same neighbor gets counted across Maps, your
         site, and social. It's the "how often your name shows up" number, not reach.</li>
-        <li><b>Organic leads</b> are anonymous site visitors ConsentResolve turns into a named lead at ~$7 &mdash; they book
+        <li><b>Missed-Visitor Leads</b> are anonymous site visitors ConsentResolve turns into a named lead at ~$7 &mdash; they book
         low (~1 in 20), but they're cheap and they're yours. They ride on top and don't get amplified by anything.</li>
         <li><b>Social media</b> (7 networks, daily posts + reels) adds ~10&ndash;12 inbound leads a month, weighted by how well
         your trade does on social &mdash; visual, before-&-after work (remodels, landscaping, pools) earns more than urgent
