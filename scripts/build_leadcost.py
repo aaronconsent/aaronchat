@@ -194,12 +194,12 @@ def stats_body():
   several channels together &mdash; and it&rsquo;s built on the same live cost-per-lead and booking numbers as this page, plus
   a short list of published lift benchmarks. Here&rsquo;s how I keep that projection honest:</p>
   <ul class="caveats">
-    <li><b>The lifts don&rsquo;t stack.</b> Speed-to-lead (~1.8&times; booking), reviews (+25%), a real website (+20%), Google
-    Business Profile (+30% leads) and being on several channels (+40% leads) all overlap. I discount the overlap instead of
-    multiplying straight through, and <b>no channel books above 60%</b> no matter how much you optimize.</li>
-    <li><b>Quality lifts and volume lifts are separate.</b> Speed, reviews and CRO raise your <em>booking rate</em>; GBP and
-    multichannel raise your <em>lead count</em>. I never let one masquerade as the other.</li>
-    <li><b>Resolved visitors ride on top, not through the lifts.</b> Anonymous site traffic that ConsentResolve turns into a
+    <li><b>The lifts don&rsquo;t stack.</b> Reviews (+25% booking), a real website (+20% booking), Google Business Profile
+    (+30% leads) and being on several channels (+40% leads) all overlap. I discount the overlap instead of multiplying
+    straight through, and <b>no channel books above 60%</b> no matter how much you optimize.</li>
+    <li><b>Quality lifts and volume lifts are separate.</b> Reviews and a real website raise your <em>booking rate</em>; GBP
+    and multichannel raise your <em>lead count</em>. I never let one masquerade as the other.</li>
+    <li><b>Organic leads ride on top, not through the lifts.</b> Anonymous site traffic that ConsentResolve turns into a
     named lead (~$7 each) books low (~1 in 20) and doesn&rsquo;t get amplified by anything.</li>
     <li><b>Total eyeballs = impressions served, not people.</b> The same neighbor gets counted across Maps, your site and
     social. It&rsquo;s the &ldquo;how often your name shows up&rdquo; number.</li>

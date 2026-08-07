@@ -17,6 +17,9 @@ TAIL = IDX[IDX.index('<!-- sticky mobile call bar'):IDX.index('</body>')]
 PIXEL = IDX[IDX.index('<!-- Meta Pixel -->'):IDX.index('</script>', IDX.index('<!-- Meta Pixel -->')) + len('</script>')]
 PHONE = '<svg><use href="#i-phone"/></svg>'
 REF_JSON = json.dumps(REF, ensure_ascii=False, separators=(",", ":"))
+# reuse the homepage rate-board trade list so the gate form stays in sync
+_sel = IDX.index('<select id="lc-trade"')
+TRADE_OPTS = IDX[IDX.index('>', _sel) + 1:IDX.index('</select>', _sel)].strip()
 
 # sources for the disclosure (dedup by url)
 _src = {}
@@ -34,13 +37,35 @@ BODY = f'''
 </div></div>
 
 <section class="sec sec-low"><div class="wrap">
-  <div class="plan" data-plan>
+  <!-- GATE: no ZIP+trade yet — send them to look up their real market first -->
+  <div class="plan-gate" data-plan-gate hidden>
+    <div class="plan-gate-card">
+      <h2>First, your real market</h2>
+      <p>This plan runs on <b>your</b> live cost-per-lead and booking numbers &mdash; not made-up averages. Drop in your
+      ZIP and trade and I&rsquo;ll build it around what leads actually cost where you work.</p>
+      <form class="plan-gate-form" novalidate>
+        <div class="lc-field">
+          <label for="pg-zip">Your ZIP</label>
+          <input id="pg-zip" name="zip" type="text" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="77331">
+        </div>
+        <div class="lc-field">
+          <label for="pg-trade">Your trade</label>
+          <select id="pg-trade" name="trade">{TRADE_OPTS}</select>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Build my plan</button>
+        <p class="lc-status" data-gate-status hidden></p>
+      </form>
+      <p class="plan-gate-alt">Or start from the <a href="/#lead-cost">lead-cost calculator</a> on the home page.</p>
+    </div>
+  </div>
+
+  <div class="plan" data-plan hidden>
     <!-- LEFT: controls -->
     <div class="plan-controls">
       <div class="plan-budget">
-        <div class="plan-budget-head"><label for="pl-budget">Monthly ad budget</label><b data-plan-budgetval>$2,000</b></div>
-        <input id="pl-budget" type="range" min="500" max="10000" step="250" value="2000" data-plan-budget>
-        <div class="plan-budget-scale"><span>$500</span><span>$10k</span></div>
+        <div class="plan-budget-head"><label for="pl-budget">Monthly ad budget</label><b data-plan-budgetval>$0</b></div>
+        <input id="pl-budget" type="range" min="0" max="10000" step="250" value="0" data-plan-budget>
+        <div class="plan-budget-scale"><span>$0</span><span>$10k</span></div>
       </div>
       <div class="plan-toggles" data-plan-toggles><!-- toggles injected --></div>
     </div>
@@ -75,13 +100,13 @@ BODY = f'''
       <ul>
         <li><b>Cost per lead</b> is your live, market-localized figure (same engine as the rate board). <b>Booked jobs</b> use
         real per-trade, per-channel booking rates.</li>
-        <li><b>The lifts don't stack.</b> Fast response (~1.8&times; booking), reviews (+25%), a real website (+20%), Google
-        Business Profile (+30% leads), and being on several channels (+40% leads) all help &mdash; but they overlap, so I
-        <b>discount the overlap</b> (never multiply straight through) and cap the combined booking lift at 2.5&times;.</li>
+        <li><b>The lifts don't stack.</b> Reviews (+25% booking), a real website (+20% booking), Google Business Profile
+        (+30% leads), and being on several channels (+40% leads) all help &mdash; but they overlap, so I <b>discount the
+        overlap</b> (never multiply straight through) and <b>no channel books above 60%</b>, no matter how much you optimize.</li>
         <li><b>Total eyeballs = impressions served, not unique people.</b> The same neighbor gets counted across Maps, your
         site, and social. It's the "how often your name shows up" number, not reach.</li>
-        <li><b>Resolved visitors</b> are anonymous site traffic that ConsentResolve turns into a named lead at ~$7 &mdash; they
-        book low (~1 in 20), but they're cheap and they're yours.</li>
+        <li><b>Organic leads</b> are anonymous site visitors ConsentResolve turns into a named lead at ~$7 &mdash; they book
+        low (~1 in 20), but they're cheap and they're yours. They ride on top and don't get amplified by anything.</li>
         <li><b>Everything you pay me is on the table</b> above: Website &amp; Growth $500/mo, Social $500/mo, ad management 15%
         of spend. Ad spend goes to Google/Meta, never to me.</li>
       </ul>

@@ -344,9 +344,11 @@
           goEl.disabled = false; goEl.classList.remove("loading");
           if (!data || !data.ok) { setStatus((data && data.error) || "Couldn't pull that one — try again.", true); return; }
           setStatus("", false); render(data);
-          // carry this market into the growth-plan lead-in
+          // reveal + carry this market into the growth-plan lead-in (hidden until they've run a lookup)
           var planLink = d.querySelector("[data-plan-link]");
-          if (planLink) planLink.href = "/plan/?zip=" + encodeURIComponent(zip) + "&trade=" + encodeURIComponent(trade);
+          if (planLink) { planLink.href = "/plan/?zip=" + encodeURIComponent(zip) + "&trade=" + encodeURIComponent(trade); planLink.hidden = false; }
+          var pReady = d.querySelector("[data-plan-ready]"), pHint = d.querySelector("[data-plan-hint]");
+          if (pReady) pReady.hidden = false; if (pHint) pHint.hidden = true;
         })
         .catch(function () { goEl.disabled = false; goEl.classList.remove("loading"); setStatus("Network hiccup — give it another go.", true); });
     });

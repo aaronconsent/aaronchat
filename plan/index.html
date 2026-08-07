@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://aaron.chat/plan/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/ha.css?v=132">
+<link rel="stylesheet" href="/brand/ha.css?v=133">
 <!-- Meta Pixel -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -62,13 +62,54 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
 </div></div>
 
 <section class="sec sec-low"><div class="wrap">
-  <div class="plan" data-plan>
+  <!-- GATE: no ZIP+trade yet — send them to look up their real market first -->
+  <div class="plan-gate" data-plan-gate hidden>
+    <div class="plan-gate-card">
+      <h2>First, your real market</h2>
+      <p>This plan runs on <b>your</b> live cost-per-lead and booking numbers &mdash; not made-up averages. Drop in your
+      ZIP and trade and I&rsquo;ll build it around what leads actually cost where you work.</p>
+      <form class="plan-gate-form" novalidate>
+        <div class="lc-field">
+          <label for="pg-zip">Your ZIP</label>
+          <input id="pg-zip" name="zip" type="text" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="77331">
+        </div>
+        <div class="lc-field">
+          <label for="pg-trade">Your trade</label>
+          <select id="pg-trade" name="trade"><option value="hvac">HVAC</option>
+              <option value="plumbing">Plumbing</option>
+              <option value="electrical">Electrical</option>
+              <option value="roofing">Roofing</option>
+              <option value="roofing_gutters">Gutters</option>
+              <option value="windows">Windows &amp; doors</option>
+              <option value="siding">Siding</option>
+              <option value="garage">Garage door</option>
+              <option value="painting">Painting</option>
+              <option value="remodeling">Remodeling / general contractor</option>
+              <option value="flooring">Flooring</option>
+              <option value="fencing">Fencing</option>
+              <option value="concrete">Concrete / paving</option>
+              <option value="landscaping">Lawn &amp; landscaping</option>
+              <option value="tree">Tree service</option>
+              <option value="pest">Pest control</option>
+              <option value="pool">Pool service</option>
+              <option value="solar">Solar</option>
+              <option value="handyman">Handyman</option>
+              <option value="cleaning">House cleaning</option></select>
+        </div>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Build my plan</button>
+        <p class="lc-status" data-gate-status hidden></p>
+      </form>
+      <p class="plan-gate-alt">Or start from the <a href="/#lead-cost">lead-cost calculator</a> on the home page.</p>
+    </div>
+  </div>
+
+  <div class="plan" data-plan hidden>
     <!-- LEFT: controls -->
     <div class="plan-controls">
       <div class="plan-budget">
-        <div class="plan-budget-head"><label for="pl-budget">Monthly ad budget</label><b data-plan-budgetval>$2,000</b></div>
-        <input id="pl-budget" type="range" min="500" max="10000" step="250" value="2000" data-plan-budget>
-        <div class="plan-budget-scale"><span>$500</span><span>$10k</span></div>
+        <div class="plan-budget-head"><label for="pl-budget">Monthly ad budget</label><b data-plan-budgetval>$0</b></div>
+        <input id="pl-budget" type="range" min="0" max="10000" step="250" value="0" data-plan-budget>
+        <div class="plan-budget-scale"><span>$0</span><span>$10k</span></div>
       </div>
       <div class="plan-toggles" data-plan-toggles><!-- toggles injected --></div>
     </div>
@@ -103,13 +144,13 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
       <ul>
         <li><b>Cost per lead</b> is your live, market-localized figure (same engine as the rate board). <b>Booked jobs</b> use
         real per-trade, per-channel booking rates.</li>
-        <li><b>The lifts don't stack.</b> Fast response (~1.8&times; booking), reviews (+25%), a real website (+20%), Google
-        Business Profile (+30% leads), and being on several channels (+40% leads) all help &mdash; but they overlap, so I
-        <b>discount the overlap</b> (never multiply straight through) and cap the combined booking lift at 2.5&times;.</li>
+        <li><b>The lifts don't stack.</b> Reviews (+25% booking), a real website (+20% booking), Google Business Profile
+        (+30% leads), and being on several channels (+40% leads) all help &mdash; but they overlap, so I <b>discount the
+        overlap</b> (never multiply straight through) and <b>no channel books above 60%</b>, no matter how much you optimize.</li>
         <li><b>Total eyeballs = impressions served, not unique people.</b> The same neighbor gets counted across Maps, your
         site, and social. It's the "how often your name shows up" number, not reach.</li>
-        <li><b>Resolved visitors</b> are anonymous site traffic that ConsentResolve turns into a named lead at ~$7 &mdash; they
-        book low (~1 in 20), but they're cheap and they're yours.</li>
+        <li><b>Organic leads</b> are anonymous site visitors ConsentResolve turns into a named lead at ~$7 &mdash; they book
+        low (~1 in 20), but they're cheap and they're yours. They ride on top and don't get amplified by anything.</li>
         <li><b>Everything you pay me is on the table</b> above: Website &amp; Growth $500/mo, Social $500/mo, ad management 15%
         of spend. Ad spend goes to Google/Meta, never to me.</li>
       </ul>
@@ -123,7 +164,7 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
 </div></section>
 
 <script id="plan-ref" type="application/json">{"_meta":{"note":"Reference numbers for the interactive Growth-Plan dashboard (the 'see how I make this better' story). Sourced 2026-08 via research agents. STAGED, not yet wired into a page. Everything here is a benchmark/model, labeled as illustration — never a guarantee.","reviewed":"2026-08","honesty_rules":["Lifts are NOT additive/stackable — combining mechanisms overlaps; discount, don't multiply. Blended booking uplift ~1.5-2.5x, driven mostly by speed-to-lead + reviews.","Total Eyeballs = gross impressions (times shown), NOT unique people. GBP/organic-web/organic-social overlap heavily; apply a ~40-70% de-dupe haircut for approximate unique reach.","Google SEARCH ads reach honestly ~2-3 impressions/$ (high CTR => effective CPM ~$490); the 30-80/$ figure blends in Display/PMax and overstates search-text eyeballs.","LSA impressions/$ is modeled from CPL and an assumed view->lead rate; weakest number here.","Every projected result is an illustration of market rates, not a guarantee; varies by trade, market, season, ticket size, and execution."]},"lifts":{"speed_to_lead":{"booking_multiplier":1.8,"range":[1.4,3.0],"tier":"directional","src":"MIT/InsideSales Lead Response Mgmt + Threekit 2026","note":"fast response vs 'answering most of the time'"},"reviews":{"conversion_lift_pct":25,"range":[10,50],"tier":"directional","src":"BrightLocal Local Consumer Review Survey 2025"},"gbp":{"lead_lift_pct":30,"range":[15,70],"tier":"directional","src":"Birdeye State of GBP 2026 / WebFX 2026"},"multichannel":{"lead_lift_pct":40,"range":[20,90],"tier":"modeled","src":"Omnichannel studies, down-weighted from retail"},"website_cro":{"conversion_lift_pct":20,"range":[10,40],"tier":"directional","src":"Google/Deloitte Milliseconds Make Millions + CRO studies"},"email_repeat":{"revenue_lift_pct":15,"range":[5,30],"tier":"directional","src":"Coalmarch home-services ROI 2025 + referral ROI"}},"budget_mix":{"search":0.3,"lsa":0.2,"social":0.12,"seo_owned":0.22,"email":0.06,"other":0.1,"src":"PipelineOn/MarketingCode 2026 + typical home-services allocation","tier":"directional"},"leads_per_1000":{"google_ads":8,"lsa":20,"facebook":24,"src":"derived from 2025-26 CPLs (LocaliQ/SearchLight/Coinis)","tier":"directional","note":"raw leads, not booked jobs; LSA/FB leads lower-intent per lead than search"},"reach":{"google_ads":{"impressions_per_dollar":2.5,"range":[2,8],"tier":"directional","src":"LocaliQ/WordStream 2025 (CPC $7.85 x CTR 6.37% => CPM ~$490)","note":"search-text only; excludes display/PMax"},"lsa":{"impressions_per_dollar":1,"range":[0.4,2.5],"tier":"modeled","src":"SearchLight LSA 2026 (modeled from CPL / view->lead)"},"meta":{"impressions_per_dollar":90,"range":[55,150],"tier":"directional","src":"Affect Group Meta CPM Q4 2025 (~$11 CPM) + LocaliQ FB 2025"},"gbp":{"monthly_impressions":1400,"range":[400,3000],"tier":"directional","src":"WebFX 2026 GBP Benchmarks (~1,420 views/mo) + BrightLocal + Birdeye"},"organic_web":{"monthly_impressions":3000,"range":[800,12000],"tier":"modeled","src":"Ahrefs 2026 + Databox GSC (modeled to single-location local SMB)"},"organic_social":{"monthly_impressions":1200,"range":[400,5000],"tier":"directional","src":"Socialinsider 2025/26 (FB organic reach ~1.65%/post) + Hootsuite"}},"sources":[{"name":"MIT/InsideSales Lead Response Management Study (5-min rule)","url":"https://leadresponse.co/blog/speed-to-lead-statistics"},{"name":"Threekit — 47 Stats: Door & Window Marketing 2026","url":"https://www.threekit.com/blog/47-stats-door-window-marketing-2026"},{"name":"BrightLocal — Local Consumer Review Survey 2025","url":"https://www.brightlocal.com/research/local-consumer-review-survey-2025/"},{"name":"Birdeye — State of Google Business Profile 2026","url":"https://birdeye.com/blog/state-of-google-business-profiles/"},{"name":"WebFX — 2026 Google Business Profile Benchmarks","url":"https://www.webfx.com/blog/seo/google-business-profile-benchmarks/"},{"name":"Google/Deloitte — Milliseconds Make Millions","url":"https://nitropack.io/blog/how-page-speed-affects-conversion/"},{"name":"Coalmarch — Home Services Marketing ROI 2025","url":"https://www.coalmarch.com/resources/blog/home-services-marketing-roi"},{"name":"Affect Group — US Meta Ads CPM Q4 2025","url":"https://affectgroup.com/blog/meta-ads-cpm-in-the-us-2025-benchmarks-for-facebook-and-instagram/"},{"name":"LocaliQ — 2025 Home Services Search Ad Benchmarks","url":"https://localiq.com/blog/home-services-search-advertising-benchmarks/"},{"name":"SearchLight Digital — LSA CPL by Trade 2026","url":"https://searchlightdigital.io/google-local-service-ads-cost-per-lead/"},{"name":"Socialinsider — Social Media Reach Statistics 2025/2026","url":"https://www.socialinsider.io/blog/social-media-reach/"},{"name":"Ahrefs — Average Organic Traffic Benchmarks 2026","url":"https://ahrefs.com/blog/average-organic-traffic-benchmarks/"}]}</script>
-<script src="/brand/plan.js?v=132" defer></script>
+<script src="/brand/plan.js?v=133" defer></script>
 
 </main>
 <!-- sticky mobile call bar (rule 1) -->
@@ -216,7 +257,7 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
   </div>
 </div>
 
-<script src="/brand/ha.js?v=132" defer></script>
+<script src="/brand/ha.js?v=133" defer></script>
 
 </body>
 </html>
