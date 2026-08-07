@@ -1662,7 +1662,7 @@ async function handleLeadCost(request, env, ctx) {
   const state = lcZipState(zip);
   if (!state || state === "Armed Forces") return json({ ok: false, error: "That ZIP isn't a US service area I can price." }, 400);
 
-  const cacheKey = `leadcost:v8:${tradeKey}:${state}`;
+  const cacheKey = `leadcost:v9:${tradeKey}:${state}`;
   if (env.SETUP_KV && url.searchParams.get("debug") !== "1") {
     const hit = await env.SETUP_KV.get(cacheKey);
     if (hit) {
@@ -1688,19 +1688,16 @@ async function handleLeadCost(request, env, ctx) {
   const fbCpl = scale(bench.fb, "fb");
   // cost per booked job = cost per lead / booking rate (per-trade, per-channel; falls back to blended)
   const bk = bench.book || {};
-  function cpbj(cpl, key) {
-    if (cpl == null) return null;
-    var rate = (bk[key] != null && bk[key] > 0) ? bk[key] : (bk.blended || 0.30);
-    return round5(cpl / rate);
-  }
+  function rateFor(key) { return (bk[key] != null && bk[key] > 0) ? bk[key] : (bk.blended || 0.30); }
+  function cpbj(cpl, key) { return cpl == null ? null : round5(cpl / rateFor(key)); }
 
   const payload = {
-    ok: true, zip, trade: tradeKey, tradeLabel: bench.label, market: state, live, as_of: "2025",
+    ok: true, zip, trade: tradeKey, tradeLabel: bench.label, market: state, live, as_of: "2025", factor: factor,
     channels: [
-      { key: "google_ads", label: "Google Ads", cpl: adsCpl, cpbj: cpbj(adsCpl, "ads"), live, unit: "per lead", tier: bench.ads[1], source: bench.ads[2] },
-      { key: "google_lsa", label: "Google LSA", cpl: lsaCpl, cpbj: cpbj(lsaCpl, "lsa"), na: lsaCpl == null, live: false, unit: "per lead", tier: bench.lsa[1], source: bench.lsa[2] },
-      { key: "facebook", label: "Facebook Ads", cpl: fbCpl, cpbj: cpbj(fbCpl, "fb"), live: false, unit: "per lead", tier: bench.fb[1], source: bench.fb[2] },
-      { key: "organic", label: "Organic", cpl: 7, cpbj: cpbj(7, "organic"), live: false, unit: "per lead", tier: "flat" }
+      { key: "google_ads", label: "Google Ads", cpl: adsCpl, cpbj: cpbj(adsCpl, "ads"), bookRate: rateFor("ads"), live, unit: "per lead", tier: bench.ads[1], source: bench.ads[2] },
+      { key: "google_lsa", label: "Google LSA", cpl: lsaCpl, cpbj: cpbj(lsaCpl, "lsa"), bookRate: rateFor("lsa"), na: lsaCpl == null, live: false, unit: "per lead", tier: bench.lsa[1], source: bench.lsa[2] },
+      { key: "facebook", label: "Facebook Ads", cpl: fbCpl, cpbj: cpbj(fbCpl, "fb"), bookRate: rateFor("fb"), live: false, unit: "per lead", tier: bench.fb[1], source: bench.fb[2] },
+      { key: "organic", label: "Organic", cpl: 7, cpbj: cpbj(7, "organic"), bookRate: rateFor("organic"), live: false, unit: "per lead", tier: "flat" }
     ],
     statsUrl: "/stats/",
     _debug: url.searchParams.get("debug") === "1" ? (mf && mf.dbg) : undefined,

@@ -1,0 +1,225 @@
+/* Growth-Plan dashboard — interactive "see how I make this better" model.
+   Runs only on /plan/. Reads the trade's LIVE per-market numbers from /api/lead-cost,
+   layers the sourced reference model (embedded in #plan-ref), and recomputes on every
+   toggle/slider change. Every output is a PROJECTION, labeled as an illustration. */
+(function () {
+  "use strict";
+  var d = document, w = window;
+  var root = d.querySelector("[data-plan]"); if (!root) return;
+  var reduce = w.matchMedia && w.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var REF = {};
+  try { REF = JSON.parse(d.getElementById("plan-ref").textContent); } catch (e) { REF = {}; }
+
+  // ---- read ?zip & ?trade ----
+  var qs = new URLSearchParams(w.location.search);
+  var zip = (qs.get("zip") || "").replace(/\D/g, "").slice(0, 5);
+  var trade = (qs.get("trade") || "hvac").toLowerCase();
+
+  // ---- national fallback CPLs/book (if the live call fails) ----
+  var FALLBACK = {
+    google_ads: { cpl: 130, bookRate: 0.30 }, google_lsa: { cpl: 53, bookRate: 0.44 },
+    facebook: { cpl: 41, bookRate: 0.16 }, organic: { cpl: 7, bookRate: 0.05 }
+  };
+  var market = { tradeLabel: "your trade", market: "", live: false, ch: FALLBACK };
+
+  // ---- model coefficients (all documented in the on-page "how this is modeled") ----
+  var reach = (REF.reach || {});
+  function rper(k, def) { return (reach[k] && reach[k].impressions_per_dollar) || def; }
+  function rmon(k, def) { return (reach[k] && reach[k].monthly_impressions) || def; }
+  var REACH$ = { ads: rper("google_ads", 2.5), lsa: rper("lsa", 1), fb: rper("meta", 90) };
+  var REACH_MON = { web: rmon("organic_web", 3000), gbp: rmon("gbp", 1400), social: rmon("organic_social", 1200) };
+  var L = (REF.lifts || {});
+  function lift(k, field, def) { return (L[k] && L[k][field]) || def; }
+  var FAST = lift("speed_to_lead", "booking_multiplier", 1.8);
+  var REVIEWS = 1 + lift("reviews", "conversion_lift_pct", 25) / 100;
+  var CRO = 1 + lift("website_cro", "conversion_lift_pct", 20) / 100;
+  var GBP_LIFT = lift("gbp", "lead_lift_pct", 30) / 100;
+  var MULTI_LIFT = lift("multichannel", "lead_lift_pct", 40) / 100;
+  var EMAIL = 1 + lift("email_repeat", "revenue_lift_pct", 15) / 100;
+  var mix = REF.budget_mix || { search: 0.30, lsa: 0.20, social: 0.12 };
+
+  // combine lifts with an overlap discount (never stack straight through), cap the multiplier
+  function combine(mults, cap) {
+    var extra = 0; for (var i = 0; i < mults.length; i++) extra += (mults[i] - 1);
+    return Math.min(cap, 1 + 0.6 * extra);
+  }
+
+  // ---- services (toggles) ----
+  var SERVICES = [
+    { id: "ads", label: "Google Ads", group: "Paid ads", kind: "paid", on: true },
+    { id: "lsa", label: "Google LSA", group: "Paid ads", kind: "paid", on: true },
+    { id: "fb", label: "Facebook / Instagram ads", group: "Paid ads", kind: "paid", on: false },
+    { id: "web", label: "Website & local SEO", group: "Owned (Website & Growth)", kind: "owned", on: true },
+    { id: "gbp", label: "Google Business Profile", group: "Owned (Website & Growth)", kind: "owned", on: true },
+    { id: "reviews", label: "Reviews on autopilot", group: "Owned (Website & Growth)", kind: "lift", on: true },
+    { id: "resolve", label: "Resolve anonymous visitors", group: "Owned (Website & Growth)", kind: "owned", on: true },
+    { id: "email", label: "Email & repeat / referral", group: "Owned (Website & Growth)", kind: "lift", on: false },
+    { id: "fast", label: "Speed-to-lead (I answer)", group: "How you run it", kind: "lift", on: true },
+    { id: "social", label: "Daily social posting", group: "Social", kind: "owned", on: false }
+  ];
+  var state = { budget: 2000, on: {} };
+  SERVICES.forEach(function (s) { state.on[s.id] = s.on; });
+
+  // ---- the model ----
+  function compute() {
+    var on = state.on, ch = market.ch, adSpend = state.budget;
+    var paid = [];
+    if (on.ads) paid.push({ k: "ads", ck: "google_ads", w: mix.search });
+    if (on.lsa) paid.push({ k: "lsa", ck: "google_lsa", w: mix.lsa });
+    if (on.fb) paid.push({ k: "fb", ck: "facebook", w: mix.social });
+    var wsum = paid.reduce(function (a, p) { return a + p.w; }, 0) || 1;
+
+    // lift multipliers depend only on toggles. Quality lifts (speed, reviews, CRO) raise the
+    // BOOKING rate; volume lifts (GBP, multichannel) raise LEAD count. Both overlap-discounted + capped.
+    var qualExtra = (on.fast ? (FAST - 1) : 0) + (on.reviews ? (REVIEWS - 1) : 0) + (on.web ? (CRO - 1) : 0);
+    var bookMult = Math.min(1.7, 1 + 0.45 * qualExtra);
+    var isMulti = (paid.length + (on.web ? 1 : 0) + (on.social ? 1 : 0)) >= 3;
+    var volExtra = (on.gbp ? GBP_LIFT : 0) + (isMulti ? MULTI_LIFT : 0);
+    var leadMult = Math.min(1.35, 1 + 0.40 * volExtra);
+    var emailMult = on.email ? EMAIL : 1;
+    var BOOK_CEIL = 0.60;  // no channel books above 60%, even fully optimized — keeps it honest
+    function effBook(br) { return Math.min(BOOK_CEIL, br * bookMult); }
+
+    var rows = [], leads = 0, booked = 0, eyeballs = 0, siteVisitors = 0;
+    paid.forEach(function (p) {
+      var spend = adSpend * (p.w / wsum);
+      var cpl = (ch[p.ck] && ch[p.ck].cpl) || FALLBACK[p.ck].cpl;
+      var br = (ch[p.ck] && ch[p.ck].bookRate) || FALLBACK[p.ck].bookRate;
+      var ld = spend / cpl, bk = ld * effBook(br), eye = spend * (REACH$[p.k] || 1);
+      leads += ld; booked += bk; eyeballs += eye; siteVisitors += ld / 0.10; // ~10% of clicks become leads
+      rows.push({ label: labelFor(p.ck), leads: ld, spend: spend, eyeballs: eye, booked: bk });
+    });
+
+    // owned channels
+    if (on.web) { eyeballs += REACH_MON.web; var owl = 6, owb = owl * effBook(0.35); leads += owl; booked += owb; siteVisitors += 250; rows.push({ label: "Website / SEO (organic)", leads: owl, spend: 0, eyeballs: REACH_MON.web, booked: owb }); }
+    if (on.gbp) { eyeballs += REACH_MON.gbp; rows.push({ label: "Google Business Profile", leads: 0, spend: 0, eyeballs: REACH_MON.gbp, booked: 0 }); }
+    if (on.social) { eyeballs += REACH_MON.social; rows.push({ label: "Social posts (organic)", leads: 0, spend: 0, eyeballs: REACH_MON.social, booked: 0 }); }
+
+    // volume lift scales the paid+organic side (more calls in) — applied to leads AND their booked jobs
+    var totalLeads = leads * leadMult;
+    var bookedJobs = booked * leadMult;
+
+    // resolved anonymous visitors ride on top: cheap, low-booking, NOT amplified by the lifts
+    var resolved = 0, resolvedBooked = 0, resolveCost = 0;
+    if (on.resolve && (on.web || paid.length)) {
+      resolved = Math.round(0.12 * siteVisitors);           // ~12% of anonymous traffic identified
+      resolvedBooked = resolved * 0.05;                     // resolved visitors book low (~1 in 20)
+      resolveCost = resolved * 7;                           // real money — $7/resolved visitor
+      totalLeads += resolved; bookedJobs += resolvedBooked;
+      rows.push({ label: "Resolved visitors (ConsentResolve)", leads: resolved, spend: resolveCost, eyeballs: 0, booked: resolvedBooked });
+    }
+    bookedJobs *= emailMult;
+    totalLeads = Math.round(totalLeads);
+
+    // budget: ad spend + resolution spend + Aaron's fee (fully transparent)
+    var fee = [];
+    var ownedOn = on.web || on.gbp || on.reviews || on.resolve || on.email || on.fast;
+    if (ownedOn) fee.push({ label: "Website & Growth", amt: 500 });
+    if (on.social) fee.push({ label: "Social Media", amt: 500 });
+    if (paid.length) fee.push({ label: "Ad management (15% of spend)", amt: Math.round(adSpend * 0.15) });
+    var feeTotal = fee.reduce(function (a, f) { return a + f.amt; }, 0);
+    var totalSpend = adSpend + resolveCost + feeTotal;
+    var cpbj = bookedJobs > 0 ? totalSpend / bookedJobs : 0;
+
+    // "autopilot" anchor: one expensive channel, no lifts — straight off the rate board (Google Ads cost per booked job)
+    var anchorCh = ch.google_ads || FALLBACK.google_ads;
+    var anchorCpbj = (anchorCh.cpl && anchorCh.bookRate) ? anchorCh.cpl / anchorCh.bookRate : 0;
+
+    return {
+      adSpend: adSpend, resolveCost: resolveCost, fee: fee, feeTotal: feeTotal, totalSpend: totalSpend, anchorCpbj: anchorCpbj,
+      leads: Math.round(totalLeads), bookedJobs: bookedJobs, cpbj: cpbj, eyeballs: Math.round(eyeballs),
+      rows: rows.sort(function (a, b) { return b.eyeballs + b.leads * 500 - (a.eyeballs + a.leads * 500); })
+    };
+  }
+  function labelFor(ck) { return ({ google_ads: "Google Ads", google_lsa: "Google LSA", facebook: "Facebook ads" })[ck] || ck; }
+
+  // ---- rendering ----
+  var $ = function (s) { return root.querySelector(s); };
+  function money(n) { return "$" + Math.round(n).toLocaleString("en-US"); }
+  function big(n) { return n >= 1000 ? "$" + (Math.round(n / 100) / 10).toLocaleString("en-US") + "k" : "$" + Math.round(n).toLocaleString("en-US"); }
+  function num(n) { return Math.round(n).toLocaleString("en-US"); }
+
+  var tweens = {};
+  function tween(el, to, fmt, key) {
+    if (!el) return;
+    if (reduce) { el.textContent = fmt(to); return; }
+    var from = parseFloat(el.getAttribute("data-v") || "0"), begin = null, id = {}; tweens[key] = id;
+    function step(ts) { if (tweens[key] !== id) return; if (begin === null) begin = ts;
+      var p = Math.min(1, (ts - begin) / 550), e = 1 - Math.pow(1 - p, 4), v = from + (to - from) * e;
+      el.textContent = fmt(v); if (p < 1) requestAnimationFrame(step); else { el.textContent = fmt(to); el.setAttribute("data-v", to); } }
+    requestAnimationFrame(step);
+  }
+
+  function render() {
+    var r = compute();
+    var anchorWrap = $("[data-o-anchor]");
+    if (anchorWrap) {
+      var show = r.anchorCpbj > r.cpbj * 1.15 && r.bookedJobs > 0;
+      anchorWrap.hidden = !show;
+      if (show) tween($("[data-o-anchorv]"), r.anchorCpbj, money, "anchor");
+    }
+    tween($("[data-o-jobs]"), r.bookedJobs, function (v) { return (Math.round(v * 10) / 10).toLocaleString("en-US"); }, "jobs");
+    tween($("[data-o-cpbj]"), r.cpbj, money, "cpbj");
+    tween($("[data-o-leads]"), r.leads, num, "leads");
+    tween($("[data-o-eyeballs]"), r.eyeballs, num, "eye");
+    tween($("[data-o-spend]"), r.totalSpend, money, "spend");
+    // fee breakdown
+    var fb = $("[data-o-fee]");
+    if (fb) fb.innerHTML = '<div class="pl-feerow"><span>Ad spend (to Google / Meta)</span><b>' + money(r.adSpend) + '</b></div>' +
+      (r.resolveCost > 0 ? '<div class="pl-feerow"><span>Visitor resolution ($7 &times; resolved)</span><b>' + money(r.resolveCost) + '</b></div>' : "") +
+      r.fee.map(function (f) { return '<div class="pl-feerow"><span>' + f.label + ' &mdash; to me</span><b>' + money(f.amt) + '</b></div>'; }).join("") +
+      '<div class="pl-feerow total"><span>Total / month</span><b>' + money(r.totalSpend) + '</b></div>';
+    // channel breakdown bars (by eyeballs)
+    var maxEye = Math.max.apply(null, r.rows.map(function (x) { return x.eyeballs; }).concat([1]));
+    var cb = $("[data-o-channels]");
+    if (cb) cb.innerHTML = r.rows.map(function (x) {
+      var pct = Math.max(2, Math.round(x.eyeballs / maxEye * 100));
+      return '<div class="pl-chrow"><span class="pl-chname">' + x.label + '</span>' +
+        '<span class="pl-chbar"><i style="width:' + pct + '%"></i></span>' +
+        '<span class="pl-chval">' + num(x.eyeballs) + ' seen &middot; ' + (x.leads >= 1 ? Math.round(x.leads) + ' leads' : '&mdash;') + '</span></div>';
+    }).join("");
+  }
+
+  // ---- build controls ----
+  function buildControls() {
+    var wrap = $("[data-plan-toggles]"); if (!wrap) return;
+    var groups = {};
+    SERVICES.forEach(function (s) { (groups[s.group] = groups[s.group] || []).push(s); });
+    wrap.innerHTML = Object.keys(groups).map(function (g) {
+      return '<div class="plan-tgroup"><h4>' + g + '</h4>' + groups[g].map(function (s) {
+        return '<label class="plan-toggle"><input type="checkbox" data-svc="' + s.id + '"' + (state.on[s.id] ? " checked" : "") + '>' +
+          '<span class="plan-sw"></span><span class="plan-tlabel">' + s.label + '</span></label>';
+      }).join("") + '</div>';
+    }).join("");
+    wrap.querySelectorAll("[data-svc]").forEach(function (cb) {
+      cb.addEventListener("change", function () { state.on[cb.getAttribute("data-svc")] = cb.checked; render(); });
+    });
+  }
+  function wireBudget() {
+    var sl = $("[data-plan-budget]"), out = $("[data-plan-budgetval]");
+    if (!sl) return;
+    sl.value = state.budget;
+    function upd() { state.budget = parseInt(sl.value, 10); if (out) out.textContent = money(state.budget); render(); }
+    sl.addEventListener("input", upd); upd();
+  }
+
+  // ---- init: fetch live per-market numbers, then render ----
+  function setSubtitle() {
+    var st = $("[data-plan-sub]");
+    if (st) st.textContent = market.tradeLabel + (market.market ? " · " + market.market : "") + (market.live ? " · live market rates" : " · national averages");
+  }
+  buildControls(); wireBudget();
+  setSubtitle();
+  if (/^\d{5}$/.test(zip)) {
+    fetch("/api/lead-cost?zip=" + encodeURIComponent(zip) + "&trade=" + encodeURIComponent(trade))
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data && data.ok) {
+          var ch = {}; data.channels.forEach(function (c) { ch[c.key] = { cpl: c.cpl, bookRate: c.bookRate }; });
+          market = { tradeLabel: data.tradeLabel, market: data.market, live: data.live, ch: ch };
+          setSubtitle(); render();
+        }
+      })
+      .catch(function () {});
+  }
+})();

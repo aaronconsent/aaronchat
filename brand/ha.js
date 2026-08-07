@@ -344,6 +344,9 @@
           goEl.disabled = false; goEl.classList.remove("loading");
           if (!data || !data.ok) { setStatus((data && data.error) || "Couldn't pull that one — try again.", true); return; }
           setStatus("", false); render(data);
+          // carry this market into the growth-plan lead-in
+          var planLink = d.querySelector("[data-plan-link]");
+          if (planLink) planLink.href = "/plan/?zip=" + encodeURIComponent(zip) + "&trade=" + encodeURIComponent(trade);
         })
         .catch(function () { goEl.disabled = false; goEl.classList.remove("loading"); setStatus("Network hiccup — give it another go.", true); });
     });
