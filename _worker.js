@@ -1647,24 +1647,36 @@ async function lcZipGeo(zip) {
   } catch (e) { return null; }
 }
 
+// One Maps SERP call for the local pack; returns its items[] (or null).
+async function lcMapsPack(kw, loc, auth) {
+  const res = await fetch("https://api.dataforseo.com/v3/serp/google/maps/live/advanced", {
+    method: "POST", headers: { Authorization: auth, "Content-Type": "application/json" },
+    body: JSON.stringify([Object.assign({ keyword: kw, language_code: "en", device: "desktop" }, loc)])
+  });
+  if (!res.ok) return { items: null, http: res.status };
+  const data = await res.json();
+  const t = data && data.tasks && data.tasks[0];
+  return { items: t && t.result && t.result[0] && t.result[0].items, code: t && t.status_code };
+}
+
 // Predict Google Business Profile leads/mo for a fully-managed, well-reviewed profile in this
 // market, from the live Maps local pack (competitor count + review bar). null on failure.
-async function lcGbpMarket(bench, zip, auth) {
+// Uses the city-level pack (truest read of the local competition); falls back to a coordinate.
+async function lcGbpMarket(bench, zip, state, auth) {
   const dbg = {};
   const geo = await lcZipGeo(zip);
   if (!geo) { dbg.reason = "no-geo"; return { gbp: null, dbg }; }
   dbg.city = geo.city;
   const kw = (bench.kw && bench.kw[0]) || bench.label;
   try {
-    const res = await fetch("https://api.dataforseo.com/v3/serp/google/maps/live/advanced", {
-      method: "POST", headers: { Authorization: auth, "Content-Type": "application/json" },
-      body: JSON.stringify([{ keyword: kw, location_coordinate: `${geo.lat},${geo.lng},12z`, language_code: "en", device: "desktop" }])
-    });
-    if (!res.ok) { dbg.reason = "http:" + res.status; return { gbp: null, dbg }; }
-    const data = await res.json();
-    const t = data && data.tasks && data.tasks[0];
-    const items = t && t.result && t.result[0] && t.result[0].items;
-    if (!items || !items.length) { dbg.reason = "no-items"; dbg.code = t && t.status_code; return { gbp: null, dbg }; }
+    let pack = await lcMapsPack(kw, { location_name: `${geo.city},${state},United States` }, auth);
+    dbg.geo = "city";
+    if (!pack.items || !pack.items.length) {  // small town not in the locations DB → coordinate
+      pack = await lcMapsPack(kw, { location_coordinate: `${geo.lat},${geo.lng},12z` }, auth);
+      dbg.geo = "coordinate";
+    }
+    const items = pack.items;
+    if (!items || !items.length) { dbg.reason = "no-items"; dbg.code = pack.code || pack.http; return { gbp: null, dbg }; }
     const revs = items.slice(0, 20).map(i => (i.rating && i.rating.votes_count) || 0);
     const nTotal = items.length;
     const nStrong = revs.filter(r => r >= 25).length;          // competitors with a real review moat
@@ -1678,15 +1690,15 @@ async function lcGbpMarket(bench, zip, auth) {
 }
 
 // GBP is per-CITY (not per-state like CPL), so cache it separately by ZIP.
-async function getGbpCached(bench, zip, tradeKey, env, ctx, debug) {
-  const key = `gbp:v1:${tradeKey}:${zip}`;
+async function getGbpCached(bench, zip, state, tradeKey, env, ctx, debug) {
+  const key = `gbp:v2:${tradeKey}:${zip}`;
   if (env.SETUP_KV && !debug) {
     const hit = await env.SETUP_KV.get(key);
     if (hit) return { gbp: JSON.parse(hit), dbg: { cached: true } };
   }
   if (!env.DATAFORSEO_LOGIN || !env.DATAFORSEO_PASSWORD) return { gbp: null, dbg: { reason: "no-creds" } };
   const auth = "Basic " + btoa(`${env.DATAFORSEO_LOGIN}:${env.DATAFORSEO_PASSWORD}`);
-  const r = await lcGbpMarket(bench, zip, auth);
+  const r = await lcGbpMarket(bench, zip, state, auth);
   if (r.gbp && env.SETUP_KV && !debug) ctx.waitUntil(env.SETUP_KV.put(key, JSON.stringify(r.gbp), { expirationTtl: 604800 }));
   return r;
 }
@@ -1720,7 +1732,7 @@ async function handleLeadCost(request, env, ctx) {
   if (!state || state === "Armed Forces") return json({ ok: false, error: "That ZIP isn't a US service area I can price." }, 400);
 
   // GBP local-pack prediction is per-ZIP (city-level), cached separately from the state-level CPL.
-  const gbpRes = await getGbpCached(bench, zip, tradeKey, env, ctx, debug);
+  const gbpRes = await getGbpCached(bench, zip, state, tradeKey, env, ctx, debug);
 
   const cacheKey = `leadcost:v11:${tradeKey}:${state}`;
   if (env.SETUP_KV && !debug) {
