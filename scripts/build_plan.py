@@ -52,6 +52,7 @@ BODY = f'''
             <select id="pg-trade" name="trade">{TRADE_OPTS}</select>
           </div>
           <button class="btn btn-primary btn-block" type="submit" data-plan-marketgo>Run it</button>
+          <div class="plan-bar" data-plan-bar role="progressbar" aria-label="Pulling your market" hidden><i></i><span>Pulling your market&hellip;</span></div>
           <p class="lc-status" data-gate-status hidden></p>
         </form>
       </div>

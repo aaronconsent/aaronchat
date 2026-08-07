@@ -770,6 +770,18 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 .plan-market-form .lc-field input, .plan-market-form .lc-field select { height: 46px; }
 .plan-market-form .btn { grid-column: 1 / -1; height: 46px; }
 .plan-market-form .lc-status { grid-column: 1 / -1; margin: 0; }
+/* indeterminate status bar while a market is pulling */
+.plan-bar { grid-column: 1 / -1; margin-top: 2px; }
+.plan-bar[hidden] { display: none; }
+.plan-bar > i { display: block; height: 6px; border-radius: 999px; background: var(--primary-tint);
+  overflow: hidden; position: relative; }
+.plan-bar > i::after { content: ""; position: absolute; top: 0; left: 0; height: 100%; width: 38%;
+  border-radius: 999px; background: linear-gradient(90deg, var(--primary-container), var(--tertiary-bright));
+  animation: plan-bar-slide 1.05s var(--ease) infinite; }
+.plan-bar > span { display: block; margin-top: 6px; font-size: .74rem; font-weight: 600; color: var(--ink-variant);
+  font-variant-numeric: tabular-nums; }
+@keyframes plan-bar-slide { 0% { left: -38%; } 100% { left: 100%; } }
+@media (prefers-reduced-motion: reduce) { .plan-bar > i::after { animation: none; width: 100%; opacity: .5; } }
 
 /* await state — no market chosen yet */
 .plan-await { background: var(--tertiary-container); border: 1px solid color-mix(in oklab, var(--tertiary) 25%, transparent);

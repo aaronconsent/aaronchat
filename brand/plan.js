@@ -223,20 +223,22 @@
       : market.tradeLabel + (market.market ? " · " + market.market : "");
   }
 
-  var mForm = $("[data-plan-market] form"), mStatus = $("[data-gate-status]");
+  var mForm = $("[data-plan-market] form"), mStatus = $("[data-gate-status]"), mBar = $("[data-plan-bar]");
   var mZip = mForm && mForm.querySelector("[name=zip]"), mTrade = mForm && mForm.querySelector("[name=trade]");
 
   var loading = false;
   // fetch a market and recompute (used on load with URL params AND on sidebar submit)
   function runMarket(z, t, focusOnFail) {
     loading = true;
-    if (mStatus) { mStatus.hidden = false; mStatus.textContent = "Pulling your market…"; }
+    if (mBar) mBar.hidden = false;
+    if (mStatus) mStatus.hidden = true;
     var go = $("[data-plan-marketgo]"); if (go) go.disabled = true;
     if (!market.set) render();  // hide the await note while we load
     return fetch("/api/lead-cost?zip=" + encodeURIComponent(z) + "&trade=" + encodeURIComponent(t))
       .then(function (r) { return r.json(); })
       .then(function (data) {
         loading = false;
+        if (mBar) mBar.hidden = true;
         if (go) go.disabled = false;
         if (data && data.ok) {
           var ch = {}; data.channels.forEach(function (c) { ch[c.key] = { cpl: c.cpl, bookRate: c.bookRate }; });
@@ -247,7 +249,7 @@
           setSubtitle(); render();
         } else if (mStatus) { mStatus.hidden = false; mStatus.textContent = (data && data.error) || "Couldn't pull that one — try again."; }
       })
-      .catch(function () { loading = false; if (go) go.disabled = false; render(); if (mStatus) { mStatus.hidden = false; mStatus.textContent = "Network hiccup — give it another go."; } });
+      .catch(function () { loading = false; if (mBar) mBar.hidden = true; if (go) go.disabled = false; render(); if (mStatus) { mStatus.hidden = false; mStatus.textContent = "Network hiccup — give it another go."; } });
   }
 
   buildControls(); wireBudget();
