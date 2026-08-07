@@ -11,24 +11,28 @@
 
   // ---------- sample data: roofing co, month 1 → 12, built from zero ----------
   var TICKET = 8000; // ~average booked job value (roofing repair/replacement blend)
+  // Costs are itemized and reconcile with the pricing page:
+  //   fees  = Website&Growth $500/mo + Social $500/mo (from mo 3) + 15% ad management + one-time $2,500 LSA setup (mo 7)
+  //   ad    = Google Ads $2,000/mo (from mo 5) + Google LSA $2,000/mo (from mo 7) — paid to Google, not to me
+  //   tools = ConsentResolve visitor resolution (~$350/mo from mo 7)
   var MONTHS = [
-    { m: 1,  eyeballs: 800,   leads: 1,  booked: 0,   out: 500,  event: "Website & Local SEO went live", detail: "Custom, self-owned site on Cloudflare — indexed, blogging started. It's quiet on purpose: this is the foundation, and you're investing about $500 to build it." },
-    { m: 2,  eyeballs: 2500,  leads: 2,  booked: 0,   out: 500 },
-    { m: 3,  eyeballs: 9000,  leads: 4,  booked: 1,   out: 1000, event: "Social Media on — first jobs close", detail: "7 networks, daily posts + reels. Eyeballs jump, the first roofing jobs close, and you cross into profit for good." },
-    { m: 4,  eyeballs: 13000, leads: 7,  booked: 2,   out: 1000 },
-    { m: 5,  eyeballs: 26000, leads: 12, booked: 3.5, out: 3300, event: "Started $2,000/mo Google Ads", detail: "Top-of-funnel demand on tap. Spend steps up to ~$3,300/mo — and so does the booked work." },
-    { m: 6,  eyeballs: 30000, leads: 16, booked: 4.5, out: 3300 },
-    { m: 7,  eyeballs: 33000, leads: 21, booked: 6,   out: 6150, event: "Added Google LSA + Missed-Visitor Leads", detail: "A one-time $2,500 LSA setup (Google Guarantee). Anonymous site visitors who never called now get captured as leads." },
-    { m: 8,  eyeballs: 35000, leads: 24, booked: 7,   out: 3650 },
-    { m: 9,  eyeballs: 38000, leads: 27, booked: 8,   out: 3650, event: "Newsletter list passed 2,000", detail: "The list we grew from every lead starts paying off — repeat and referral jobs compounding, for free." },
-    { m: 10, eyeballs: 40000, leads: 29, booked: 8.5, out: 3650 },
-    { m: 11, eyeballs: 42000, leads: 31, booked: 9,   out: 3650 },
-    { m: 12, eyeballs: 44000, leads: 33, booked: 9.5, out: 3650 }
+    { m: 1,  eyeballs: 800,   leads: 1,  booked: 0,   ad: 0,    fees: 500,  tools: 0,   event: "Website & Local SEO went live", detail: "Custom, self-owned site on Cloudflare — indexed, blogging started. It's quiet on purpose: this is the foundation, and you're investing about $500 to build it." },
+    { m: 2,  eyeballs: 2500,  leads: 2,  booked: 0,   ad: 0,    fees: 500,  tools: 0 },
+    { m: 3,  eyeballs: 9000,  leads: 4,  booked: 1,   ad: 0,    fees: 1000, tools: 0,   event: "Social Media on — first jobs close", detail: "7 networks, daily posts + reels. Eyeballs jump, the first roofing jobs close, and you cross into profit for good." },
+    { m: 4,  eyeballs: 13000, leads: 7,  booked: 2,   ad: 0,    fees: 1000, tools: 0 },
+    { m: 5,  eyeballs: 26000, leads: 12, booked: 3.5, ad: 2000, fees: 1300, tools: 0,   event: "Started $2,000/mo Google Ads", detail: "Top-of-funnel demand on tap. Ad spend steps up to $2,000/mo (plus my 15% management) — and the booked work steps up faster." },
+    { m: 6,  eyeballs: 30000, leads: 16, booked: 4.5, ad: 2000, fees: 1300, tools: 0 },
+    { m: 7,  eyeballs: 33000, leads: 21, booked: 6,   ad: 4000, fees: 4100, tools: 350, event: "Added Google LSA + Missed-Visitor Leads", detail: "A one-time $2,500 LSA setup (Google Guarantee) plus a ~$2,000/mo Local Service Ads budget. Anonymous site visitors who never called now get captured as leads too." },
+    { m: 8,  eyeballs: 35000, leads: 24, booked: 7,   ad: 4000, fees: 1600, tools: 350 },
+    { m: 9,  eyeballs: 38000, leads: 27, booked: 8,   ad: 4000, fees: 1600, tools: 350, event: "Newsletter list passed 2,000", detail: "The list we grew from every lead starts paying off — repeat and referral jobs compounding, for free." },
+    { m: 10, eyeballs: 40000, leads: 29, booked: 8.5, ad: 4000, fees: 1600, tools: 350 },
+    { m: 11, eyeballs: 42000, leads: 31, booked: 9,   ad: 4000, fees: 1600, tools: 350 },
+    { m: 12, eyeballs: 44000, leads: 33, booked: 9.5, ad: 4000, fees: 1600, tools: 350 }
   ];
-  MONTHS.forEach(function (x) { x.in = Math.round(x.booked * TICKET); x.net = x.in - x.out; });
+  MONTHS.forEach(function (x) { x.out = x.ad + x.fees + x.tools; x.in = Math.round(x.booked * TICKET); x.net = x.in - x.out; });
 
   function sum(k) { return MONTHS.reduce(function (a, x) { return a + x[k]; }, 0); }
-  var T = { in: sum("in"), out: sum("out"), booked: sum("booked"), leads: sum("leads"), eyeballs: sum("eyeballs") };
+  var T = { in: sum("in"), out: sum("out"), booked: sum("booked"), leads: sum("leads"), eyeballs: sum("eyeballs"), ad: sum("ad"), fees: sum("fees"), tools: sum("tools") };
   T.roas = T.in / T.out;
   T.cpbj = T.out / T.booked;
   T.net = T.in - T.out;
@@ -55,7 +59,7 @@
   function renderKpis() {
     var hero = [
       { l: "Money in", v: money(T.in), s: "12-mo booked revenue", cls: "in", tv: T.in, fmt: moneyK },
-      { l: "Money out", v: money(T.out), s: "all-in, including my fees", cls: "out", tv: T.out, fmt: moneyK },
+      { l: "Money out", v: money(T.out), s: moneyK(T.ad) + " ad spend + " + moneyK(T.fees + T.tools) + " fees & tools", cls: "out", tv: T.out, fmt: moneyK },
       { l: "ROAS", v: (Math.round(T.roas * 10) / 10) + "×", s: "return on every dollar, after fees", cls: "roas", tv: T.roas, fmt: function (v) { return (Math.round(v * 10) / 10) + "×"; } }
     ];
     var sub = [
@@ -168,8 +172,14 @@
       '<div class="dash-md-net-i"><span>Net this month</span><b>' + netFmt(x.net) + '</b></div>' +
       '<div class="dash-md-net-i main"><span>Net so far &middot; months 1&ndash;' + x.m + '</span><b>' + netFmt(netCum) + '</b>' +
       '<em>' + (netCum >= 0 ? "in the black" : "still investing") + '</em></div></div>';
+    var cad = cumThrough("ad", sel), cfees = cumThrough("fees", sel), ctools = cumThrough("tools", sel);
+    var splitStrip = '<div class="dash-md-split"><h5>Where the money out went &middot; months 1&ndash;' + x.m + '</h5>' +
+      '<div class="dash-md-splitrow"><span>Ad spend <em>&rarr; Google</em></span><b>' + money(cad) + '</b></div>' +
+      '<div class="dash-md-splitrow"><span>My fees <em>&rarr; me</em></span><b>' + money(cfees) + '</b></div>' +
+      (ctools > 0 ? '<div class="dash-md-splitrow"><span>Tools <em>ConsentResolve</em></span><b>' + money(ctools) + '</b></div>' : '') +
+      '<div class="dash-md-splitrow total"><span>Total money out</span><b>' + money(cout) + '</b></div></div>';
     $("[data-dash-monthdetail]").innerHTML =
-      '<div class="dash-md-head"><span class="dash-md-mo">Month ' + x.m + '</span><span class="dash-md-of">of 12</span></div>' + milestone + netStrip +
+      '<div class="dash-md-head"><span class="dash-md-mo">Month ' + x.m + '</span><span class="dash-md-of">of 12</span></div>' + milestone + netStrip + splitStrip +
       '<div class="dash-md-grid">' +
         '<div class="dash-md-group"><h5>This month</h5>' +
           rw("Money in", money(x.in)) + rw("Money out", money(x.out)) + rw("Leads", num(x.leads)) + rw("Booked jobs", num1(x.booked)) + rw("Eyeballs", num(x.eyeballs)) + '</div>' +
@@ -195,9 +205,9 @@
     { mo: 1, title: "Month 2 — The low point", body: "Another ~<b>$500</b>. The first leads trickle in, but roofing jobs take time to close. Cumulative net dips to <b>&minus;$1,000</b> &mdash; the deepest you ever go. You&rsquo;re investing, not losing." },
     { mo: 2, title: "Month 3 — Crossover to profit", body: "Social Media goes live, eyeballs jump, and your first jobs close. You cross into the black at <b>+$6,000 net</b> &mdash; and never look back." },
     { mo: 4, title: "Month 5 — Pour fuel on it", body: "We flip on <b>$2,000/mo Google Ads</b>. Spend steps up to ~$3,300/mo, but the booked work steps up faster &mdash; the return more than covers it." },
-    { mo: 6, title: "Month 7 — Capture what you were missing", body: "Google LSA (a one-time <b>$2,500</b> Google-Guarantee setup) plus Missed-Visitor Leads. Now even anonymous visitors who never called become leads." },
+    { mo: 6, title: "Month 7 — Capture what you were missing", body: "Google LSA (a one-time <b>$2,500</b> Google-Guarantee setup + a ~$2,000/mo budget) plus Missed-Visitor Leads. Now even anonymous visitors who never called become leads. Spend climbs to ~$6k/mo, and the return still buries it." },
     { mo: 8, title: "Month 9 — Compounding, for free", body: "Your newsletter list passes 2,000. Repeat and referral jobs start stacking on top &mdash; no extra ad spend needed." },
-    { mo: 11, title: "Month 12 — The payoff", body: "<b>$472k booked</b> on <b>$34k spent</b>. That&rsquo;s <b>$438,000 net</b> and a <b>13.9× return</b> &mdash; after my fees. That&rsquo;s what year one can look like." }
+    { mo: 11, title: "Month 12 — The payoff", body: "<b>$472k booked</b> on <b>~$48k spent</b> &mdash; about <b>$28k in ad spend</b>, the rest my fees + tools. That&rsquo;s <b>~$424,000 net</b> and a <b>9.9× return</b>, after everything. That&rsquo;s what year one can look like." }
   ];
   var tourEls = null, tourStep = 0, tourActive = false;
   function syncMetricBtns() { root.querySelectorAll("[data-metric]").forEach(function (x) { x.classList.toggle("on", x.getAttribute("data-metric") === current); }); }
@@ -262,8 +272,8 @@
     });
     // add the closing result
     rows.push('<div class="dash-tl end"><div class="dash-tl-badge">Mo 12</div><div class="dash-tl-body">' +
-      '<b>The machine is humming</b><p>From 2 leads a month to ' + MONTHS[11].leads + '. ' + num1(MONTHS[11].booked) +
-      ' booked jobs, ' + money(MONTHS[11].in) + ' in booked work &mdash; on ' + money(MONTHS[11].out) + ' of spend.</p></div></div>');
+      '<b>The machine is humming</b><p>From a standing start to ' + MONTHS[11].leads + ' leads a month. ' + num1(MONTHS[11].booked) +
+      ' booked jobs, ' + money(MONTHS[11].in) + ' in booked work &mdash; on ' + money(MONTHS[11].out) + ' spent that month.</p></div></div>');
     $("[data-dash-timeline]").innerHTML = rows.join("");
   }
 

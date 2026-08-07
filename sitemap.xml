@@ -5,6 +5,7 @@
   <url><loc>https://aaron.chat/appliance-repair-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/compare/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/concrete-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aaron.chat/dashboard/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/electrician-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/fence-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/garage-door-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
@@ -14,6 +15,7 @@
   <url><loc>https://aaron.chat/not-a-fit/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/painter-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/pest-control-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://aaron.chat/plan/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/plumber-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/pool-service-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://aaron.chat/pressure-washing-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
@@ -38,8 +40,6 @@
   <url><loc>https://aaron.chat/services/social-media/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/services/website/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/stats/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://aaron.chat/plan/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://aaron.chat/dashboard/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://aaron.chat/thank-you/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/trades/</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://aaron.chat/tree-service-marketing/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
