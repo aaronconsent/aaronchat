@@ -69,7 +69,7 @@ BODY = f'''
       <div class="plan-tiles">
         <div class="plan-tile hero">
           <div class="pl-hero-main"><span class="pl-tl">Cost per booked job</span><b class="pl-tv" data-o-cpbj>$0</b><span class="pl-ts">all-in, incl. what you pay me</span></div>
-          <div class="pl-hero-anchor" data-o-anchor hidden><span class="pl-anchor-lbl">The market, on autopilot</span><b class="pl-anchor-v" data-o-anchorv>$0</b><span class="pl-anchor-sub">per booked job on Google&nbsp;Ads alone</span></div>
+          <div class="pl-hero-anchor" data-o-anchor hidden><span class="pl-anchor-hd">Real Stats, Real Results</span><span class="pl-anchor-sub">assumes 12 months of work</span><span class="pl-anchor-sub">for maximum leads</span></div>
         </div>
         <div class="plan-tile"><span class="pl-tl">Booked jobs / mo</span><b class="pl-tv" data-o-jobs>0</b></div>
         <div class="plan-tile"><span class="pl-tl">Leads / mo</span><b class="pl-tv" data-o-leads>0</b></div>

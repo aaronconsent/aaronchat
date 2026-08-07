@@ -814,12 +814,9 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 .pl-hero-anchor { display: flex; flex-direction: column; gap: 2px; text-align: right; padding-left: 20px;
   border-left: 1px solid rgba(255,255,255,.18); max-width: 42%; }
 .pl-hero-anchor[hidden] { display: none; }
-.pl-anchor-lbl { font-size: .68rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
-  color: rgba(255,255,255,.5); }
-.pl-anchor-v { font-size: clamp(1.6rem, 3vw, 2.1rem); font-weight: 800; color: rgba(255,255,255,.62);
-  text-decoration: line-through; text-decoration-thickness: 2px; text-decoration-color: rgba(244,162,77,.7);
-  letter-spacing: -0.01em; font-variant-numeric: tabular-nums; line-height: 1.05; }
-.pl-anchor-sub { font-size: .74rem; color: rgba(255,255,255,.5); line-height: 1.3; }
+.pl-anchor-hd { font-size: clamp(1.05rem, 2vw, 1.35rem); font-weight: 800; color: #ffd8a8; line-height: 1.15;
+  letter-spacing: -0.01em; text-wrap: balance; margin-bottom: 4px; }
+.pl-anchor-sub { font-size: .74rem; color: rgba(255,255,255,.6); line-height: 1.35; }
 @media (max-width: 520px) { .pl-hero-anchor { max-width: none; text-align: left; padding-left: 0; border-left: 0;
   border-top: 1px solid rgba(255,255,255,.18); padding-top: 14px; width: 100%; } }
 .plan-tile.eye .pl-tv { color: var(--tertiary); }

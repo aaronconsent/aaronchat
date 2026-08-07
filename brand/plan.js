@@ -47,12 +47,12 @@
   // ---- services (toggles) ----
   var SERVICES = [
     { id: "web", label: "Website & local SEO", group: "Website & Growth", kind: "owned", on: true, locked: true },
-    { id: "gbp", label: "Google Business Profile", group: "Website & Growth", kind: "owned", on: true },
-    { id: "reviews", label: "Reviews on autopilot", group: "Website & Growth", kind: "lift", on: true },
-    { id: "resolve", label: "Organic leads", group: "Website & Growth", kind: "owned", on: true },
+    { id: "gbp", label: "Google Business Profile", group: "Website & Growth", kind: "owned", on: false },
+    { id: "reviews", label: "Reviews on autopilot", group: "Website & Growth", kind: "lift", on: false },
+    { id: "resolve", label: "Organic leads", group: "Website & Growth", kind: "owned", on: false },
     { id: "social", label: "Social media — 7 networks, daily", group: "Social", kind: "owned", on: false },
-    { id: "ads", label: "Google Ads", group: "Paid ads", kind: "paid", on: true },
-    { id: "lsa", label: "Google LSA", group: "Paid ads", kind: "paid", on: true },
+    { id: "ads", label: "Google Ads", group: "Paid ads", kind: "paid", on: false },
+    { id: "lsa", label: "Google LSA", group: "Paid ads", kind: "paid", on: false },
     { id: "fb", label: "Facebook / Instagram ads", group: "Paid ads", kind: "paid", on: false }
   ];
   var state = { budget: 0, on: {} };
@@ -178,11 +178,7 @@
     if (awaitEl) awaitEl.hidden = true;
     var r = compute();
     var anchorWrap = $("[data-o-anchor]");
-    if (anchorWrap) {
-      var show = r.anchorCpbj > r.cpbj * 1.15 && r.bookedJobs > 0;
-      anchorWrap.hidden = !show;
-      if (show) tween($("[data-o-anchorv]"), r.anchorCpbj, money, "anchor");
-    }
+    if (anchorWrap) anchorWrap.hidden = false;  // static "Real Stats, Real Results" note — shown whenever a market is set
     tween($("[data-o-jobs]"), r.bookedJobs, function (v) { return (Math.round(v * 10) / 10).toLocaleString("en-US"); }, "jobs");
     tween($("[data-o-cpbj]"), r.cpbj, money, "cpbj");
     tween($("[data-o-leads]"), r.leads, num, "leads");
