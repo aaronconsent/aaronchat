@@ -31,10 +31,12 @@ BODY = f'''
 
     <div class="dash-panel dash-chartwrap">
       <div class="dash-chart-head">
-        <div><h2>12-month growth</h2><p class="dash-sub">Watch what each new piece did to the curve.</p></div>
+        <div><h2>Month by month</h2><p class="dash-sub">Click through all 12 months &mdash; watch the growth, the milestones, and the running totals climb.</p></div>
         <div class="dash-metrics" data-dash-metrics></div>
       </div>
+      <div class="dash-months" data-dash-months></div>
       <div class="dash-chart" data-dash-chart></div>
+      <div class="dash-monthdetail" data-dash-monthdetail></div>
     </div>
 
     <div class="dash-cols">

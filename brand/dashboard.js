@@ -83,90 +83,102 @@
     { k: "eyeballs", label: "Eyeballs", fmt: num, tip: num },
     { k: "out", label: "Money out", fmt: moneyK, tip: money }
   ];
-  var current = "in";
+  var current = "in", sel = MONTHS.length - 1, playTimer = null;
   var W = 840, HT = 340, padL = 58, padR = 20, padT = 20, padB = 40;
   var plotW = W - padL - padR, plotH = HT - padT - padB;
   function xat(i) { return padL + (i / (MONTHS.length - 1)) * plotW; }
+  function cumThrough(k, upto) { var s = 0; for (var i = 0; i <= upto; i++) s += MONTHS[i][k]; return s; }
 
-  function drawChart(mk) {
-    var m = METRICS.filter(function (x) { return x.k === mk; })[0];
+  function drawChart() {
+    var mk = current, m = METRICS.filter(function (x) { return x.k === mk; })[0];
     var vals = MONTHS.map(function (x) { return x[mk]; });
     var max = Math.max.apply(null, vals) * 1.1 || 1;
     var yat = function (v) { return padT + plotH - (v / max) * plotH; };
     var pts = vals.map(function (v, i) { return [xat(i), yat(v)]; });
-    var line = pts.map(function (p, i) { return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" ");
-    var area = line + " L" + xat(MONTHS.length - 1).toFixed(1) + " " + (padT + plotH) + " L" + padL + " " + (padT + plotH) + " Z";
+    function pathFrom(a, b) { return pts.slice(a, b + 1).map(function (p, i) { return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" "); }
+    var solid = pathFrom(0, sel);
+    var faint = sel < pts.length - 1 ? pathFrom(sel, pts.length - 1) : "";
+    var area = solid + " L" + pts[sel][0].toFixed(1) + " " + (padT + plotH) + " L" + padL + " " + (padT + plotH) + " Z";
 
-    // y gridlines + labels (4)
     var grid = "", ylab = "";
-    for (var g = 0; g <= 4; g++) {
-      var yv = max * g / 4, yy = yat(yv);
+    for (var g = 0; g <= 4; g++) { var yv = max * g / 4, yy = yat(yv);
       grid += '<line x1="' + padL + '" y1="' + yy.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + yy.toFixed(1) + '" class="dc-grid"/>';
-      ylab += '<text x="' + (padL - 10) + '" y="' + (yy + 4).toFixed(1) + '" class="dc-ylab">' + m.fmt(yv) + '</text>';
-    }
-    // x labels
-    var xlab = MONTHS.map(function (x, i) { return '<text x="' + xat(i).toFixed(1) + '" y="' + (HT - 12) + '" class="dc-xlab">' + x.m + '</text>'; }).join("");
-    // event markers
-    var marks = "", dots = "";
-    MONTHS.forEach(function (x, i) {
-      if (x.event) {
-        var px = xat(i), py = yat(x[mk]);
-        marks += '<line x1="' + px.toFixed(1) + '" y1="' + padT + '" x2="' + px.toFixed(1) + '" y2="' + (padT + plotH) + '" class="dc-evline"/>' +
-          '<circle cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) + '" r="5.5" class="dc-evdot"/>';
-      }
-    });
-    // hover hit points (all months)
-    MONTHS.forEach(function (x, i) {
-      dots += '<circle cx="' + xat(i).toFixed(1) + '" cy="' + yat(x[mk]).toFixed(1) + '" r="4" class="dc-dot"/>' +
-        '<circle cx="' + xat(i).toFixed(1) + '" cy="' + yat(x[mk]).toFixed(1) + '" r="16" class="dc-hit" data-i="' + i + '"/>';
-    });
-    var end = pts[pts.length - 1];
-    var svg = '<svg viewBox="0 0 ' + W + ' ' + HT + '" class="dc-svg" role="img" aria-label="12-month ' + m.label + '">' +
+      ylab += '<text x="' + (padL - 10) + '" y="' + (yy + 4).toFixed(1) + '" class="dc-ylab">' + m.fmt(yv) + '</text>'; }
+    var xlab = MONTHS.map(function (x, i) { return '<text x="' + xat(i).toFixed(1) + '" y="' + (HT - 12) + '" class="dc-xlab' + (i === sel ? " on" : "") + '">' + x.m + '</text>'; }).join("");
+    var ev = "";
+    MONTHS.forEach(function (x, i) { if (x.event) ev += '<circle cx="' + xat(i).toFixed(1) + '" cy="' + yat(x[mk]).toFixed(1) + '" r="5" class="dc-evdot"/>'; });
+    var px = xat(sel), py = yat(MONTHS[sel][mk]);
+    var head = '<line x1="' + px.toFixed(1) + '" y1="' + padT + '" x2="' + px.toFixed(1) + '" y2="' + (padT + plotH) + '" class="dc-playline"/>' +
+      '<circle cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) + '" r="6.5" class="dc-head"/>';
+    var hits = MONTHS.map(function (x, i) { return '<circle cx="' + xat(i).toFixed(1) + '" cy="' + yat(x[mk]).toFixed(1) + '" r="16" class="dc-hit" data-i="' + i + '"/>'; }).join("");
+
+    $("[data-dash-chart]").innerHTML =
+      '<svg viewBox="0 0 ' + W + ' ' + HT + '" class="dc-svg" role="img" aria-label="' + m.label + ' through month ' + (sel + 1) + '">' +
       '<defs><linearGradient id="dcfill" x1="0" y1="0" x2="0" y2="1">' +
       '<stop offset="0" stop-color="var(--primary-container)" stop-opacity="0.28"/>' +
       '<stop offset="1" stop-color="var(--primary-container)" stop-opacity="0"/></linearGradient></defs>' +
-      grid + ylab + xlab + marks +
+      grid + ylab + xlab +
+      (faint ? '<path d="' + faint + '" class="dc-line faint"/>' : "") +
       '<path d="' + area + '" class="dc-area"/>' +
-      '<path d="' + line + '" class="dc-line" data-line/>' +
-      '<circle cx="' + end[0].toFixed(1) + '" cy="' + end[1].toFixed(1) + '" r="6" class="dc-end"/>' +
-      dots + '</svg>' +
-      '<div class="dc-tip" data-dc-tip hidden></div>';
-    var host = $("[data-dash-chart]");
-    host.innerHTML = svg;
-    animateLine();
-    wireHover(mk, m);
+      '<path d="' + solid + '" class="dc-line"/>' + ev + head + hits + '</svg>';
+
+    $("[data-dash-chart]").querySelectorAll(".dc-hit").forEach(function (h) {
+      h.addEventListener("click", function () { stopPlay(); setMonth(+h.getAttribute("data-i")); });
+    });
   }
 
-  function animateLine() {
+  function animateInitial() {
     if (reduce || d.hidden) return;
-    var p = $("[data-line]"); if (!p || !p.getTotalLength) return;
+    var p = root.querySelector("[data-dash-chart] .dc-line:not(.faint)");
+    if (!p || !p.getTotalLength) return;
     var len = p.getTotalLength();
-    p.style.transition = "none"; p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
-    // area + dots fade in
-    var area = root.querySelector(".dc-area"), dots = root.querySelectorAll(".dc-dot,.dc-end,.dc-evdot,.dc-evline");
-    if (area) { area.style.opacity = 0; }
-    dots.forEach(function (el) { el.style.opacity = 0; });
-    requestAnimationFrame(function () {
-      p.style.transition = "stroke-dashoffset 1.05s cubic-bezier(.22,1,.36,1)"; p.style.strokeDashoffset = 0;
-      if (area) { area.style.transition = "opacity .8s ease .2s"; area.style.opacity = 1; }
-      dots.forEach(function (el) { el.style.transition = "opacity .5s ease .7s"; el.style.opacity = ""; });
-    });
+    p.style.strokeDasharray = len; p.style.strokeDashoffset = len;
+    requestAnimationFrame(function () { p.style.transition = "stroke-dashoffset 1.1s cubic-bezier(.22,1,.36,1)"; p.style.strokeDashoffset = 0; });
   }
 
-  function wireHover(mk, m) {
-    var tip = $("[data-dc-tip]"), host = $("[data-dash-chart]");
-    root.querySelectorAll(".dc-hit").forEach(function (h) {
-      h.addEventListener("mouseenter", function () {
-        var i = +h.getAttribute("data-i"), x = MONTHS[i];
-        var hostRect = host.getBoundingClientRect(), svg = host.querySelector("svg").getBoundingClientRect();
-        var px = (xat(i) / W) * svg.width + (svg.left - hostRect.left);
-        tip.innerHTML = '<span class="dc-tip-m">Month ' + x.m + '</span><b>' + m.tip(x[mk]) + '</b>' +
-          (x.event ? '<span class="dc-tip-e">' + x.event + '</span>' : '');
-        tip.hidden = false;
-        tip.style.left = Math.max(4, Math.min(hostRect.width - tip.offsetWidth - 4, px - tip.offsetWidth / 2)) + "px";
-      });
-      h.addEventListener("mouseleave", function () { tip.hidden = true; });
-    });
+  // ---------- month stepper ----------
+  function renderMonths() {
+    $("[data-dash-months]").innerHTML =
+      '<button type="button" class="dash-mo-nav" data-mo-prev aria-label="Previous month">&lsaquo;</button>' +
+      '<div class="dash-mo-tabs">' + MONTHS.map(function (x, i) {
+        return '<button type="button" class="dash-mo-tab' + (i === sel ? " on" : "") + (x.event ? " ev" : "") + '" data-mo="' + i + '" aria-label="Month ' + x.m + (x.event ? ", " + x.event : "") + '">' + x.m + '</button>';
+      }).join("") + '</div>' +
+      '<button type="button" class="dash-mo-nav" data-mo-next aria-label="Next month">&rsaquo;</button>' +
+      '<button type="button" class="dash-mo-play" data-mo-play><span class="dash-play-i">&#9654;</span><span class="dash-play-t">Play</span></button>';
+    root.querySelectorAll("[data-mo]").forEach(function (b) { b.addEventListener("click", function () { stopPlay(); setMonth(+b.getAttribute("data-mo")); }); });
+    $("[data-mo-prev]").addEventListener("click", function () { stopPlay(); setMonth(Math.max(0, sel - 1)); });
+    $("[data-mo-next]").addEventListener("click", function () { stopPlay(); setMonth(Math.min(MONTHS.length - 1, sel + 1)); });
+    $("[data-mo-play]").addEventListener("click", play);
+  }
+  function syncMonthTabs() { root.querySelectorAll("[data-mo]").forEach(function (b) { b.classList.toggle("on", +b.getAttribute("data-mo") === sel); }); }
+
+  function renderMonthDetail() {
+    var x = MONTHS[sel];
+    var cin = cumThrough("in", sel), cout = cumThrough("out", sel), cbk = cumThrough("booked", sel), cld = cumThrough("leads", sel), cey = cumThrough("eyeballs", sel);
+    var roas = cout ? (Math.round(cin / cout * 10) / 10) : 0;
+    function rw(l, v) { return '<div class="dash-md-row"><span>' + l + '</span><b>' + v + '</b></div>'; }
+    var milestone = x.event
+      ? '<div class="dash-md-ev"><svg class="dash-md-flag"><use href="#i-bolt"/></svg><div><b>' + x.event + '</b><p>' + x.detail + '</p></div></div>'
+      : '<div class="dash-md-ev muted"><svg class="dash-md-flag"><use href="#i-trend"/></svg><div><b>Steady growth</b><p>Momentum from the pieces already running &mdash; more eyeballs, more leads, more booked work.</p></div></div>';
+    $("[data-dash-monthdetail]").innerHTML =
+      '<div class="dash-md-head"><span class="dash-md-mo">Month ' + x.m + '</span><span class="dash-md-of">of 12</span></div>' + milestone +
+      '<div class="dash-md-grid">' +
+        '<div class="dash-md-group"><h5>This month</h5>' +
+          rw("Money in", money(x.in)) + rw("Money out", money(x.out)) + rw("Leads", num(x.leads)) + rw("Booked jobs", num1(x.booked)) + rw("Eyeballs", num(x.eyeballs)) + '</div>' +
+        '<div class="dash-md-group running"><h5>Running total &middot; months 1&ndash;' + x.m + '</h5>' +
+          rw("Money in", money(cin)) + rw("Money out", money(cout)) + rw("ROAS (after fees)", roas + "×") + rw("Leads", num(cld)) + rw("Booked jobs", num1(cbk)) + rw("Eyeballs", num(cey)) + '</div>' +
+      '</div>';
+  }
+
+  function setMonth(i) { sel = i; syncMonthTabs(); drawChart(); renderMonthDetail(); }
+  var PLAY_HTML = '<span class="dash-play-i">&#9654;</span><span class="dash-play-t">Play</span>';
+  var PAUSE_HTML = '<span class="dash-play-i">&#10073;&#10073;</span><span class="dash-play-t">Pause</span>';
+  function stopPlay() { if (playTimer) { clearInterval(playTimer); playTimer = null; } var b = $("[data-mo-play]"); if (b) { b.classList.remove("on"); b.innerHTML = PLAY_HTML; } }
+  function play() {
+    if (playTimer) { stopPlay(); return; }
+    var b = $("[data-mo-play]"); if (b) { b.classList.add("on"); b.innerHTML = PAUSE_HTML; }
+    if (sel >= MONTHS.length - 1) setMonth(0);
+    playTimer = setInterval(function () { if (sel >= MONTHS.length - 1) { stopPlay(); return; } setMonth(sel + 1); }, 850);
   }
 
   function renderMetrics() {
@@ -177,7 +189,7 @@
       b.addEventListener("click", function () {
         current = b.getAttribute("data-metric");
         root.querySelectorAll("[data-metric]").forEach(function (x) { x.classList.toggle("on", x === b); });
-        drawChart(current);
+        drawChart();
       });
     });
   }
@@ -223,7 +235,10 @@
 
   renderKpis();
   renderMetrics();
-  drawChart(current);
+  renderMonths();
+  drawChart();
+  renderMonthDetail();
+  animateInitial();
   renderTimeline();
   renderActions();
 })();

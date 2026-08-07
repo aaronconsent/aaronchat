@@ -989,6 +989,49 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 .dc-tip-m { font-size: .68rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: #9fc0ff; }
 .dc-tip b { font-size: 1.05rem; font-weight: 800; font-variant-numeric: tabular-nums; }
 .dc-tip-e { font-size: .74rem; color: #ffd8a8; max-width: 220px; white-space: normal; }
+.dc-xlab.on { fill: var(--primary-container); font-weight: 800; }
+.dc-line.faint { stroke: var(--line); stroke-width: 2; stroke-dasharray: 4 5; }
+.dc-playline { stroke: var(--tertiary-bright); stroke-width: 1.5; stroke-dasharray: 3 4; opacity: .5; }
+.dc-head { fill: var(--tertiary-bright); stroke: #fff; stroke-width: 2.5; }
+
+/* month stepper */
+.dash-months { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.dash-mo-tabs { display: flex; gap: 4px; flex: 1 1 240px; min-width: 0; }
+.dash-mo-tab { flex: 1 1 0; min-width: 24px; height: 34px; border: 1px solid var(--line-soft); background: var(--white);
+  color: var(--ink-variant); border-radius: var(--r); font: 800 .82rem var(--f); cursor: pointer; position: relative;
+  font-variant-numeric: tabular-nums; transition: background .12s var(--ease), color .12s var(--ease), border-color .12s var(--ease); }
+.dash-mo-tab:hover { border-color: var(--primary-container); color: var(--ink); }
+.dash-mo-tab.on { background: var(--primary-container); border-color: var(--primary-container); color: #fff; }
+.dash-mo-tab.ev::after { content: ""; position: absolute; top: 4px; right: 4px; width: 5px; height: 5px; border-radius: 50%; background: var(--tertiary-bright); }
+.dash-mo-tab.ev.on::after { background: #ffd8a8; }
+.dash-mo-nav { flex: none; width: 34px; height: 34px; border: 1px solid var(--line); background: var(--white);
+  color: var(--primary-container); border-radius: var(--r); font-size: 1.2rem; font-weight: 700; cursor: pointer; line-height: 1; }
+.dash-mo-nav:hover { background: var(--primary-tint); }
+.dash-mo-play { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 15px;
+  border: 0; border-radius: var(--r-full); background: var(--tertiary-bright); color: #fff; font: 800 .82rem var(--f); cursor: pointer; }
+.dash-mo-play.on { background: var(--primary-container); }
+.dash-mo-play .dash-play-i { font-size: .72rem; line-height: 1; }
+
+/* month detail */
+.dash-monthdetail { margin-top: 16px; border-top: 1px solid var(--line-soft); padding-top: 16px; }
+.dash-md-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 12px; }
+.dash-md-mo { font-size: 1.15rem; font-weight: 800; color: var(--ink); letter-spacing: -0.01em; }
+.dash-md-of { font-size: .82rem; color: var(--ink-variant); font-weight: 600; }
+.dash-md-ev { display: flex; gap: 12px; align-items: flex-start; background: var(--tertiary-container); border-radius: var(--r-lg); padding: 14px 16px; margin-bottom: 16px; }
+.dash-md-ev.muted { background: var(--surface-low); }
+.dash-md-flag { width: 22px; height: 22px; color: var(--tertiary); flex: none; margin-top: 1px; }
+.dash-md-ev.muted .dash-md-flag { color: var(--primary-container); }
+.dash-md-ev b { display: block; color: var(--ink); font-size: 1rem; margin-bottom: 2px; }
+.dash-md-ev p { color: var(--ink-variant); font-size: .9rem; line-height: 1.5; }
+.dash-md-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 3vw, 28px); }
+@media (max-width: 560px) { .dash-md-grid { grid-template-columns: 1fr; } }
+.dash-md-group h5 { font-size: .68rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-variant); margin-bottom: 6px; }
+.dash-md-group.running h5 { color: var(--primary-container); }
+.dash-md-row { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line-soft); font-size: .9rem; }
+.dash-md-row:last-child { border-bottom: 0; }
+.dash-md-row span { color: var(--ink-variant); }
+.dash-md-row b { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+.dash-md-group.running .dash-md-row b { color: var(--primary-container); }
 
 /* two-column: timeline + plan */
 .dash-cols { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2vw, 22px); align-items: start; }
