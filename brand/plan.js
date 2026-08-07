@@ -20,7 +20,7 @@
     google_ads: { cpl: 130, bookRate: 0.30 }, google_lsa: { cpl: 53, bookRate: 0.44 },
     facebook: { cpl: 41, bookRate: 0.16 }, organic: { cpl: 7, bookRate: 0.05 }
   };
-  var market = { tradeLabel: "your trade", market: "", live: false, ch: FALLBACK, blended: 0.30, socialLeads: 11, set: false };
+  var market = { tradeLabel: "your trade", market: "", live: false, ch: FALLBACK, blended: 0.30, socialLeads: 11, gbp: null, set: false };
 
   // ---- model coefficients (all documented in the on-page "how this is modeled") ----
   var reach = (REF.reach || {});
@@ -72,7 +72,7 @@
     var qualExtra = (on.reviews ? (REVIEWS - 1) : 0) + (on.web ? (CRO - 1) : 0);
     var bookMult = Math.min(1.6, 1 + 0.45 * qualExtra);
     var isMulti = (paid.length + (on.web ? 1 : 0) + (on.social ? 1 : 0)) >= 3;
-    var volExtra = (on.gbp ? GBP_LIFT : 0) + (isMulti ? MULTI_LIFT : 0);
+    var volExtra = (isMulti ? MULTI_LIFT : 0);  // GBP is no longer a flat lift — it's a predicted leads channel below
     var leadMult = Math.min(1.35, 1 + 0.40 * volExtra);
     var BOOK_CEIL = 0.60;  // no channel books above 60%, even fully optimized — keeps it honest
     function effBook(br) { return Math.min(BOOK_CEIL, br * bookMult); }
@@ -89,7 +89,14 @@
 
     // owned channels
     if (on.web) { eyeballs += REACH_MON.web; var owl = 6, owb = owl * effBook(market.blended || 0.30); leads += owl; booked += owb; siteVisitors += 250; rows.push({ label: "Website / SEO (organic)", leads: owl, spend: 0, eyeballs: REACH_MON.web, booked: owb }); } // books at THIS trade's inbound rate — tailored per lookup
-    if (on.gbp) { eyeballs += REACH_MON.gbp; rows.push({ label: "Google Business Profile", leads: 0, spend: 0, eyeballs: REACH_MON.gbp, booked: 0 }); }
+    var gbpLeads = 0, gbpBooked = 0;
+    if (on.gbp) {
+      eyeballs += REACH_MON.gbp;
+      var gbpPot = (market.gbp && market.gbp.potential) ? market.gbp.potential : 8;  // live local-pack prediction; 8 fallback if Maps unavailable
+      gbpLeads = gbpPot * (on.reviews ? 1 : 0.55);   // you can't hold Maps rank without review velocity
+      gbpBooked = gbpLeads * effBook(market.blended || 0.30);
+      rows.push({ label: "Google Business Profile", leads: gbpLeads, spend: 0, eyeballs: REACH_MON.gbp, booked: gbpBooked });
+    }
     var socialLeads = 0, socialBooked = 0;
     if (on.social) {
       var socEye = 8000;                                       // 500-700 posts/mo + 3 reels/day drives real reach
@@ -112,8 +119,8 @@
       totalLeads += resolved; bookedJobs += resolvedBooked;
       rows.push({ label: "Organic leads (resolved visitors)", leads: resolved, spend: resolveCost, eyeballs: 0, booked: resolvedBooked });
     }
-    // social leads ride on top too — social IS the multichannel play, so don't re-amplify with the lead lift
-    totalLeads += socialLeads; bookedJobs += socialBooked;
+    // GBP + social leads ride on top too — they're their own channels, not amplified by the lead lift
+    totalLeads += socialLeads + gbpLeads; bookedJobs += socialBooked + gbpBooked;
     totalLeads = Math.round(totalLeads);
 
     // budget: ad spend + resolution spend + Aaron's fee (fully transparent)
@@ -251,7 +258,7 @@
         if (go) go.disabled = false;
         if (data && data.ok) {
           var ch = {}; data.channels.forEach(function (c) { ch[c.key] = { cpl: c.cpl, bookRate: c.bookRate }; });
-          market = { tradeLabel: data.tradeLabel, market: data.market, live: data.live, ch: ch, blended: data.blended || 0.30, socialLeads: data.socialLeads || 11, set: true };
+          market = { tradeLabel: data.tradeLabel, market: data.market, live: data.live, ch: ch, blended: data.blended || 0.30, socialLeads: data.socialLeads || 11, gbp: data.gbp || null, set: true };
           zip = z; trade = t;
           if (mStatus) mStatus.hidden = true;
           if (w.history && w.history.replaceState) w.history.replaceState(null, "", "/plan/?zip=" + encodeURIComponent(z) + "&trade=" + encodeURIComponent(t));

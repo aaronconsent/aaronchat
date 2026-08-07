@@ -95,9 +95,13 @@ BODY = f'''
       <ul>
         <li><b>Cost per lead</b> is your live, market-localized figure (same engine as the rate board). <b>Booked jobs</b> use
         real per-trade, per-channel booking rates.</li>
-        <li><b>The lifts don't stack.</b> Reviews (+25% booking), a real website (+20% booking), Google Business Profile
-        (+30% leads), and being on several channels (+40% leads) all help &mdash; but they overlap, so I <b>discount the
-        overlap</b> (never multiply straight through) and <b>no channel books above 60%</b>, no matter how much you optimize.</li>
+        <li><b>The lifts don't stack.</b> Reviews (+25% booking), a real website (+20% booking), and being on several
+        channels (+40% leads) all help &mdash; but they overlap, so I <b>discount the overlap</b> (never multiply straight
+        through) and <b>no channel books above 60%</b>, no matter how much you optimize.</li>
+        <li><b>Google Business Profile leads are predicted from your live local pack.</b> I pull the actual Map competitors
+        for your trade in your city (via DataForSEO) and read how crowded it is and how big the review bar is &mdash; then
+        estimate the leads a fully-managed, well-reviewed profile can realistically pull. Fewer/weaker competitors &rarr; more.
+        Turn reviews off and it drops, because you can't hold Maps rank without review velocity.</li>
         <li><b>Total eyeballs = impressions served, not unique people.</b> The same neighbor gets counted across Maps, your
         site, and social. It's the "how often your name shows up" number, not reach.</li>
         <li><b>Organic leads</b> are anonymous site visitors ConsentResolve turns into a named lead at ~$7 &mdash; they book

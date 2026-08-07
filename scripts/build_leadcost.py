@@ -195,9 +195,12 @@ def stats_body():
   several channels together &mdash; and it&rsquo;s built on the same live cost-per-lead and booking numbers as this page, plus
   a short list of published lift benchmarks. Here&rsquo;s how I keep that projection honest:</p>
   <ul class="caveats">
-    <li><b>The lifts don&rsquo;t stack.</b> Reviews (+25% booking), a real website (+20% booking), Google Business Profile
-    (+30% leads) and being on several channels (+40% leads) all overlap. I discount the overlap instead of multiplying
-    straight through, and <b>no channel books above 60%</b> no matter how much you optimize.</li>
+    <li><b>The lifts don&rsquo;t stack.</b> Reviews (+25% booking), a real website (+20% booking) and being on several
+    channels (+40% leads) all overlap. I discount the overlap instead of multiplying straight through, and <b>no channel
+    books above 60%</b> no matter how much you optimize.</li>
+    <li><b>Google Business Profile leads come from your live local pack.</b> I pull the real Map competitors for your trade
+    in your city and read the competition and review bar, then predict the leads a managed, well-reviewed profile can hold.
+    Turn reviews off and it drops &mdash; you can&rsquo;t stay ranked in Maps without review velocity.</li>
     <li><b>Quality lifts and volume lifts are separate.</b> Reviews and a real website raise your <em>booking rate</em>; GBP
     and multichannel raise your <em>lead count</em>. I never let one masquerade as the other.</li>
     <li><b>Organic leads ride on top, not through the lifts.</b> Anonymous site traffic that ConsentResolve turns into a
