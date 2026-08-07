@@ -250,6 +250,15 @@
         (wk.buys && wk.buys.length ? '<div class="pl-work-buys"><b>I buy for you:</b> ' + wk.buys.join(' &middot; ') + '</div>' : '') +
         '</div>');
     });
+    // cross-network optimization — only when 2+ paid networks compete for the budget
+    var paidCount = (state.on.ads ? 1 : 0) + (state.on.lsa ? 1 : 0) + (state.on.fb ? 1 : 0);
+    if (paidCount >= 2) {
+      totalHrs += 3;
+      workBlocks.push('<div class="pl-work"><div class="pl-work-hd"><span class="pl-work-name">CPA/CPL Optimization</span><span class="pl-work-hrs">~3 hrs/mo</span></div>' +
+        '<ul class="pl-work-tasks"><li>Balance your budget across the competing networks for the lowest cost per lead</li>' +
+        '<li>Shift spend each week to whatever&rsquo;s booking jobs cheapest</li>' +
+        '<li>Track cost per lead &amp; cost per booked job on every network</li></ul></div>');
+    }
     var workEl = $("[data-o-work]"); if (workEl) workEl.innerHTML = workBlocks.join("");
     tween($("[data-o-hours]"), totalHrs, function (v) { return "~" + Math.round(v) + " hrs/mo"; }, "hours");
     // channel breakdown bars (by eyeballs)
