@@ -1642,9 +1642,15 @@ async function lcGbpProbe(env, kw, loc) {
   if (!env.DATAFORSEO_LOGIN || !env.DATAFORSEO_PASSWORD) { out.reason = "no-creds"; return out; }
   const auth = "Basic " + btoa(`${env.DATAFORSEO_LOGIN}:${env.DATAFORSEO_PASSWORD}`);
   try {
+    // if loc looks like "lat,lng" (optionally with a zoom), send it as a coordinate
+    const isCoord = /^-?\d+(\.\d+)?,-?\d+(\.\d+)?/.test(loc);
+    const task = isCoord
+      ? { keyword: kw, location_coordinate: loc, language_code: "en", device: "desktop" }
+      : { keyword: kw, location_name: loc, language_code: "en", device: "desktop" };
+    out.geo = isCoord ? "coordinate" : "name";
     const res = await fetch("https://api.dataforseo.com/v3/serp/google/maps/live/advanced", {
       method: "POST", headers: { Authorization: auth, "Content-Type": "application/json" },
-      body: JSON.stringify([{ keyword: kw, location_name: loc, language_code: "en", device: "desktop" }])
+      body: JSON.stringify([task])
     });
     out.http = res.status;
     const data = await res.json();
