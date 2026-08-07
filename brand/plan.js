@@ -231,6 +231,8 @@
       payRows.push('<div class="pl-feerow pl-subrow"><span>Cookie Consent Banner</span><b>included</b></div>');
       payRows.push('<div class="pl-feerow pl-subrow"><span>Consent Ledger</span><b>included</b></div>');
     }
+    // one-time setup fees (not part of the monthly total) — Google LSA verification & Google Guarantee onboarding
+    if (state.on.lsa) payRows.push('<div class="pl-feerow pl-onetime"><span>Google LSA setup <span class="pl-fee-dest">&rarr; me &middot; one-time</span></span><b>$2,500</b></div>');
     var payEl = $("[data-o-pay-rows]"); if (payEl) payEl.innerHTML = payRows.join("");
     tween($("[data-o-pay]"), r.totalSpend, money, "pay");
     // "What you get" — leads per source (biggest first)
