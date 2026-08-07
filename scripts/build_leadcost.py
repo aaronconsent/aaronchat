@@ -49,10 +49,11 @@ def build_bench():
     lines = []
     for t in TRADES:
         book = js_book(t["book"]) if t.get("book") else "{ blended: 0.30 }"
+        social = t.get("social", 11)
         lines.append(
             f'  {t["trade"]}: {{ label: {jd(t["label"])}, '
             f'ads: {js_channel(t["ads"])}, lsa: {js_channel(t["lsa"])}, fb: {js_channel(t["fb"])}, '
-            f'book: {book}, kw: {jd(t["seeds"])} }},'
+            f'book: {book}, social: {social}, kw: {jd(t["seeds"])} }},'
         )
     body = "\n".join(lines).rstrip(",")
     block = "// <LC_BENCH>\nconst LC_BENCH = {\n" + body + "\n};\n// </LC_BENCH>"

@@ -102,6 +102,9 @@ BODY = f'''
         site, and social. It's the "how often your name shows up" number, not reach.</li>
         <li><b>Organic leads</b> are anonymous site visitors ConsentResolve turns into a named lead at ~$7 &mdash; they book
         low (~1 in 20), but they're cheap and they're yours. They ride on top and don't get amplified by anything.</li>
+        <li><b>Social media</b> (7 networks, daily posts + reels) adds ~10&ndash;12 inbound leads a month, weighted by how well
+        your trade does on social &mdash; visual, before-&-after work (remodels, landscaping, pools) earns more than urgent
+        commodity calls. They book at your trade's inbound rate.</li>
         <li><b>Everything you pay me is on the table</b> above: Website &amp; Growth $500/mo, Social $500/mo, ad management 15%
         of spend. Ad spend goes to Google/Meta, never to me.</li>
       </ul>
