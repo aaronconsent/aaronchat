@@ -1742,6 +1742,7 @@ async function handleLeadCost(request, env, ctx) {
       const cached = JSON.parse(hit);
       cached.zip = zip;        // echo caller's ZIP; the priced market is state-level
       cached.gbp = (await gbpP).gbp;  // GBP is per-ZIP, layered on top
+      lcLogLookup(cached, request, env, ctx);
       return json(cached);
     }
   }
@@ -1787,7 +1788,39 @@ async function handleLeadCost(request, env, ctx) {
   const shouldCache = env.SETUP_KV && !debug && (live || !credsPresent);
   if (shouldCache) ctx.waitUntil(env.SETUP_KV.put(cacheKey, JSON.stringify(payload), { expirationTtl: 604800 }));
   payload.gbp = gbpRes.gbp;  // per-ZIP GBP, layered on after the state-level base is cached
+  lcLogLookup(payload, request, env, ctx);
   return json(payload);
+}
+
+// Record every report run (ZIP lookup) to KV as its own event (90-day TTL), newest-first key.
+// Powers the /insights dashboard — activity, market intel, social/lead-gen angles. No PII beyond
+// coarse CF visitor geo. Skipped on debug and when there's no store.
+function lcLogLookup(p, request, env, ctx) {
+  if (!env || !env.SETUP_KV) return;
+  try {
+    const cf = (request && request.cf) || {};
+    const ch = {}; (p.channels || []).forEach(c => { ch[c.key] = c; });
+    const t = Date.now();
+    const e = {
+      t, zip: p.zip, state: p.market, trade: p.trade, label: p.tradeLabel, live: !!p.live,
+      city: (p.gbp && p.gbp.city) || null,
+      ads: ch.google_ads && ch.google_ads.cpl, lsa: ch.google_lsa && ch.google_lsa.cpl, fb: ch.facebook && ch.facebook.cpl,
+      gbp: p.gbp ? { p: p.gbp.potential, c: p.gbp.competitors, s: p.gbp.strongCompetitors } : null,
+      social: p.socialLeads, blended: p.blended,
+      vcity: cf.city || null, vregion: cf.region || null, vcountry: cf.country || null
+    };
+    const key = "lc:ev:" + String(1e13 - t).padStart(14, "0") + ":" + Math.random().toString(36).slice(2, 8);
+    ctx.waitUntil(env.SETUP_KV.put(key, JSON.stringify(e), { expirationTtl: 7776000 }));
+  } catch (err) { /* logging never breaks the response */ }
+}
+
+// GET /api/insights — the last ~250 report runs + a generated timestamp. No auth (unlisted tool).
+async function handleInsights(request, env) {
+  if (!env.SETUP_KV) return json({ ok: false, error: "no store" });
+  const list = await env.SETUP_KV.list({ prefix: "lc:ev:", limit: 250 });
+  const raw = await Promise.all(list.keys.map(k => env.SETUP_KV.get(k.name)));
+  const events = raw.filter(Boolean).map(s => { try { return JSON.parse(s); } catch (e) { return null; } }).filter(Boolean);
+  return json({ ok: true, generatedAt: Date.now(), showing: events.length, more: !list.list_complete, events });
 }
 
 export default {
@@ -1798,6 +1831,7 @@ export default {
     if (url.pathname === "/api/lead") return handleLead(request, env, ctx);
     if (url.pathname === "/api/contact") return handleContact(request, env);
     if (url.pathname === "/api/lead-cost") return handleLeadCost(request, env, ctx);
+    if (url.pathname === "/api/insights") return handleInsights(request, env);
     if (url.pathname === "/api/quote") return handleQuote(request, env, ctx);
     if (url.pathname === "/api/order") return handleOrder(request, env);
     if (url.pathname === "/api/lookup") return handleLookup(request, env);

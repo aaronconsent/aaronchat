@@ -862,6 +862,49 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 .plan-src { display: flex; flex-wrap: wrap; gap: 6px 14px; padding-top: 12px; border-top: 1px solid var(--line-soft); }
 .plan-src a { font-size: .78rem; color: var(--tertiary); text-decoration: underline; text-underline-offset: 2px; }
 
+/* ============ /insights internal dashboard ============ */
+.ins-refresh { display: inline-flex; align-items: center; margin-left: 4px; background: #fff; color: var(--primary-container);
+  border: 0; border-radius: var(--r-full); padding: 6px 16px; font: 700 .82rem var(--f); cursor: pointer;
+  box-shadow: var(--sh-sm); transition: transform .12s var(--ease); }
+.ins-refresh:hover { transform: translateY(-1px); }
+.ins-updated { margin-left: 10px; font-size: .82rem; color: rgba(255,255,255,.7); font-variant-numeric: tabular-nums; }
+.insights { display: flex; flex-direction: column; gap: clamp(20px, 3vw, 30px); }
+.ins-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; }
+.ins-tile { background: var(--white); border: 1px solid var(--line-soft); border-radius: var(--r-lg);
+  padding: 16px 18px; box-shadow: var(--sh-sm); display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.ins-tl { font-size: .68rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-variant); }
+.ins-tv { font-size: clamp(1.4rem, 2.4vw, 1.9rem); font-weight: 800; color: var(--ink); letter-spacing: -0.01em;
+  line-height: 1.1; font-variant-numeric: tabular-nums; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ins-ts { font-size: .72rem; color: var(--ink-variant); }
+.ins-sec { background: var(--white); border: 1px solid var(--line-soft); border-radius: var(--r-lg);
+  padding: clamp(16px, 2vw, 22px); box-shadow: var(--sh-sm); min-width: 0; }
+.ins-sec h2 { font-size: 1.05rem; margin-bottom: 14px; }
+.ins-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: clamp(16px, 2vw, 20px); }
+.ins-angles { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.ins-angle { background: var(--surface-low); border-radius: var(--r); padding: 14px 16px; }
+.ins-angle-tag { display: inline-block; font-size: .64rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--tertiary); background: var(--tertiary-container); padding: 3px 9px; border-radius: var(--r-full); margin-bottom: 8px; }
+.ins-angle p { font-size: .92rem; line-height: 1.5; color: var(--ink); }
+.ins-barlist { display: flex; flex-direction: column; gap: 9px; }
+.ins-bar { display: grid; grid-template-columns: minmax(0, 1fr) 1.4fr auto; align-items: center; gap: 10px; }
+.ins-bar-k { font-size: .88rem; font-weight: 600; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ins-bar-track { height: 8px; border-radius: 999px; background: var(--primary-tint); overflow: hidden; }
+.ins-bar-track i { display: block; height: 100%; border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary-container), var(--tertiary-bright)); }
+.ins-bar-n { font-size: .82rem; font-weight: 700; color: var(--ink-variant); font-variant-numeric: tabular-nums; min-width: 2ch; text-align: right; }
+.ins-tablewrap { overflow-x: auto; }
+.ins-table { width: 100%; border-collapse: collapse; font-size: .88rem; min-width: 620px; }
+.ins-table th { text-align: left; font-size: .68rem; font-weight: 800; letter-spacing: .03em; text-transform: uppercase;
+  color: var(--ink-variant); padding: 0 12px 10px; border-bottom: 1px solid var(--line); }
+.ins-table td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); color: var(--ink); vertical-align: top; }
+.ins-table tbody tr:hover { background: var(--surface-low); }
+.ins-table .ins-num { text-align: right; font-variant-numeric: tabular-nums; }
+.ins-table .ins-t { color: var(--ink-variant); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ins-empty, .ins-empty-state { color: var(--ink-variant); }
+.ins-empty-state { text-align: center; padding: clamp(30px, 6vw, 60px); background: var(--white);
+  border: 1px solid var(--line-soft); border-radius: var(--r-lg); }
+.ins-empty-state h2 { margin-bottom: 8px; }
+
 /* ============ /stats page ============ */
 .prose { max-width: 760px; margin-inline: auto; }
 .prose h2 { font-size: var(--d-sm, 1.6rem); margin: 40px 0 12px; }
