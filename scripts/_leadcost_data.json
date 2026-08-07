@@ -41,7 +41,7 @@
       "note": "Cost to resolve an anonymous website visitor into an owned lead via ConsentResolve. A cost we pay, not a market benchmark."
     },
     "geo_model": "DataForSEO Google Ads Search Volume (Keyword Planner CPC) used only as a state-vs-national ratio (clamped 0.7-1.5), applied to the published benchmark. Never the absolute CPC. ZIP resolves to state.",
-    "booking_model": "Cost per booked job = cost per lead (geo-adjusted) / booking rate (lead->booked job). Booking rate is per-trade + per-channel and does NOT vary by geography; the geo variation lives entirely in the cost-per-lead. Rates from SearchLight LSA book data (firm for HVAC/plumbing/electrical), Invoca/estatehub/NeverMiss channel benchmarks, and a channel-intent model (LSA~=organic > Google Ads > Facebook). Clamped 0.10-0.70.",
+    "booking_model": "Cost per booked job = cost per lead (geo-adjusted) / booking rate (lead->booked job). Booking rate is per-trade + per-channel and does NOT vary by geography; the geo variation lives entirely in the cost-per-lead. Rates from SearchLight LSA book data (firm for HVAC/plumbing/electrical), Invoca/estatehub/NeverMiss channel benchmarks, and a channel-intent model (LSA (~44%) > Google Ads > Facebook; ORGANIC here = a resolved anonymous website visitor (ConsentResolve), which books ~1 in 20 (5%) — much lower than an inbound organic call). Clamped 0.10-0.70.",
     "booking_sources": [
       {
         "name": "SearchLight Digital LSA book rates 2026 (888 contractors)",
@@ -105,7 +105,7 @@
         "lsa": 0.44,
         "ads": 0.3,
         "fb": 0.16,
-        "organic": 0.42,
+        "organic": 0.05,
         "blended": 0.34,
         "tier": "firm",
         "src": "SearchLight LSA 2026 (44% book) + Invoca 2026 + channel-intent model"
@@ -150,7 +150,7 @@
         "lsa": 0.44,
         "ads": 0.3,
         "fb": 0.16,
-        "organic": 0.43,
+        "organic": 0.05,
         "blended": 0.34,
         "tier": "firm",
         "src": "SearchLight LSA 2026 (44.5% book) + Invoca 2026"
@@ -195,7 +195,7 @@
         "lsa": 0.43,
         "ads": 0.29,
         "fb": 0.15,
-        "organic": 0.4,
+        "organic": 0.05,
         "blended": 0.32,
         "tier": "firm",
         "src": "SearchLight LSA 2026 (43.4% book) + Invoca 2026"
@@ -240,7 +240,7 @@
         "lsa": 0.38,
         "ads": 0.26,
         "fb": 0.14,
-        "organic": 0.36,
+        "organic": 0.05,
         "blended": 0.3,
         "tier": "directional",
         "src": "SearchLight blend + Invoca, discounted for multi-bid"
@@ -285,7 +285,7 @@
         "lsa": 0.34,
         "ads": 0.24,
         "fb": 0.12,
-        "organic": 0.33,
+        "organic": 0.05,
         "blended": 0.26,
         "tier": "directional",
         "src": "QuantiMedia + Invoca windows, big-ticket discount"
@@ -330,7 +330,7 @@
         "lsa": 0.4,
         "ads": 0.3,
         "fb": 0.14,
-        "organic": 0.38,
+        "organic": 0.05,
         "blended": 0.32,
         "tier": "directional",
         "src": "Workiz/Elevarus garage-door repair urgency"
@@ -373,7 +373,7 @@
         "lsa": 0.5,
         "ads": 0.4,
         "fb": 0.22,
-        "organic": 0.5,
+        "organic": 0.05,
         "blended": 0.42,
         "tier": "directional",
         "src": "SearchLight + QuantiMedia pest PPC (recurring, high book)"
@@ -416,7 +416,7 @@
         "lsa": 0.45,
         "ads": 0.35,
         "fb": 0.2,
-        "organic": 0.43,
+        "organic": 0.05,
         "blended": 0.35,
         "tier": "directional",
         "src": "SearchLight + Sideways8/Jobber landscaping"
@@ -459,7 +459,7 @@
         "lsa": 0.32,
         "ads": 0.24,
         "fb": 0.15,
-        "organic": 0.33,
+        "organic": 0.05,
         "blended": 0.26,
         "tier": "directional",
         "src": "PaintViz/Housecall Pro (est-close ~20%, book higher)"
@@ -502,7 +502,7 @@
         "lsa": 0.3,
         "ads": 0.22,
         "fb": 0.13,
-        "organic": 0.33,
+        "organic": 0.05,
         "blended": 0.24,
         "tier": "directional",
         "src": "BookedCore/Construction Snapshot consult-set rates"
@@ -545,7 +545,7 @@
         "lsa": 0.38,
         "ads": 0.28,
         "fb": 0.18,
-        "organic": 0.35,
+        "organic": 0.05,
         "blended": 0.28,
         "tier": "modeled",
         "src": "Roofing-adjacent proxy + Home Service Direct gutter channels"
@@ -588,7 +588,7 @@
         "lsa": 0.32,
         "ads": 0.22,
         "fb": 0.15,
-        "organic": 0.28,
+        "organic": 0.05,
         "blended": 0.22,
         "tier": "modeled",
         "src": "Roofing/remodel-adjacent proxy, big-ticket install discount"
@@ -631,7 +631,7 @@
         "lsa": 0.33,
         "ads": 0.24,
         "fb": 0.16,
-        "organic": 0.3,
+        "organic": 0.05,
         "blended": 0.24,
         "tier": "modeled",
         "src": "Home-improvement/remodel proxy, considered install"
@@ -674,7 +674,7 @@
         "lsa": null,
         "ads": 0.18,
         "fb": 0.1,
-        "organic": 0.22,
+        "organic": 0.05,
         "blended": 0.15,
         "tier": "directional",
         "src": "Enervio/LeadGen Economy solar (heavy shopping + financing)"
@@ -717,7 +717,7 @@
         "lsa": 0.35,
         "ads": 0.28,
         "fb": 0.17,
-        "organic": 0.37,
+        "organic": 0.05,
         "blended": 0.3,
         "tier": "directional",
         "src": "Angi 33% + Home Service Direct/Minyona fencing"
@@ -760,7 +760,7 @@
         "lsa": 0.42,
         "ads": 0.3,
         "fb": 0.2,
-        "organic": 0.45,
+        "organic": 0.05,
         "blended": 0.35,
         "tier": "directional",
         "src": "BaaDigi tree (50-70% inbound close) + DataDrivenTrades LSA"
@@ -803,7 +803,7 @@
         "lsa": null,
         "ads": 0.3,
         "fb": 0.16,
-        "organic": 0.3,
+        "organic": 0.05,
         "blended": 0.25,
         "tier": "directional",
         "src": "Peak Marketing/BaaDigi concrete (book 30-40%, close ~20%)"
@@ -846,7 +846,7 @@
         "lsa": 0.48,
         "ads": 0.33,
         "fb": 0.15,
-        "organic": 0.5,
+        "organic": 0.05,
         "blended": 0.42,
         "tier": "directional",
         "src": "NeverMiss handyman (referral 60-75% / Google 25-40% / social 10-20%)"
@@ -889,7 +889,7 @@
         "lsa": 0.45,
         "ads": 0.32,
         "fb": 0.18,
-        "organic": 0.42,
+        "organic": 0.05,
         "blended": 0.38,
         "tier": "directional",
         "src": "ZenMaid LSA + ServiceDirect phone-lead close, response-time sensitive"
@@ -932,7 +932,7 @@
         "lsa": 0.4,
         "ads": 0.28,
         "fb": 0.16,
-        "organic": 0.35,
+        "organic": 0.05,
         "blended": 0.3,
         "tier": "directional",
         "src": "LeadGen Economy pool maintenance (20-35% conv)"
