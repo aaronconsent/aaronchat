@@ -20,7 +20,7 @@
     google_ads: { cpl: 130, bookRate: 0.30 }, google_lsa: { cpl: 53, bookRate: 0.44 },
     facebook: { cpl: 41, bookRate: 0.16 }, organic: { cpl: 7, bookRate: 0.05 }
   };
-  var market = { tradeLabel: "your trade", market: "", live: false, ch: FALLBACK, set: false };
+  var market = { tradeLabel: "your trade", market: "", live: false, ch: FALLBACK, blended: 0.30, set: false };
 
   // ---- model coefficients (all documented in the on-page "how this is modeled") ----
   var reach = (REF.reach || {});
@@ -88,7 +88,7 @@
     });
 
     // owned channels
-    if (on.web) { eyeballs += REACH_MON.web; var owl = 6, owb = owl * effBook(0.35); leads += owl; booked += owb; siteVisitors += 250; rows.push({ label: "Website / SEO (organic)", leads: owl, spend: 0, eyeballs: REACH_MON.web, booked: owb }); }
+    if (on.web) { eyeballs += REACH_MON.web; var owl = 6, owb = owl * effBook(market.blended || 0.30); leads += owl; booked += owb; siteVisitors += 250; rows.push({ label: "Website / SEO (organic)", leads: owl, spend: 0, eyeballs: REACH_MON.web, booked: owb }); } // books at THIS trade's inbound rate — tailored per lookup
     if (on.gbp) { eyeballs += REACH_MON.gbp; rows.push({ label: "Google Business Profile", leads: 0, spend: 0, eyeballs: REACH_MON.gbp, booked: 0 }); }
     if (on.social) { var socEye = 8000; eyeballs += socEye; rows.push({ label: "Social media (7 networks)", leads: 0, spend: 0, eyeballs: socEye, booked: 0 }); } // 500-700 posts/mo + 3 reels/day drives far more than baseline organic reach
 
@@ -138,7 +138,8 @@
   var tweens = {};
   function tween(el, to, fmt, key) {
     if (!el) return;
-    if (reduce) { el.textContent = fmt(to); return; }
+    // reduced-motion, or a hidden/background tab (rAF is paused there) → set the final value outright
+    if (reduce || d.hidden) { el.textContent = fmt(to); el.setAttribute("data-v", to); return; }
     var from = parseFloat(el.getAttribute("data-v") || "0"), begin = null, id = {}; tweens[key] = id;
     function step(ts) { if (tweens[key] !== id) return; if (begin === null) begin = ts;
       var p = Math.min(1, (ts - begin) / 550), e = 1 - Math.pow(1 - p, 4), v = from + (to - from) * e;
@@ -239,7 +240,7 @@
         if (go) go.disabled = false;
         if (data && data.ok) {
           var ch = {}; data.channels.forEach(function (c) { ch[c.key] = { cpl: c.cpl, bookRate: c.bookRate }; });
-          market = { tradeLabel: data.tradeLabel, market: data.market, live: data.live, ch: ch, set: true };
+          market = { tradeLabel: data.tradeLabel, market: data.market, live: data.live, ch: ch, blended: data.blended || 0.30, set: true };
           zip = z; trade = t;
           if (mStatus) mStatus.hidden = true;
           if (w.history && w.history.replaceState) w.history.replaceState(null, "", "/plan/?zip=" + encodeURIComponent(z) + "&trade=" + encodeURIComponent(t));

@@ -721,6 +721,7 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
   background: var(--white); border: 1px solid var(--line-soft); border-radius: var(--r-xl);
   padding: clamp(18px, 2vw, 24px); box-shadow: var(--sh-sm); }
 @media (max-width: 860px) { .plan-controls { position: static; } }
+.plan-budget { border-top: 1px solid var(--line-soft); padding-top: 18px; margin-top: 2px; }
 .plan-budget-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
 .plan-budget-head label { font-weight: 700; font-size: .95rem; color: var(--ink); }
 .plan-budget-head b { font-size: 1.5rem; font-weight: 800; color: var(--primary-container);

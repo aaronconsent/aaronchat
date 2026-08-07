@@ -55,12 +55,12 @@ BODY = f'''
           <p class="lc-status" data-gate-status hidden></p>
         </form>
       </div>
+      <div class="plan-toggles" data-plan-toggles><!-- toggles injected --></div>
       <div class="plan-budget">
         <div class="plan-budget-head"><label for="pl-budget">Monthly ad budget</label><b data-plan-budgetval>$0</b></div>
         <input id="pl-budget" type="range" min="0" max="10000" step="250" value="0" data-plan-budget>
         <div class="plan-budget-scale"><span>$0</span><span>$10k</span></div>
       </div>
-      <div class="plan-toggles" data-plan-toggles><!-- toggles injected --></div>
     </div>
     <!-- RIGHT: outputs -->
     <div class="plan-out">

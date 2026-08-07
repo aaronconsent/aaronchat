@@ -1662,7 +1662,7 @@ async function handleLeadCost(request, env, ctx) {
   const state = lcZipState(zip);
   if (!state || state === "Armed Forces") return json({ ok: false, error: "That ZIP isn't a US service area I can price." }, 400);
 
-  const cacheKey = `leadcost:v9:${tradeKey}:${state}`;
+  const cacheKey = `leadcost:v10:${tradeKey}:${state}`;
   if (env.SETUP_KV && url.searchParams.get("debug") !== "1") {
     const hit = await env.SETUP_KV.get(cacheKey);
     if (hit) {
@@ -1693,6 +1693,7 @@ async function handleLeadCost(request, env, ctx) {
 
   const payload = {
     ok: true, zip, trade: tradeKey, tradeLabel: bench.label, market: state, live, as_of: "2025", factor: factor,
+    blended: (bk.blended != null && bk.blended > 0) ? bk.blended : 0.30,  // this trade's inbound booking rate (drives owned/organic in the growth plan)
     channels: [
       { key: "google_ads", label: "Google Ads", cpl: adsCpl, cpbj: cpbj(adsCpl, "ads"), bookRate: rateFor("ads"), live, unit: "per lead", tier: bench.ads[1], source: bench.ads[2] },
       { key: "google_lsa", label: "Google LSA", cpl: lsaCpl, cpbj: cpbj(lsaCpl, "lsa"), bookRate: rateFor("lsa"), na: lsaCpl == null, live: false, unit: "per lead", tier: bench.lsa[1], source: bench.lsa[2] },
