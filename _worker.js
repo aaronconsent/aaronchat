@@ -1635,6 +1635,32 @@ async function lcCpcFor(location, kw, auth) {
   return { cpc: lcAvgCpc(t && t.result), code: t && t.status_code, msg: t && t.status_message };
 }
 
+// PROBE: does this DataForSEO account have Maps SERP (and does it return review counts)?
+// Temporary — hit /api/lead-cost?gbpprobe=1&kw=plumber&loc=Houston,Texas,United States
+async function lcGbpProbe(env, kw, loc) {
+  const out = { kw, loc };
+  if (!env.DATAFORSEO_LOGIN || !env.DATAFORSEO_PASSWORD) { out.reason = "no-creds"; return out; }
+  const auth = "Basic " + btoa(`${env.DATAFORSEO_LOGIN}:${env.DATAFORSEO_PASSWORD}`);
+  try {
+    const res = await fetch("https://api.dataforseo.com/v3/serp/google/maps/live/advanced", {
+      method: "POST", headers: { Authorization: auth, "Content-Type": "application/json" },
+      body: JSON.stringify([{ keyword: kw, location_name: loc, language_code: "en", device: "desktop" }])
+    });
+    out.http = res.status;
+    const data = await res.json();
+    out.status_code = data && data.status_code;
+    out.status_message = data && data.status_message;
+    const t = data && data.tasks && data.tasks[0];
+    out.task_code = t && t.status_code; out.task_msg = t && t.status_message; out.cost = data && data.cost;
+    const items = t && t.result && t.result[0] && t.result[0].items;
+    out.item_count = items ? items.length : 0;
+    out.sample = (items || []).slice(0, 6).map(function (i) {
+      return { title: i.title, rating: i.rating && i.rating.value, reviews: i.rating && i.rating.votes_count, rank: i.rank_absolute };
+    });
+  } catch (e) { out.reason = "throw:" + (e && e.message ? e.message : "err"); }
+  return out;
+}
+
 async function lcLiveFactor(bench, state, env) {
   const dbg = { ok: false };
   if (!env.DATAFORSEO_LOGIN || !env.DATAFORSEO_PASSWORD) { dbg.reason = "no-creds"; return { factor: null, dbg }; }
@@ -1654,6 +1680,11 @@ async function lcLiveFactor(bench, state, env) {
 
 async function handleLeadCost(request, env, ctx) {
   const url = new URL(request.url);
+  if (url.searchParams.get("gbpprobe") === "1") {
+    const kw = url.searchParams.get("kw") || "plumber";
+    const loc = url.searchParams.get("loc") || "Houston,Texas,United States";
+    return json(await lcGbpProbe(env, kw, loc));
+  }
   const zip = clean(url.searchParams.get("zip"), 5).replace(/\D/g, "");
   const tradeKey = clean(url.searchParams.get("trade"), 40).toLowerCase();
   const bench = LC_BENCH[tradeKey];
