@@ -63,7 +63,7 @@
 
   // "What I do for you" — per-service monthly hours, plain-language tasks, and what I buy on your behalf.
   var WORK = {
-    website:  { hours: 3, tasks: ["Keep your site fast, secure & online 24/7", "Update content and fix anything that breaks", "Monthly speed, uptime & backup checks"], buys: ["Premium hosting, SSL & CDN"] },
+    website:  { hours: 3, tasks: ["Fully Customized AI-Optimized Website", "Built on Claude Code &amp; GitHub", "Hosted on Cloudflare (SSL, Fast, Secure)", "You Own 100%", "Bring or Buy Your Own Domain"], buys: [] },
     localseo: { hours: 5, tasks: ["Optimize every page to rank in your service area", "Build local citations & quality backlinks", "Tune your site to show up in AI answers (ChatGPT, Google AI)"], buys: ["Local citations from BrightLocal", "Rank-tracking tools"] },
     blogging: { hours: 4, tasks: ["Write 4 search-optimized blog posts a month", "Research what your customers actually search for", "Publish, interlink & get them indexed"], buys: ["AI writing & editing credits"] },
     gbp:      { hours: 2, tasks: ["Post weekly updates, offers & photos", "Optimize categories, services & hours", "Answer questions and keep it fresh"], buys: [] },
@@ -247,7 +247,7 @@
       workBlocks.push('<div class="pl-work"><div class="pl-work-hd"><span class="pl-work-name">' + s.label +
         '</span><span class="pl-work-hrs">~' + wk.hours + ' hrs/mo</span></div>' +
         '<ul class="pl-work-tasks">' + wk.tasks.map(function (t) { return '<li>' + t + '</li>'; }).join("") + '</ul>' +
-        (wk.buys && wk.buys.length ? '<div class="pl-work-buys"><b>I buy for you:</b> ' + wk.buys.join(' &middot; ') + '</div>' : '') +
+        (wk.buys && wk.buys.length ? '<div class="pl-work-buys"><b>No Extra Charge:</b> ' + wk.buys.join(' &middot; ') + '</div>' : '') +
         '</div>');
     });
     // cross-network optimization — only when 2+ paid networks compete for the budget
