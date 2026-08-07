@@ -193,7 +193,7 @@
     tween($("[data-o-payme]"), r.feeTotal, money, "payme");
     // group 2 — what you buy for yourself (ad spend per channel + resolution) — only what's on
     var selfRows = r.adLines.map(function (a) { return { label: a.label + ' <span class="pl-fee-dest">&rarr; ' + a.dest + '</span>', amt: a.amt }; });
-    if (r.resolveCost > 0) selfRows.push({ label: 'Organic leads <span class="pl-fee-dest">$7 &times; resolved</span>', amt: r.resolveCost });
+    if (r.resolveCost > 0) selfRows.push({ label: 'Organic leads <b>$7 &times; resolved</b>', amt: r.resolveCost });
     var selfTotal = selfRows.reduce(function (s, x) { return s + x.amt; }, 0);
     var self = $("[data-o-fee-self]"), selfPanel = $("[data-buyself]");
     if (self) self.innerHTML = selfRows.map(function (x) { return feerow(x.label, x.amt); }).join("");
