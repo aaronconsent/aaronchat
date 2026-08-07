@@ -77,9 +77,11 @@
     var BOOK_CEIL = 0.60;  // no channel books above 60%, even fully optimized — keeps it honest
     function effBook(br) { return Math.min(BOOK_CEIL, br * bookMult); }
 
-    var rows = [], leads = 0, booked = 0, eyeballs = 0, siteVisitors = 0;
+    var AD_LABEL = { ads: ["Google Ads", "Google"], lsa: ["Google LSA", "Google"], fb: ["Facebook / Instagram ads", "Meta"] };
+    var rows = [], adLines = [], leads = 0, booked = 0, eyeballs = 0, siteVisitors = 0;
     paid.forEach(function (p) {
       var spend = adSpend * (p.w / wsum);
+      if (spend >= 1) adLines.push({ label: AD_LABEL[p.k][0], dest: AD_LABEL[p.k][1], amt: spend });
       var cpl = (ch[p.ck] && ch[p.ck].cpl) || FALLBACK[p.ck].cpl;
       var br = (ch[p.ck] && ch[p.ck].bookRate) || FALLBACK[p.ck].bookRate;
       var ld = spend / cpl, bk = ld * effBook(br), eye = spend * (REACH$[p.k] || 1);
@@ -128,7 +130,7 @@
     var ownedOn = on.web || on.gbp || on.reviews || on.resolve;  // web is locked on, so this is always true
     if (ownedOn) fee.push({ label: "Website & Growth", amt: 500 });
     if (on.social) fee.push({ label: "Social Media", amt: 500 });
-    if (paid.length) fee.push({ label: "Ad management (15% of spend)", amt: Math.round(adSpend * 0.15) });
+    if (paid.length && adSpend > 0) fee.push({ label: "Ad management (15% of ad spend)", amt: Math.round(adSpend * 0.15) });
     var feeTotal = fee.reduce(function (a, f) { return a + f.amt; }, 0);
     var totalSpend = adSpend + resolveCost + feeTotal;
     var cpbj = bookedJobs > 0 ? totalSpend / bookedJobs : 0;
@@ -138,7 +140,7 @@
     var anchorCpbj = (anchorCh.cpl && anchorCh.bookRate) ? anchorCh.cpl / anchorCh.bookRate : 0;
 
     return {
-      adSpend: adSpend, resolveCost: resolveCost, fee: fee, feeTotal: feeTotal, totalSpend: totalSpend, anchorCpbj: anchorCpbj,
+      adSpend: adSpend, resolveCost: resolveCost, fee: fee, feeTotal: feeTotal, adLines: adLines, totalSpend: totalSpend, anchorCpbj: anchorCpbj,
       leads: Math.round(totalLeads), bookedJobs: bookedJobs, cpbj: cpbj, eyeballs: Math.round(eyeballs),
       rows: rows.sort(function (a, b) { return b.eyeballs + b.leads * 500 - (a.eyeballs + a.leads * 500); })
     };
@@ -164,11 +166,12 @@
   }
 
   function setDash() {
-    ["[data-o-cpbj]", "[data-o-jobs]", "[data-o-leads]", "[data-o-eyeballs]", "[data-o-spend]"].forEach(function (s) {
+    ["[data-o-cpbj]", "[data-o-jobs]", "[data-o-leads]", "[data-o-eyeballs]", "[data-o-payme]", "[data-o-buyself]"].forEach(function (s) {
       var el = $(s); if (el) { el.textContent = "—"; el.removeAttribute("data-v"); }
     });
     var a = $("[data-o-anchor]"); if (a) a.hidden = true;
-    var fb = $("[data-o-fee]"); if (fb) fb.innerHTML = "";
+    ["[data-o-fee-me]", "[data-o-fee-self]"].forEach(function (s) { var el = $(s); if (el) el.innerHTML = ""; });
+    var sp = $("[data-buyself]"); if (sp) sp.hidden = true;
     var cb = $("[data-o-channels]"); if (cb) cb.innerHTML = "";
   }
 
@@ -183,13 +186,19 @@
     tween($("[data-o-cpbj]"), r.cpbj, money, "cpbj");
     tween($("[data-o-leads]"), r.leads, num, "leads");
     tween($("[data-o-eyeballs]"), r.eyeballs, num, "eye");
-    tween($("[data-o-spend]"), r.totalSpend, money, "spend");
-    // fee breakdown
-    var fb = $("[data-o-fee]");
-    if (fb) fb.innerHTML = '<div class="pl-feerow"><span>Ad spend (to Google / Meta)</span><b>' + money(r.adSpend) + '</b></div>' +
-      (r.resolveCost > 0 ? '<div class="pl-feerow"><span>Organic leads ($7 &times; resolved visitor)</span><b>' + money(r.resolveCost) + '</b></div>' : "") +
-      r.fee.map(function (f) { return '<div class="pl-feerow"><span>' + f.label + ' &mdash; to me</span><b>' + money(f.amt) + '</b></div>'; }).join("") +
-      '<div class="pl-feerow total"><span>Total / month</span><b>' + money(r.totalSpend) + '</b></div>';
+    function feerow(label, amt) { return '<div class="pl-feerow"><span>' + label + '</span><b>' + money(amt) + '</b></div>'; }
+    // group 1 — what you pay me (my fees)
+    var me = $("[data-o-fee-me]");
+    if (me) me.innerHTML = r.fee.map(function (f) { return feerow(f.label, f.amt); }).join("");
+    tween($("[data-o-payme]"), r.feeTotal, money, "payme");
+    // group 2 — what you buy for yourself (ad spend per channel + resolution) — only what's on
+    var selfRows = r.adLines.map(function (a) { return { label: a.label + ' <span class="pl-fee-dest">&rarr; ' + a.dest + '</span>', amt: a.amt }; });
+    if (r.resolveCost > 0) selfRows.push({ label: 'Organic leads <span class="pl-fee-dest">$7 &times; resolved</span>', amt: r.resolveCost });
+    var selfTotal = selfRows.reduce(function (s, x) { return s + x.amt; }, 0);
+    var self = $("[data-o-fee-self]"), selfPanel = $("[data-buyself]");
+    if (self) self.innerHTML = selfRows.map(function (x) { return feerow(x.label, x.amt); }).join("");
+    if (selfPanel) selfPanel.hidden = selfRows.length === 0;
+    tween($("[data-o-buyself]"), selfTotal, money, "buyself");
     // channel breakdown bars (by eyeballs)
     var maxEye = Math.max.apply(null, r.rows.map(function (x) { return x.eyeballs; }).concat([1]));
     var cb = $("[data-o-channels]");

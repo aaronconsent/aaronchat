@@ -76,8 +76,12 @@ BODY = f'''
         <div class="plan-tile eye"><span class="pl-tl">Total eyeballs / mo</span><b class="pl-tv" data-o-eyeballs>0</b><span class="pl-ts">brand impressions, all channels</span></div>
       </div>
       <div class="plan-panel">
-        <h3>What you pay me for <span data-o-spend>$0</span>/mo</h3>
-        <div class="plan-fee" data-o-fee></div>
+        <h3>What you pay me <span data-o-payme>$0</span>/mo</h3>
+        <div class="plan-fee" data-o-fee-me></div>
+      </div>
+      <div class="plan-panel" data-buyself hidden>
+        <h3>What you buy for yourself <span data-o-buyself>$0</span>/mo</h3>
+        <div class="plan-fee" data-o-fee-self></div>
       </div>
       <div class="plan-panel">
         <h3>Where the eyeballs &amp; leads come from</h3>

@@ -830,6 +830,7 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 .pl-feerow { display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
   padding: 9px 0; border-bottom: 1px solid var(--line-soft); font-size: .92rem; color: var(--ink-variant); }
 .pl-feerow b { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+.pl-fee-dest { color: var(--ink-variant); font-weight: 600; font-size: .82em; white-space: nowrap; }
 .pl-feerow.total { border-bottom: 0; padding-top: 12px; font-size: 1rem; font-weight: 700; color: var(--ink); }
 .pl-feerow.total b { color: var(--primary-container); font-size: 1.15rem; }
 /* channel breakdown bars */
