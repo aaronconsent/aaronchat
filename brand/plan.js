@@ -183,12 +183,11 @@
   }
 
   function setDash() {
-    ["[data-o-cpbj]", "[data-o-jobs]", "[data-o-leads]", "[data-o-eyeballs]", "[data-o-payme]", "[data-o-buyself]"].forEach(function (s) {
+    ["[data-o-cpbj]", "[data-o-jobs]", "[data-o-leads]", "[data-o-eyeballs]", "[data-o-pay]", "[data-o-getn]"].forEach(function (s) {
       var el = $(s); if (el) { el.textContent = "—"; el.removeAttribute("data-v"); }
     });
     var a = $("[data-o-anchor]"); if (a) a.hidden = true;
-    ["[data-o-fee-me]", "[data-o-fee-self]"].forEach(function (s) { var el = $(s); if (el) el.innerHTML = ""; });
-    var sp = $("[data-buyself]"); if (sp) sp.hidden = true;
+    ["[data-o-pay-rows]", "[data-o-get-rows]"].forEach(function (s) { var el = $(s); if (el) el.innerHTML = ""; });
     var cb = $("[data-o-channels]"); if (cb) cb.innerHTML = "";
   }
 
@@ -203,19 +202,19 @@
     tween($("[data-o-cpbj]"), r.cpbj, money, "cpbj");
     tween($("[data-o-leads]"), r.leads, num, "leads");
     tween($("[data-o-eyeballs]"), r.eyeballs, num, "eye");
-    function feerow(label, amt) { return '<div class="pl-feerow"><span>' + label + '</span><b>' + money(amt) + '</b></div>'; }
-    // group 1 — what you pay me (my fees)
-    var me = $("[data-o-fee-me]");
-    if (me) me.innerHTML = r.fee.map(function (f) { return feerow(f.label, f.amt); }).join("");
-    tween($("[data-o-payme]"), r.feeTotal, money, "payme");
-    // group 2 — what you buy for yourself (ad spend per channel + resolution) — only what's on
-    var selfRows = r.adLines.map(function (a) { return { label: a.label + ' <span class="pl-fee-dest">&rarr; ' + a.dest + '</span>', amt: a.amt }; });
-    if (r.resolveCost > 0) selfRows.push({ label: 'Missed-Visitor Leads <b>$7 &times; resolved</b>', amt: r.resolveCost });
-    var selfTotal = selfRows.reduce(function (s, x) { return s + x.amt; }, 0);
-    var self = $("[data-o-fee-self]"), selfPanel = $("[data-buyself]");
-    if (self) self.innerHTML = selfRows.map(function (x) { return feerow(x.label, x.amt); }).join("");
-    if (selfPanel) selfPanel.hidden = selfRows.length === 0;
-    tween($("[data-o-buyself]"), selfTotal, money, "buyself");
+    function feerow(label, val) { return '<div class="pl-feerow"><span>' + label + '</span><b>' + val + '</b></div>'; }
+    // "What you pay" — everything: my fees, ad spend per channel, and resolution
+    var payRows = [];
+    r.fee.forEach(function (f) { payRows.push(feerow(f.label + ' <span class="pl-fee-dest">&rarr; me</span>', money(f.amt))); });
+    r.adLines.forEach(function (a) { payRows.push(feerow(a.label + ' <span class="pl-fee-dest">&rarr; ' + a.dest + '</span>', money(a.amt))); });
+    if (r.resolveCost > 0) payRows.push(feerow('Missed-Visitor Leads <b>$7 &times; resolved</b>', money(r.resolveCost)));
+    var payEl = $("[data-o-pay-rows]"); if (payEl) payEl.innerHTML = payRows.join("");
+    tween($("[data-o-pay]"), r.totalSpend, money, "pay");
+    // "What you get" — leads per source (biggest first)
+    var getRows = r.rows.filter(function (x) { return Math.round(x.leads) >= 1; }).sort(function (a, b) { return b.leads - a.leads; });
+    var getEl = $("[data-o-get-rows]");
+    if (getEl) getEl.innerHTML = getRows.map(function (x) { return feerow(x.label, Math.round(x.leads).toLocaleString("en-US")); }).join("");
+    tween($("[data-o-getn]"), r.leads, function (v) { return Math.round(v).toLocaleString("en-US") + " leads"; }, "getn");
     // channel breakdown bars (by eyeballs)
     var maxEye = Math.max.apply(null, r.rows.map(function (x) { return x.eyeballs; }).concat([1]));
     var cb = $("[data-o-channels]");
