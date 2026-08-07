@@ -37,31 +37,24 @@ BODY = f'''
 </div></div>
 
 <section class="sec sec-low"><div class="wrap">
-  <!-- GATE: no ZIP+trade yet — send them to look up their real market first -->
-  <div class="plan-gate" data-plan-gate hidden>
-    <div class="plan-gate-card">
-      <h2>First, your real market</h2>
-      <p>This plan runs on <b>your</b> live cost-per-lead and booking numbers &mdash; not made-up averages. Drop in your
-      ZIP and trade and I&rsquo;ll build it around what leads actually cost where you work.</p>
-      <form class="plan-gate-form" novalidate>
-        <div class="lc-field">
-          <label for="pg-zip">Your ZIP</label>
-          <input id="pg-zip" name="zip" type="text" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="77331">
-        </div>
-        <div class="lc-field">
-          <label for="pg-trade">Your trade</label>
-          <select id="pg-trade" name="trade">{TRADE_OPTS}</select>
-        </div>
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Build my plan</button>
-        <p class="lc-status" data-gate-status hidden></p>
-      </form>
-      <p class="plan-gate-alt">Or start from the <a href="/#lead-cost">lead-cost calculator</a> on the home page.</p>
-    </div>
-  </div>
-
-  <div class="plan" data-plan hidden>
+  <div class="plan" data-plan>
     <!-- LEFT: controls -->
     <div class="plan-controls">
+      <div class="plan-market" data-plan-market>
+        <div class="plan-market-head"><h4>Your market</h4><span class="plan-market-sub" data-plan-marketsub>&mdash;</span></div>
+        <form class="plan-market-form" novalidate>
+          <div class="lc-field">
+            <label for="pg-zip">ZIP</label>
+            <input id="pg-zip" name="zip" type="text" inputmode="numeric" maxlength="5" autocomplete="postal-code" placeholder="77331">
+          </div>
+          <div class="lc-field">
+            <label for="pg-trade">Trade</label>
+            <select id="pg-trade" name="trade">{TRADE_OPTS}</select>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit" data-plan-marketgo>Run it</button>
+          <p class="lc-status" data-gate-status hidden></p>
+        </form>
+      </div>
       <div class="plan-budget">
         <div class="plan-budget-head"><label for="pl-budget">Monthly ad budget</label><b data-plan-budgetval>$0</b></div>
         <input id="pl-budget" type="range" min="0" max="10000" step="250" value="0" data-plan-budget>
@@ -71,6 +64,7 @@ BODY = f'''
     </div>
     <!-- RIGHT: outputs -->
     <div class="plan-out">
+      <div class="plan-await" data-plan-await hidden>Punch in your ZIP &amp; trade on the left and I&rsquo;ll run your real numbers &mdash; no made-up averages.</div>
       <div class="plan-tiles">
         <div class="plan-tile hero">
           <div class="pl-hero-main"><span class="pl-tl">Cost per booked job</span><b class="pl-tv" data-o-cpbj>$0</b><span class="pl-ts">all-in, incl. what you pay me</span></div>

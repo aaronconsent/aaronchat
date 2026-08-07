@@ -759,16 +759,20 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
   text-transform: uppercase; color: var(--primary-container); background: var(--primary-tint);
   padding: 2px 7px; border-radius: var(--r-full); vertical-align: 1px; }
 
-/* GATE — shown when there's no ZIP+trade yet */
-.plan-gate { display: flex; justify-content: center; }
-.plan-gate-card { background: var(--white); border: 1px solid var(--line-soft); border-radius: var(--r-xl);
-  box-shadow: var(--sh-md); padding: clamp(26px, 4vw, 44px); max-width: 520px; width: 100%; text-align: center; }
-.plan-gate-card h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 10px; }
-.plan-gate-card > p { color: var(--ink-variant); line-height: 1.6; max-width: 44ch; margin: 0 auto 22px; }
-.plan-gate-form { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; text-align: left; }
-.plan-gate-form .lc-field:has(#pg-zip) { flex: 0 0 120px; }
-.plan-gate-form .btn { flex: 1 0 100%; height: 54px; margin-top: 2px; }
-.plan-gate-alt { margin-top: 18px; font-size: .88rem; color: var(--ink-variant); }
+/* market selector — lives at the top of the control sidebar */
+.plan-market { padding-bottom: 18px; margin-bottom: 4px; border-bottom: 1px solid var(--line-soft); }
+.plan-market-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.plan-market-head h4 { font-size: .95rem; font-weight: 700; }
+.plan-market-sub { font-size: .74rem; font-weight: 700; color: var(--tertiary); text-align: right;
+  font-variant-numeric: tabular-nums; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.plan-market-form { display: grid; grid-template-columns: 96px 1fr; gap: 10px; align-items: end; }
+.plan-market-form .lc-field input, .plan-market-form .lc-field select { height: 46px; }
+.plan-market-form .btn { grid-column: 1 / -1; height: 46px; }
+.plan-market-form .lc-status { grid-column: 1 / -1; margin: 0; }
+
+/* await state — no market chosen yet */
+.plan-await { background: var(--tertiary-container); border: 1px solid color-mix(in oklab, var(--tertiary) 25%, transparent);
+  border-radius: var(--r-lg); padding: 14px 18px; color: var(--tertiary); font-weight: 600; line-height: 1.5; font-size: .95rem; }
 
 /* -- outputs (right) -- */
 .plan-out { display: flex; flex-direction: column; gap: clamp(16px, 2vw, 22px); min-width: 0; }

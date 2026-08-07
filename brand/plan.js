@@ -20,7 +20,7 @@
     google_ads: { cpl: 130, bookRate: 0.30 }, google_lsa: { cpl: 53, bookRate: 0.44 },
     facebook: { cpl: 41, bookRate: 0.16 }, organic: { cpl: 7, bookRate: 0.05 }
   };
-  var market = { tradeLabel: "your trade", market: "", live: false, ch: FALLBACK };
+  var market = { tradeLabel: "your trade", market: "", live: false, ch: FALLBACK, set: false };
 
   // ---- model coefficients (all documented in the on-page "how this is modeled") ----
   var reach = (REF.reach || {});
@@ -146,7 +146,19 @@
     requestAnimationFrame(step);
   }
 
+  function setDash() {
+    ["[data-o-cpbj]", "[data-o-jobs]", "[data-o-leads]", "[data-o-eyeballs]", "[data-o-spend]"].forEach(function (s) {
+      var el = $(s); if (el) { el.textContent = "—"; el.removeAttribute("data-v"); }
+    });
+    var a = $("[data-o-anchor]"); if (a) a.hidden = true;
+    var fb = $("[data-o-fee]"); if (fb) fb.innerHTML = "";
+    var cb = $("[data-o-channels]"); if (cb) cb.innerHTML = "";
+  }
+
   function render() {
+    var awaitEl = $("[data-plan-await]");
+    if (!market.set) { if (awaitEl) awaitEl.hidden = loading; setDash(); return; }
+    if (awaitEl) awaitEl.hidden = true;
     var r = compute();
     var anchorWrap = $("[data-o-anchor]");
     if (anchorWrap) {
@@ -201,43 +213,60 @@
     sl.addEventListener("input", upd); upd();
   }
 
-  // ---- init: fetch live per-market numbers, then render ----
+  // ---- init ----
   function setSubtitle() {
-    var st = $("[data-plan-sub]");
-    if (st) st.textContent = market.tradeLabel + (market.market ? " · " + market.market : "") + (market.live ? " · live market rates" : " · national averages");
+    var st = d.querySelector("[data-plan-sub]"), ms = $("[data-plan-marketsub]");  // hero sub lives outside [data-plan]
+    if (st) st.textContent = !market.set ? "your trade"
+      : market.tradeLabel + (market.market ? " · " + market.market : "") + (market.live ? " · live rates" : " · national avg");
+    if (ms) ms.textContent = !market.set ? "not set yet"
+      : market.tradeLabel + (market.market ? " · " + market.market : "");
   }
-  var gate = d.querySelector("[data-plan-gate]");
 
-  function showDashboard() {
-    if (gate) gate.hidden = true;
-    root.hidden = false;
-    buildControls(); wireBudget(); setSubtitle();
-    fetch("/api/lead-cost?zip=" + encodeURIComponent(zip) + "&trade=" + encodeURIComponent(trade))
+  var mForm = $("[data-plan-market] form"), mStatus = $("[data-gate-status]");
+  var mZip = mForm && mForm.querySelector("[name=zip]"), mTrade = mForm && mForm.querySelector("[name=trade]");
+
+  var loading = false;
+  // fetch a market and recompute (used on load with URL params AND on sidebar submit)
+  function runMarket(z, t, focusOnFail) {
+    loading = true;
+    if (mStatus) { mStatus.hidden = false; mStatus.textContent = "Pulling your market…"; }
+    var go = $("[data-plan-marketgo]"); if (go) go.disabled = true;
+    if (!market.set) render();  // hide the await note while we load
+    return fetch("/api/lead-cost?zip=" + encodeURIComponent(z) + "&trade=" + encodeURIComponent(t))
       .then(function (r) { return r.json(); })
       .then(function (data) {
+        loading = false;
+        if (go) go.disabled = false;
         if (data && data.ok) {
           var ch = {}; data.channels.forEach(function (c) { ch[c.key] = { cpl: c.cpl, bookRate: c.bookRate }; });
-          market = { tradeLabel: data.tradeLabel, market: data.market, live: data.live, ch: ch };
+          market = { tradeLabel: data.tradeLabel, market: data.market, live: data.live, ch: ch, set: true };
+          zip = z; trade = t;
+          if (mStatus) mStatus.hidden = true;
+          if (w.history && w.history.replaceState) w.history.replaceState(null, "", "/plan/?zip=" + encodeURIComponent(z) + "&trade=" + encodeURIComponent(t));
           setSubtitle(); render();
-        }
+        } else if (mStatus) { mStatus.hidden = false; mStatus.textContent = (data && data.error) || "Couldn't pull that one — try again."; }
       })
-      .catch(function () {});
+      .catch(function () { loading = false; if (go) go.disabled = false; render(); if (mStatus) { mStatus.hidden = false; mStatus.textContent = "Network hiccup — give it another go."; } });
   }
 
-  function showGate() {
-    root.hidden = true;
-    if (!gate) return;
-    gate.hidden = false;
-    var f = gate.querySelector("form"), st = gate.querySelector("[data-gate-status]");
-    if (f) f.addEventListener("submit", function (ev) {
-      ev.preventDefault();
-      var z = (f.querySelector("[name=zip]").value || "").replace(/\D/g, "").slice(0, 5);
-      var t = f.querySelector("[name=trade]").value;
-      if (z.length !== 5) { if (st) { st.hidden = false; st.textContent = "Enter a 5-digit ZIP so I can pull your market."; } return; }
-      w.location.href = "/plan/?zip=" + encodeURIComponent(z) + "&trade=" + encodeURIComponent(t);
-    });
-  }
+  buildControls(); wireBudget();
 
-  // 0A — the plan needs a real market. No ZIP+trade = send them to look it up first.
-  if (/^\d{5}$/.test(zip) && trade) showDashboard(); else showGate();
+  if (mForm) mForm.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var z = (mZip.value || "").replace(/\D/g, "").slice(0, 5), t = mTrade.value;
+    if (z.length !== 5) { if (mStatus) { mStatus.hidden = false; mStatus.textContent = "Enter a 5-digit ZIP."; } mZip.focus(); return; }
+    runMarket(z, t, true);
+  });
+
+  // load: if we arrived with a market (e.g. from the home-page rate board), pre-fill and calculate
+  // straight away — no form step. Otherwise sit in the await state until they run one here.
+  if (/^\d{5}$/.test(zip)) {
+    if (mZip) mZip.value = zip;
+    if (mTrade) mTrade.value = trade;
+    setSubtitle(); render();          // await/dashes until the fetch lands
+    runMarket(zip, trade, false);
+  } else {
+    setSubtitle(); render();          // await state
+    if (mZip) try { mZip.focus(); } catch (e) {}
+  }
 })();
