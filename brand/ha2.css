@@ -1,0 +1,316 @@
+/* ===========================================================================
+   Hey Aaron! — Design Direction v2 · "Ink & Iron"
+   Concept: EVIDENCE, NOT ADVERTISING. The site reads as a record of work that
+   happened, not an ad for work that might. Paper and ink; hairline rules
+   instead of floating cards; every number in mono because monospaced figures
+   read as counted, not claimed; left-aligned document hierarchy; one stamped
+   signal colour used like a mark of approval.
+
+   ISOLATED BY DESIGN — this file is loaded ONLY by /v2/. Production (60+ pages)
+   stays on ha.css v1 until this direction is approved. Nothing here leaks.
+
+   Spec: .docs/design-direction-v2.md
+   =========================================================================== */
+
+:root {
+  /* ---- Ink & Iron ---- */
+  --paper:        #F0F2EE;  /* page ground — off-white, faintly GREEN, deliberately not cream */
+  --paper-raised: #F8F9F6;  /* raised surfaces */
+  --ink:          #14171A;  /* headlines + body */
+  --ink-soft:     #474D53;  /* secondary text  (7.4:1 on paper) */
+  --rule:         #D2D7CE;  /* hairlines — the primary structural device */
+  --iron:         #A63A1E;  /* THE signal colour: stamp, red pen, surveyor's mark, East TX clay (5.8:1 on paper) */
+  --iron-deep:    #8A2E16;  /* pressed / hover */
+  --iron-bright:  #E4703F;  /* iron for DARK fields only (4.7:1 on --field) */
+  --field:        #1E2A24;  /* deep pine-slate — dark bands, full-bleed moments */
+  --verified:     #1F6B23;  /* SEMANTIC ONLY — confirmed true. never decorative */
+  --alert:        #B4231C;  /* SEMANTIC ONLY — errors. cooler than --iron on purpose */
+
+  /* ---- three voices ---- */
+  --display: "Newsreader", Georgia, "Times New Roman", serif;      /* a newspaper serif: a record of what happened */
+  --sans:    "Public Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;  /* the US Web Design System face */
+  --mono:    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;    /* every number, always */
+
+  --d-hero: clamp(2.7rem, 1.9rem + 4.4vw, 5rem);
+  --d-sec:  clamp(1.85rem, 1.35rem + 2.1vw, 2.8rem);
+  --h-md:   clamp(1.2rem, 1.08rem + .5vw, 1.4rem);
+  --body:   1.0625rem;   /* 17px — Mike is 40+ and outdoors. non-negotiable */
+  --body-lg: clamp(1.12rem, 1.04rem + .4vw, 1.26rem);
+  --meta:   .78rem;
+
+  /* ---- near-square radius discipline. ONE exception: .btn-call (a phone button reads tappable) ---- */
+  --r: 3px;
+  --r-pill: 9999px;
+
+  --gut: clamp(18px, 4vw, 30px);
+  --max: 1180px;
+
+  /* ---- named easings. nothing ships on default `ease` ---- */
+  --ease-standard:  cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-entrance:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-editorial: cubic-bezier(0.39, 0.24, 0.3, 1);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font-family: var(--sans); font-size: var(--body); line-height: 1.62;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  font-synthesis-weight: none;
+}
+img, svg { display: block; max-width: 100%; }
+::selection { background: var(--iron); color: #fff; }
+
+h1, h2, h3, h4 {
+  margin: 0; font-family: var(--display); font-weight: 600;
+  line-height: 1.04; letter-spacing: -0.021em; color: var(--ink); text-wrap: balance;
+}
+p { margin: 0; text-wrap: pretty; }
+a { color: var(--iron); text-underline-offset: 3px; }
+a:hover { color: var(--iron-deep); }
+
+/* every figure, always — the "counted, not claimed" signal */
+.num, .price, .clause-n, .step-n, .metaline, .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--iron); outline-offset: 3px; border-radius: 1px;
+}
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: var(--gut); top: 10px; z-index: 200; background: var(--field); color: #fff; padding: 10px 16px; border-radius: var(--r); }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding-inline: var(--gut); }
+.sec { padding-block: clamp(56px, 8vw, 104px); }
+.sec-tight { padding-block: clamp(30px, 4vw, 44px); }   /* the deliberately-short section */
+
+/* eyebrow: mono, used sparingly — NOT above every section */
+.eyebrow {
+  display: inline-flex; align-items: baseline; gap: 9px;
+  font-family: var(--mono); font-size: var(--meta); font-weight: 500;
+  letter-spacing: .13em; text-transform: uppercase; color: var(--ink-soft);
+}
+.eyebrow::before { content: ""; width: 7px; height: 7px; background: var(--iron); flex: none; }
+
+/* section heads are LEFT-ALIGNED. centering is reserved for the single final CTA */
+.sec-head { max-width: 62ch; margin-bottom: clamp(28px, 4vw, 44px); }
+.sec-head h2 { font-size: var(--d-sec); margin: 12px 0 12px; }
+.sec-head .lede { font-size: var(--body-lg); color: var(--ink-soft); }
+.lede { font-size: var(--body-lg); color: var(--ink-soft); }
+
+/* ---------------------------------------------------------------- buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font-family: var(--sans); font-weight: 700; font-size: 1rem; line-height: 1;
+  padding: 15px 24px; min-height: 50px; border: 1.5px solid transparent; border-radius: var(--r);
+  text-decoration: none; cursor: pointer;
+  transition: background .16s var(--ease-standard), color .16s var(--ease-standard),
+              border-color .16s var(--ease-standard), transform .16s var(--ease-spring);
+}
+.btn svg { width: 19px; height: 19px; fill: currentColor; }
+.btn-call { background: var(--iron); color: #fff; border-radius: var(--r-pill); border-color: var(--iron); } /* THE one radius exception */
+.btn-call:hover { background: var(--iron-deep); border-color: var(--iron-deep); color: #fff; transform: translateY(-1px); }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--rule); }
+.btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+.btn-lg { font-size: 1.06rem; padding: 17px 30px; min-height: 56px; }
+.on-field .btn-ghost { color: #fff; border-color: rgba(255,255,255,.32); }
+.on-field .btn-ghost:hover { border-color: #fff; color: #fff; }
+
+/* ---------------------------------------------------------------- header */
+.head { position: sticky; top: 0; z-index: 60; background: var(--paper); border-bottom: 1px solid var(--rule); }
+.head .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-block: 15px; }
+.head .ha-logo { height: 27px; width: auto; fill: currentColor; color: var(--ink); }
+.head nav { display: flex; align-items: center; gap: 26px; }
+.head nav a { color: var(--ink-soft); text-decoration: none; font-weight: 500; font-size: .95rem; }
+.head nav a:hover { color: var(--ink); }
+.head-call {
+  display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+  font-family: var(--mono); font-weight: 600; font-size: .92rem; color: var(--ink);
+  border: 1.5px solid var(--rule); border-radius: var(--r-pill); padding: 9px 17px; min-height: 44px;
+  transition: border-color .16s var(--ease-standard), color .16s var(--ease-standard);
+}
+.head-call:hover { border-color: var(--iron); color: var(--iron); }
+.head-call svg { width: 16px; height: 16px; fill: currentColor; }
+
+/* ---------------------------------------------------------------- hero (asymmetric + off-grid photo) */
+.hero { border-bottom: 1px solid var(--rule); padding-block: clamp(48px, 7vw, 86px) clamp(46px, 6vw, 76px); }
+.hero .wrap { display: grid; grid-template-columns: 1.12fr .88fr; gap: clamp(30px, 5vw, 62px); align-items: center; }
+.hero h1 { font-size: var(--d-hero); margin: 20px 0 22px; letter-spacing: -0.028em; }
+.hero h1 .hl { color: var(--iron); font-style: italic; }
+.hero-sub { font-size: var(--body-lg); color: var(--ink-soft); max-width: 46ch; }
+.hero-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 15px; margin-top: 30px; }
+/* mono is for FIGURES and short labels, not sentences — the number is mono,
+   the sentence is sans. */
+.hero-note { font-size: .88rem; color: var(--ink-soft); margin-top: 14px; }
+.hero-note b { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
+
+/* off-grid moment: the photo breaks the container to the right */
+.hero-media { position: relative; margin-right: calc(-1 * clamp(0px, 5vw, 60px)); }
+.hero-media .frame { border: 1px solid var(--rule); border-radius: var(--r); overflow: hidden; background: var(--paper-raised); }
+.hero-media img { width: 100%; height: auto; }
+/* NOTE: no side-stripe — §8 bans colored left-borders as accent. The mono
+   figure in iron carries the accent instead. */
+.hero-stat {
+  position: absolute; left: -22px; bottom: -20px; background: var(--paper);
+  border: 1px solid var(--rule); border-radius: var(--r);
+  padding: 12px 17px; display: flex; align-items: baseline; gap: 9px;
+}
+.hero-stat b { font-family: var(--mono); font-size: 1.35rem; font-weight: 700; color: var(--iron); }
+.hero-stat span { font-size: .84rem; color: var(--ink-soft); }
+
+/* ---------------------------------------------------------------- credentials strip (the short section) */
+.creds { border-bottom: 1px solid var(--rule); background: var(--paper-raised); }
+.creds .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 30px; padding-block: 20px; }
+.creds .lbl { font-family: var(--mono); font-size: var(--meta); letter-spacing: .13em; text-transform: uppercase; color: var(--ink-soft); }
+.creds .item { display: inline-flex; align-items: center; gap: 8px; font-size: .93rem; font-weight: 500; color: var(--ink); text-decoration: none; }
+.creds a.item { color: var(--iron); }
+.creds a.item:hover { text-decoration: underline; }
+.creds svg { width: 15px; height: 15px; fill: currentColor; color: var(--ink-soft); }
+.creds a.item svg { color: var(--iron); }
+
+/* ---------------------------------------------------------------- editorial split */
+.split { display: grid; grid-template-columns: .82fr 1.18fr; gap: clamp(28px, 5vw, 60px); align-items: center; }
+.split-media .frame { border: 1px solid var(--rule); border-radius: var(--r); overflow: hidden; background: var(--paper-raised); aspect-ratio: 4/5; }
+.split-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; }
+.split p + p { margin-top: 14px; }
+
+/* ---------------------------------------------------------------- THE CLAUSE LIST
+   replaces the banned icon-card grid. reads like a written agreement, which is
+   exactly what "six promises I put in writing" should look like. */
+.clauses { border-top: 1px solid var(--ink); }
+.clause {
+  display: grid; grid-template-columns: 3.4rem 1fr; gap: 4px 20px;
+  padding: 26px 0; border-bottom: 1px solid var(--rule);
+}
+.clause-n { font-size: .92rem; font-weight: 700; color: var(--iron); padding-top: .2em; }
+.clause h3 { font-size: var(--h-md); margin-bottom: 7px; }
+.clause p { color: var(--ink-soft); max-width: 68ch; }
+.clause p strong { color: var(--ink); font-weight: 600; }
+@media (min-width: 900px) { .clauses { columns: 2; column-gap: 56px; } .clause { break-inside: avoid; } }
+
+/* pledge — two protective clauses, set apart on the dark field */
+.pledge { background: var(--field); color: #fff; border-radius: var(--r); padding: clamp(24px, 3.5vw, 38px); margin-top: 38px; }
+.pledge .eyebrow { color: rgba(255,255,255,.72); }
+.pledge .eyebrow::before { background: var(--iron-bright); }
+.pledge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(22px, 3vw, 44px); margin-top: 20px; }
+.pledge h3 { color: #fff; font-size: var(--h-md); margin-bottom: 8px; }
+.pledge p { color: rgba(255,255,255,.78); }
+
+/* ---------------------------------------------------------------- service rows (margin-annotation layout) */
+.srv { border-top: 1px solid var(--ink); }
+.srv-row {
+  display: grid; grid-template-columns: 1fr 15rem; gap: 8px 28px;
+  padding: 24px 0; border-bottom: 1px solid var(--rule); align-items: start;
+}
+.srv-row h3 { font-size: var(--h-md); margin-bottom: 6px; }
+.srv-row p { color: var(--ink-soft); max-width: 64ch; }
+.srv-note {  /* the margin caption */
+  font-family: var(--mono); font-size: .76rem; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--ink-soft); text-align: right; padding-top: .35em;
+}
+.srv-note::before { content: "— "; color: var(--iron); }
+
+/* ---------------------------------------------------------------- pricing (mono numbers do the work) */
+.prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--rule); border-radius: var(--r); overflow: hidden; background: var(--paper-raised); }
+.price-cell { padding: clamp(22px, 3vw, 32px); border-right: 1px solid var(--rule); }
+.price-cell:last-child { border-right: 0; }
+.price-name { font-family: var(--mono); font-size: var(--meta); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); }
+.price { display: block; font-size: clamp(2.2rem, 1.6rem + 2.2vw, 3.1rem); font-weight: 700; color: var(--ink); letter-spacing: -.03em; margin: 12px 0 8px; line-height: 1; }
+.price small { font-family: var(--sans); font-size: .92rem; font-weight: 500; color: var(--ink-soft); letter-spacing: 0; margin-left: 5px; }
+.price-sub { font-size: .93rem; color: var(--ink-soft); }
+.price-kicker { margin-top: 22px; font-size: var(--body-lg); font-weight: 600; color: var(--ink); max-width: 54ch; }
+/* no side-stripe (§8) — the verified-green mark carries the semantics */
+.guarantee {
+  display: flex; align-items: center; gap: 11px; margin-top: 20px;
+  border: 1px solid var(--rule); background: var(--paper);
+  padding: 13px 17px; border-radius: var(--r); font-size: .95rem; color: var(--ink);
+}
+.guarantee svg { width: 18px; height: 18px; fill: var(--verified); flex: none; }
+
+/* ---------------------------------------------------------------- trades (typographic list, no icons) */
+.trades { columns: 3; column-gap: 40px; border-top: 1px solid var(--ink); padding-top: 6px; }
+.trades a {
+  display: block; padding: 11px 0; border-bottom: 1px solid var(--rule);
+  color: var(--ink); text-decoration: none; font-weight: 500; break-inside: avoid;
+  transition: color .14s var(--ease-standard), padding-left .14s var(--ease-standard);
+}
+.trades a::after { content: " →"; color: var(--iron); opacity: 0; transition: opacity .14s var(--ease-standard); }
+.trades a:hover { color: var(--iron); padding-left: 6px; }
+.trades a:hover::after { opacity: 1; }
+
+/* ---------------------------------------------------------------- steps */
+.steps { border-top: 1px solid var(--ink); }
+.step { display: grid; grid-template-columns: 3.4rem 1fr; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--rule); }
+.step-n { font-size: 1.5rem; font-weight: 700; color: var(--iron); line-height: 1; }
+.step h3 { font-size: var(--h-md); margin-bottom: 6px; }
+.step p { color: var(--ink-soft); max-width: 66ch; }
+
+/* ---------------------------------------------------------------- faq */
+.faq { border-top: 1px solid var(--ink); }
+.faq details { border-bottom: 1px solid var(--rule); }
+.faq summary {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 18px;
+  padding: 20px 0; cursor: pointer; list-style: none;
+  font-family: var(--display); font-size: var(--h-md); font-weight: 600; color: var(--ink);
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-family: var(--mono); font-size: 1.3rem; color: var(--iron); line-height: 1; flex: none; }
+.faq details[open] summary::after { content: "–"; }
+.faq .a { padding: 0 0 22px; color: var(--ink-soft); max-width: 74ch; }
+
+/* ---------------------------------------------------------------- final CTA (full-bleed; the ONE centred moment) */
+.final { background: var(--field); color: #fff; text-align: center; padding-block: clamp(64px, 9vw, 112px); }
+.final h2 { color: #fff; font-size: var(--d-sec); max-width: 20ch; margin: 0 auto 18px; }
+.final .lede { color: rgba(255,255,255,.76); max-width: 60ch; margin: 0 auto 30px; }
+.final .btn-call { background: var(--iron); border-color: var(--iron); }
+.final .btn-call:hover { background: var(--iron-bright); border-color: var(--iron-bright); color: var(--field); }
+.final .metaline { display: block; margin-top: 18px; font-size: .82rem; color: rgba(255,255,255,.6); }
+
+/* ---------------------------------------------------------------- footer */
+.foot { background: var(--paper); border-top: 1px solid var(--rule); padding-block: 40px 30px; }
+.foot .cols { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 34px; }
+.foot .ha-logo { height: 24px; width: auto; fill: currentColor; color: var(--ink); }
+.foot h4 { font-family: var(--mono); font-size: var(--meta); letter-spacing: .13em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; margin-bottom: 12px; }
+.foot a { display: block; padding: 4px 0; color: var(--ink-soft); text-decoration: none; font-size: .94rem; }
+.foot a:hover { color: var(--iron); }
+.foot .fine { margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--rule); font-size: .84rem; color: var(--ink-soft); }
+.foot .phone { font-family: var(--mono); font-weight: 600; color: var(--ink); font-size: 1.02rem; }
+
+/* ---------------------------------------------------------------- motion
+   ONE entrance, on load, CSS-only with fill-mode both. Nothing is gated behind
+   a scroll observer — content is visible by default, so a failed/paused
+   observer can never ship a blank section. */
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .hero h1, .hero-sub, .hero .hero-cta, .hero-media { animation: rise .62s var(--ease-entrance) both; }
+  .hero-sub { animation-delay: .06s; } .hero .hero-cta { animation-delay: .12s; } .hero-media { animation-delay: .1s; }
+}
+
+/* ---------------------------------------------------------------- responsive */
+@media (max-width: 980px) {
+  .hero .wrap, .split { grid-template-columns: 1fr; }
+  /* headline + CTA stay ABOVE the photo on mobile — Mike is on a phone between
+     jobs and must hit the copy and the call button first (regression guard). */
+  .hero-media { margin-right: 0; margin-top: 34px; }
+  .hero-stat { left: 12px; bottom: -16px; }
+  .prices { grid-template-columns: 1fr; }
+  .price-cell { border-right: 0; border-bottom: 1px solid var(--rule); }
+  .price-cell:last-child { border-bottom: 0; }
+  .pledge-grid { grid-template-columns: 1fr; }
+  .trades { columns: 2; }
+  .foot .cols { grid-template-columns: 1fr 1fr; }
+  .head nav { display: none; }
+}
+@media (max-width: 620px) {
+  .srv-row { grid-template-columns: 1fr; }
+  .srv-note { text-align: left; padding-top: 2px; }
+  .trades { columns: 1; }
+  .clause { grid-template-columns: 2.6rem 1fr; }
+}
+
+/* sticky mobile call bar */
+.callbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 70; display: none; background: var(--paper); border-top: 1px solid var(--rule); padding: 10px var(--gut); }
+.callbar .btn { width: 100%; }
+@media (max-width: 820px) { .callbar { display: block; } body { padding-bottom: 78px; } }

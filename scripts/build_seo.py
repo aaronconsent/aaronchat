@@ -9,7 +9,8 @@ BASE = "https://aaron.chat"
 
 # indexable public pages (exclude internal, setup, the separate grading engine, noindex legal)
 EXCLUDE_DIRS = ("style-guide", "setup", "insights", "_next", "_external", "pricing-archive",
-                "stats-lakelivingston", "node_modules", "scripts", ".git", "brand", "data")
+                "stats-lakelivingston", "node_modules", "scripts", ".git", "brand", "data",
+                "v2")  # v2 = internal design proof, noindex, must not compete with the real homepage
 
 
 def pages():
