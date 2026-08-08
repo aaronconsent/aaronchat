@@ -16,8 +16,8 @@ LEAD_ORDER = ["g4-electric","br-productions","midwest-cnc","polk-county-golf-car
               "dosey-doe","jurassic-quest","consent-resolve","monarx"]
 PROJECTS = sorted(PROJECTS, key=lambda p: LEAD_ORDER.index(p["slug"]) if p["slug"] in LEAD_ORDER else 99)
 
-VER = "115"
 IDX = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
+VER = re.search(r"ha\.css\?v=(\d+)", IDX).group(1)
 LOGO = re.search(r'(<svg class="ha-logo".*?</svg>)', IDX, re.S).group(1)
 FOOTER = IDX[IDX.index('<footer class="site-foot">'):IDX.index('</footer>') + len('</footer>')]
 SPRITE = IDX[IDX.index('<!-- icon sprite -->'):IDX.index('</defs></svg>') + len('</defs></svg>')]
@@ -108,12 +108,13 @@ your name, yours to keep, month to month.</p>
 
 
 def main():
-    open(os.path.join(ROOT, "work", "index.html"), "w", encoding="utf-8").write(render_index())
+    # NOTE: /work/index.html is now owned by scripts/build_real_work.py (the Real Work hub).
+    # This generator only produces the per-project case-study detail pages.
     for p in PROJECTS:
         d = os.path.join(ROOT, "work", p["slug"])
         os.makedirs(d, exist_ok=True)
         open(os.path.join(d, "index.html"), "w", encoding="utf-8").write(render_case(p))
-    print(f"wrote work index + {len(PROJECTS)} case studies")
+    print(f"wrote {len(PROJECTS)} case studies (hub owned by build_real_work.py)")
 
 
 if __name__ == "__main__":
