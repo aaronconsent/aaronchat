@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://aaron.chat/dashboard/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="/brand/ha.css?v=157">
+<link rel="stylesheet" href="/brand/ha.css?v=158">
 <!-- Meta Pixel -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -56,17 +56,24 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
 <div class="page-hero"><div class="wrap">
   <span class="caps">Client dashboard &middot; live sample</span>
   <h1>Your first 12 months, in one place</h1>
-  <p>This is the dashboard my clients open to see exactly what their money is doing. Below is a <b>real-shaped
-  sample</b> &mdash; a roofing company that started from a blank slate and built momentum month over month.
-  Money in, money out, every move that made the phone ring, and the ROAS after my fees.</p>
+  <p>This is the dashboard my clients open to see exactly what their money is doing. Below is a <b>modeled
+  sample</b> &mdash; not a real client, but built from real benchmarks &mdash; a roofing company growing from a
+  blank slate. Money in, money out, every move that made the phone ring, and the ROAS after my fees.</p>
 </div></div>
 
 <section class="sec sec-low"><div class="wrap">
   <div class="dash" data-dash>
-    <p class="dash-note">Sample data &middot; a roofing company from scratch &middot; ~$8,000 average job &middot;
-    <b>an illustration of how it compounds, not a guarantee</b></p>
+    <div class="dash-disclose" role="note">
+      <svg class="dash-disclose-i" aria-hidden="true"><use href="#i-shield"/></svg>
+      <div>
+        <b>Illustrative example &mdash; an above-median result. Not typical, and not a promise of your numbers.</b>
+        <p>This is a <b>model</b> of how the pieces compound for a roofing company that executes well &mdash; not a real client and not a guarantee. A typical new business, with average execution, lands closer to the <a href="#dash-floor">conservative floor</a> below. Figures assume a <b>funded ad budget of at least $2,000/mo</b>, a <b>~$6,000 blended job</b>, and <b>fast lead response</b>. Revenue shown is <b>booked</b> (contracted), not yet collected.</p>
+      </div>
+    </div>
 
     <div class="dash-kpis" data-dash-kpis></div>
+
+    <div class="dash-floor" id="dash-floor" data-dash-floor></div>
 
     <div class="dash-panel dash-chartwrap">
       <div class="dash-chart-head">
@@ -101,7 +108,7 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
   </div>
 </div></section>
 
-<script src="/brand/dashboard.js?v=157" defer></script>
+<script src="/brand/dashboard.js?v=158" defer></script>
 
 </main>
 <!-- sticky mobile call bar (rule 1) -->
@@ -195,7 +202,7 @@ if(PIXEL_ID.indexOf('PASTE')===-1){fbq('init',PIXEL_ID);fbq('track','PageView');
   </div>
 </div>
 
-<script src="/brand/ha.js?v=157" defer></script>
+<script src="/brand/ha.js?v=158" defer></script>
 
 </body>
 </html>

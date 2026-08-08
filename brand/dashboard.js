@@ -18,13 +18,13 @@
   var MONTHS = [
     { m: 1,  eyeballs: 800,   leads: 1,  booked: 0,   ad: 0,    fees: 500,  tools: 0,   event: "Website & Local SEO went live", detail: "Custom, self-owned site on Cloudflare — indexed, blogging started. It's quiet on purpose: this is the foundation, and you're investing about $500 to build it." },
     { m: 2,  eyeballs: 2500,  leads: 2,  booked: 0,   ad: 0,    fees: 500,  tools: 0 },
-    { m: 3,  eyeballs: 9000,  leads: 4,  booked: 1,   ad: 0,    fees: 1000, tools: 0,   event: "Social Media on — first jobs close", detail: "7 networks, daily posts + reels. Eyeballs jump, the first roofing jobs close, and you cross into profit for good." },
+    { m: 3,  eyeballs: 9000,  leads: 4,  booked: 1,   ad: 0,    fees: 1000, tools: 0,   event: "Social on + first jobs from search & referral", detail: "Google Business Profile and early search visibility start producing calls; social builds the trust that helps them close. The first roofing jobs land and you cross into profit (a bumpier line than this in real life — organic is slower than paid)." },
     { m: 4,  eyeballs: 13000, leads: 7,  booked: 2,   ad: 0,    fees: 1000, tools: 0 },
     { m: 5,  eyeballs: 26000, leads: 12, booked: 3.5, ad: 2000, fees: 1300, tools: 0,   event: "Started $2,000/mo Google Ads", detail: "Top-of-funnel demand on tap. Ad spend steps up to $2,000/mo (plus my 15% management) — and the booked work steps up faster." },
     { m: 6,  eyeballs: 30000, leads: 16, booked: 4.5, ad: 2000, fees: 1300, tools: 0 },
-    { m: 7,  eyeballs: 33000, leads: 21, booked: 6,   ad: 4000, fees: 4100, tools: 350, event: "Added Google LSA + Missed-Visitor Leads", detail: "A one-time $2,500 LSA setup (Google Guarantee) plus a ~$2,000/mo Local Service Ads budget. Anonymous site visitors who never called now get captured as leads too." },
+    { m: 7,  eyeballs: 33000, leads: 21, booked: 6,   ad: 4000, fees: 4100, tools: 350, event: "Added Google LSA + Missed-Visitor follow-up", detail: "A one-time $2,500 LSA setup (Google Guarantee) plus a ~$2,000/mo Local Services Ads budget. Identified return visitors get added to remarketing and follow-up too — a few extra touchpoints a month, not a lead firehose." },
     { m: 8,  eyeballs: 35000, leads: 24, booked: 7,   ad: 4000, fees: 1600, tools: 350 },
-    { m: 9,  eyeballs: 38000, leads: 27, booked: 8,   ad: 4000, fees: 1600, tools: 350, event: "Newsletter list passed 2,000", detail: "The list we grew from every lead starts paying off — repeat and referral jobs compounding, for free." },
+    { m: 9,  eyeballs: 38000, leads: 27, booked: 8,   ad: 4000, fees: 1600, tools: 350, event: "Repeat & referral work compounding", detail: "The list we grew from every lead and past customer (a few hundred by now — not thousands) starts paying off, with repeat and referral jobs stacking on top, for free." },
     { m: 10, eyeballs: 40000, leads: 29, booked: 8.5, ad: 4000, fees: 1600, tools: 350 },
     { m: 11, eyeballs: 42000, leads: 31, booked: 9,   ad: 4000, fees: 1600, tools: 350 },
     { m: 12, eyeballs: 44000, leads: 33, booked: 9.5, ad: 4000, fees: 1600, tools: 350 }
@@ -58,9 +58,9 @@
   // ---------- KPIs ----------
   function renderKpis() {
     var hero = [
-      { l: "Money in", v: money(T.in), s: "12-mo booked revenue", cls: "in", tv: T.in, fmt: moneyK },
+      { l: "Money in", v: money(T.in), s: "12-mo revenue booked (contracted, not yet collected)", cls: "in", tv: T.in, fmt: moneyK },
       { l: "Money out", v: money(T.out), s: moneyK(T.ad) + " ad spend + " + moneyK(T.fees + T.tools) + " fees & tools", cls: "out", tv: T.out, fmt: moneyK },
-      { l: "ROAS", v: (Math.round(T.roas * 10) / 10) + "×", s: "return on every dollar, after fees", cls: "roas", tv: T.roas, fmt: function (v) { return (Math.round(v * 10) / 10) + "×"; } }
+      { l: "ROAS", v: (Math.round(T.roas * 10) / 10) + "×", s: "revenue-to-spend · ≈" + (Math.round(T.roas * 0.27 * 10) / 10) + "× on gross profit after ~27% roofing margin", cls: "roas", tv: T.roas, fmt: function (v) { return (Math.round(v * 10) / 10) + "×"; } }
     ];
     var sub = [
       { l: "Net gain", tv: T.net, fmt: money, cls: "net" },
@@ -79,6 +79,27 @@
           '<b class="dk-v" data-kpi="' + t.l + '">' + (reduce ? t.fmt(t.tv) : "0") + '</b></div>';
       }).join("") + '</div>';
     hero.concat(sub).forEach(function (t) { tween(root.querySelector('[data-kpi="' + t.l + '"]'), t.tv, t.fmt, "k" + t.l); });
+  }
+
+  // ---------- conservative floor (the honest "what's realistic" counterweight) ----------
+  // Sourced from the Aug-2026 benchmark audit (25th-percentile cold-start, paid channels only).
+  var FLOOR = { leads: 90, jobs: 11, rev: 66000 };
+  function renderFloor() {
+    var el = $("[data-dash-floor]"); if (!el) return;
+    function row(l, show, floor) {
+      return '<div class="dash-floor-row"><span class="dfl-l">' + l + '</span>' +
+        '<span class="dfl-show">' + show + '</span><span class="dfl-arrow">→</span>' +
+        '<span class="dfl-floor">' + floor + '</span></div>';
+    }
+    el.innerHTML =
+      '<div class="dash-floor-head"><h3>What&rsquo;s realistic: the conservative floor</h3>' +
+      '<p>The showcase above is an <b>above-median</b> run. Here&rsquo;s the honest other end &mdash; a conservative, from-zero year that a typical new roofer hits with <b>average</b> execution and a funded budget. These are the numbers I&rsquo;d actually stand behind, not the illustration.</p></div>' +
+      '<div class="dash-floor-cols"><div class="dash-floor-labels"><span></span><span class="dfl-cap show">Illustration (above-median)</span><span></span><span class="dfl-cap floor">Conservative floor</span></div>' +
+      row("Leads (12 mo)", num(T.leads), num(FLOOR.leads)) +
+      row("Booked jobs (12 mo)", num1(T.booked), num(FLOOR.jobs)) +
+      row("Booked revenue (12 mo)", money(T.in), money(FLOOR.rev)) +
+      '</div>' +
+      '<p class="dash-floor-fine">Floor assumes a funded <b>&ge;$2,000/mo</b> ad budget and fast lead response. Only <b>paid</b> channels (Google Ads, Local Services Ads) are counted toward it &mdash; SEO, social, newsletter, and visitor-ID are real, but too slow or traffic-dependent to promise in year one. Revenue is booked, not collected; after roofing margins, profit is a fraction of it.</p>';
   }
 
   // ---------- chart ----------
@@ -211,6 +232,7 @@
     { sel: ".dash-chart", mo: 2, title: "Month 3 &mdash; crossover to profit", body: "Social Media flips on, eyeballs jump, and the first roofing jobs close. You cross into the black at <b>+$6,000</b> &mdash; and never look back." },
     { sel: ".dash-chart", mo: 4, title: "Month 5 &mdash; pour on fuel", body: "We turn on <b>$2,000/mo Google Ads</b>. Spend steps up &mdash; but the booked work steps up faster." },
     { sel: ".dash-chart", mo: 6, title: "Month 7 &mdash; capture the rest", body: "Google LSA plus Missed-Visitor Leads. Now even anonymous visitors who never picked up the phone get captured as leads." },
+    { sel: ".dash-floor", mo: 11, title: "And the honest floor", body: "The showcase is an above-median run. This is the <b>conservative floor</b> &mdash; ~90 leads and ~11 booked jobs from a funded, from-zero year. The numbers I&rsquo;d actually stand behind." },
     { sel: ".dash-timeline", mo: 11, title: "Every move, on the record", body: "Each play we ran &mdash; logged with what it cost and what it returned. No black boxes, ever." },
     { sel: ".dash-cta", mo: 11, metric: "in", title: "Month 12 &mdash; the payoff", body: "<b>$472k booked</b> on <b>~$48k spent</b>. That&rsquo;s <b>~$424,000 net</b> and a <b>9.9× return</b>, after everything. Want to see your version?" }
   ];
@@ -364,6 +386,7 @@
   }
 
   renderKpis();
+  renderFloor();
   renderMetrics();
   renderMonths();
   drawChart();
