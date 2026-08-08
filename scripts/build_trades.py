@@ -8,12 +8,12 @@ Run:  python3 scripts/build_trades.py
 import os, re, html as H
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VER = "115"
 LOGO = open("/tmp/ha_logo.svg").read() if os.path.exists("/tmp/ha_logo.svg") else ""
 if not LOGO:  # fall back to extracting from the homepage
     idx = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
     LOGO = re.search(r'(<svg class="ha-logo".*?</svg>)', idx, re.S).group(1)
 IDX = open(os.path.join(ROOT, "index.html"), encoding="utf-8").read()
+VER = re.search(r"ha\.css\?v=(\d+)", IDX).group(1)
 FOOTER = IDX[IDX.index('<footer class="site-foot">'):IDX.index('</footer>') + len('</footer>')]
 SPRITE = IDX[IDX.index('<!-- icon sprite -->'):IDX.index('</defs></svg>') + len('</defs></svg>')]
 
@@ -164,6 +164,157 @@ def sec_services():
     return "".join(out)
 
 
+# ---- the playbook matrix: 4-5 named plays per trade, roughly in the order I'd run them.
+# Each = (title, one-line story in Mike-voice, [what it sells]). Tags: Website, Ads, Social,
+# Reviews, Reels, AEO. Cross-linked to /work/ so every play points at proof.
+PLAYBOOK = {
+    "hvac-marketing": [
+        ("The two-season machine", "A campaign calendar that flips from AC to heat <b>before demand does</b>, so you&rsquo;re not scrambling when the first cold snap hits and the October dip stops hurting.", ["Ads", "Website"]),
+        ("The 11pm breakdown", "When the AC quits at 11pm, they call the first shop that looks legit. Call-first mobile pages and ads aimed at people who need you <em>right now</em>.", ["Website", "Ads"]),
+        ("The maintenance list", "Tune-up reminders by email and text to every past customer &mdash; shoulder-season revenue from the list you already earned.", ["Website"]),
+        ("The repair-or-replace talk", "Content that pre-frames the $8k conversation honestly, ranks for it, and gets quoted by the AI answers homeowners now ask first.", ["Website", "AEO"]),
+        ("The review gap", "Most HVAC shops quit asking after the install. Automatic requests after every job close the gap the big brands leave open.", ["Reviews"]),
+    ],
+    "plumber-marketing": [
+        ("The burst-pipe sprint", "A ten-second decision UX: tap-to-call above the fold, nothing in the way, because a homeowner ankle-deep in water isn&rsquo;t reading your About page.", ["Website", "Ads"]),
+        ("The water-heater page", "Your single highest-intent search gets its own page built to rank and to book &mdash; not buried three clicks deep.", ["Website"]),
+        ("The big-job r&eacute;sum&eacute;", "A repipe / slab-leak trust package &mdash; license, real photos, a review wall &mdash; so the $9k job doesn&rsquo;t go to the shop with the slicker site.", ["Website", "Reviews"]),
+        ("The drain reel", "Hydro-jetting before/after in vertical video &mdash; this trade&rsquo;s scroll-stopper, running on the channels your customers actually watch.", ["Reels", "Social"]),
+        ("The property-manager line", "A page and a pitch aimed at PM and commercial recurring work &mdash; the accounts that smooth out the emergency-call rollercoaster.", ["Website"]),
+    ],
+    "electrician-marketing": [
+        ("The panel &amp; plug rush", "EV chargers and panel upgrades are the growth searches right now. I build the pages that own them in your radius before the national brands do.", ["Website", "Ads"]),
+        ("The generator season", "Standby-generator campaigns timed to Gulf storm season, live before the forecast scares everyone into calling at once.", ["Ads"]),
+        ("The safety-inspection hook", "An older-home inspection offer as the low-commitment first call &mdash; the easy yes that turns into the panel job.", ["Website"]),
+        ("The map-pack takeover", "Google Business Profile done right plus local SEO in a defined radius &mdash; the exact play running on G4 Electric right now.", ["Website"]),
+        ("The GC&rsquo;s favorite", "A positioning page built for builder and GC referral work, so the steady commercial pipeline finds you.", ["Website"]),
+    ],
+    "roofer-marketing": [
+        ("The storm ticket", "When hail hits, the phone has to ring inside 48 hours. Surge pages, ads that switch on with the weather, and the &ldquo;actually local&rdquo; defense against out-of-town chasers.", ["Ads", "Website"]),
+        ("The insurance translator", "Content that walks the homeowner through the claim before the adjuster does &mdash; and gets cited by the AI answers they ask first.", ["Website", "AEO"]),
+        ("The drone reel", "Before/after aerials as the closing asset &mdash; the footage that makes the estimate a formality.", ["Reels", "Social"]),
+        ("The local-since wall", "Review velocity plus years-in-county proof, built into a moat the storm chasers can&rsquo;t fake.", ["Reviews"]),
+        ("The $12k question", "A replacement funnel with a financing page and a form that pre-qualifies, so the estimates you drive out for are real.", ["Website", "Ads"]),
+    ],
+    "remodeler-marketing": [
+        ("The portfolio that closes", "A project gallery organized by room and budget band, so your photos leave the phone and start doing the selling.", ["Website"]),
+        ("The phased plan", "Content that turns &ldquo;$60k someday&rdquo; into &ldquo;$18k phase one now&rdquo; &mdash; the reframe that starts jobs this quarter.", ["Website"]),
+        ("The serious-inquiry filter", "A form that screens tire-kickers before the estimate visit, so your windshield time goes to real projects.", ["Website"]),
+        ("The referral table", "Past-client touchpoints that keep the referral engine warm long after the final walkthrough.", ["Website", "Reviews"]),
+        ("The before/after engine", "The gallery, fed monthly with fresh reels &mdash; the content that keeps you top of mind for the neighbor&rsquo;s project.", ["Reels", "Social"]),
+    ],
+    "fence-marketing": [
+        ("The linear-foot quote", "An instant estimate calculator that captures the lead while they&rsquo;re curious &mdash; kills the &ldquo;call for pricing&rdquo; friction that sends them to the next guy.", ["Website"]),
+        ("The wood vs. metal talk", "Own the trade&rsquo;s #1 research question in search and in the AI answers, so you&rsquo;re the authority before the quote.", ["Website", "AEO"]),
+        ("The fence-line effect", "One fence sells the street. Neighborhood-targeted social and signage timing that turns a single build into three.", ["Social", "Ads"]),
+        ("The build-season push", "February-through-May campaigns timed to spring builds, live before the rush instead of chasing it.", ["Ads"]),
+        ("The gallery by material", "Wood, iron, and vinyl portfolios with budget bands, so the homeowner self-selects into the job you want.", ["Website"]),
+    ],
+    "concrete-marketing": [
+        ("The before/after proof", "Concrete sells on pictures. Tear-out-to-finish galleries and reels that do the closing before you quote.", ["Reels", "Social"]),
+        ("The driveway calculator", "A square-footage instant estimate as the lead hook &mdash; the tool that captures the price-shopper instead of losing them.", ["Website"]),
+        ("The stamped upsell", "A decorative and stamped gallery that quietly moves a $6k pour toward $12k.", ["Website"]),
+        ("The street effect", "One new driveway sells three more on the same block. Geo-targeted follow-up that works the whole street.", ["Social", "Ads"]),
+        ("The flatwork bid page", "Commercial and builder flatwork positioning, so the steady bid work finds you.", ["Website"]),
+    ],
+    "lawn-care-marketing": [
+        ("The route-density play", "Every new yard on a street you already run is nearly pure margin. Neighborhood targeting that stacks stops, not miles.", ["Social", "Ads"]),
+        ("The set-and-forget plan", "Recurring mowing plans with card-on-file signup &mdash; recurring revenue instead of one-off cuts.", ["Website"]),
+        ("The spring sprint", "March-and-April capture, live before the phones melt and everyone&rsquo;s booked.", ["Ads"]),
+        ("The stripe shot", "Lawn-stripe and transformation content &mdash; this trade&rsquo;s visual currency, on the channels homeowners scroll.", ["Reels", "Social"]),
+        ("The upsell ladder", "Mowing to fertilization to beds to lighting, marketed to the list you already mow.", ["Website"]),
+    ],
+    "tree-service-marketing": [
+        ("The storm cleanup surge", "When limbs come down across the county, the crew they find first wins. Surge pages built to catch the panic search.", ["Ads", "Website"]),
+        ("The photo estimate", "The homeowner texts a picture and gets a callback &mdash; your quote goes out before the saws cool.", ["Website"]),
+        ("The crane show", "Removal footage is inherently dramatic. Monthly reels that turn your day job into a following.", ["Reels", "Social"]),
+        ("The widow-maker warning", "Danger-tree education that drives inspections and earns the AI citations homeowners now trust.", ["Website", "AEO"]),
+        ("The trim reminder", "Seasonal trimming outreach to past customers &mdash; the quiet-season revenue hiding in your own list.", ["Website"]),
+    ],
+    "septic-marketing": [
+        ("The backup emergency", "Nobody comparison-shops a backed-up system. Call-first everything, built to win the panic call.", ["Website", "Ads"]),
+        ("The real-estate letter", "An inspection pipeline through realtors and title companies &mdash; East Texas closings run on septic letters, and I make you the name they send.", ["Website"]),
+        ("The pump-out clock", "A 3-to-5-year service cycle means the customer list <em>is</em> the business. Reminder campaigns by year installed keep it turning.", ["Website"]),
+        ("The aerobic vs. conventional guide", "New-install education with county permit specifics &mdash; the exact page the AI answers quote.", ["Website", "AEO"]),
+        ("The maintenance contract", "Aerobic-system service agreements packaged as recurring revenue, not one-off visits.", ["Website"]),
+    ],
+    "pressure-washing-marketing": [
+        ("The satisfying split-screen", "Half-clean-driveway video is the most scroll-stopping content on this whole list. Reels built to travel.", ["Reels", "Social"]),
+        ("The neighborhood blitz", "&ldquo;On your street Tuesday&rdquo; geo offers that turn one booking into a block.", ["Social", "Ads"]),
+        ("The spring refresh", "Seasonal exterior packages, live right when the pollen and grime make everyone notice.", ["Ads"]),
+        ("The bundle menu", "Driveway + house + fence combo pricing, published &mdash; so nobody has to call for a number and drift away.", ["Website"]),
+        ("The storefront contract", "Recurring commercial sidewalk and storefront accounts &mdash; the steady base under the seasonal spikes.", ["Website"]),
+    ],
+    "pool-service-marketing": [
+        ("The weekly route", "Recurring cleaning plans and route density are the whole economic model. Online signup that fills the truck&rsquo;s week.", ["Website"]),
+        ("The green-to-clean", "Algae-to-crystal transformations &mdash; before/after gold that sells the rescue job on sight.", ["Reels", "Social"]),
+        ("The dead-pump call", "Same-day equipment-repair positioning for the emergency that won&rsquo;t wait for a quote.", ["Website", "Ads"]),
+        ("The open/close calendar", "Seasonal open-and-close campaigns to the list, so the calendar fills itself twice a year.", ["Website"]),
+        ("The resurface ticket", "A remodel and resurface funnel with financing content &mdash; the big-ticket work under the weekly service.", ["Website", "Ads"]),
+    ],
+    "garage-door-marketing": [
+        ("The stuck-at-7am call", "Emergency same-day service with tap-to-call UX, built for the homeowner late for work with a door that won&rsquo;t open.", ["Website", "Ads"]),
+        ("The spring truth", "Honest torsion-spring education &mdash; this trade&rsquo;s trust wound is spring upselling, and straight talk wins it.", ["Website", "AEO"]),
+        ("The curb-appeal case", "Door replacement is the highest-ROI curb-appeal project going. Visual content that makes the upgrade obvious.", ["Reels", "Social"]),
+        ("The straight price", "Published price ranges against the 1-800 call centers that won&rsquo;t quote &mdash; the transparency that earns the click.", ["Website"]),
+        ("The local vs. 1-800 fight", "Review velocity plus &ldquo;actually local&rdquo; proof against the lead brokers with the fake local listings.", ["Reviews"]),
+    ],
+    "gutter-marketing": [
+        ("The first-big-rain push", "Campaigns timed to fall and storm season, when clogs announce themselves and the phone should already be ringing.", ["Ads"]),
+        ("The guard question", "Honest gutter-guard education &mdash; what works, what&rsquo;s a gimmick &mdash; that ranks and gets quoted by the AI answers.", ["Website", "AEO"]),
+        ("The overflow reel", "Clogged-to-clear content, quietly satisfying and endlessly shareable.", ["Reels", "Social"]),
+        ("The roofer&rsquo;s partner", "Referral positioning alongside the roofers and pressure washers you already know &mdash; cross-linked so the work flows both ways.", ["Website"]),
+        ("The free look", "A free-inspection hook as the low-commitment first call that turns into the guard job.", ["Website"]),
+    ],
+    "pest-control-marketing": [
+        ("The quarterly plan", "A subscription business in work boots. Market the plan, not the visit &mdash; recurring revenue is the whole game.", ["Website"]),
+        ("The bug calendar", "Month-by-month East Texas pest content &mdash; termite swarms, mosquito season &mdash; that ranks all year and earns the AI citations.", ["Website", "AEO"]),
+        ("The same-day promise", "Response-time positioning with instant booking, because a wasp nest by the door is a today problem.", ["Website", "Ads"]),
+        ("The termite letter", "A real-estate inspection pipeline via realtors &mdash; the referral channel that never dries up.", ["Website"]),
+        ("The review swarm", "High visit frequency means high review velocity. Automate the ask and bury the competition&rsquo;s star count.", ["Reviews"]),
+    ],
+    "painter-marketing": [
+        ("The room-by-room wall", "A before/after portfolio with color callouts, so the homeowner sees their own house in your work.", ["Website"]),
+        ("The color consult", "A free consultation as the lead magnet &mdash; the easy first yes that turns into the whole-house repaint.", ["Website"]),
+        ("The inside/outside calendar", "Interior marketed in winter, exterior in summer &mdash; a calendar that smooths the season instead of riding it.", ["Ads", "Social"]),
+        ("The photo review", "Review requests that ask for a photo, feeding your portfolio automatically with every finished job.", ["Reviews"]),
+        ("The HOA repaint", "Commercial and HOA contract positioning &mdash; the multi-unit work that fills a whole crew for weeks.", ["Website"]),
+    ],
+    "appliance-repair-marketing": [
+        ("The brand + model page", "&ldquo;Samsung washer repair Livingston&rdquo; is how this trade is actually searched &mdash; so I build for it, brand and model, page by page.", ["Website"]),
+        ("The today slot", "A same-day scheduling promise, stated plainly &mdash; because a dead fridge is a today problem, not a next-week one.", ["Website", "Ads"]),
+        ("The fix-or-toss guide", "Repair-vs-replace guidance that builds trust and gets quoted by the AI answers homeowners ask first.", ["Website", "AEO"]),
+        ("The warranty work", "A manufacturer-warranty positioning page that captures the steady, pre-approved work.", ["Website"]),
+        ("The five-star van", "Small, frequent jobs mean fast review velocity. Automate the ask and own the local star count.", ["Reviews"]),
+    ],
+}
+
+
+def sec_playbook(t):
+    plays = PLAYBOOK.get(t["slug"], [])
+    if not plays:
+        return ""
+    cards = []
+    for i, (title, story, sells) in enumerate(plays, 1):
+        tags = "".join(f'<span class="pb-tag">{s}</span>' for s in sells)
+        cards.append(
+            f'<article class="pb-card reveal"><span class="pb-num">{i:02d}</span>'
+            f'<h3>{title}</h3><p>{story}</p><div class="pb-sells">{tags}</div></article>')
+    return f'''<section class="sec sec-low" id="playbook">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <h2>What I&rsquo;d build for your {esc(t['one'])}</h2>
+      <p class="lede">Not theory &mdash; the specific plays I&rsquo;d run for {esc(t['word'].lower())}, roughly in the order
+      I&rsquo;d run them. Every one is something I&rsquo;ve already built and run for somebody. <a href="/work/">Go see the receipts &rarr;</a></p>
+    </div>
+    <div class="pbook">{"".join(cards)}</div>
+    <p class="center reveal" style="margin-top:26px;color:var(--ink-variant)">That&rsquo;s the playbook. The
+    <a href="tel:+17133848985" data-cta-location="playbook">ten-minute call</a> is where we pick the first two.</p>
+  </div>
+</section>
+'''
+
+
 def render(t):
     title = f"Marketing for {t['label']} — Hey Aaron! | Coldspring, TX"
     desc = f"I'm Aaron. I book jobs for {t['label'].lower()}, not just 'leads.' A site that works, top of Google, and ads that pay for themselves. Call and I answer: 713-384-8985."
@@ -286,7 +437,9 @@ def render(t):
   </div>
 </section>
 
-<section class="sec sec-low">
+{sec_playbook(t)}
+
+<section class="sec sec-white">
   <div class="wrap">
     <div class="sec-head center reveal">
       <h2>Not ready to call? Let me call you.</h2>

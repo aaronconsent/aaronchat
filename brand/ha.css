@@ -1162,6 +1162,19 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce) { .rw-mini-live::before { animation: none; } }
 @media (max-width: 560px) { .rw-grid { grid-template-columns: 1fr; } }
 
+/* trade-page playbook ("What I'd build for your ___") — numbered ordered plays */
+.pbook { display: grid; grid-template-columns: repeat(auto-fill, minmax(292px, 1fr)); gap: 18px; }
+.pb-card { background: #fff; border: 1px solid var(--line-soft); border-radius: var(--r-lg); padding: 22px 22px 20px;
+  display: flex; flex-direction: column; gap: 9px;
+  transition: box-shadow .18s var(--ease), transform .18s var(--ease); }
+.pb-card:hover { box-shadow: 0 14px 32px -16px rgba(0, 47, 98, .26); transform: translateY(-2px); }
+.pb-num { font: 800 .82rem var(--f); letter-spacing: .04em; color: var(--tertiary-bright); font-variant-numeric: tabular-nums; }
+.pb-card h3 { font-size: 1.12rem; letter-spacing: -.01em; line-height: 1.25; color: var(--ink); }
+.pb-card p { color: var(--ink-variant); font-size: .94rem; line-height: 1.56; flex: 1; }
+.pb-card p em { font-style: italic; color: var(--ink); }
+.pb-sells { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.pb-tag { font-size: .64rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--primary); background: var(--primary-tint); border-radius: var(--r-full); padding: 4px 10px; }
+
 /* honesty: prominent disclosure banner + conservative-floor counterweight */
 .dash-disclose { display: flex; gap: 14px; align-items: flex-start; background: var(--tertiary-container); border: 1px solid #eac9a4;
   border-radius: var(--r-lg); padding: 16px 18px; margin-bottom: 22px; }
